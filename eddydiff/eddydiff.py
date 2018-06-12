@@ -1,7 +1,4 @@
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 import numpy as np
-import scipy as sp
 import xarray as xr
 
 
@@ -99,3 +96,80 @@ def estimate_clim_gradients(clim):
     clim['dSdia'].attrs['long_name'] = 'Diapycnal ∇S'
 
     clim['dTdz'] = dT.dz
+
+
+def to_density_space(da, rhonew=None):
+    ''' Converts a transect DataArray to density space with density co-ordinate rhonew
+
+        Inputs
+        ======
+            da : transect DataArray
+            rhonew : new density co-ordinate
+
+        Output
+        ======
+        DataArray with variables interpolated along density co-ordinate.
+    '''
+
+    if rhonew is None:
+        rhonew = np.linspace(da.rho.min(), da.rho.max(), 30)
+
+    def convert_variable(var):
+        itemp = np.ones((len(rhonew), len(da.cast)))*np.nan
+
+        for cc, _ in enumerate(da.cast):
+            itemp[:, cc] = np.interp(
+                rhonew, da.rho[:, cc], var[:, cc])
+
+        return (xr.DataArray(itemp, dims=['rho', 'dist'],
+                             coords={'rho': rhonew,
+                                     'dist': da.dist.values},
+                             name=var.name))
+
+    in_dens = xr.Dataset()
+
+    for vv in da.variables:
+        if vv in da.coords or vv == 'rho':
+            continue
+
+        in_dens = xr.merge([in_dens, convert_variable(da[vv])])
+
+        Pmat = xr.broadcast(da['P'], da['rho'])[0]
+    if 'P' in da.coords:
+
+        in_dens = xr.merge([in_dens, convert_variable(Pmat)])
+
+    return in_dens
+
+
+def xgradient(da, dim=None, **kwargs):
+
+    if dim is None:
+        axis = None
+        coords_list = [da.coords[dd].values for dd in da.dims]
+
+    else:
+        axis = da.get_axis_num(dim)
+        coords_list = [da.coords[dim]]
+
+    grads = np.gradient(da.values, *coords_list, axis=axis, **kwargs)
+
+    if dim is None:
+        dda = xr.Dataset()
+        for idx, gg in enumerate(grads):
+            if da.name is not None:
+                name = '∂'+da.name+'/∂'+da.dims[idx]
+            else:
+                name = '∂/∂'+da.dims[idx]
+
+            dda[name] = xr.DataArray(gg, dims=da.dims, coords=da.coords)
+    else:
+        if da.name is not None:
+            name = '∂'+da.name+'/∂'+da.dims[axis]
+        else:
+            name = '∂/∂'+da.dims[axis]
+
+        dda = xr.DataArray(grads, dims=da.dims,
+                           coords=da.coords, name=name)
+
+    return dda
