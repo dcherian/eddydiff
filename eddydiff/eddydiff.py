@@ -1,5 +1,22 @@
 import numpy as np
+import scipy as sp
 import xarray as xr
+
+
+def exchange(input, kwargs):
+
+    for kk in kwargs.keys():
+        d1 = input[kk]
+        d2 = input[kwargs[kk]]
+
+        output = (input.copy().drop([d1.name, d2.name])
+                  .rename({d1.name: d2.name}))
+
+    output.coords[d2.name] = d2.values
+    output.coords[d1.name] = xr.DataArray(
+        d1.values, dims=[d2.name], coords={d2.name: d2.values})
+
+    return output
 
 
 def format_ecco(input):
@@ -17,6 +34,35 @@ def format_ecco(input):
               .set_coords(['lon', 'lat']))
 
     return output
+
+
+def gradient(input):
+    ''' Given an input DataArray, calculate gradients in three directions
+        and return it.
+
+        Output
+        ======
+
+        dx, dy, dz = gradients in x,y,z
+    '''
+
+    gradients = np.gradient(input, *[input.coords[dim] for dim in input.dims])
+
+    grads = xr.Dataset()
+    for idx, dim in enumerate(input.dims):
+        grads['d'+dim] = xr.DataArray(gradients[idx], dims=input.dims,
+                                      coords=input.coords)
+
+    grads['mag'] = xr.zeros_like(grads.data_vars['d'+dim])
+    for var in grads.data_vars:
+        if var == 'mag':
+            continue
+
+        grads['mag'] += grads[var]**2
+
+    grads['mag'] = np.sqrt(grads['mag'])
+
+    return grads
 
 
 def wrap_gradient(input):
@@ -99,7 +145,8 @@ def estimate_clim_gradients(clim):
 
 
 def to_density_space(da, rhonew=None):
-    ''' Converts a transect DataArray to density space with density co-ordinate rhonew
+    ''' Converts a transect DataArray to density space
+        with density co-ordinate rhonew
 
         Inputs
         ======
@@ -118,12 +165,12 @@ def to_density_space(da, rhonew=None):
         itemp = np.ones((len(rhonew), len(da.cast)))*np.nan
 
         for cc, _ in enumerate(da.cast):
-            itemp[:, cc] = np.interp(
-                rhonew, da.rho[:, cc], var[:, cc])
+            itemp[:, cc] = np.interp(rhonew, da.rho[:, cc], var[:, cc])
 
-        return (xr.DataArray(itemp, dims=['rho', 'dist'],
+        return (xr.DataArray(itemp,
+                             dims=['rho', 'cast'],
                              coords={'rho': rhonew,
-                                     'dist': da.dist.values},
+                                     'cast': da.cast.values},
                              name=var.name))
 
     in_dens = xr.Dataset()
@@ -134,12 +181,30 @@ def to_density_space(da, rhonew=None):
 
         in_dens = xr.merge([in_dens, convert_variable(da[vv])])
 
-        Pmat = xr.broadcast(da['P'], da['rho'])[0]
     if 'P' in da.coords:
-
+        Pmat = xr.broadcast(da['P'], da['rho'])[0]
         in_dens = xr.merge([in_dens, convert_variable(Pmat)])
 
+    in_dens['dist'] = da.dist
+    in_dens = in_dens.set_coords('dist')
+
     return in_dens
+
+
+def to_depth_space(var, Pold=None, Pnew=None):
+
+    if Pold is None:
+        Pold = var['P']
+
+    if Pnew is None:
+        Pnew = np.linspace(trdens['P'].min(), trdens['P'].max(), 100)
+
+    data = np.zeros((len(var.dist), len(Pnew))).T
+    for dd, _ in enumerate(var.dist):
+        data[:, dd] = np.interp(Pnew, Pold.isel(dist=dd), var.isel(dist=dd))
+
+    return xr.DataArray(data, dims=['P', 'cast'],
+                        coords={'P': Pnew, 'cast': var.cast})
 
 
 def xgradient(da, dim=None, **kwargs):
@@ -173,3 +238,86 @@ def xgradient(da, dim=None, **kwargs):
                            coords=da.coords, name=name)
 
     return dda
+
+
+def smooth_cubic_spline(invar, debug=False):
+
+    # http://www.nehalemlabs.net/prototype/blog/2014/04/12/how-to-fix-scipys-interpolating-spline-default-behavior/
+    def moving_average(series):
+        b = sp.signal.get_window(('gaussian', 4), 11, fftbins=False)
+        average = sp.ndimage.convolve1d(series, b/b.sum())
+        var = sp.ndimage.convolve1d(np.power(series-average, 2), b/b.sum())
+        return average, var
+
+    # need to use distance co-ordinate because casts need not be evenly spaced
+    distnew = invar.dist
+
+    smooth = np.ones((len(invar.rho), len(distnew))) * np.nan
+    for idx, rr in enumerate(invar.rho):
+        Tvec = invar.sel(rho=rr)
+        mask = ~np.isnan(Tvec)
+
+        if len(Tvec[mask]) < 5:
+            continue
+
+        _, var = moving_average(Tvec[mask])
+
+        spline = sp.interpolate.UnivariateSpline(
+            Tvec.dist[mask], Tvec[mask], k=3, w=1/np.sqrt(var), ext='const')
+
+        Tnew = spline(distnew)
+
+        Tnew[distnew.values < Tvec.dist[mask].min().values] = np.nan
+        Tnew[distnew.values > Tvec.dist[mask].max().values] = np.nan
+
+        # plt.figure()
+        # plt.plot(Tvec.dist, Tvec, 'o')
+        # plt.title('{0:0.2f}'.format(rr.values))
+        # plt.plot(distnew, Tnew, 'k-')
+
+        smooth[idx, :] = Tnew
+
+    smooth[np.isnan(invar.values)] = np.nan
+
+    smooth = xr.DataArray(smooth,
+                          dims=['rho', 'cast'],
+                          coords={'rho': invar.rho, 'cast': invar.cast})
+
+    smooth.coords['dist'] = invar.dist
+
+    if debug:
+        invar.plot.contour(levels=50, colors='r')
+        smooth.plot.contour(levels=50, colors='k', yincrease=False)
+
+    return smooth
+
+
+def calc_iso_dia_gradients(field, pres):
+
+    import eddydiff as ed
+
+    cast_to_dist = False
+
+    if 'dist' not in field.dims and 'cast' in field.dims:
+        field = exchange(field.copy(), {'cast': 'dist'})
+        pres = exchange(pres.copy(), {'cast': 'dist'})
+        cast_to_dist = True
+
+    iso = (ed.xgradient(field, 'dist')
+             .interp({'dist': field.dist.values})/1000)
+    iso.name = 'iso'
+
+    dia = xr.ones_like(iso) * np.nan
+    dia.name = 'dia'
+
+    for idx, dd in enumerate(iso.dist.values[:-1]):
+        Tdens_prof = field.sel(dist=dd, method='nearest')
+        Pdens_prof = pres.sel(dist=dd)
+
+        dia[:, idx] = np.gradient(Tdens_prof, -Pdens_prof)
+
+    if cast_to_dist:
+        iso = exchange(iso, {'dist': 'cast'})
+        dia = exchange(dia, {'dist': 'cast'})
+
+    return iso, dia
