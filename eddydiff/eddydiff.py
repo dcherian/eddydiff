@@ -284,7 +284,7 @@ def xgradient(da, dim=None, **kwargs):
     return dda
 
 
-def smooth_cubic_spline(invar, debug=False):
+def fit_spline(x, y, k=3, ext='const', **kwargs):
 
     # http://www.nehalemlabs.net/prototype/blog/2014/04/12/how-to-fix-scipys-interpolating-spline-default-behavior/
     def moving_average(series):
@@ -292,6 +292,22 @@ def smooth_cubic_spline(invar, debug=False):
         average = sp.ndimage.convolve1d(series, b/b.sum())
         var = sp.ndimage.convolve1d(np.power(series-average, 2), b/b.sum())
         return average, var
+
+    _, var = moving_average(y)
+
+    spline = sp.interpolate.UnivariateSpline(x, y, k=k,
+                                             w=1/np.sqrt(var),
+                                             ext=ext,
+                                             **kwargs)
+    vals = spline(x)
+
+    if isinstance(y, xr.DataArray):
+        vals = xr.DataArray(vals, dims=y.dims, coords=y.coords)
+
+    return spline, vals
+
+
+def smooth_cubic_spline(invar, debug=False):
 
     # need to use distance co-ordinate because casts need not be evenly spaced
     distnew = invar.dist
@@ -304,10 +320,7 @@ def smooth_cubic_spline(invar, debug=False):
         if len(Tvec[mask]) < 5:
             continue
 
-        _, var = moving_average(Tvec[mask])
-
-        spline = sp.interpolate.UnivariateSpline(
-            Tvec.dist[mask], Tvec[mask], k=3, w=1/np.sqrt(var), ext='const')
+        spline, _ = fit_spline(Tvec.dist[mask], Tvec[mask], k=3)
 
         Tnew = spline(distnew)
 
@@ -345,8 +358,8 @@ def calc_iso_dia_gradients(field, pres):
         pres = exchange(pres.copy(), {'cast': 'dist'})
         cast_to_dist = True
 
-    iso = (ed.xgradient(field, 'dist')
-             .interp({'dist': field.dist.values})/1000)
+    iso = (xgradient(field, 'dist')
+           .interp({'dist': field.dist.values})/1000)
     iso.name = 'iso'
 
     dia = xr.ones_like(iso) * np.nan
@@ -363,3 +376,54 @@ def calc_iso_dia_gradients(field, pres):
         dia = exchange(dia, {'dist': 'cast'})
 
     return iso, dia
+
+
+def bin_avg_in_density(input, ρbins):
+    '''
+        Takes input dataframe for transect, bins each profile by density
+        and averages. Returns average data as function of transect distance,
+        mean density in bin.
+
+    '''
+    return (input.groupby(['dist', pd.cut(input.rho, ρbins)])
+            .mean()
+            .rename({'rho': 'mean_rho'}, axis=1)
+            .reset_index()
+            .drop('rho', axis=1)
+            .rename({'mean_rho': 'rho'}, axis=1)
+            .set_index(['dist', 'rho'])
+            .to_xarray())
+
+
+def plot_bar_Ke(Ke):
+
+    f, ax = plt.subplots(2, 3, sharey=True)
+    f.set_size_inches(8, 6)
+    if 'name' in Ke:
+        f.suptitle(Ke.name, y=1.01)
+
+    ((Ke.KT)).plot.barh(x='rho', log=True,
+                        ax=ax[0, 0], title='$K_T$')
+    ((Ke.dTdz)).plot.barh(x='rho', log=False,
+                          ax=ax[0, 1], title='$T_z, T^m_z$')
+    ((Ke.dTmdz).plot.barh(x='rho', log=False,
+                          ax=ax[0, 1], edgecolor='black', color='none'))
+
+    ((Ke.KtTz)).plot.barh(x='rho', log=True,
+                          ax=ax[0, 2], title='$⟨K_T T_z⟩$')
+
+    ((Ke.dTmdz).plot.barh(x='rho', log=False,
+                          ax=ax[1, 0], title='$T_z^m, T_z$'))
+    ((Ke.dTdz)).plot.barh(x='rho', log=False,
+                          ax=ax[1, 0], color='none', edgecolor='black')
+
+    ((Ke.KtTz * Ke.dTmdz).plot.barh(x='rho', log=True,
+                                    ax=ax[1, 1],
+                                    title='$⟨K_T T_z⟩ T^m_z, χ/2$'))
+    ((Ke.chi/2).plot.barh(x='rho', log=True,
+                          ax=ax[1, 1], color='none', edgecolor='black'))
+
+    Ke.Ke.plot.barh(x='rho', log=True, ax=ax[1, 2], title='$K_e$')
+
+    plt.gca().invert_yaxis()
+    plt.tight_layout()
