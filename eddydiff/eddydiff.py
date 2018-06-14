@@ -1,5 +1,8 @@
 import numpy as np
 import scipy as sp
+import pandas as pd
+import matplotlib.pyplot as plt
+
 import xarray as xr
 
 
@@ -145,7 +148,7 @@ def estimate_clim_gradients(clim):
 
 
 def to_density_space(da, rhonew=None):
-    ''' Converts a transect DataArray to density space
+    ''' Converts a transect *Dataset* to density space
         with density co-ordinate rhonew
 
         Inputs
@@ -158,14 +161,26 @@ def to_density_space(da, rhonew=None):
         DataArray with variables interpolated along density co-ordinate.
     '''
 
+    to_da = False
+    if isinstance(da, xr.DataArray):
+        to_da = True
+        da.name = 'my_temp_name'
+        da = da.to_dataset()
+
     if rhonew is None:
-        rhonew = np.linspace(da.rho.min(), da.rho.max(), 30)
+        rhonew = np.linspace(da.rho.min(), da.rho.max(), 10)
 
     def convert_variable(var):
-        itemp = np.ones((len(rhonew), len(da.cast)))*np.nan
+        if var.ndim == 1:
+            var = var.expand_dims(['cast'])
+            var['rho'] = var.rho.expand_dims(['cast'])
 
-        for cc, _ in enumerate(da.cast):
-            itemp[:, cc] = np.interp(rhonew, da.rho[:, cc], var[:, cc])
+        itemp = np.ones((len(rhonew), len(var.cast)))*np.nan
+
+        for cc, _ in enumerate(var.cast):
+            itemp[:, cc] = np.interp(rhonew,
+                                     da.rho.isel(cast=cc),
+                                     var.isel(cast=cc))
 
         return (xr.DataArray(itemp,
                              dims=['rho', 'cast'],
@@ -185,26 +200,55 @@ def to_density_space(da, rhonew=None):
         Pmat = xr.broadcast(da['P'], da['rho'])[0]
         in_dens = xr.merge([in_dens, convert_variable(Pmat)])
 
-    in_dens['dist'] = da.dist
-    in_dens = in_dens.set_coords('dist')
+    if 'dist' in da:
+        in_dens['dist'] = da.dist
+        in_dens = in_dens.set_coords('dist')
+
+    if to_da:
+        in_dens = in_dens.set_coords('P').my_temp_name
 
     return in_dens
 
 
-def to_depth_space(var, Pold=None, Pnew=None):
+def to_depth_space(da, Pold=None, Pnew=None):
+
+    if isinstance(da, xr.DataArray):
+        da.name = 'temp'
+        da = da.to_dataset()
 
     if Pold is None:
-        Pold = var['P']
+        Pold = da['P']
 
     if Pnew is None:
-        Pnew = np.linspace(trdens['P'].min(), trdens['P'].max(), 100)
+        Pnew = np.linspace(Pold.min(), Pold.max(), 100)
 
-    data = np.zeros((len(var.dist), len(Pnew))).T
-    for dd, _ in enumerate(var.dist):
-        data[:, dd] = np.interp(Pnew, Pold.isel(dist=dd), var.isel(dist=dd))
+    def convert_variable(var):
 
-    return xr.DataArray(data, dims=['P', 'cast'],
-                        coords={'P': Pnew, 'cast': var.cast})
+        data = np.zeros((len(var.cast), len(Pnew))).T
+        for cc, _ in enumerate(var.cast):
+            data[:, cc] = np.interp(Pnew,
+                                    Pold.isel(cast=cc),
+                                    var.isel(cast=cc))
+
+        out = xr.DataArray(data, dims=['P', 'cast'],
+                           coords={'P': Pnew, 'cast': da.cast})
+        out.coords['cast'] = da.cast
+        out.name = var.name
+
+        return out
+
+    in_depth = xr.Dataset()
+    for vv in da.variables:
+        if vv in da.coords or vv == 'P':
+            continue
+
+        in_depth = xr.merge([in_depth, convert_variable(da[vv])])
+
+    if 'rho' in da.coords:
+        rmat = xr.broadcast(da['rho'], Pold)[0]
+        in_depth = xr.merge([in_depth, convert_variable(rmat)])
+
+    return in_depth.set_coords('rho').temp
 
 
 def xgradient(da, dim=None, **kwargs):
@@ -293,8 +337,6 @@ def smooth_cubic_spline(invar, debug=False):
 
 
 def calc_iso_dia_gradients(field, pres):
-
-    import eddydiff as ed
 
     cast_to_dist = False
 
