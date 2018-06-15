@@ -1,6 +1,7 @@
 import numpy as np
 import scipy as sp
 import pandas as pd
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 import xarray as xr
@@ -334,22 +335,24 @@ def smooth_cubic_spline(invar, debug=False):
 
         smooth[idx, :] = Tnew
 
+    if invar.shape != smooth.shape:
+        smooth = smooth.transpose()
+
     smooth[np.isnan(invar.values)] = np.nan
 
-    smooth = xr.DataArray(smooth,
-                          dims=['rho', 'cast'],
-                          coords={'rho': invar.rho, 'cast': invar.cast})
+    smooth = xr.DataArray(smooth, dims=invar.dims, coords=invar.coords)
 
     smooth.coords['dist'] = invar.dist
 
     if debug:
-        invar.plot.contour(levels=50, colors='r')
-        smooth.plot.contour(levels=50, colors='k', yincrease=False)
+        plt.figure()
+        invar.plot.contour(y='rho', levels=50, colors='r')
+        smooth.plot.contour(y='rho', levels=50, colors='k', yincrease=False)
 
     return smooth
 
 
-def calc_iso_dia_gradients(field, pres):
+def calc_iso_dia_gradients(field, pres, debug=False):
 
     cast_to_dist = False
 
@@ -365,15 +368,29 @@ def calc_iso_dia_gradients(field, pres):
     dia = xr.ones_like(iso) * np.nan
     dia.name = 'dia'
 
-    for idx, dd in enumerate(iso.dist.values[:-1]):
+    for idx, dd in enumerate(iso.dist.values):
         Tdens_prof = field.sel(dist=dd, method='nearest')
         Pdens_prof = pres.sel(dist=dd)
 
-        dia[:, idx] = np.gradient(Tdens_prof, -Pdens_prof)
+        if dia.dims[1] == 'dist':
+            dia[:, idx] = np.gradient(Tdens_prof, -Pdens_prof)
+        else:
+            dia[idx, :] = np.gradient(Tdens_prof, -Pdens_prof)
 
     if cast_to_dist:
         iso = exchange(iso, {'dist': 'cast'})
         dia = exchange(dia, {'dist': 'cast'})
+
+    iso.attrs['name'] = 'Isopycnal ∇'
+    dia.attrs['name'] = 'Diapycnal ∇'
+
+    if debug:
+        f, ax = plt.subplots(1, 2, sharex=True, sharey=True)
+        f.set_size_inches((10, 5))
+        iso.plot(ax=ax[0], x='cast', yincrease=False)
+        dia.plot(ax=ax[1], x='cast', yincrease=False)
+        ax[1].set_ylabel('')
+        plt.tight_layout()
 
     return iso, dia
 
@@ -385,13 +402,16 @@ def bin_avg_in_density(input, ρbins):
         mean density in bin.
 
     '''
-    return (input.groupby(['dist', pd.cut(input.rho, ρbins)])
+
+    dname = 'cast'
+
+    return (input.groupby([dname, pd.cut(input.rho, ρbins)])
             .mean()
             .rename({'rho': 'mean_rho'}, axis=1)
             .reset_index()
             .drop('rho', axis=1)
             .rename({'mean_rho': 'rho'}, axis=1)
-            .set_index(['dist', 'rho'])
+            .set_index([dname, 'rho'])
             .to_xarray())
 
 
@@ -412,18 +432,40 @@ def plot_bar_Ke(Ke):
     ((Ke.KtTz)).plot.barh(x='rho', log=True,
                           ax=ax[0, 2], title='$⟨K_T T_z⟩$')
 
-    ((Ke.dTmdz).plot.barh(x='rho', log=False,
-                          ax=ax[1, 0], title='$T_z^m, T_z$'))
-    ((Ke.dTdz)).plot.barh(x='rho', log=False,
-                          ax=ax[1, 0], color='none', edgecolor='black')
+    # ((Ke.dTmdz).plot.barh(x='rho', log=False,
+    #                       ax=ax[1, 0], title='$T_z^m, T_z$'))
+    # ((Ke.dTdz)).plot.barh(x='rho', log=False,
+    #                       ax=ax[1, 0], color='none', edgecolor='black')
 
     ((Ke.KtTz * Ke.dTmdz).plot.barh(x='rho', log=True,
-                                    ax=ax[1, 1],
+                                    ax=ax[1, 0],
                                     title='$⟨K_T T_z⟩ T^m_z, χ/2$'))
     ((Ke.chi/2).plot.barh(x='rho', log=True,
-                          ax=ax[1, 1], color='none', edgecolor='black'))
+                          ax=ax[1, 0], color='none', edgecolor='black'))
+
+    ((Ke.dTiso).plot.barh(x='rho', log=True,
+                          ax=ax[1, 1],
+                          title='$dT_{iso}$'))
 
     Ke.Ke.plot.barh(x='rho', log=True, ax=ax[1, 2], title='$K_e$')
 
     plt.gca().invert_yaxis()
+    plt.tight_layout()
+
+
+def plot_transect_Ke(transKe):
+    if 'cast' in transKe.chi.dims:
+        dname = 'cast'
+    else:
+        dname = dname
+
+    f, ax = plt.subplots(3, 2, sharex=True, sharey=True)
+    f.set_size_inches(10, 14)
+    np.log10(transKe.chi/2).plot(ax=ax[0, 0], x=dname, cmap=mpl.cm.Reds)
+    np.log10(transKe.KtTz).plot(ax=ax[1, 0], x=dname, cmap=mpl.cm.Reds)
+    (transKe.dTmdz).plot(ax=ax[0, 1], x=dname)
+    (transKe.dTdz).plot(ax=ax[1, 1], x=dname)
+    (transKe.dTiso).plot(ax=ax[2, 0], x=dname)
+    np.log10(np.abs(transKe.Ke)).plot(ax=ax[2, 1], x=dname)
+    ax[0, 0].set_ylim([1027, 1019])
     plt.tight_layout()
