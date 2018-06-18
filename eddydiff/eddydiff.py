@@ -149,6 +149,9 @@ def estimate_clim_gradients(clim):
     clim['dSdia'].attrs['long_name'] = 'Diapycnal ∇S'
 
     clim['dTdz'] = dT.dz
+    clim['dTdz'].attrs['long_name'] = 'dT/dz'
+    clim['dSdz'] = dS.dz
+    clim['dSdz'].attrs['long_name'] = 'dS/dz'
 
 
 def to_density_space(da, rhonew=None):
