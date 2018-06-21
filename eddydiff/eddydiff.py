@@ -82,9 +82,15 @@ def wrap_gradient(input):
         dx, dy, dz = gradients in x,y,z
     '''
 
-    gradients = np.gradient(input, input['pres'], input['lat'], input['lon'])
-    dims = ['pres', 'lat', 'lon']
+    if input.ndim == 4:
+        axis = [1, 2, 3]
+    else:
+        axis = [0, 1, 2]
 
+    gradients = np.gradient(input, input['pres'], input['lat'], input['lon'],
+                            axis=axis)
+
+    dims = input.dims
     coords = input.coords
     grads = xr.Dataset()
     grads['dz'] = xr.DataArray(gradients[0], dims=dims, coords=coords)*-1
@@ -204,7 +210,10 @@ def to_density_space(da, rhonew=None):
 
         in_dens = xr.merge([in_dens, convert_variable(da[vv])])
 
-    if 'P' in da.coords:
+    if 'pres' in da:
+        in_dens = xr.merge([in_dens, convert_variable(da['pres'])])
+        in_dens = in_dens.rename({'pres': 'P'})
+    elif 'P' in da.coords:
         Pmat = xr.broadcast(da['P'], da['rho'])[0]
         in_dens = xr.merge([in_dens, convert_variable(Pmat)])
 
@@ -293,7 +302,7 @@ def xgradient(da, dim=None, **kwargs):
     return dda
 
 
-def fit_spline(x, y, k=3, ext='const', **kwargs):
+def fit_spline(x, y, k=3, ext='const', debug=False, **kwargs):
 
     # http://www.nehalemlabs.net/prototype/blog/2014/04/12/how-to-fix-scipys-interpolating-spline-default-behavior/
     def moving_average(series):
@@ -304,14 +313,26 @@ def fit_spline(x, y, k=3, ext='const', **kwargs):
 
     _, var = moving_average(y)
 
+    w = 1/np.sqrt(var)
+    # w[0:2] = w[0:2]/1.5
+    # w[-2:] = w[-2:]/1.5
+
+    # spline = sp.interpolate.make_interp_spline(x, y, bc_type='natural')
     spline = sp.interpolate.UnivariateSpline(x, y, k=k,
-                                             w=1/np.sqrt(var),
+                                             w=w,
                                              ext=ext,
                                              **kwargs)
+
     vals = spline(x)
 
     if isinstance(y, xr.DataArray):
         vals = xr.DataArray(vals, dims=y.dims, coords=y.coords)
+
+    if debug:
+        plt.figure()
+        plt.plot(x, y, 'o')
+        plt.plot(x, vals)
+        plt.legend(['raw', 'smoothed'])
 
     return spline, vals
 
@@ -423,39 +444,47 @@ def bin_avg_in_density(input, ρbins):
             .to_xarray())
 
 
-def plot_bar_Ke(Ke):
+def plot_bar_Ke(Ke, dTdz_log=True, cole=None):
+
+    if cole is None:
+        cole = read_cole()
 
     f, ax = plt.subplots(2, 3, sharey=True)
     f.set_size_inches(8, 6)
-    if 'name' in Ke:
+    try:
         f.suptitle(Ke.name, y=1.01)
+    except AttributeError:
+        pass
 
     ((Ke.KT)).plot.barh(x='rho', log=True,
                         ax=ax[0, 0], title='$K_T$')
-    ((Ke.dTdz)).plot.barh(x='rho', log=False,
-                          ax=ax[0, 1], title='$T_z, T^m_z$')
-    ((Ke.dTmdz).plot.barh(x='rho', log=False,
+    ((Ke.dTdz)).plot.barh(x='rho', log=dTdz_log,
+                          ax=ax[0, 1], title='$T_z (color), T^m_z (black)$')
+    ((Ke.dTmdz).plot.barh(x='rho', log=dTdz_log,
                           ax=ax[0, 1], edgecolor='black', color='none'))
 
-    ((Ke.KtTz)).plot.barh(x='rho', log=True,
-                          ax=ax[0, 2], title='$⟨K_T T_z⟩$')
+    ((Ke.KtTz*1025*4200)).plot.barh(x='rho', ax=ax[0, 2],
+                                    title='$ρ c_p ⟨K_T T_z⟩ = ⟨J_q⟩$')
 
     # ((Ke.dTmdz).plot.barh(x='rho', log=False,
     #                       ax=ax[1, 0], title='$T_z^m, T_z$'))
     # ((Ke.dTdz)).plot.barh(x='rho', log=False,
     #                       ax=ax[1, 0], color='none', edgecolor='black')
 
-    ((Ke.KtTz * Ke.dTmdz).plot.barh(x='rho', log=True,
-                                    ax=ax[1, 0],
-                                    title='$⟨K_T T_z⟩ T^m_z, χ/2$'))
+    (np.abs(Ke.KtTz * Ke.dTmdz).plot.barh(x='rho', log=True,
+                                          ax=ax[1, 0],
+                                          title='$|⟨K_T T_z⟩ T^m_z| (color), χ/2 (black)$'))
     ((Ke.chi/2).plot.barh(x='rho', log=True,
                           ax=ax[1, 0], color='none', edgecolor='black'))
 
     ((Ke.dTiso).plot.barh(x='rho', log=True,
                           ax=ax[1, 1],
-                          title='$dT_{iso}$'))
+                          title='$dT_{iso}$ (log scale)'))
 
-    Ke.Ke.plot.barh(x='rho', log=True, ax=ax[1, 2], title='$K_e$')
+    (Ke.Ke).plot.barh(x='rho', log=True, ax=ax[1, 2], title='$K_e$')
+    np.abs(Ke.Ke.where(Ke.Ke < 0)).plot.barh(x='rho', log=True, ax=ax[1, 2],
+                                             title='$K_e$',
+                                             edgecolor='black', color='none')
 
     plt.gca().invert_yaxis()
     plt.tight_layout()
@@ -487,12 +516,14 @@ def read_cole():
                             autoclose=True)
             .rename({'latitude': 'lat',
                      'longitude': 'lon',
-                     'density': 'sigma'})
+                     'density': 'sigma',
+                     'depth': 'pres'})
             .set_coords(['lat', 'lon', 'sigma']))
 
+    # cole['rho'] = sw.dens(cole)
     cole['diffusivity_first'] = (cole.diffusivity
-                                 .bfill(dim='depth')
-                                 .isel(depth=0))
+                                 .bfill(dim='pres')
+                                 .isel(pres=0))
 
     return cole
 
@@ -501,7 +532,7 @@ def get_region_from_transect(transect):
     return {'lon': slice(transect.lon.min(), transect.lon.max()),
             'lat': slice(transect.lat.min(), transect.lat.max()),
             'pres': slice(transect.pres.min(),
-                          np.max([100, transect.pres.max()]))}
+                          np.max([300, transect.pres.max()]))}
 
 
 def convert_mat_to_netcdf():
@@ -538,7 +569,7 @@ def convert_mat_to_netcdf():
                                          'theta': (['P', 'cast'], tr['theta']),
                                          'sigma': (['P', 'cast'], tr['sigma'])},
                                         coords=coords)])
-        transect['rho'] = xr.DataArray(sw.pden(transect['S'],
+        transect['rho'] = xr.DataArray(sw.dens(transect['S'],
                                                transect['T'],
                                                transect['pres']),
                                        dims=transect['T'].dims,
@@ -560,3 +591,146 @@ def convert_mat_to_netcdf():
 
         transect.to_netcdf(
             '../datasets/bob-ctd-chipod/transect_{0:d}.nc'.format(idx+1))
+
+
+def average_transect_1d(transect, nbins=10):
+    ''' Given transect, group by density bins and average in those bins. '''
+
+    # TODO: Keep or remove?
+    try:
+        if isinstance(transect, pd.DataFrame):
+            trdf = (transect.drop(['fspd', 'N2', 'theta', 'sigma'], axis=1))
+        else:
+            trdf = (transect.drop(['fspd', 'N2', 'theta', 'sigma'])
+                    .to_dataframe())
+    except ValueError:
+        trdf = transect.to_dataframe()
+
+    if 'KtTz' not in trdf:
+        trdf['KtTz'] = trdf['KT'] * trdf['dTdz']
+
+    trdf = (trdf.reset_index())
+
+    ρinds, ρbins = pd.qcut(trdf.rho, nbins, precision=1, retbins=True)
+
+    # means for transect
+    trmean = trdf.groupby(ρinds).mean()
+
+    return trmean, ρbins
+
+
+def average_clim(field, transect, ρbins):
+    region = get_region_from_transect(transect)
+
+    clim = field.sel(**region)
+    clim['Pmean'] = xr.broadcast(clim.pres, clim.Tmean)[0]
+    # climrho = clim.groupby_bins(clim.ρmean, ρbins).mean()
+
+    # dTdz_local is the pointwise estimate of dTdz that then
+    # gets averaged on ispycnals later.
+    # dTdz is the derivative of a mean T profile (averaged on isopycnals)
+    clim = clim.rename({'dTdz': 'dTdz_local'})
+
+    clim = clim.to_dataframe().reset_index()
+    climrho = clim.groupby(pd.cut(clim.ρmean, ρbins, precision=1)).mean()
+    # sp, _ = fit_spline(climrho.Pmean, climrho.Tmean)
+    # climrho['dTdz'] = -sp.derivative(1)(climrho.Pmean)
+    climrho['dTdz'] = np.gradient(climrho.Tmean, -climrho.Pmean)
+
+    # dTiso = clim.dTiso.sel(**region)
+    # clim.ρmean.plot.hist(alpha=0.5)
+    # transect.rho.plot.hist(alpha=0.5)
+
+    # climdf = clim.to_dataframe().reset_index()
+    # ρinds = pd.cut(climdf.ρmean, ρbins)
+    # climmean = climdf.groupby(ρinds).mean()
+    return climrho
+
+
+def estimate_Ke(trans, clim):
+    Ke = pd.DataFrame()
+
+    Ke['chi'] = trans.chi
+    Ke['KtTz'] = trans.KtTz
+    Ke['dTdz'] = trans.dTdz
+    Ke['dTmdz'] = clim.dTdz_local  # .where(clim.dTdz < trans.dTdz, trans.dTdz)
+    Ke['dTiso'] = clim.dTiso
+    Ke['KT'] = trans.KT
+    Ke['Ke'] = (Ke.chi/2 - np.abs(Ke.KtTz * Ke.dTmdz))/Ke.dTiso**2
+
+    return Ke
+
+
+def compare_means_clim_transect(trmean, clim):
+    f, ax = plt.subplots(1, 2, sharey=True)
+
+    ax[0].plot(trmean['T'], trmean['pres'])
+    ax[0].plot(clim['Tmean'], clim['Pmean'])
+    ax[0].set_ylabel('P')
+    ax[0].set_xlabel('T')
+    # ax[0].set_xaxis_top()
+    ax[0].invert_yaxis()
+
+    ax[1].plot(np.gradient(trmean['T'], -trmean['pres']), trmean['pres'])
+    ax[1].plot(np.gradient(clim['Tmean'], -clim['Pmean']), clim['Pmean'])
+    ax[1].set_xlabel('d$T^m$/dz')
+    # ax[1].set_xaxis_top()
+    ax[1].invert_yaxis()
+
+
+def process_transect_1d(transect, clim, name=None, nbins=10):
+    trmean, ρbins = average_transect_1d(transect, nbins=nbins)
+    gradmean = average_clim(clim, transect, ρbins)
+
+    Ke = estimate_Ke(trmean, gradmean)
+
+    if name is not None:
+        Ke.name = name
+
+    return Ke
+
+
+def transect_to_density_space(transect, nbins=12):
+
+    # 1. Bin average in density space.
+    _, bins = pd.cut(transect.rho.values.ravel(), nbins, retbins=True)
+
+    trmean = xr.Dataset()
+
+    # TODO: can I vectorize this?
+    for var in transect.data_vars:
+        for cc in transect.cast:
+            df = transect[var].sel(cast=cc).to_dataframe()
+            df['rho'] = transect['rho'].sel(cast=cc)
+            dfmean = (df.groupby(pd.cut(df.rho, bins))
+                      .mean()
+                      .to_xarray())
+            dfmean['rho'] = (bins[:-1]+bins[1:])/2
+            dfmean = (dfmean
+                      .drop(['cast', 'dist', 'lon', 'lat'])
+                      .expand_dims(['cast']))
+            dfmean['cast'] = np.asarray([cc])
+
+            trmean = xr.merge([trmean, dfmean])
+
+    trmean['lon'] = transect.lon.drop(['lat', 'lon', 'dist'])
+    trmean['lat'] = transect.lat.drop(['lat', 'lon', 'dist'])
+    trmean['dist'] = transect.dist.drop(['lat', 'lon', 'dist'])
+
+    trmean_rho = (trmean.set_coords(['dist', 'lon', 'lat'])
+                  .rename({'pres': 'P'})
+                  .transpose())
+
+    return trmean_rho
+
+
+def read_all_datasets():
+    cole = read_cole()
+
+    argograd = xr.open_dataset('../datasets/argo_annual_iso_gradients.nc',
+                               decode_times=False, autoclose=True).load()
+
+    eccograd = xr.open_dataset('../datasets/ecco_annual_iso_gradient.nc',
+                               decode_times=False, autoclose=True).load()
+
+    return eccograd, argograd, cole
