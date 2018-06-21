@@ -1,10 +1,16 @@
 #+TITLE: Eddy diffusivity from microstructure
 
-* Todo [0/1]
+* Todo [0/2]
 - [ ] neutral density calculation?
+- [ ] equations for mixed layer
 
+* Conventions
+1. Climatology name: ~clim.attrs.dataset~
+2. Transect name : ~transect.transect_name~
+3. Potential density referenced to 0: ~sigma0~
+4. in-situ density: ~rho~
 * Notes
-
-** Why ECCO instead of Argo?
-
-- deeper than 2000db!
+** Things I've learned
+1. *Smoothing* cubic splines are a little funky near the edge. Need a "natural" boundary condition that forces curvature to be 0 at edge. NG2016 seems to suffer from this too.
+2. ECCO RhoAnoma is /in-situ/ density anomaly! Argo has potential density.
+3. Why ECCO instead of Argo? - deeper than 2000db!
