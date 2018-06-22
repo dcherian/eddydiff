@@ -758,3 +758,51 @@ def read_all_datasets():
                                decode_times=False, autoclose=True).load()
 
     return eccograd, argograd, cole
+
+
+def process_ecco_gradients():
+
+    from dcpy.oceans import dataset_center_pacific
+
+    ρfile = '../datasets/ecco/interp_climatology/RHOAnoma.0001.nc'
+    Sfile = '../datasets/ecco/interp_climatology/SALT.0001.nc'
+    Tfile = '../datasets/ecco/interp_climatology/THETA.0001.nc'
+
+    chunks = {'time': 12}
+
+    T = xr.open_dataset(Tfile, autoclose=True,
+                        decode_times=False).pipe(format_ecco).chunk(chunks)
+    S = xr.open_dataset(Sfile, autoclose=True,
+                        decode_times=False).pipe(format_ecco).chunk(chunks)
+    ρ = xr.open_dataset(ρfile, autoclose=True,
+                        decode_times=False).pipe(format_ecco).chunk(chunks)
+
+    ecc = xr.merge([T, S, ρ]).rename({'THETA': 'Tmean', 'SALT': 'Smean'})
+
+    # roll so that pacific is in the middle and we have coverage of all 3 basins
+    monthly = dataset_center_pacific(ecc)
+
+    # in-situ density anomaly!!!
+    monthly['ρmean'] = monthly.RHOAnoma + 1029
+
+    annual = monthly.mean(dim='time')
+
+    estimate_clim_gradients(annual)
+
+    monthly.attrs['name'] = ("Annual mean fields and isopycnal, "
+                             + "diapycnal gradients from ECCO v4r3")
+    annual.attrs['dataset'] = 'ecco'
+    annual.to_netcdf('../datasets/ecco_annual_iso_gradient.nc', compute=True)
+
+    estimate_clim_gradients(monthly)
+    monthly.attrs['name'] = ("Monthly mean fields and isopycnal, "
+                             + "diapycnal gradients from ECCO v4r3")
+    monthly.attrs['dataset'] = 'ecco'
+
+    from dask.diagnostics import ProgressBar
+
+    delayed = monthly.to_netcdf('../datasets/ecco_monthly_iso_gradients.nc',
+                                compute=False)
+
+    with ProgressBar():
+        delayed.compute(num_workers=2)
