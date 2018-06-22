@@ -2,11 +2,12 @@ import numpy as np
 import scipy as sp
 import scipy.io
 import pandas as pd
+import dask.array as da
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-
 import xarray as xr
 
+import gsw
 import seawater as sw
 
 
@@ -72,8 +73,8 @@ def gradient(input):
     return grads
 
 
-def wrap_gradient(input):
-    ''' Given an input DataArray, calculate gradients in three directions
+def wrap_gradient(invar):
+    ''' Given an invar DataArray, calculate gradients in three directions
         and return it.
 
         Output
@@ -82,22 +83,45 @@ def wrap_gradient(input):
         dx, dy, dz = gradients in x,y,z
     '''
 
-    if input.ndim == 4:
+    if invar.ndim == 4:
         axis = [1, 2, 3]
+        nans = np.ones_like(invar.isel(time=1, pres=1)) * np.nan
+
     else:
         axis = [0, 1, 2]
+        nans = np.ones_like(invar.isel(pres=1)) * np.nan
 
-    gradients = np.gradient(input, input['pres'], input['lat'], input['lon'],
-                            axis=axis)
+    gradients = da.gradient(invar, axis=axis)
 
-    dims = input.dims
-    coords = input.coords
+    def make_diff(invar, name):
+        dlat = invar[name].diff(name, label='upper')
+        return xr.concat([xr.DataArray([dlat[0]],
+                                       dims=dlat.dims,
+                                       coords={name: [invar[name][0]]}),
+                          dlat], dim=name)
+
+    dims = invar.dims
+    coords = invar.coords
+
+    dlon = xr.DataArray(nans, dims=['lat', 'lon'],
+                        coords={'lat': invar.lat, 'lon': invar.lon},
+                        name='Δlon')
+    for ll, lat in enumerate(invar.lat):
+        dlon.values[ll, 1:] = gsw.distance(
+            lat=xr.broadcast(lat, invar.lon)[0].values,
+            lon=invar.lon.values, p=[0])
+    dlon[:, 0] = dlon[:, 1]
+
     grads = xr.Dataset()
-    grads['dz'] = xr.DataArray(gradients[0], dims=dims, coords=coords)*-1
-    grads['dy'] = xr.DataArray(gradients[1], dims=dims, coords=coords)/1e5
-    grads['dx'] = xr.DataArray(gradients[2], dims=dims, coords=coords)/1e5
+    grads['dz'] = (xr.DataArray(gradients[0], dims=dims, coords=coords)
+                   / make_diff(invar, 'pres')*-1)
+    # Δlat is roughly 111km everywhere
+    grads['dy'] = (xr.DataArray(gradients[1], dims=dims, coords=coords)
+                   / make_diff(invar, 'lat') / 1.11e5)
+    grads['dx'] = (xr.DataArray(gradients[2], dims=dims, coords=coords)
+                   / dlon)
 
-    grads['mag'] = np.sqrt(grads.dx**2 + grads.dy**2 + grads.dz**2)
+    grads['mag'] = da.sqrt(grads.dx**2 + grads.dy**2 + grads.dz**2)
 
     return grads
 
@@ -122,8 +146,8 @@ def project_vector(vector, proj, kind=None):
     along = dot / proj.mag * unit
     normal = vector - along
 
-    along['mag'] = np.sqrt(dot_product(along, along))
-    normal['mag'] = np.sqrt(dot_product(normal, normal))
+    along['mag'] = da.sqrt(dot_product(along, along))
+    normal['mag'] = da.sqrt(dot_product(normal, normal))
 
     if kind == 'along':
         return along

@@ -6,15 +6,6 @@
 
 # # Read CTD χpod data and convert to netCDF
 
-# In[ ]:
-
-
-import sys
-
-sys.path.append('../eddydiff/')
-import eddydiff as ed
-
-
 # In[131]:
 
 
@@ -67,7 +58,7 @@ p06
 
 # # Read transect + ancillary datasets
 
-# In[235]:
+# In[6]:
 
 
 sys.path.append('../eddydiff/')
@@ -85,7 +76,7 @@ p06
 
 # ## plots
 
-# In[236]:
+# In[2]:
 
 
 np.log10(p06.eps).plot(x='cast')
@@ -129,7 +120,7 @@ dcpy.oceans.TSplot(p06.S, p06['T'], p06.pres)
 p06rho = ed.transect_to_density_space(p06.sel(P=slice(0,2000)))
 
 
-# In[242]:
+# In[7]:
 
 
 eccoKe = ed.process_transect_1d(p06, eccograd, 'ECCO', nbins=18)
