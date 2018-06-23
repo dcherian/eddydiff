@@ -7,10 +7,24 @@
 * Conventions
 1. Climatology name: ~clim.attrs.dataset~
 2. Transect name : ~transect.transect_name~
-3. Potential density referenced to 0: ~sigma0~
-4. in-situ density: ~rho~
+3. Potential density referenced to 0: currently ~rho~, should be ~sigma_0~
+4. in-situ density: currently unused, should be ~rho~
+5. ~pres~ is local pressure (dbar), ~P~ is technically co-ordinate. Especially important for BoB xpod!
 * Notes
 ** Things I've learned
 1. *Smoothing* cubic splines are a little funky near the edge. Need a "natural" boundary condition that forces curvature to be 0 at edge. NG2016 seems to suffer from this too.
-2. ECCO RhoAnoma is /in-situ/ density anomaly! Argo has potential density.
+2. ECCO ~RhoAnoma~ is /in-situ/ density anomaly! Argo has potential density.
 3. Why ECCO instead of Argo? - deeper than 2000db!
+4. ~sw.dist~ needs lon=[-180, 180]!
+5. Coarse abyssal ocean resolution means that some density classes are not represented in ECCO.
+   - Do I interpolate to finer resolution?
+6. Choice of density variable / reference pressure is really important!
+   - contours change drastically at depth if referencing to the surface.
+   - *this means I average over a different set of observations!*
+   - with p06, doing σ_0 works OK. Looking at the WOCE sections, things aren't too different.
+   - Neutral density is clearly the way to go.
+7. Linear fits to ECCO T along ρ surfaces in the along-transect direction doesn't work. The field has too much curvature. Though could work OK near surface.
+
+** Todo [0/2]
+1. [ ] Select region before interpolating in ~read_all_datasets()~
+2. [ ] Do something about coarse ECCO resolution at depth
