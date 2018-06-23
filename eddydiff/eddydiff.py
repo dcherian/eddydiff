@@ -186,7 +186,7 @@ def estimate_clim_gradients(clim):
 
 def to_density_space(da, rhonew=None):
     ''' Converts a transect *Dataset* to density space
-        with density co-ordinate rhonew
+        with density co-ordinate rhonew *by interpolation*
 
         Inputs
         ======
@@ -308,17 +308,17 @@ def xgradient(da, dim=None, **kwargs):
     if dim is None:
         dda = xr.Dataset()
         for idx, gg in enumerate(grads):
-            if da.name is not None:
-                name = '∂'+da.name+'/∂'+da.dims[idx]
-            else:
-                name = '∂/∂'+da.dims[idx]
+            # if da.name is not None:
+            #     name = 'd'+da.name+'d'+da.dims[idx]
+            # else:
+            name = 'd'+da.dims[idx]
 
             dda[name] = xr.DataArray(gg, dims=da.dims, coords=da.coords)
     else:
-        if da.name is not None:
-            name = '∂'+da.name+'/∂'+da.dims[axis]
-        else:
-            name = '∂/∂'+da.dims[axis]
+        # if da.name is not None:
+        #     name = '∂'+da.name+'/∂'+da.dims[axis]
+        # else:
+        name = 'd'+da.dims[axis]
 
         dda = xr.DataArray(grads, dims=da.dims,
                            coords=da.coords, name=name)
@@ -468,10 +468,10 @@ def bin_avg_in_density(input, ρbins):
             .to_xarray())
 
 
-def plot_bar_Ke(Ke, dTdz_log=True, cole=None):
+def plot_bar_Ke(Ke, dTdz_log=True, Ke_log=True, cole=None):
 
-    if cole is None:
-        cole = read_cole()
+    # if cole is None:
+    #     cole = read_cole()
 
     f, ax = plt.subplots(2, 3, sharey=True)
     f.set_size_inches(8, 6)
@@ -505,12 +505,22 @@ def plot_bar_Ke(Ke, dTdz_log=True, cole=None):
                           ax=ax[1, 1],
                           title='$dT_{iso}$ (log scale)'))
 
-    (Ke.Ke).plot.barh(x='rho', log=True, ax=ax[1, 2], title='$K_e$')
-    np.abs(Ke.Ke.where(Ke.Ke < 0)).plot.barh(x='rho', log=True, ax=ax[1, 2],
+    (Ke.Ke.where(Ke.Ke > 0)
+     .plot.barh(x='rho', log=Ke_log, ax=ax[1, 2], title='$K_e$'))
+    np.abs(Ke.Ke.where(Ke.Ke < 0)).plot.barh(x='rho', log=Ke_log,
+                                             ax=ax[1, 2],
                                              title='$K_e$',
-                                             edgecolor='black', color='none')
+                                             edgeColor='black', color='none')
 
     plt.gca().invert_yaxis()
+
+    def fix_axes(aa):
+        aa.xaxis.tick_top()
+        aa.spines['top'].set_visible(True)
+        aa.spines['bottom'].set_visible(False)
+
+    # [fix_axes(aa) for aa in ax.flat]
+
     plt.tight_layout()
 
 
@@ -643,10 +653,11 @@ def average_transect_1d(transect, nbins=10):
     return trmean, ρbins
 
 
-def average_clim(field, transect, ρbins):
-    region = get_region_from_transect(transect)
+def average_clim(clim, transect, ρbins):
+    if 'lon' in clim.dims:
+        region = get_region_from_transect(transect)
+        clim = clim.sel(**region)
 
-    clim = field.sel(**region)
     clim['Pmean'] = xr.broadcast(clim.pres, clim.Tmean)[0]
     # climrho = clim.groupby_bins(clim.ρmean, ρbins).mean()
 
@@ -677,7 +688,7 @@ def estimate_Ke(trans, clim):
     Ke['chi'] = trans.chi
     Ke['KtTz'] = trans.KtTz
     Ke['dTdz'] = trans.dTdz
-    Ke['dTmdz'] = clim.dTdz_local  # .where(clim.dTdz < trans.dTdz, trans.dTdz)
+    Ke['dTmdz'] = clim.dTdz  # .where(clim.dTdz < trans.dTdz, trans.dTdz)
     Ke['dTiso'] = clim.dTiso
     Ke['KT'] = trans.KT
     Ke['Ke'] = (Ke.chi/2 - np.abs(Ke.KtTz * Ke.dTmdz))/Ke.dTiso**2
@@ -703,6 +714,10 @@ def compare_means_clim_transect(trmean, clim):
 
 
 def process_transect_1d(transect, clim, name=None, nbins=10):
+    if 'time' in clim.dims:
+        clim = clim.copy().sel(time=transect.time.dt.month.median(),
+                               method='nearest')
+
     trmean, ρbins = average_transect_1d(transect, nbins=nbins)
     gradmean = average_clim(clim, transect, ρbins)
 
@@ -748,16 +763,99 @@ def transect_to_density_space(transect, nbins=12):
     return trmean_rho
 
 
-def read_all_datasets():
+def bin_to_density_space(transect, bins=30):
+    ''' Attempt number 3. '''
+
+    if np.isscalar(bins):
+        _, bins = pd.qcut(transect.rho.values.ravel(), bins, retbins=True)
+    else:
+        bins = np.asarray(bins)
+
+    df = transect.to_dataframe().reset_index()
+
+    df['rho_bins'] = pd.cut(df.rho, bins,
+                            labels=np.round((bins[1:] + bins[:-1])/2, 3))
+
+    binned = df.groupby(['cast', 'rho_bins']).mean()
+
+    # this only works if the index is not pandas.IntervalIndex
+    trdens = binned.to_xarray()
+
+    extra_coords = ['dist', 'lon', 'lat']
+    for var in extra_coords:
+        if var in transect:
+            trdens[var] = transect.reset_coords()[var]
+            trdens = trdens.set_coords(var)
+
+    trdens = trdens.set_coords('P')
+
+    trdens = trdens.rename({'rho': 'mean_rho', 'rho_bins': 'rho'})
+
+    return trdens, bins
+
+
+def read_all_datasets(kind='annual', transect=None):
+    ''' Reads in
+        1. Cole et al estimate
+        2. ECCO gradients
+        3. Argo gradients
+
+        Inputs
+        ------
+        kind: 'annual' (default) or 'monthly'. If 'annual', averages in time.
+        transect: (optional), if provided will subset the data
+                  to particular transect.
+    '''
+
     cole = read_cole()
 
-    argograd = xr.open_dataset('../datasets/argo_annual_iso_gradients.nc',
-                               decode_times=False, autoclose=True).load()
+    name = 'monthly_gradients.nc'
+    argograd = xr.open_dataset('../datasets/argo_'+name,
+                               decode_times=False, autoclose=True)
 
-    eccograd = xr.open_dataset('../datasets/ecco_annual_iso_gradient.nc',
-                               decode_times=False, autoclose=True).load()
+    eccograd = xr.open_dataset('../datasets/ecco_'+name,
+                               decode_times=False, autoclose=True)
+
+    if kind == 'annual':
+        eccograd = eccograd.mean(dim='time')
+
+    argograd = argograd.mean(dim='time')
+
+    # if provided with transect, subset!
+    if transect is not None:
+        # TODO: selecting region before interp doesn't work too well
+        # region = get_region_from_transect(transect)
+
+        # pick months for the transect
+        month = np.unique(transect.time.dt.month.dropna(dim='cast'))
+
+        interp_args = dict(lon=transect.reset_coords().lon,
+                           lat=transect.reset_coords().lat,
+                           pres=transect.reset_coords().pres)
+
+        eccograd = (eccograd
+                    .sel(time=month)
+                    .mean(dim='time')
+                    .interp(**interp_args))
+
+        eccograd['sigma_0'] = eccograd['ρmean']
+        eccograd['sigma_0'].values = sw.pden(eccograd.Smean,
+                                             eccograd.Tmean,
+                                             xr.broadcast(eccograd.pres,
+                                                          eccograd.Tmean)[0],
+                                             0)
+
+        argograd = argograd.interp(**interp_args).dropna(dim='P', how='all')
+
+        cole = cole.interp(**interp_args).dropna(dim='P', how='all')
 
     return eccograd, argograd, cole
+
+
+def average_clim_1d(clim):
+    ''' Takes climatological fields with dimensions (cast, P),
+        estimates along-transect, vertical gradients. '''
+    a = 1
 
 
 def process_ecco_gradients():
@@ -806,3 +904,68 @@ def process_ecco_gradients():
 
     with ProgressBar():
         delayed.compute(num_workers=2)
+
+
+def plot_transect_var(x, y, data, fill=None, contour=None,
+                      bar2=None, xlim=None, xticks=None):
+
+    f, ax = plt.subplots(1, len(data[x]), sharex=True, sharey=True)
+
+    if ~isinstance(ax, list):
+        ax = list(ax)
+
+    f.set_size_inches(14, 7)
+    for idx, cc in enumerate(data[x]):
+        datavec = data.sel({x: cc})
+        if (np.all(np.isnan(datavec)) or
+                np.all(datavec[~np.isnan(datavec)] < 0)):
+            ax[idx].set_visible(False)
+            continue
+
+        ax[idx].barh(y=data[y], width=datavec,
+                     align='center', color='gray', height=0.3)
+
+        if bar2 is not None:
+            ax[idx].barh(y=data[y], width=bar2.sel({x: cc}),
+                         align='center', color='none',
+                         edgecolor='w', height=0.15)
+
+        ax[idx].set_xscale('log')
+        ax[idx].xaxis.tick_top()
+        ax[idx].spines['bottom'].set_visible(False)
+        ax[idx].spines['top'].set_visible(True)
+
+    ax[idx].set_yticks(data[y])
+
+    # create big background axis
+    from matplotlib.transforms import Bbox
+    pos1 = ax[0].get_position()
+    pos2 = ax[-1].get_position()
+    posnew = Bbox([pos1.p0, pos2.p1])
+    axback = plt.axes(posnew, zorder=-1, sharey=ax[0])
+
+    titlestr = 'bar: ' + data.name
+
+    # plot filled and contour variable if possible
+    if fill is not None:
+        fill.plot.contourf(ax=axback, levels=50,
+                           cmap=mpl.cm.RdBu_r, add_colorbar=False)
+        fill.plot.contour(ax=axback, levels=[0],
+                          colors='k', linestyles='dashed')
+        titlestr += ' | fill: ' + fill.name
+
+    if contour is not None:
+        contour.plot.contour(ax=axback, colors='k',
+                             levels=[10, 25, 50, 75, 100, 150, 200])
+        titlestr += ' | contour: ' + contour.name
+
+    axback.invert_yaxis()
+    if xticks is not None:
+        ax[-1].set_xticks(xticks)
+
+    if xlim is not None:
+        ax[-1].set_xlim(xlim)
+
+    # f.suptitle(titlestr + ' | navg = ' + str(transKe.attrs['navg']), y=0.95)
+
+    return ax, axback
