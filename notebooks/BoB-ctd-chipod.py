@@ -235,7 +235,8 @@ ed.plot_bar_Ke(transKe.isel(cast=20).to_dataframe())
 # In[471]:
 
 
-trdens['P'].plot.contour(levels=20)
+trdens = ed.to_density_space(transect1)
+Tdens = trdens['T']trdens['P'].plot.contour(levels=20)
 dcpy.ts.xfilter(trdens['P'], dim='cast', flen=10).plot.contour(
     colors='r', levels=20)
 Pdens_i.plot.contour(levels=20, colors='k')
@@ -526,74 +527,12 @@ ed.plot_transect_Ke(transKe)
 # In[452]:
 
 
-def plot_transect_var(x, y, data, fill=None, contour=None, bar2=None, xlim=None, xticks=None):
-
-    f, ax = plt.subplots(1, len(data[x]), sharex=True, sharey=True)
-
-    if ~isinstance(ax, list):
-        ax = list(ax)
-
-    f.set_size_inches(14, 7)
-    for idx, cc in enumerate(data[x]):
-        datavec = data.sel({x: cc})
-        if (np.all(np.isnan(datavec)) or
-                np.all(datavec[~np.isnan(datavec)] < 0)):
-            ax[idx].set_visible(False)
-            continue
-
-        ax[idx].barh(y=data[y], width=datavec,
-                     align='center', color='gray', height=0.3)
-
-        if bar2 is not None:
-            ax[idx].barh(y=data[y], width=bar2.sel({x: cc}),
-                         align='center', color='none', edgecolor='w', height=0.15)
-
-        ax[idx].set_xscale('log')
-        ax[idx].xaxis.tick_top()
-        ax[idx].spines['bottom'].set_visible(False)
-        ax[idx].spines['top'].set_visible(True)
-
-    ax[idx].set_yticks(data[y])
-
-    # create big background axis
-    from matplotlib.transforms import Bbox
-    pos1 = ax[0].get_position()
-    pos2 = ax[-1].get_position()
-    posnew = Bbox([pos1.p0, pos2.p1])
-    axback = plt.axes(posnew, zorder=-1, sharey=ax[0])
-
-    titlestr = 'bar: ' + data.name
-
-    # plot filled and contour variable if possible
-    if fill is not None:
-        fill.plot.contourf(ax=axback, levels=50,
-                           cmap=mpl.cm.RdBu_r, add_colorbar=False)
-        fill.plot.contour(ax=axback, levels=[0],
-                          colors='k', linestyles='dashed')
-        titlestr += ' | fill: ' + fill.name
-
-    if contour is not None:
-        contour.plot.contour(ax=axback, colors='k',
-                             levels=[10, 25, 50, 75, 100, 150, 200])
-        titlestr += ' | contour: ' + contour.name
-
-    axback.invert_yaxis()
-    if xticks is not None:
-        ax[-1].set_xticks(xticks)
-
-    if xlim is not None:
-        ax[-1].set_xlim(xlim)
-
-    f.suptitle(titlestr + ' | navg = ' + str(transKe.attrs['navg']), y=0.95)
-
-    return ax, axback
-
 
 transKe2 = calc_Ke(transKe, navg=None)
-ax, axback = plot_transect_var(x='cast', y='rho', data=transKe2.Ke,
+ax, axback = ed.plot_transect_var(x='cast', y='rho', data=transKe2.Ke,
                                fill=trmean_rho['dTiso'], contour=trmean_rho['P'],
                                xlim=[1, 1e4], xticks=[1e3])
-ax, axback = plot_transect_var(x='cast', y='rho', data=transKe2.chi/2, 
+ax, axback = ed.plot_transect_var(x='cast', y='rho', data=transKe2.chi/2, 
                                bar2=transKe2.KtTz * transKe2.dTmdz,
                                fill=trmean_rho['T'], contour=trmean_rho['P'])
 

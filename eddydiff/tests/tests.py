@@ -95,3 +95,9 @@ def test_project_vectors():
                                xr.ones_like(da.dx))
     xr.testing.assert_allclose(ed.project_vector(dx, dy, 'along').mag,
                                xr.zeros_like(da.dx))
+
+
+# def test_exchange():
+#     xr.testing.assert_equal(Tdens,
+#                             ed.exchange(exchange(Tdens, {'cast': 'dist'}),
+#                                         {'dist': 'cast'}))
