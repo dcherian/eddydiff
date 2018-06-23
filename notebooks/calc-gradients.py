@@ -9,30 +9,7 @@
 # In[5]:
 
 
-ρfile = '../datasets/ecco/interp_climatology/RHOAnoma.0001.nc'
-Sfile = '../datasets/ecco/interp_climatology/SALT.0001.nc'
-Tfile = '../datasets/ecco/interp_climatology/THETA.0001.nc'
-
-T = xr.open_dataset(Tfile, autoclose=True,
-                    decode_times=False).pipe(ed.format_ecco)
-S = xr.open_dataset(Sfile, autoclose=True,
-                    decode_times=False).pipe(ed.format_ecco)
-ρ = xr.open_dataset(ρfile, autoclose=True,
-                    decode_times=False).pipe(ed.format_ecco)
-
-ecc = xr.merge([T, S, ρ]).rename({'THETA': 'Tmean', 'SALT': 'Smean'})
-
-# roll so that pacific is in the middle and we have coverage of all 3 basins
-ecc = dcpy.oceans.dataset_center_pacific(ecc)
-
-annual = ecc.mean(dim='time')
-annual['ρmean'] = annual.RHOAnoma + 1029 # IN SITU DENSITY ANOMALY!!!!
-
-ed.estimate_clim_gradients(annual)
-
-annual.attrs['name'] = "Mean fields and isopycnal, diapycnal gradients from ECCO v4r3"
-annual.attrs['dataset'] = 'ecco'
-annual.to_netcdf('../datasets/ecco_annual_iso_gradient.nc', compute=True)
+annual = xr.open_dataset('../datasets/ecco_annual_gradients.nc')
 
 annual
 
@@ -69,14 +46,14 @@ ecc
 monthly = ecc
 monthly['ρmean'] = monthly.RHOAnoma + 1029
 
-ed.estimate_clim_gradients(monthly)
+7ed.estimate_clim_gradients(monthly)
 
 monthly.attrs['name'] = "Mean fields and isopycnal, diapycnal gradients from ECCO v4r3"
 monthly.attrs['dataset'] = 'ecco'
 
 from dask.diagnostics import ProgressBar
 
-delayed = monthly.to_netcdf('../datasets/ecco_iso_gradient.nc', compute=False)
+delayed = monthly.to_netcdf('../datasets/ecco_monthly_iso_gradients.nc', compute=False)
 
 with ProgressBar():
     results = delayed.compute(num_workers=2)
@@ -163,7 +140,7 @@ monthly.attrs['dataset'] = 'argo'
 
 from dask.diagnostics import ProgressBar
 
-delayed = monthly.to_netcdf('../datasets/argo_monthly_iso_gradient.nc', compute=False)
+delayed = monthly.to_netcdf('../datasets/argo_monthly_iso_gradients.nc', compute=False)
 
 with ProgressBar():
     results = delayed.compute(num_workers=2)

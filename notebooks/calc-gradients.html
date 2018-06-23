@@ -11793,30 +11793,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ρfile</span> <span class="o">=</span> <span class="s1">&#39;../datasets/ecco/interp_climatology/RHOAnoma.0001.nc&#39;</span>
-<span class="n">Sfile</span> <span class="o">=</span> <span class="s1">&#39;../datasets/ecco/interp_climatology/SALT.0001.nc&#39;</span>
-<span class="n">Tfile</span> <span class="o">=</span> <span class="s1">&#39;../datasets/ecco/interp_climatology/THETA.0001.nc&#39;</span>
-
-<span class="n">T</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">Tfile</span><span class="p">,</span> <span class="n">autoclose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                    <span class="n">decode_times</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">format_ecco</span><span class="p">)</span>
-<span class="n">S</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">Sfile</span><span class="p">,</span> <span class="n">autoclose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                    <span class="n">decode_times</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">format_ecco</span><span class="p">)</span>
-<span class="n">ρ</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">ρfile</span><span class="p">,</span> <span class="n">autoclose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                    <span class="n">decode_times</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">format_ecco</span><span class="p">)</span>
-
-<span class="n">ecc</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">merge</span><span class="p">([</span><span class="n">T</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">ρ</span><span class="p">])</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s1">&#39;THETA&#39;</span><span class="p">:</span> <span class="s1">&#39;Tmean&#39;</span><span class="p">,</span> <span class="s1">&#39;SALT&#39;</span><span class="p">:</span> <span class="s1">&#39;Smean&#39;</span><span class="p">})</span>
-
-<span class="c1"># roll so that pacific is in the middle and we have coverage of all 3 basins</span>
-<span class="n">ecc</span> <span class="o">=</span> <span class="n">dcpy</span><span class="o">.</span><span class="n">oceans</span><span class="o">.</span><span class="n">dataset_center_pacific</span><span class="p">(</span><span class="n">ecc</span><span class="p">)</span>
-
-<span class="n">annual</span> <span class="o">=</span> <span class="n">ecc</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
-<span class="n">annual</span><span class="p">[</span><span class="s1">&#39;ρmean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">annual</span><span class="o">.</span><span class="n">RHOAnoma</span> <span class="o">+</span> <span class="mi">1029</span> <span class="c1"># IN SITU DENSITY ANOMALY!!!!</span>
-
-<span class="n">ed</span><span class="o">.</span><span class="n">estimate_clim_gradients</span><span class="p">(</span><span class="n">annual</span><span class="p">)</span>
-
-<span class="n">annual</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Mean fields and isopycnal, diapycnal gradients from ECCO v4r3&quot;</span>
-<span class="n">annual</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;ecco&#39;</span>
-<span class="n">annual</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s1">&#39;../datasets/ecco_annual_iso_gradient.nc&#39;</span><span class="p">,</span> <span class="n">compute</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">annual</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;../datasets/ecco_annual_gradients.nc&#39;</span><span class="p">)</span>
 
 <span class="n">annual</span>
 </pre></div>
@@ -11844,16 +11821,16 @@ Coordinates:
   * lat       (lat) float64 -89.75 -89.25 -88.75 -88.25 -87.75 -87.25 -86.75 ...
   * lon       (lon) float64 20.25 20.75 21.25 21.75 22.25 22.75 23.25 23.75 ...
 Data variables:
-    Tmean     (pres, lat, lon) float64 nan nan nan nan nan nan nan nan nan ...
-    Smean     (pres, lat, lon) float64 nan nan nan nan nan nan nan nan nan ...
-    RHOAnoma  (pres, lat, lon) float64 nan nan nan nan nan nan nan nan nan ...
-    ρmean     (pres, lat, lon) float64 nan nan nan nan nan nan nan nan nan ...
-    dTiso     (pres, lat, lon) float64 dask.array&lt;shape=(50, 360, 720), chunksize=(50, 360, 720)&gt;
-    dTdia     (pres, lat, lon) float64 dask.array&lt;shape=(50, 360, 720), chunksize=(50, 360, 720)&gt;
-    dSiso     (pres, lat, lon) float64 dask.array&lt;shape=(50, 360, 720), chunksize=(50, 360, 720)&gt;
-    dSdia     (pres, lat, lon) float64 dask.array&lt;shape=(50, 360, 720), chunksize=(50, 360, 720)&gt;
-    dTdz      (pres, lat, lon) float64 dask.array&lt;shape=(50, 360, 720), chunksize=(50, 360, 720)&gt;
-    dSdz      (pres, lat, lon) float64 dask.array&lt;shape=(50, 360, 720), chunksize=(50, 360, 720)&gt;
+    Tmean     (pres, lat, lon) float64 ...
+    Smean     (pres, lat, lon) float64 ...
+    RHOAnoma  (pres, lat, lon) float64 ...
+    ρmean     (pres, lat, lon) float64 ...
+    dTiso     (pres, lat, lon) float64 ...
+    dTdia     (pres, lat, lon) float64 ...
+    dSiso     (pres, lat, lon) float64 ...
+    dSdia     (pres, lat, lon) float64 ...
+    dTdz      (pres, lat, lon) float64 ...
+    dSdz      (pres, lat, lon) float64 ...
 Attributes:
     name:     Mean fields and isopycnal, diapycnal gradients from ECCO v4r3
     dataset:  ecco</pre>
@@ -11943,14 +11920,14 @@ Data variables:
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">monthly</span> <span class="o">=</span> <span class="n">ecc</span>
 <span class="n">monthly</span><span class="p">[</span><span class="s1">&#39;ρmean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">monthly</span><span class="o">.</span><span class="n">RHOAnoma</span> <span class="o">+</span> <span class="mi">1029</span>
 
-<span class="n">ed</span><span class="o">.</span><span class="n">estimate_clim_gradients</span><span class="p">(</span><span class="n">monthly</span><span class="p">)</span>
+<span class="mi">7</span><span class="n">ed</span><span class="o">.</span><span class="n">estimate_clim_gradients</span><span class="p">(</span><span class="n">monthly</span><span class="p">)</span>
 
 <span class="n">monthly</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Mean fields and isopycnal, diapycnal gradients from ECCO v4r3&quot;</span>
 <span class="n">monthly</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;ecco&#39;</span>
 
 <span class="kn">from</span> <span class="nn">dask.diagnostics</span> <span class="k">import</span> <span class="n">ProgressBar</span>
 
-<span class="n">delayed</span> <span class="o">=</span> <span class="n">monthly</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s1">&#39;../datasets/ecco_iso_gradient.nc&#39;</span><span class="p">,</span> <span class="n">compute</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">delayed</span> <span class="o">=</span> <span class="n">monthly</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s1">&#39;../datasets/ecco_monthly_iso_gradients.nc&#39;</span><span class="p">,</span> <span class="n">compute</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="k">with</span> <span class="n">ProgressBar</span><span class="p">():</span>
     <span class="n">results</span> <span class="o">=</span> <span class="n">delayed</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">num_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
@@ -11972,7 +11949,7 @@ Data variables:
 
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>[########################################] | 100% Completed |  1min  4.9s
+<pre>[########################################] | 100% Completed |  1min  4.0s
 [########################################] | 100% Completed |  0.1s
 </pre>
 </div>
@@ -12628,7 +12605,7 @@ Attributes:
 
 <span class="kn">from</span> <span class="nn">dask.diagnostics</span> <span class="k">import</span> <span class="n">ProgressBar</span>
 
-<span class="n">delayed</span> <span class="o">=</span> <span class="n">monthly</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s1">&#39;../datasets/argo_monthly_iso_gradient.nc&#39;</span><span class="p">,</span> <span class="n">compute</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">delayed</span> <span class="o">=</span> <span class="n">monthly</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s1">&#39;../datasets/argo_monthly_iso_gradients.nc&#39;</span><span class="p">,</span> <span class="n">compute</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="k">with</span> <span class="n">ProgressBar</span><span class="p">():</span>
     <span class="n">results</span> <span class="o">=</span> <span class="n">delayed</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">num_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
