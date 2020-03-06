@@ -839,16 +839,12 @@ def read_all_datasets(kind="annual", transect=None):
 
     cole = read_cole()
 
-    aber = xr.open_dataset("../datasets/diffusivity_AM2013.nc", autoclose=True)
+    aber = xr.open_dataset("../datasets/diffusivity_AM2013.nc")
 
     name = "monthly_gradients.nc"
-    argograd = xr.open_dataset(
-        "../datasets/argo_" + name, decode_times=False, autoclose=True
-    )
+    argograd = xr.open_dataset("../datasets/argo_" + name, decode_times=False)
 
-    eccograd = xr.open_dataset(
-        "../datasets/ecco_" + name, decode_times=False, autoclose=True
-    )
+    eccograd = xr.open_dataset("../datasets/ecco_" + name, decode_times=False)
 
     if kind == "annual":
         eccograd = eccograd.mean(dim="time")
@@ -905,21 +901,9 @@ def process_ecco_gradients():
 
     chunks = {"time": 12}
 
-    T = (
-        xr.open_dataset(Tfile, autoclose=True, decode_times=False)
-        .pipe(format_ecco)
-        .chunk(chunks)
-    )
-    S = (
-        xr.open_dataset(Sfile, autoclose=True, decode_times=False)
-        .pipe(format_ecco)
-        .chunk(chunks)
-    )
-    ρ = (
-        xr.open_dataset(ρfile, autoclose=True, decode_times=False)
-        .pipe(format_ecco)
-        .chunk(chunks)
-    )
+    T = xr.open_dataset(Tfile, decode_times=False).pipe(format_ecco).chunk(chunks)
+    S = xr.open_dataset(Sfile, decode_times=False).pipe(format_ecco).chunk(chunks)
+    ρ = xr.open_dataset(ρfile, decode_times=False).pipe(format_ecco).chunk(chunks)
 
     ecc = xr.merge([T, S, ρ]).rename({"THETA": "Tmean", "SALT": "Smean"})
 
