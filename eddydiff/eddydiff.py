@@ -575,7 +575,6 @@ def read_cole():
     cole = (
         xr.open_dataset(
             "../datasets/argo-diffusivity/" + "ArgoTS_eddydiffusivity_20052015_1deg.nc",
-            autoclose=True,
         )
         .rename(
             {"latitude": "lat", "longitude": "lon", "density": "sigma", "depth": "pres"}
@@ -918,14 +917,14 @@ def process_ecco_gradients():
     estimate_clim_gradients(annual)
 
     monthly.attrs["name"] = (
-        "Annual mean fields and isopycnal, " + "diapycnal gradients from ECCO v4r3"
+        "Annual mean fields and isopycnal, diapycnal gradients from ECCO v4r3"
     )
     annual.attrs["dataset"] = "ecco"
     annual.to_netcdf("../datasets/ecco_annual_iso_gradient.nc", compute=True)
 
     estimate_clim_gradients(monthly)
     monthly.attrs["name"] = (
-        "Monthly mean fields and isopycnal, " + "diapycnal gradients from ECCO v4r3"
+        "Monthly mean fields and isopycnal, diapycnal gradients from ECCO v4r3"
     )
     monthly.attrs["dataset"] = "ecco"
 
