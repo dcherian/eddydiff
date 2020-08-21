@@ -1,0 +1,13 @@
+- file: intro
+
+- part: Moored χpod analysis
+  chapters:
+  - file: tao
+- part: CTD χpod analysis
+  chapters:
+  - file: BoB-ctd-chipod
+  - file: P06
+- part: Ancillary analysis
+  chapters:
+  - file: compare-Ke-estimates
+  - file: calc-gradients
