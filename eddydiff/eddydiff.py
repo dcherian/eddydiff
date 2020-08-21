@@ -1,8 +1,8 @@
+import dcpy
 import numpy as np
 import scipy as sp
 import scipy.io
 import pandas as pd
-import dask.array as da
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import xarray as xr
@@ -27,19 +27,42 @@ def exchange(input, kwargs):
     return output
 
 
+def format_ecco2(invar):
+    mapper = {720: "lon", 360: "lat", 50: "pres", 12: "dayofyear"}
+    renamer = {k: mapper[v] for k, v in invar.sizes.items()}
+    output = invar.copy(deep=True).drop(["lon", "lat", "dep", "tim"], errors="ignore")
+    for name, var in output.items():
+        output[name] = var.rename(renamer)
+
+    output = output.drop_dims(renamer.keys(), errors="ignore")
+    lon = invar.lon[0, :].values
+    lon[lon < 0] += 360
+    output["lat"] = invar.lat[:, 0].values
+    output["pres"] = invar.dep.values
+
+    output["lon"] = lon
+    return output.sortby("lon")
+
+
 def format_ecco(input):
 
-    output = (
-        input.rename({"dep": "z"})
-        .drop(["lon", "lat"])
-        .rename({"i1": "time", "i2": "pres"})
-    )
+    dims = input.dims
+
+    if input.ndim == 4:
+        output = input.rename({dims[0]: "time"})
+    else:
+        output = input.copy(deep=True)
+
+    zname = input.dep.dims[0]
+    output = output.rename({"dep": "z"}).drop(["lon", "lat"]).rename({zname: "pres"})
     output["pres"] = output["z"]
     output["i4"] = input["lon"].values[0, :].squeeze()
     output["i3"] = input["lat"].values[:, 0].squeeze()
 
     output = (
-        output.rename({"i4": "lon", "i3": "lat"}).drop(["z"]).set_coords(["lon", "lat"])
+        output.rename({"tim": "dayofyear", "i4": "lon", "i3": "lat"})
+        .drop(["z"])
+        .set_coords(["lon", "lat"])
     )
 
     return output
@@ -85,15 +108,18 @@ def wrap_gradient(invar):
         dx, dy, dz = gradients in x,y,z
     """
 
-    if invar.ndim == 4:
-        axis = [1, 2, 3]
-        nans = np.ones_like(invar.isel(time=1, pres=1)) * np.nan
+    nans = np.full((invar.sizes["lat"], invar.sizes["lon"]), np.nan)
+    # if invar.ndim == 4:
+    #     axis = [1, 2, 3]
+    #     nans = np.full_like(invar.isel(time=1, pres=1), np.nan)
 
-    else:
-        axis = [0, 1, 2]
-        nans = np.ones_like(invar.isel(pres=1)) * np.nan
+    # else:
+    #     axis = [0, 1, 2]
+    #     nans = np.full_like(invar.isel(pres=1), np.nan)
 
-    gradients = da.gradient(invar, axis=axis)
+    gradients = np.gradient(
+        invar.data, axis=[invar.get_axis_num(dim) for dim in ["pres", "lat", "lon"]]
+    )
 
     def make_diff(invar, name):
         dlat = invar[name].diff(name, label="upper")
@@ -136,7 +162,7 @@ def wrap_gradient(invar):
     )
     grads["dx"] = xr.DataArray(gradients[2], dims=dims, coords=coords) / dlon
 
-    grads["mag"] = da.sqrt(grads.dx ** 2 + grads.dy ** 2 + grads.dz ** 2)
+    grads["mag"] = np.sqrt(grads.dx ** 2 + grads.dy ** 2 + grads.dz ** 2)
 
     return grads
 
@@ -161,8 +187,8 @@ def project_vector(vector, proj, kind=None):
     along = dot / proj.mag * unit
     normal = vector - along
 
-    along["mag"] = da.sqrt(dot_product(along, along))
-    normal["mag"] = da.sqrt(dot_product(normal, normal))
+    along["mag"] = np.sqrt(dot_product(along, along))
+    normal["mag"] = np.sqrt(dot_product(normal, normal))
 
     if kind == "along":
         return along
@@ -353,16 +379,21 @@ def fit_spline(x, y, k=3, ext="const", debug=False, **kwargs):
         var = sp.ndimage.convolve1d(np.power(series - average, 2), b / b.sum())
         return average, var
 
-    _, var = moving_average(y)
+    average, var = moving_average(y)
 
     w = 1 / np.sqrt(var)
+
+    mask = ~np.isnan(y)
     # w[0:2] = w[0:2]/1.5
     # w[-2:] = w[-2:]/1.5
 
     # spline = sp.interpolate.make_interp_spline(x, y, bc_type='natural')
-    spline = sp.interpolate.UnivariateSpline(x, y, k=k, w=w, ext=ext, **kwargs)
+    spline = sp.interpolate.UnivariateSpline(
+        x[mask], y[mask], k=k, w=w[mask], ext=ext, **kwargs
+    )
 
-    vals = spline(x)
+    vals = np.full_like(x, np.nan)
+    vals[mask] = spline(x[mask])
 
     if isinstance(y, xr.DataArray):
         vals = xr.DataArray(vals, dims=y.dims, coords=y.coords)
@@ -462,15 +493,13 @@ def calc_iso_dia_gradients(field, pres, debug=False):
     return iso, dia
 
 
-def bin_avg_in_density(input, ρbins):
+def bin_avg_in_density(input, ρbins, dname="cast"):
     """
         Takes input dataframe for transect, bins each profile by density
         and averages. Returns average data as function of transect distance,
         mean density in bin.
 
     """
-
-    dname = "cast"
 
     return (
         input.groupby([dname, pd.cut(input.rho, ρbins)])
@@ -479,8 +508,9 @@ def bin_avg_in_density(input, ρbins):
         .reset_index()
         .drop("rho", axis=1)
         .rename({"mean_rho": "rho"}, axis=1)
+        .dropna(how="any")
         .set_index([dname, "rho"])
-        .to_xarray()
+        .to_xarray(sparse=True)
     )
 
 
@@ -805,7 +835,11 @@ def bin_to_density_space(transect, bins=30):
         df.rho, bins, labels=np.round((bins[1:] + bins[:-1]) / 2, 3)
     )
 
-    binned = df.groupby(["cast", "rho_bins"]).mean()
+    if "cast" in transect.dims:
+        dim = "cast"
+    else:
+        dim = "time"
+    binned = df.groupby([dim, "rho_bins"]).mean()
 
     # this only works if the index is not pandas.IntervalIndex
     trdens = binned.to_xarray()
@@ -816,9 +850,12 @@ def bin_to_density_space(transect, bins=30):
             trdens[var] = transect.reset_coords()[var]
             trdens = trdens.set_coords(var)
 
-    trdens = trdens.set_coords("P")
+    if "P" in trdens:
+        trdens = trdens.set_coords("P")
 
     trdens = trdens.rename({"rho": "mean_rho", "rho_bins": "rho"})
+    trdens["rho"] = trdens.rho.astype(np.float32)
+    trdens["rho"].attrs["positive"] = "down"
 
     return trdens, bins
 
@@ -840,15 +877,17 @@ def read_all_datasets(kind="annual", transect=None):
 
     aber = xr.open_dataset("../datasets/diffusivity_AM2013.nc")
 
-    name = "monthly_gradients.nc"
-    argograd = xr.open_dataset("../datasets/argo_" + name, decode_times=False)
+    name = "monthly_iso_gradients.zarr"
+    argograd = xr.open_zarr("../datasets/argo_" + name, decode_times=False)
+    # argograd.time.attrs["calendar"] = "360_day"
+    # argograd = xr.decode_cf(argograd)
+    # argograd = argograd.assign_coords(time=argograd.indexes["time"].to_datetimeindex())
 
-    eccograd = xr.open_dataset("../datasets/ecco_" + name, decode_times=False)
+    eccograd = xr.open_zarr("../datasets/ecco_" + name, decode_times=False)
 
     if kind == "annual":
         eccograd = eccograd.mean(dim="time")
-
-    argograd = argograd.mean(dim="time")
+        argograd = argograd.mean(dim="time")
 
     # if provided with transect, subset!
     if transect is not None:
@@ -864,7 +903,7 @@ def read_all_datasets(kind="annual", transect=None):
             pres=transect.reset_coords().pres,
         )
 
-        eccograd = eccograd.sel(time=month).mean(dim="time").interp(**interp_args)
+        eccograd = eccograd.sel(time=month).mean("time").compute().interp(**interp_args)
 
         eccograd["sigma_0"] = eccograd["ρmean"]
         eccograd["sigma_0"].values = sw.pden(
@@ -874,12 +913,12 @@ def read_all_datasets(kind="annual", transect=None):
             0,
         )
 
-        argograd = argograd.interp(**interp_args).dropna(dim="P", how="all")
+        argograd = argograd.compute().interp(**interp_args).dropna(dim="P", how="all")
 
-        cole = cole.interp(**interp_args).dropna(dim="P", how="all")
+        cole = cole.compute().interp(**interp_args).dropna(dim="P", how="all")
 
         interp_args.pop("pres")
-        aber = aber.interp(**interp_args)
+        aber = aber.compute().interp(**interp_args)
 
     return eccograd, argograd, cole, aber
 
@@ -916,16 +955,16 @@ def process_ecco_gradients():
 
     estimate_clim_gradients(annual)
 
-    monthly.attrs["name"] = (
-        "Annual mean fields and isopycnal, diapycnal gradients from ECCO v4r3"
-    )
+    monthly.attrs[
+        "name"
+    ] = "Annual mean fields and isopycnal, diapycnal gradients from ECCO v4r3"
     annual.attrs["dataset"] = "ecco"
     annual.to_netcdf("../datasets/ecco_annual_iso_gradient.nc", compute=True)
 
     estimate_clim_gradients(monthly)
-    monthly.attrs["name"] = (
-        "Monthly mean fields and isopycnal, diapycnal gradients from ECCO v4r3"
-    )
+    monthly.attrs[
+        "name"
+    ] = "Monthly mean fields and isopycnal, diapycnal gradients from ECCO v4r3"
     monthly.attrs["dataset"] = "ecco"
 
     from dask.diagnostics import ProgressBar
@@ -1005,3 +1044,20 @@ def plot_transect_var(
     # f.suptitle(titlestr + ' | navg = ' + str(transKe.attrs['navg']), y=0.95)
 
     return ax, axback
+
+
+def regrid_to_isopycnals(clim, bins):
+    """
+    Regrids climatologies to provided isopycnal bins
+    """
+
+    from .regrid import remap_full
+
+    isoT = remap_full(
+        clim[["Tmean", "pres_bounds"]],
+        clim.pden,
+        xr.DataArray(bins, dims="target"),
+        dim="pres",
+        target_kind="edges",
+    )
+    return isoT

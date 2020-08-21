@@ -4,13 +4,113 @@
 - [ ] neutral density calculation?
 - [ ] equations for mixed layer
 
+eddydiff:
+- [X] calculate sigma_0 and rho for Argo/ECCO
+- [X] linear fit to ρ in bins to get dTiso
+  - too low!
+- [ ] do I choose bins from ECCO rho instead of transect rho?
+- [ ] dTdz by fitting T vs P in isopycnal bin?
+- [ ] make complicated plot:
+  - [ ] given bins, show TS, Trms, Ke
+  - [ ] compare mean T,S, ρ profile from transect and climatology?
+- [ ] Kt for P06 is too high! Tell Jonathan
+  - OK results if I filter out high values
+- [ ] Do hann smoother for mean field. I think the spline screws up near the edges
+  - I need a "natural interpolating B-spline". scipy doesn't seem to have this.
+  - NG2016 seems to have this problem.
+
+- [ ] figure out resolution : GO-SHIP spacing + ECCO (1°)
+
+- [ ] compare transect mean field to ECCO/Argo means
+
+- [ ] argo monthly gradients - need to average properly!
+
+- [ ] use MIMOC
+- [ ] properly calculate gradients from mean fields.
+  - [ ] PCHIP?
+  - [ ] what are people doing for vertical smoothing?
+- [X] maybe the strong seasonal cycle means that the annual mean is useless?
+  - no, that doesn't help much either
+
+- [-] Do bob ctd chipod [4/5]
+  - [ ] Why is dTm/dz >> dT/dz
+  - [X] Read in emily's data + convert to xarray
+  - [X] Average turbulence data as needed
+  - [X] Determine sample points for gradients
+  - [X] sign error in dTdz?
+
+* Datasets
+
+- [X] Cole et al.
+- [X] Gnanadesikan
+- [X] Abernathey
+- [ ] Roach: https://github.com/croachutas/Isopycnal_Diffusivity
+
 * Conventions
 1. Climatology name: ~clim.attrs.dataset~
 2. Transect name : ~transect.transect_name~
 3. Potential density referenced to 0: currently ~rho~, should be ~sigma_0~
 4. in-situ density: currently unused, should be ~rho~
 5. ~pres~ is local pressure (dbar), ~P~ is technically co-ordinate. Especially important for BoB xpod!
+
+* Isopycnal gradient methodologies
+
+** cite:NaveiraGarabato2016
+
+1. ε, χ are averaged in neutral density bins fo 0.08 kg/m³
+2. The CTD measurements of θ for that section repeat are bin averaged in the same density intervals, and a cubic spline is fitted to the binned θ values on each isoneutral surface
+3. All isoneutral and dianeutral gradients are computed using centered differencing in along-section distance–neutral density space, except for the northernmost and southernmost stations in each section occupation and for density bins adjacent to bins with absent data, for which forward or backward differencing is used.
+4. After mapping the θ observations along all sections to a Y‐gn grid, we calculate the θ_m distribution along each transect location by fitting a cubic spline to all the Y‐θ data pairs sampled on each neutral surface. The choice of a cubic spline in this definition is motivated by the continuity of both the curve and its first derivative, which is implicated in the calculation of L_mix (see (3)).
+
+* Paper ideas
+- [ ] 0, 140 and thinking about long timescales
+- [ ] CTD χpods : large-scale patterns : global section maps + correlations
+  - maps of K_T, K_H
+- [ ] ACC effort
+- [ ] Are K_T and K_H from Argo self-consistent?
+- [ ] finestructure / model / data : scott / sylvia / whalen / CPT
+
+* Meetings
+** emily 2019-12-09
+- [-] eddy diff
+  - [X] year 1 funds available
+  - [X] I have 1.7FTE -> 1.2FTE
+  - [X] subaward status
+  - [ ] how to proceed
+    - emily
+      - [ ] checks data quality of KT
+      - [ ] get CTD-χpod data status from jonathan
+    - [ ] TODO think about χpod data and do time series stuff
+      - [ ] do 0-140
+
+  - Paper ideas; target: 1 paper by December: CTD χpod stuff?
+    - [ ] 0, 140 and thinking about long timescales
+    - [ ] CTD χpods : large-scale patterns : global section maps + correlations
+      - maps of KT, KH
+    - [ ] finestructure / model / data
+    - [ ]  ACC effort
+    - [ ] Are K_T and K_H from Argo self-consistent?
+    - [ ] model-data comparison with scott + eddy CPT
+
+- [ ] promotion -> proposals
+  - [ ] eq pac chipods
+  - [ ] indian ocean chipods
+
+- Indian Ocean review paper
+  - [X] need to fix BoB section
+  - [X] χpod summary image
+
 * Notes
+** MOM6 lecture notes
+1. Redi (1982)  - rotate diffusion operator to be along isopycnals
+2. Cox (1987) - redi improves things but need horizontal diffusion to get diapycnal fluxes -> fixed by gent mcwilliams
+3. griffies 1998 - uses triads (?)
+4. groeskamp et al 2019 - emphasize inaccuracy of calculating slopes locally
+5. Rotation has issues:
+   1. Bleckers et al 1998 cannot guarantee positive definite -> generate local extrema
+   2. Griffies 1998 numerical instability
+   3. slopes need to be tapered and limited for numerical reasons
+6. new epineutral operator appropriate for adiabatic interior ocean, preserves extrema, no need for regularization or tapering
 ** Things I've learned
 1. *Smoothing* cubic splines are a little funky near the edge. Need a "natural" boundary condition that forces curvature to be 0 at edge. NG2016 seems to suffer from this too.
 2. ECCO ~RhoAnoma~ is /in-situ/ density anomaly! Argo has potential density.
@@ -28,3 +128,81 @@
 ** Todo [0/2]
 1. [ ] Select region before interpolating in ~read_all_datasets()~
 2. [ ] Do something about coarse ECCO resolution at depth
+
+* Annual Reports
+
+** 2020
+*** Emily email
+
+I  think we  should start  with an email to Nadya today.   Let her know
+ a) its  the first the  you have heard this request, and that
+ b) it may be  related to the delayed start in October associated with  your transition. Also ask if there  is a website  or template available for its  format.
+ c)  (Let her know we weren’t expecting a second increment until the fall.)
+
+More generally being new  to NASA (I am too apart from Kerstin’s NESSF), ask if annual reports are always due at this time of year or  if the timeline  varies by grant/year.  NASA  may be like ONR— everything is due  at once.
+
+Let her know that it will be a scramble to put something together before  the deadline, but that we can try our best. (I am  camping  starting Sunday.)
+
+Let’s chat about a  collection of figures that could  go into the report, likely relying on  the proposal. How much have you started spending on the grant? I don’t think that I have spent much of anything, possibly just started. I had to put in a 1 year extension with UCAR recently, so this may be a failure of your  grants department to pass along correspondence  from NASA. Give Nadya this out in the email.
+*** Nadya email
+Hi Nadya,
+
+We were very surprised to receive this email today.
+
+Somehow, neither I (as PI) or UCAR's AOR was notified of a deadline for the report.
+A complication is that I moved from OSU to UCAR and we ended up resubmitting the proposal through NCAR in April and the money arrived at NCAR at the end of October.
+So we were not expecting a second increment until later this fall.
+
+I will work on this ASAP and will email you before July 1.
+We are just ramping up work on the project and have been primarily focusing on data QC and updated analysis procedures.
+
+Can you confirm that the template here (https://answers.nssc.nasa.gov/app/answers/detail/a_id/6293) is current and is the expected format for this report?
+
+Thanks,
+
+Deepak
+
+*** Actual report
+*Title of the report*: Relating SSHA-derived Eddy Diffusivity to In-situ Estimates from Microstructure and ECCO
+
+*Type of report*: Progress report (year 1)
+
+*Name of the principal investigator*: Deepak A. Cherian
+
+*Period covered by the report*: 08/01/19 - 07/31/20
+
+*Name and address of the recipient's institution*. UNIVERSITY CORPORATION FOR ATMOSPHERIC RESEARCH, 3090 CENTER GREEN DR, BOULDER CO 80301-2252
+
+*Grant number*: 80NSSC19K1234
+
+**** Accomplishments: Start by reminding us what are the major goals and objectives of the project and what did you achieve towards those goals? At first the emphasis will be on reporting activities but as the project progresses you will be reporting specific accomplishments. For example, describe major activities; significant results, major findings, developments, or conclusions (both positive and negative); and key outcomes or other achievements. Include a discussion of stated goals not met.
+
+The major goal of this project is to combine microstructure measurements with an estimate of mean density gradients in the ocean to yield an estimate of eddy diffusivty.
+- These estimates will be compared to existing estimates from SSH satellite data, the ECCO model and the Argo array.
+- We expect these measurements to yield an independent estimate of a high-order quantity that is necessary for models such as ECCO but whose value is relatively under-constrained by observations.
+
+We have two kinds of microstructure measurements:
+  1. basin-wide sections from GO-SHIP cruises
+  2. Moored microstructure platform (χpods) on a number of moorings in the equatorial oceans.
+
+Currently we are working on preliminary data analysis and QC of both types of measurements.
+  - Our preliminary results presented in the proposal relied on the GO-SHIP data along section P16 (east-west through the Pacific at 32°S) and a crude estimate of mean temperature gradient along isopycnals from the ECCO climatology.
+  - We have been working to update this estimate with better analysis procedures and better quality controlled data.
+  - Co-I Shroyer at OSU has been working on QC-ing the P-16 section as well as processing more data from the GO-SHIP sections (only P16 has been processed to date.)
+  - PI Cherian has been working on better ways to estimate mean property gradients along isopycnal surfaces from a number of data products (Argo climatology, MIMOC climatology, ECCO climatology).
+  - In addition, Cherian has been updating analysis software to use the moored turbulence data from the TAO mooring at 0N, 140W.
+
+PI Cherian is currently funded by NOAA to work on aspects of parameterized turbulence in high resolution models of the tropical Pacific.
+  - As part of this work, a realistically-forced 1/20° simulation of tropical Pacific was conducted by Dr. Scott Bachman (NCAR). Cherian & Bachman worked to set up high-frequency sampling of parameterized turbulence quantities in the simulation at the mooring locations in the tropical Pacific with moored turbilence data. We expect joint analysis of the simulation and in-situ observations to yield insights that may not be possible without the model output.
+
+**** How have the results been disseminated: For example, a list of publications that have appeared as a result of the award. Of course all publications should acknowledge NASA support, including the name of the program, and the grant number(s).
+
+We are at the preliminary analysis and data quality control stage of the project so we have no publishable results at the moment. We expect to be working on a publication by the end of this year.
+
+**** Future plans: if this is not your final report, what are you planning to do next? Is it different than what was in the original proposal? That's OK, but please explain a bit.
+
+Our main goal for the next 2-3 months is to:
+  - process more GO-SHIP sections
+  - generate a high-quality estimate of mean property gradients along isopycnal surfaces fom a number of products.
+  - Our primary goal for the fall is a publication summarizing eddy diffusivity estimates from all sections.
+Simultaneously we will be refining our estimation procedure to handle moored data with a goal of publishing eddy diffusivity time series in Summer 2021.
