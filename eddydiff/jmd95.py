@@ -100,7 +100,7 @@ def densjmd95(s, theta, p):
 
     t = theta
     # convert pressure to bar
-    p = 0.1 * np.atleast_2d(p).T
+    p = 0.1 * p #np.atleast_2d(p).T
 
     t2 = t * t
     t3 = t2 * t
@@ -150,10 +150,11 @@ def bulkmodjmd95(s, theta, p):
     """ Compute bulk modulus
     """
     # make sure arguments are floating point
-    s = np.asfarray(s)
-    t = np.asfarray(theta)
-    p = np.asfarray(p)
+    #s = np.asfarray(s)
+    #t = np.asfarray(theta)
+    #p = np.asfarray(p)
 
+    t = theta
     t2 = t * t
     t3 = t2 * t
     t4 = t3 * t
