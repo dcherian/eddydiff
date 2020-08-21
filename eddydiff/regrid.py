@@ -123,18 +123,18 @@ def interp_1d_conservative(phi, theta, target_theta_bins):
 
     theta_1 = theta[..., :-1]
     theta_2 = theta[..., 1:]
-    #theta_hat_1 = target_theta_bins[:-1]
-    #theta_hat_2 = target_theta_bins[1:]
+    # theta_hat_1 = target_theta_bins[:-1]
+    # theta_hat_2 = target_theta_bins[1:]
 
     theta_1 = theta[..., :-1]
     theta_2 = theta[..., 1:]
-#     theta_hat_1 = target_theta_bins[:-1]
-#     theta_hat_2 = target_theta_bins[1:]
+    #     theta_hat_1 = target_theta_bins[:-1]
+    #     theta_hat_2 = target_theta_bins[1:]
     theta_hat_1 = target_theta_bins[..., :-1]
     theta_hat_2 = target_theta_bins[..., 1:]
 
-
     return _interp_1d_conservative(phi, theta_1, theta_2, theta_hat_1, theta_hat_2)
+
 
 def wrapper_linear(data, target_data, target, dim):
     return xr.apply_ufunc(
@@ -164,11 +164,13 @@ def wrapper_conservative(data, source_bounds, target_bounds, dim):
     )
 
 
-def remap_full(ds, target_data, target, dim):
+def remap_full(ds, target_data, target, dim, target_kind="center"):
+
     target_labels = target.isel(target=slice(0, -1))
     target_labels.data = (
         target.isel(target=slice(1, None)).data + target.isel(target=slice(0, -1)).data
     ) / 2
+
     remapped_dict = {}
 
     z_regrid = wrapper_linear(ds[dim], target_data, target, dim)
