@@ -164,12 +164,15 @@ def wrapper_conservative(data, source_bounds, target_bounds, dim):
     )
 
 
-def remap_full(ds, target_data, target, dim, target_kind="center"):
+def remap_full(ds, target_data, target, dim, target_kind="center", method="conservative"):
 
-    target_labels = target.isel(target=slice(0, -1))
-    target_labels.data = (
-        target.isel(target=slice(1, None)).data + target.isel(target=slice(0, -1)).data
-    ) / 2
+    if target_kind == "edges":
+        target_labels = target.isel(target=slice(0, -1))
+        target_labels.data = (
+            target.isel(target=slice(1, None)).data + target.isel(target=slice(0, -1)).data
+        ) / 2
+    else:
+        target_labels = target
 
     remapped_dict = {}
 
@@ -200,9 +203,14 @@ def remap_full(ds, target_data, target, dim, target_kind="center"):
 
     for var in ds.data_vars:
         # for now treat them all as intensive...
-        remapped_dict[var] = (
-            wrapper_conservative(ds[var] * dz, source_bounds, z_regrid, dim) / dz_target
-        )
+        if method == "conservative":
+            remapped_dict[var] = (
+                wrapper_conservative(ds[var] * dz, source_bounds, z_regrid, dim) / dz_target
+            )
+        elif method == "linear":
+            remapped_dict[var] = (
+                wrapper_linear(ds[var] * dz, source_bounds, z_regrid, dim)
+            )
 
     out = xr.Dataset(remapped_dict)
 

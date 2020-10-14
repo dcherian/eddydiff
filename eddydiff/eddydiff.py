@@ -526,8 +526,8 @@ def plot_bar_Ke(Ke, dTdz_log=True, Ke_log=True, cole=None):
     except AttributeError:
         pass
 
-    ((Ke.KT)).plot.barh(x="rho", log=True, ax=ax[0, 0], title="$K_T$")
-    ((Ke.dTdz)).plot.barh(
+    (Ke.KT).plot.barh(x="rho", log=True, ax=ax[0, 0], title="$K_T$")
+    (Ke.dTdz).plot.barh(
         x="rho", log=dTdz_log, ax=ax[0, 1], title="$T_z (color), T^m_z (black)$"
     )
     (
@@ -567,7 +567,7 @@ def plot_bar_Ke(Ke, dTdz_log=True, Ke_log=True, cole=None):
 
     (Ke.Ke.where(Ke.Ke > 0).plot.barh(x="rho", log=Ke_log, ax=ax[1, 2], title="$K_e$"))
     np.abs(Ke.Ke.where(Ke.Ke < 0)).plot.barh(
-        x="rho", log=Ke_log, ax=ax[1, 2], title="$K_e$", edgeColor="black", color="none"
+        x="rho", log=Ke_log, ax=ax[1, 2], title="$K_e$", edgecolor="black", color="none"
     )
 
     plt.gca().invert_yaxis()
@@ -1046,7 +1046,7 @@ def plot_transect_var(
     return ax, axback
 
 
-def regrid_to_isopycnals(clim, bins):
+def regrid_to_isopycnals(clim, bins, target_kind="edges"):
     """
     Regrids climatologies to provided isopycnal bins
     """
@@ -1058,6 +1058,6 @@ def regrid_to_isopycnals(clim, bins):
         clim.pden,
         xr.DataArray(bins, dims="target"),
         dim="pres",
-        target_kind="edges",
+        target_kind=target_kind,
     )
     return isoT
