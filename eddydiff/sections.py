@@ -103,21 +103,41 @@ def to_netcdf(infile, outfile, transect_name):
     ctd.to_netcdf(outfile)
 
 
-def add_ancillary_variables(ds):
+def add_ancillary_variables(ds, pref=0):
     """ Adds ancillary variables."""
 
-    ds["theta"] = dcpy.eos.ptmp(ds.salt, ds.temp, ds.pres, pr=1000)
+    salt, temp, pres = (
+        ds.cf["sea_water_salinity"],
+        ds.cf["sea_water_temperature"],
+        ds.cf["sea_water_pressure"],
+    )
+
+    if "theta" not in ds:
+        ds["theta"] = dcpy.eos.ptmp(
+            salt,
+            temp,
+            pres,
+            pr=pref,
+        )
     ds["theta"].attrs.update(long_name="$θ$")
 
-    ds["pden"] = dcpy.eos.pden(ds.salt, ds.temp, ds.pres, pr=1000)
+    if "pden" not in ds:
+        ds["pden"] = dcpy.eos.pden(salt, temp, pres, pr=pref)
     ds["pden"].attrs.update(long_name="$ρ$")
 
-    ds["gamma_n"] = dcpy.oceans.neutral_density(ds)
+    if "neutral_density" not in ds.cf:
+        ds["gamma_n"] = dcpy.oceans.neutral_density(ds)
 
-    ds["Tz"] = -1 * ds.theta.interpolate_na("depth").differentiate("depth")
+    if "dTdz" in ds:
+        ds = ds.rename_vars({"dTdz": "Tz"})
+    if "Tz" not in ds:
+        ds["Tz"] = -1 * ds.theta.interpolate_na("depth").differentiate("depth")
     ds["Tz"].attrs["long_name"] = "$θ_z$"
 
-    ds["N2"] = 9.81 / 1025 * ds.gamma_n.interpolate_na("depth").differentiate("depth")
+    if "N2" not in ds:
+        ds["N2"] = (
+            9.81 / 1025 * ds.gamma_n.interpolate_na("depth").differentiate("depth")
+        )
     ds["N2"].attrs["long_name"] = "$N²$"
 
     Tz_mask = np.abs(ds.Tz) > 1e-3
@@ -155,8 +175,11 @@ def add_ancillary_variables(ds):
 def bin_average_vertical(ds, stdname, bins):
     """ Bin averages in the vertical."""
 
-    grouped = ds.cf.groupby_bins(stdname, bins=bins)
+    grouped = ds.reset_coords().cf.groupby_bins(stdname, bins=bins)
     chidens = grouped.mean()
+    for var in chidens.variables:
+        if var in ds.variables:
+            chidens[var].attrs = ds[var].attrs
 
     var = ds.cf["neutral_density"]
     groupvar = f"{var.name}_bins"
@@ -181,6 +204,10 @@ def bin_average_vertical(ds, stdname, bins):
     chidens["Kt_m"] = chidens.chi / 2 / chidens.dTdz_m ** 2
     chidens.Kt_m.attrs.update(dict(long_name="$K_T^m$", units="m²/s"))
 
+    chidens.coords["num_obs"] = ds.chi.groupby_bins(ds.cf[stdname], bins=bins).count()
+    chidens.num_obs.attrs = {"long_name": "count(χ) in bins"}
+
+    chidens = chidens.cf.guess_coord_axis()
     # iso_slope = grouped.apply(fit2D)
     # chidens["dTiso"] = np.hypot(iso_slope.x, iso_slope.y)
 
@@ -192,8 +219,12 @@ def fit1D(group, var, dim="depth", debug=False):
     Expects a bunch of profiles at differ lat, lons.
     Calculates mean profile and then takes linear fit to estimate gradient.
     """
+
     ds = group.unstack()
-    stacked = ds[var].stack(latlon=("latitude", "longitude")).drop("latlon")
+    if "depth" in ds.dims:
+        ds["depth"].attrs["axis"] = "Z"
+    group_over = set(ds.dims) - set(ds.cf.axes["Z"])
+    stacked = ds[var].stack(latlon=group_over).drop("latlon")
 
     # move to a relative-depth reference frame for proper averaging
     stacked["z0"] = stacked[dim] - stacked[dim].where(stacked.notnull()).mean(dim)
@@ -277,3 +308,26 @@ def fit2D(group, debug=False):
     )
     slope = slope.squeeze().drop_vars("variable")  # .expand_dims(pden_bins=[label])
     return slope
+
+
+def plot_var_prod_diss(chidens, prefix="", ax=None, **kwargs):
+    if ax is None:
+        _, ax = plt.subplots(1, 1, constrained_layout=True)
+
+    (chidens.chi / 2).cf.plot.step(
+        y="Z", xscale="log", color="r", lw=2, label="$⟨χ⟩/2$", **kwargs
+    )
+    (chidens.KtTz * chidens.dTdz_m).cf.plot.step(
+        color="k", label="$⟨K_T θ_z⟩ ∂_zθ_m$", **kwargs
+    )
+    ax.grid(True, which="both", lw=0.5)
+    plt.legend()
+    plt.xlabel("Variance production or dissipation [°C²/s]")
+    plt.gcf().set_size_inches((4, 5))
+
+
+def choose_bins(gamma, depth_range):
+    mean_over = set(gamma.dims) - set(gamma.cf.axes["Z"])
+    bins = gamma.mean(mean_over).cf.interp(Z=depth_range)
+    bins[gamma.cf.axes["Z"][0]].attrs["axis"] = "Z"
+    return bins.cf.dropna("Z").data
