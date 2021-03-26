@@ -107,6 +107,13 @@ venv.bak/
 *_flymake*
 
 # data files
-.nc
-.mat
-.zarr
+dask-worker-space
+_build
+auto
+*.nc
+*.mat
+*.zarr
+
+.DS_Store
+.auctex-auto
+frag-master.tex
