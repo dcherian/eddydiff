@@ -1,14 +1,13 @@
-import dcpy
-import numpy as np
-import scipy as sp
-import scipy.io
-import pandas as pd
+import gsw
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import xarray as xr
-
-import gsw
+import numpy as np
+import pandas as pd
+import scipy as sp
+import scipy.io
 import seawater as sw
+
+import xarray as xr
 
 
 def exchange(input, kwargs):
@@ -69,13 +68,13 @@ def format_ecco(input):
 
 
 def gradient(input):
-    """ Given an input DataArray, calculate gradients in three directions
-        and return it.
+    """Given an input DataArray, calculate gradients in three directions
+    and return it.
 
-        Output
-        ======
+    Output
+    ======
 
-        dx, dy, dz = gradients in x,y,z
+    dx, dy, dz = gradients in x,y,z
     """
 
     gradients = np.gradient(input, *[input.coords[dim] for dim in input.dims])
@@ -99,13 +98,13 @@ def gradient(input):
 
 
 def wrap_gradient(invar):
-    """ Given an invar DataArray, calculate gradients in three directions
-        and return it.
+    """Given an invar DataArray, calculate gradients in three directions
+    and return it.
 
-        Output
-        ======
+    Output
+    ======
 
-        dx, dy, dz = gradients in x,y,z
+    dx, dy, dz = gradients in x,y,z
     """
 
     nans = np.full((invar.sizes["lat"], invar.sizes["lon"]), np.nan)
@@ -168,12 +167,12 @@ def wrap_gradient(invar):
 
 
 def project_vector(vector, proj, kind=None):
-    """ Project 'vector' along 'proj'.
+    """Project 'vector' along 'proj'.
 
-        Returns
-        =======
+    Returns
+    =======
 
-        List of DataArrays (vector projection, rejection)
+    List of DataArrays (vector projection, rejection)
     """
 
     def dot_product(a, b):
@@ -201,8 +200,8 @@ def project_vector(vector, proj, kind=None):
 
 
 def estimate_clim_gradients(clim):
-    """ Given either argo or ecco climatology, estimate mean gradients
-        in along-isopycnal and diapycnal directions"""
+    """Given either argo or ecco climatology, estimate mean gradients
+    in along-isopycnal and diapycnal directions"""
 
     dT = wrap_gradient(clim.Tmean)
     dS = wrap_gradient(clim.Smean)
@@ -226,17 +225,17 @@ def estimate_clim_gradients(clim):
 
 
 def to_density_space(da, rhonew=None):
-    """ Converts a transect *Dataset* to density space
-        with density co-ordinate rhonew *by interpolation*
+    """Converts a transect *Dataset* to density space
+    with density co-ordinate rhonew *by interpolation*
 
-        Inputs
-        ======
-            da : transect DataArray
-            rhonew : new density co-ordinate
+    Inputs
+    ======
+        da : transect DataArray
+        rhonew : new density co-ordinate
 
-        Output
-        ======
-        DataArray with variables interpolated along density co-ordinate.
+    Output
+    ======
+    DataArray with variables interpolated along density co-ordinate.
     """
 
     to_da = False
@@ -495,9 +494,9 @@ def calc_iso_dia_gradients(field, pres, debug=False):
 
 def bin_avg_in_density(input, ρbins, dname="cast"):
     """
-        Takes input dataframe for transect, bins each profile by density
-        and averages. Returns average data as function of transect distance,
-        mean density in bin.
+    Takes input dataframe for transect, bins each profile by density
+    and averages. Returns average data as function of transect distance,
+    mean density in bin.
 
     """
 
@@ -861,16 +860,16 @@ def bin_to_density_space(transect, bins=30):
 
 
 def read_all_datasets(kind="annual", transect=None):
-    """ Reads in
-        1. Cole et al estimate
-        2. ECCO gradients
-        3. Argo gradients
+    """Reads in
+    1. Cole et al estimate
+    2. ECCO gradients
+    3. Argo gradients
 
-        Inputs
-        ------
-        kind: 'annual' (default) or 'monthly'. If 'annual', averages in time.
-        transect: (optional), if provided will subset the data
-                  to particular transect.
+    Inputs
+    ------
+    kind: 'annual' (default) or 'monthly'. If 'annual', averages in time.
+    transect: (optional), if provided will subset the data
+              to particular transect.
     """
 
     cole = read_cole()
@@ -924,9 +923,9 @@ def read_all_datasets(kind="annual", transect=None):
 
 
 def average_clim_1d(clim):
-    """ Takes climatological fields with dimensions (cast, P),
-        estimates along-transect, vertical gradients. """
-    a = 1
+    """Takes climatological fields with dimensions (cast, P),
+    estimates along-transect, vertical gradients."""
+    pass
 
 
 def process_ecco_gradients():

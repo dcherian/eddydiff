@@ -1,4 +1,3 @@
-import sys
 import numpy as np
 
 __doc__ = """
@@ -85,7 +84,7 @@ def densjmd95(s, theta, p):
         density [kg/m^3]
     Example
     -------
-    >>> densjmd95(35.5, 3., 3000.)
+    >>> densjmd95(35.5, 3.0, 3000.0)
     1041.83267
     Notes
     -----
@@ -100,7 +99,7 @@ def densjmd95(s, theta, p):
 
     t = theta
     # convert pressure to bar
-    p = 0.1 * p #np.atleast_2d(p).T
+    p = 0.1 * p  # np.atleast_2d(p).T
 
     t2 = t * t
     t3 = t2 * t
@@ -147,12 +146,11 @@ def densjmd95(s, theta, p):
 
 
 def bulkmodjmd95(s, theta, p):
-    """ Compute bulk modulus
-    """
+    """Compute bulk modulus"""
     # make sure arguments are floating point
-    #s = np.asfarray(s)
-    #t = np.asfarray(theta)
-    #p = np.asfarray(p)
+    # s = np.asfarray(s)
+    # t = np.asfarray(theta)
+    # p = np.asfarray(p)
 
     t = theta
     t2 = t * t

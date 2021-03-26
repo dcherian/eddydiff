@@ -1,7 +1,8 @@
 import dcpy
-import numpy as np
-import xarray as xr
 import matplotlib.pyplot as plt
+import numpy as np
+
+import xarray as xr
 
 
 def to_netcdf(infile, outfile, transect_name):
@@ -21,8 +22,8 @@ def to_netcdf(infile, outfile, transect_name):
     -------
     None
     """
-    from scipy.io import loadmat
     import seawater as sw
+    from scipy.io import loadmat
 
     mat = loadmat(infile, squeeze_me=True)["grd"]
 

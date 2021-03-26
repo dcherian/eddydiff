@@ -1,10 +1,8 @@
-from .eddydiff import *
-from . import jmd95
-
 # from . import tests
-from . import regrid
-from . import sections
-from . import plot
+import xarray as xr
+
+from . import jmd95, plot, regrid, sections  # noqa
+from .eddydiff import *  # noqa
 
 
 def intervals_to_vertex(da):
