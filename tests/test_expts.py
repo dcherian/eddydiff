@@ -1,9 +1,10 @@
 # Field experiment regression tests
 
-import pandas as pd
 import numpy as np
-import xarray as xr
+import pandas as pd
+
 import eddydiff as ed
+import xarray as xr
 
 
 def test_interval_roundtrip():
@@ -26,16 +27,11 @@ def test_natre():
     natre = natre.cf.guess_coord_axis()
     natre["depth"].attrs.update(units="m", positive="down")
 
-    natre = ed.sections.add_ancillary_variables(natre)
+    natre = ed.sections.add_ancillary_variables(natre, pref=1000)
     natre = natre.where(natre.chi > 1e-14)
     natre.load()
 
-    bins = (
-        natre.gamma_n.mean(["latitude", "longitude"])
-        .interp(depth=np.arange(150, 2001, 100))
-        .dropna("depth")
-        .data
-    )
+    bins = ed.sections.choose_bins(natre.gamma_n, depth_range=np.arange(150, 2001, 100))
     actual = ed.sections.bin_average_vertical(
         natre.reset_coords("pres"), "neutral_density", bins
     )

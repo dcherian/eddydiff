@@ -129,6 +129,22 @@ eddydiff:
 1. [ ] Select region before interpolating in ~read_all_datasets()~
 2. [ ] Do something about coarse ECCO resolution at depth
 
+* TAO May 2008 χpod notes
+
+| depth | unit | notes                                     |
+|-------+------+-------------------------------------------|
+|    14 |  313 | use sensor 1                              |
+|    29 |  323 | all bad?                                  |
+|    39 |  324 | use sensor 1, T1 drifts low, turb OK      |
+|    49 |  318 | all bad/                                  |
+|    59 |  325 | use sensor 1                              |
+|    69 |  319 | chi2 not good; chi1 low in apr-may2009    |
+|    84 |  326 | use sensor 1                              |
+|   100 |  320 | hardly any good data, p, acc did not work |
+|   124 |  327 |                                           |
+|   150 |  321 | bad after apr 21, 2009                    |
+
+
 * Annual Reports
 
 ** 2020
