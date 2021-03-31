@@ -1,7 +1,7 @@
 # from . import tests
 import xarray as xr
 
-from . import jmd95, plot, regrid, sections  # noqa
+from . import jmd95, plot, sections  # noqa
 from .eddydiff import *  # noqa
 
 
