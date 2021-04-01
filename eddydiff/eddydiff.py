@@ -514,6 +514,39 @@ def bin_avg_in_density(input, ρbins, dname="cast"):
     )
 
 
+# TODO: move this to ed.bin_to_density_space
+def bin_avg_in_density_time(df, ρbins, strftime="%Y-%m"):
+    """
+    Takes input dataframe for transect, bins each profile by density
+    and averages. Returns average data as function of transect distance,
+    mean density in bin.
+    """
+
+    df = df.reset_index()
+    time_grouper = df.time.dt.strftime(strftime)
+
+    grouped = df.groupby([pd.cut(df.pden, ρbins), time_grouper])
+
+    result = grouped.mean()
+    result["numobs"] = grouped.size()
+    result = result.dropna(how="any").drop("pden", axis=1).reset_index()
+    result["time"] = pd.to_datetime(result["time"])
+
+    binned = result.set_index(["pden", "time"])
+
+    pdentime = binned.index.to_frame()
+    midpoints = pd.Series([v.mid for v in pdentime["pden"].values], name="pden")
+    newindex = pd.MultiIndex.from_arrays([midpoints, pdentime["time"]])
+    float_indexed = binned.set_index(newindex)
+    chidens = xr.Dataset.from_dataframe(float_indexed)
+    chidens = chidens.rename({"pden": "pden"})
+
+    chidens["chi"].attrs["long_name"] = "$χ$"
+    chidens["KtTz"].attrs["long_name"] = "$⟨K_T T_z⟩$"
+
+    return chidens
+
+
 def plot_bar_Ke(Ke, dTdz_log=True, Ke_log=True, cole=None):
 
     # if cole is None:
