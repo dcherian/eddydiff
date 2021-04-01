@@ -1,5 +1,47 @@
+import dcpy
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
+
+
+def check_bins_with_climatology(bins, argo, ecco):
+    """
+    Given bins, makes plots to decide whether these are a good choice for the climatology.
+    E.g. check whether the bins outcrop or not, that they are not too closely spaced together.
+    """
+    centers = (bins[1:] + bins[:-1]) / 2
+
+    f, axx = plt.subplots(
+        3, 1, sharex=True, sharey=True, constrained_layout=True, squeeze=False
+    )
+
+    for ds, ax in zip([argo, ecco], axx.flat):
+        ds.pden.cf.plot.contourf(
+            y="Z",
+            ax=ax,
+            levels=np.arange(1022, 1027, 0.1),
+            cmap=mpl.cm.RdYlBu_r,
+            add_colorbar=False,
+            ylim=(200, 0),
+        )
+        ds.pden.cf.plot.contour(y="Z", colors="k", levels=bins, ax=ax)
+        ds.pden.cf.plot.contour(
+            y="Z", colors="k", linestyles="--", levels=centers, ax=ax
+        )
+        dcpy.plots.linex(0, zorder=10, color="w", ax=ax)
+        ax.set_title(ds.dataset)
+
+    hargo = argo.pden.plot.contour(levels=bins, colors="r", ax=axx.flat[-1])
+    hecco = ecco.pden.plot.contour(
+        levels=bins, colors="k", ylim=(180, 0), ax=axx.flat[-1]
+    )
+    dcpy.plots.add_contour_legend(hargo, "argo", numel=1, loc="upper right")
+    dcpy.plots.add_contour_legend(hecco, "ecco", numel=1, loc="upper left")
+    dcpy.plots.linex(0, ax=axx.flat[-1])
+
+    dcpy.plots.clean_axes(axx)
+    axx[1, 0].set_title("ecco")
+    f.set_size_inches((5, 8))
 
 
 def histogram_turb_estimates(ds):
