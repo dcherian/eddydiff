@@ -6,6 +6,7 @@ import pandas as pd
 import scipy as sp
 import scipy.io
 import seawater as sw
+import xgcm
 
 import xarray as xr
 
@@ -1060,3 +1061,114 @@ def regrid_to_isopycnals(clim, bins, target_kind="edges"):
         target_kind=target_kind,
     )
     return isoT
+
+
+def estimate_gradients(grad, bins, bin_var="pden", debug=False):
+    """
+    Estimates the isopycnal and vertical gradients of temperature
+
+    Parameters
+    ----------
+
+    grad: Dataset
+        Climatological fields with temperature
+    bins: np.array
+        Isopycnal bin edges
+    bin_var: optional, str
+        Variable name in ``grad`` to match ``bins``. Passed to cf_xarray.
+        E.g. "pden", "gamma_n"
+
+    Returns
+    -------
+
+    Dataset with ``dTdy`` and ``dTdz``
+
+    Notes
+    -----
+
+    Procedure:
+      - First conservatively regrids T to isopycnal space using bin averages
+      - Then fits univariate spline to mean T in each isopycnal bin
+      - Estimates ∂T/∂y using this spline fit.
+      - ∂T/∂z is estimated using the mean separation between isopycnal bin edges
+        (product of the isopycnal regridding code)
+    """
+    import dcpy.interpolate
+
+    bins = np.asarray(bins)
+    centers = (bins[1:] + bins[:-1]) / 2
+
+    grid = xgcm.Grid(
+        grad, periodic=False, coords={"Y": {"center": "lat"}, "Z": {"center": "pres"}}
+    )
+
+    # isoT = ed.regrid_to_isopycnals(grad, bins).rename({"pden_bins": "pden"})
+
+    if np.any(bins < 1000):
+        raise ValueError(f"bins={bins} < 1000")
+
+    target_data = grad.cf[bin_var]
+    isoT = xr.Dataset()
+    isoT["Tmean"] = grid.transform(
+        grad.Tmean,
+        "Z",
+        target=centers,
+        target_data=target_data,
+        method="linear",
+    ).compute()
+
+    z_regrid = grid.transform(
+        grad.pres.broadcast_like(grad.pden),
+        "Z",
+        target=bins,
+        target_data=target_data,
+        method="linear",
+    ).compute()
+
+    # calculate the layer thickness of the new coord bounds
+    isoT.coords["dz_remapped"] = z_regrid.diff(bin_var).drop_vars(bin_var)
+
+    # get isopycnal gradients of T by fitting spline
+    # to average T in density bins
+    isoT.coords["y"] = np.sign(isoT.lat) * dcpy.util.latlon_to_distance(
+        isoT.cf["latitude"],
+        isoT.cf["longitude"],
+        central_lat=0,
+        central_lon=isoT.lon.item(),
+    )
+    isoT.y.attrs["axis"] = "Y"
+
+    sub = isoT.Tmean.chunk({"lat": -1}).swap_dims({"lat": "y"})
+    spinterp = dcpy.interpolate.UnivariateSpline(sub, "y")
+
+    isoT["dTdy"] = spinterp.derivative(sub.y).swap_dims({"y": "lat"}).compute()
+
+    if debug:
+        plt.figure()
+        spinterp.smooth().compute().cf.plot.line(x="lat", hue=bin_var, add_legend=False)
+        sub.cf.plot.line(x="lat", hue=bin_var, marker=".", ls="none", add_legend=True)
+        plt.suptitle(grad.attrs["dataset"])
+
+    # regrid to the bin edges
+    edgeT = (
+        grid.transform(
+            grad.Tmean, "Z", target=bins, target_data=target_data, method="linear"
+        ).compute()
+        # ed.regrid_to_isopycnals(grad, bins, "centers")
+        # .load()
+        # .assign_coords(pden_bins=centers[:-1])
+        # .reindex_like(isoT, method="nearest")
+        # .assign_coords(pden_bins=centers)
+    )
+
+    isoT["dTdz"] = (
+        -1
+        * edgeT.cf.diff(bin_var).assign_coords({bin_var: isoT.cf[bin_var].values})
+        / isoT.dz_remapped.compute()
+    )
+    # isoT["dTdz"] = -1 * isoT.Tmean.diff("pden_bins") / isoT.dz_remapped
+    if debug:
+        hdl = edgeT.cf.plot.line(marker="x", hue=bin_var, add_legend=False)
+        plt.gca().legend(hdl)
+
+    return isoT, edgeT
