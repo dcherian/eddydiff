@@ -1,3 +1,4 @@
+import cf_xarray as cfxr
 import gsw
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -9,6 +10,30 @@ import seawater as sw
 import xgcm
 
 import xarray as xr
+
+
+
+def intervals_to_bounds(da):
+    assert da.ndim == 1
+    name = da.dims[0][:-5]
+    vertex = [interval.left for interval in da.data]
+    vertex.append(da.data[-1].right)
+    bounds = cfxr.vertices_to_bounds(
+        xr.DataArray(vertex, dims=f"{name}_vertex"), out_dims=("bounds", "gamma_n")
+    )
+    bounds.name = f"{name}_bounds"
+    bounds.coords[f"{name}"] = bounds.mean("bounds").assign_attrs(bounds=bounds.name)
+    return bounds
+
+
+def intervals_from_vertex(vertex):
+    assert vertex.ndim == 1
+    name = f"{vertex.dims[0][:-7]}_bins"
+    data = [
+        pd.Interval(left, right)
+        for left, right in zip(vertex.data[:-1], vertex.data[1:])
+    ]
+    return xr.DataArray(data, dims=name, name=name, coords={name: data})
 
 
 def exchange(input, kwargs):
