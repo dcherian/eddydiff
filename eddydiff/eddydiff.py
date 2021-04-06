@@ -1,3 +1,5 @@
+from typing import Iterable
+
 import cf_xarray as cfxr
 import gsw
 import matplotlib as mpl
@@ -518,7 +520,7 @@ def calc_iso_dia_gradients(field, pres, debug=False):
     return iso, dia
 
 
-def bin_avg_in_density(input, ρbins, dname="cast"):
+def bin_avg_in_density(input: pd.DataFrame, ρbins: Iterable, dname="cast"):
     """
     Takes input dataframe for transect, bins each profile by density
     and averages. Returns average data as function of transect distance,
@@ -539,32 +541,36 @@ def bin_avg_in_density(input, ρbins, dname="cast"):
     )
 
 
-# TODO: move this to ed.bin_to_density_space
-def bin_avg_in_density_time(df, ρbins, strftime="%Y-%m"):
+def bin_avg_in_density_time(chisub: xr.Dataset, bins: dict, strftime="%Y-%m"):
     """
-    Takes input dataframe for transect, bins each profile by density
-    and averages. Returns average data as function of transect distance,
-    mean density in bin.
+    Takes input dataset and bin averages.
+
+    Written for TAO χpod analysis.
     """
 
+    assert len(bins) == 1
+    var, ρbins = next(iter(bins.items()))
+    binvar = chisub.cf[var].name
+
+    df = chisub.compute().to_dataframe().dropna()
     df = df.reset_index()
     time_grouper = df.time.dt.strftime(strftime)
 
-    grouped = df.groupby([pd.cut(df.pden, ρbins), time_grouper])
+    grouped = df.groupby([pd.cut(df[binvar], ρbins), time_grouper])
 
     result = grouped.mean()
     result["numobs"] = grouped.size()
-    result = result.dropna(how="any").drop("pden", axis=1).reset_index()
+    result = result.dropna(how="any").drop(binvar, axis=1).reset_index()
     result["time"] = pd.to_datetime(result["time"])
 
-    binned = result.set_index(["pden", "time"])
+    binned = result.set_index([binvar, "time"])
 
     pdentime = binned.index.to_frame()
-    midpoints = pd.Series([v.mid for v in pdentime["pden"].values], name="pden")
+    midpoints = pd.Series([v.mid for v in pdentime[binvar].values], name=binvar)
     newindex = pd.MultiIndex.from_arrays([midpoints, pdentime["time"]])
     float_indexed = binned.set_index(newindex)
     chidens = xr.Dataset.from_dataframe(float_indexed)
-    chidens = chidens.rename({"pden": "pden"})
+    # chidens = chidens.rename({"pden": "pden"})
 
     chidens["chi"].attrs["long_name"] = "$χ$"
     chidens["KtTz"].attrs["long_name"] = "$⟨K_T T_z⟩$"
@@ -1162,10 +1168,12 @@ def estimate_gradients(grad, bins, bin_var="pden", debug=False):
 
     # isoT = ed.regrid_to_isopycnals(grad, bins).rename({"pden_bins": "pden"})
 
-    if np.any(bins < 1000):
-        raise ValueError(f"bins={bins} < 1000")
+    # if np.any(bins < 1000):
+    #    raise ValueError(f"bins={bins} < 1000")
 
     target_data = grad.cf[bin_var]
+    binned_name = target_data.name
+
     isoT = xr.Dataset()
     isoT["Tmean"] = grid.transform(
         grad.Tmean,
@@ -1174,6 +1182,9 @@ def estimate_gradients(grad, bins, bin_var="pden", debug=False):
         target_data=target_data,
         method="linear",
     ).compute()
+
+    isoT.coords[f"{binned_name}_bounds"] = cfxr.vertices_to_bounds(bins)
+    isoT[binned_name].attrs["bounds"] = f"{binned_name}_bounds"
 
     z_regrid = grid.transform(
         grad.pres.broadcast_like(grad.pden),
@@ -1185,6 +1196,14 @@ def estimate_gradients(grad, bins, bin_var="pden", debug=False):
 
     # calculate the layer thickness of the new coord bounds
     isoT.coords["dz_remapped"] = z_regrid.diff(bin_var).drop_vars(bin_var)
+    isoT.coords["pres"] = (
+        ((z_regrid + z_regrid.shift({binned_name: -1})) / 2)
+        .isel({binned_name: slice(-1)})
+        .assign_coords({binned_name: isoT[binned_name].data})
+    )
+    isoT.coords["pres"].attrs.update({"long_name": "Pressure at bin centers"})
+
+    isoT = isoT.cf.guess_coord_axis()
 
     # get isopycnal gradients of T by fitting spline
     # to average T in density bins
@@ -1226,7 +1245,13 @@ def estimate_gradients(grad, bins, bin_var="pden", debug=False):
     )
     # isoT["dTdz"] = -1 * isoT.Tmean.diff("pden_bins") / isoT.dz_remapped
     if debug:
-        hdl = edgeT.cf.plot.line(marker="x", hue=bin_var, add_legend=False)
-        plt.gca().legend(hdl)
+        edgeT.cf.plot.line(marker="x", hue=bin_var, add_legend=False)
+        # plt.gca().legend()
+
+    isoT.coords[f"{bin_var}_bounds"] = cfxr.vertices_to_bounds(
+        bins, out_dims=("bounds", bin_var)
+    )
+    isoT[bin_var].attrs["bounds"] = f"{bin_var}_bounds"
+    isoT[bin_var].attrs.update(grad[bin_var].attrs)
 
     return isoT, edgeT
