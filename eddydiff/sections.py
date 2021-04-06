@@ -1,8 +1,11 @@
+import cf_xarray  # noqa
 import dcpy
 import matplotlib.pyplot as plt
 import numpy as np
 
 import xarray as xr
+
+from .eddydiff import intervals_to_bounds
 
 
 def to_netcdf(infile, outfile, transect_name):
@@ -172,7 +175,7 @@ def add_ancillary_variables(ds, pref=0):
     return ds
 
 
-def bin_average_vertical(ds, stdname, bins):
+def bin_average_vertical(ds, stdname, bins, skip_fits=False):
     """ Bin averages in the vertical."""
 
     grouped = ds.reset_coords().cf.groupby_bins(stdname, bins=bins)
@@ -192,17 +195,18 @@ def bin_average_vertical(ds, stdname, bins):
     chidens.eps.attrs.update(long_name="$⟨ε⟩$")
     chidens.chi.attrs.update(long_name="$⟨χ⟩$")
 
-    chidens["dTdz_m"] = -1 * grouped.apply(fit1D, var="theta", dim="depth")
-    chidens.dTdz_m.attrs.update(dict(name="$∂_z θ_m$", units="°C/m"))
+    if not skip_fits:
+        chidens["dTdz_m"] = -1 * grouped.apply(fit1D, var="theta", dim="depth")
+        chidens.dTdz_m.attrs.update(dict(name="$∂_z θ_m$", units="°C/m"))
 
-    chidens["N2_m"] = 9.81 / 1030 * grouped.apply(fit1D, var="pden", dim="depth")
-    chidens.N2_m.attrs.update(dict(name="$∂_zb_m$", units="s$^{-2}$"))
+        chidens["N2_m"] = 9.81 / 1030 * grouped.apply(fit1D, var="pden", dim="depth")
+        chidens.N2_m.attrs.update(dict(name="$∂_zb_m$", units="s$^{-2}$"))
 
-    chidens["Krho_m"] = 0.2 * chidens.eps / chidens.N2_m
-    chidens.Krho_m.attrs.update(dict(long_name="$K_ρ^m$", units="m²/s"))
+        chidens["Krho_m"] = 0.2 * chidens.eps / chidens.N2_m
+        chidens.Krho_m.attrs.update(dict(long_name="$K_ρ^m$", units="m²/s"))
 
-    chidens["Kt_m"] = chidens.chi / 2 / chidens.dTdz_m ** 2
-    chidens.Kt_m.attrs.update(dict(long_name="$K_T^m$", units="m²/s"))
+        chidens["Kt_m"] = chidens.chi / 2 / chidens.dTdz_m ** 2
+        chidens.Kt_m.attrs.update(dict(long_name="$K_T^m$", units="m²/s"))
 
     chidens.coords["num_obs"] = ds.chi.groupby_bins(ds.cf[stdname], bins=bins).count()
     chidens.num_obs.attrs = {"long_name": "count(χ) in bins"}
@@ -210,6 +214,13 @@ def bin_average_vertical(ds, stdname, bins):
     chidens = chidens.cf.guess_coord_axis()
     # iso_slope = grouped.apply(fit2D)
     # chidens["dTiso"] = np.hypot(iso_slope.x, iso_slope.y)
+
+    bounds = intervals_to_bounds(chidens.gamma_n_bins)
+    chidens = chidens.drop_vars("gamma_n").rename({"gamma_n_bins": "gamma_n"})
+    chidens["gamma_n"] = bounds.gamma_n
+    chidens.coords["gamma_n_bounds"] = bounds
+    chidens["gamma_n"].attrs.update(ds.gamma_n.attrs)
+    chidens["gamma_n"].attrs.update({"positive": "down", "axis": "Z"})
 
     return chidens
 
@@ -315,10 +326,10 @@ def plot_var_prod_diss(chidens, prefix="", ax=None, **kwargs):
         _, ax = plt.subplots(1, 1, constrained_layout=True)
 
     (chidens.chi / 2).cf.plot.step(
-        y="Z", xscale="log", color="r", lw=2, label="$⟨χ⟩/2$", **kwargs
+        y="sea_water_pressure", xscale="log", color="r", lw=2, label="$⟨χ⟩/2$", **kwargs
     )
     (chidens.KtTz * chidens.dTdz_m).cf.plot.step(
-        color="k", label="$⟨K_T θ_z⟩ ∂_zθ_m$", **kwargs
+        y="sea_water_pressure", color="k", label="$⟨K_T θ_z⟩ ∂_zθ_m$", **kwargs
     )
     ax.grid(True, which="both", lw=0.5)
     plt.legend()
