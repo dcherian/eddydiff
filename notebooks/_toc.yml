@@ -3,6 +3,7 @@
 - part: Moored χpod analysis
   chapters:
   - file: tao
+  - file: equix
 - part: CTD χpod analysis
   chapters:
   - file: BoB-ctd-chipod
