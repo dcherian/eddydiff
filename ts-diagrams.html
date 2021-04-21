@@ -1520,17 +1520,6 @@ distributed.utils_perf - WARNING - full garbage collections took 10% CPU time re
 <p>Looks the same even for weak TIWs</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tiwke</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">ds</span><span class="o">.</span><span class="n">TIME</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;pad&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;TIME&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">highlight_enso</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span> <span class="n">enso</span><span class="o">=</span><span class="n">ds</span><span class="o">.</span><span class="n">enso_phase</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/ts-diagrams_25_0.png" src="_images/ts-diagrams_25_0.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span><span class="p">[</span><span class="s2">&quot;tiwke&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tiwke</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="n">ds</span><span class="o">.</span><span class="n">TIME</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;pad&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1538,7 +1527,23 @@ distributed.utils_perf - WARNING - full garbage collections took 10% CPU time re
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tiwkegrouped</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">groupby_bins</span><span class="p">(</span><span class="s2">&quot;tiwke&quot;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tiwke</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">ds</span><span class="o">.</span><span class="n">tiwke</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;TIME&quot;</span><span class="p">)</span>
+<span class="n">highlight_enso</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span> <span class="n">enso</span><span class="o">=</span><span class="n">enso</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s2">&quot;1996&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;&#39;)
+</pre></div>
+</div>
+<img alt="_images/ts-diagrams_26_1.png" src="_images/ts-diagrams_26_1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tiwkegrouped</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">groupby_bins</span><span class="p">(</span><span class="s2">&quot;tiwke&quot;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -1551,7 +1556,9 @@ distributed.utils_perf - WARNING - full garbage collections took 10% CPU time re
 <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">tiwkegrouped</span><span class="p">:</span>
-    <span class="c1"># group = group.query({&quot;N_POINTS&quot;: &quot;LONGITUDE &lt; -138 and LONGITUDE &gt; -142&quot;})</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="n">group</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">&quot;N_POINTS&quot;</span><span class="p">:</span> <span class="s2">&quot;LATITUDE &gt; -2 &amp; LATITUDE &lt; 2 &amp; PRES &gt; 35 &amp; PRES &lt; 100&quot;</span><span class="p">}</span>
+    <span class="p">)</span>
     <span class="n">hdl</span><span class="p">,</span> <span class="n">axxx</span> <span class="o">=</span> <span class="n">dcpy</span><span class="o">.</span><span class="n">oceans</span><span class="o">.</span><span class="n">TSplot</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">PSAL</span><span class="p">,</span> <span class="n">group</span><span class="o">.</span><span class="n">TEMP</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">&quot;scatter&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">ax</span> <span class="o">=</span> <span class="n">axxx</span>
@@ -1563,7 +1570,7 @@ distributed.utils_perf - WARNING - full garbage collections took 10% CPU time re
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fd46b992f10&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fd46d4ea9a0&gt;
 </pre></div>
 </div>
 <img alt="_images/ts-diagrams_28_1.png" src="_images/ts-diagrams_28_1.png" />
