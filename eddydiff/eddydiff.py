@@ -14,7 +14,6 @@ import xgcm
 import xarray as xr
 
 
-
 def intervals_to_bounds(da):
     assert da.ndim == 1
     name = da.dims[0][:-5]
@@ -673,12 +672,46 @@ def read_cole():
         .rename(
             {"latitude": "lat", "longitude": "lon", "density": "sigma", "depth": "pres"}
         )
-        .set_coords(["lat", "lon", "sigma"])
+        .set_coords(
+            [
+                "lat",
+                "lon",
+                "sigma",
+                "start_year",
+                "end_year",
+                "mixing_efficiency",
+                "minimum_points",
+                "maximum_mixing_length",
+            ]
+        )
     )
 
+    cole = cole.cf.guess_coord_axis()
+    cole["sigma"] = cole.sigma.data
+    cole["pres"] = cole.pres.data
+    del cole.minimum_points.attrs["axis"]
+    del cole.minimum_points.attrs["standard_name"]
+
+    long_names = {
+        "salinity_gradient": "$|∇S|$",
+        "mixing_length": "$λ$",
+        "salinity_mean": "$S$",
+        "salinity_std": "$\sqrt{S'S'}$",  # noqa
+        "diffusivity": "$κ$",
+    }
+
+    for var in cole:
+        for key, long_name in long_names.items():
+            if key in var:
+                cole[var].attrs["description"] = cole[var].attrs["long_name"]
+                cole[var].attrs["long_name"] = long_name
+                units = cole[var].attrs["units"]
+                if "absolute salinity, " in units.lower():
+                    cole[var].attrs["units"] = units[18:]
     # cole['rho'] = sw.dens(cole)
     cole["diffusivity_first"] = cole.diffusivity.bfill(dim="pres").isel(pres=0)
-
+    cole.sigma.attrs["positive"] = "down"
+    cole.pres.attrs["positive"] = "down"
     return cole
 
 
