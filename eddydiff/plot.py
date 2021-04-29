@@ -3,6 +3,8 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
+from .eddydiff import read_cole
+
 
 def check_bins_with_climatology(bins, argo, ecco):
     """
@@ -72,3 +74,20 @@ def histogram_turb_estimates(ds):
     plt.legend(["$K_T θ_z$", "$K_ρ θ_z$"])
 
     [aa.set_title("") for aa in ax.flat]
+
+
+def plot_cole_profile(**sel_kwargs):
+    cole = read_cole()
+    subset = cole.sel(**sel_kwargs, method="nearest")
+
+    kwargs = dict(hue="lon", y="vertical", xscale="log", yincrease=False)
+
+    f, ax = plt.subplots(1, 4, sharey=True, constrained_layout=True)
+    subset.salinity_gradient.cf.plot(**kwargs, ax=ax[0], add_legend=False)
+    subset.salinity_std.cf.plot(**kwargs, ax=ax[1], add_legend=False)
+    subset.mixing_length.cf.plot(**kwargs, ax=ax[2], add_legend=False)
+    subset.diffusivity.cf.plot(**kwargs, ax=ax[3], add_legend=False)
+
+    dcpy.plots.clean_axes(ax)
+    [axx.set_title("") for axx in ax]
+    f.suptitle(sel_kwargs)
