@@ -2216,7 +2216,8 @@ Attributes: (12/13)
 </div>
 <div class="section" id="compare-with-cole-estimate">
 <h2>Compare with Cole estimate<a class="headerlink" href="#compare-with-cole-estimate" title="Permalink to this headline">¶</a></h2>
-<p>We expect to see peak <span class="math notranslate nohighlight">\(K_e\)</span> between 600 and 1600m but we don’t!</p>
+<p>We expect to see peak <span class="math notranslate nohighlight">\(K_e\)</span> between 600 and 1600m but we mostly don’t! Both <span class="math notranslate nohighlight">\(⟨S'S'⟩\)</span> and <span class="math notranslate nohighlight">\(|∇S|\)</span> are large in the depth we expect a peak.</p>
+<p>There seems to be a smallish peak in the 1000-1200m range at (-34°E, -32°E) but seems to be a data problem</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cole</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">read_cole</span><span class="p">()</span>
@@ -2226,7 +2227,7 @@ Attributes: (12/13)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ed</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_cole_profile</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="mi">26</span><span class="p">,</span> <span class="n">lon</span><span class="o">=</span><span class="mi">360</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="o">-</span><span class="mi">27</span><span class="p">]))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ed</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_cole_profile</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="mi">26</span><span class="p">,</span> <span class="n">lon</span><span class="o">=</span><span class="mi">360</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">35</span><span class="p">,</span> <span class="o">-</span><span class="mi">34</span><span class="p">,</span> <span class="o">-</span><span class="mi">33</span><span class="p">,</span> <span class="o">-</span><span class="mi">32</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="o">-</span><span class="mi">27</span><span class="p">]))</span>
 </pre></div>
 </div>
 </div>
@@ -2234,7 +2235,7 @@ Attributes: (12/13)
 <img alt="_images/natre_28_0.png" src="_images/natre_28_0.png" />
 </div>
 </div>
-<p>Here’s the NATRE region marked on a map of <span class="math notranslate nohighlight">\(K_e\)</span>. There is just low diffusivity everywhere</p>
+<p>Here’s the NATRE region marked on a map of <span class="math notranslate nohighlight">\(K_e\)</span>. There is just low diffusivity everywhere in the box; but may be the mean signal is just northwest of the box</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fg</span> <span class="o">=</span> <span class="p">(</span>
