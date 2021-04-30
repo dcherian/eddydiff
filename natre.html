@@ -3341,6 +3341,29 @@ Attributes: (12/13)
 <img alt="_images/natre_31_0.png" src="_images/natre_31_0.png" />
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">argoclim</span> <span class="o">=</span> <span class="n">dcpy</span><span class="o">.</span><span class="n">oceans</span><span class="o">.</span><span class="n">read_argo_clim</span><span class="p">()</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">328</span><span class="p">,</span> <span class="mi">345</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre</span><span class="o">.</span><span class="n">theta</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">argoclim</span><span class="o">.</span><span class="n">Tmean</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;NATRE&quot;</span><span class="p">,</span> <span class="s2">&quot;Argo clim&quot;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;θ&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;θ&#39;)
+</pre></div>
+</div>
+<img alt="_images/natre_33_1.png" src="_images/natre_33_1.png" />
+</div>
+</div>
 <p>Here’s the NATRE region marked on a map of <span class="math notranslate nohighlight">\(K_e\)</span>. There is just low diffusivity everywhere in the box; but may be the mean signal is just northwest of the box</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -3362,7 +3385,7 @@ Attributes: (12/13)
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;xarray.plot.facetgrid.FacetGrid at 0x7fbb1793f2b0&gt;
 </pre></div>
 </div>
-<img alt="_images/natre_33_1.png" src="_images/natre_33_1.png" />
+<img alt="_images/natre_35_1.png" src="_images/natre_35_1.png" />
 </div>
 </div>
 </div>
@@ -3403,7 +3426,7 @@ Attributes: (12/13)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_36_0.png" src="_images/natre_36_0.png" />
+<img alt="_images/natre_38_0.png" src="_images/natre_38_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -3419,7 +3442,7 @@ Attributes: (12/13)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_37_0.png" src="_images/natre_37_0.png" />
+<img alt="_images/natre_39_0.png" src="_images/natre_39_0.png" />
 </div>
 </div>
 <div class="section" id="todo">
