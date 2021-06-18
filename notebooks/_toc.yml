@@ -1,14 +1,15 @@
-- file: intro
-
-- part: Moored χpod analysis
+format: jb-book
+root: intro
+parts:
+- caption: "Moored \u03C7pod analysis"
   chapters:
   - file: tao
   - file: equix
-- part: CTD χpod analysis
+- caption: "CTD \u03C7pod analysis"
   chapters:
   - file: BoB-ctd-chipod
   - file: P06
-- part: Ancillary analysis
+- caption: Ancillary analysis
   chapters:
   - file: compare-Ke-estimates
   - file: calc-gradients
