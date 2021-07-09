@@ -111,7 +111,24 @@ def results_to_xarray(results, profile):
     return turb
 
 
-def process_profile(profile, dz_segment=200, debug=True):
+def choose_bins(pres, dz_segment):
+    lefts = np.sort(
+        np.hstack(
+            [
+                np.arange(1000 - dz_segment // 2, 108, -dz_segment // 2),
+                np.arange(1000, pres[-1] + 1, dz_segment // 2),
+            ]
+        )
+    )
+    rights = lefts + dz_segment
+
+    # lefts = np.arange(pres[0], pres[-1] + 1, dz_segment // 2)
+    # rights = lefts + dz_segment
+
+    return lefts, rights
+
+
+def process_profile(profile, dz_segment=200, debug=False):
     """
     Processes finestructure turbulence estimate for Argo profiles
     in half-overlapping segments of length dz_segment.
@@ -146,8 +163,7 @@ def process_profile(profile, dz_segment=200, debug=True):
     if profile.sizes["PRES"] < 13:
         return ["empty!"]
 
-    lefts = np.arange(profile.PRES.data[0], profile.PRES.data[-1] + 1, dz_segment // 2)
-    rights = lefts + dz_segment
+    lefts, rights = choose_bins(profile.PRES.data, dz_segment)
 
     results = {
         var: np.full((len(lefts),), fill_value=np.nan)
