@@ -1,5 +1,6 @@
-import cf_xarray  # noqa
+import cf_xarray as cfxr  # noqa
 import dcpy
+import matplotlib.pyplot as plt
 import numpy as np
 from dcpy.finestructure import estimate_turb_segment
 
@@ -37,7 +38,7 @@ def trim_mld_mode_water(profile):
 def results_to_xarray(results, profile):
     data_vars = {
         var: ("pressure", results[var])
-        for var in ["ε", "K", "N2mean", "ξvar", "ξvargm"]
+        for var in ["ε", "Kρ", "N2mean", "ξvar", "ξvargm", "Tzlin", "Tzmean"]
     }
     coords = {
         var: ("pressure", results[var]) for var in ["flag", "pressure", "npts", "γmean"]
@@ -53,8 +54,22 @@ def results_to_xarray(results, profile):
 
     turb = xr.Dataset(data_vars, coords)
 
-    turb.ξvar.attrs = {"long_name": "strain variance"}
-    turb.ξvargm.attrs = {"long_name": "GM strain variance"}
+    turb.ε.attrs = {"long_name": "$ε$", "units": "W/kg"}
+    turb.Kρ.attrs = {"long_name": "$K_ρ$", "units": "m²/s"}
+    turb.ξvar.attrs = {"long_name": "$ξ$", "description": "strain variance"}
+    turb.ξvargm.attrs = {"long_name": "$ξ_{gm}$", "description": "GM strain variance"}
+    turb.N2mean.attrs = {
+        "long_name": "$N²$",
+        "description": "mean of quadratic fit of N² with pressure",
+    }
+    turb.Tzlin.attrs = {
+        "long_name": "$T_z^{lin}$",
+        "description": "linear fit of T vs pressure",
+    }
+    turb.Tzmean.attrs = {
+        "long_name": "$T_z^{quad}$",
+        "description": "mean of quadratic fit of Tz with pressure; like N² fitting for strain",
+    }
     turb.pressure.attrs = {
         "axis": "Z",
         "standard_name": "sea_water_pressure",
@@ -88,10 +103,15 @@ def results_to_xarray(results, profile):
     ]:
         turb.coords[var] = profile[var].data
 
+    turb["χ"] = 2 * turb.Kρ * turb.Tzmean ** 2
+    turb.χ.attrs = {"long_name": "$χ$", "units": "°C²/s"}
+    turb["KtTz"] = turb.Kρ * turb.Tzmean
+    turb.KtTz.attrs = {"long_name": "$K_ρθ_z$", "units": "°Cm/s"}
+
     return turb
 
 
-def process_profile(profile, dz_segment=200):
+def process_profile(profile, dz_segment=200, debug=True):
     """
     Processes finestructure turbulence estimate for Argo profiles
     in half-overlapping segments of length dz_segment.
@@ -103,11 +123,15 @@ def process_profile(profile, dz_segment=200):
         Argo profile.
     dz_segment: optional
         Length of segment in dbar.
+
+    Returns
+    -------
+
+    xr.Dataset if profile is not bad or too short.
     """
     for var in ["PRES", "TEMP", "PSAL"]:
         if profile[f"{var}_QC"] != 1:
-            print("bad quality!")
-            return []
+            return ["bad_quality"]
 
     profile["σ_θ"] = dcpy.eos.pden(profile.PSAL, profile.TEMP, profile.PRES, 0)
     profile["γ"] = dcpy.oceans.neutral_density(profile)
@@ -115,12 +139,12 @@ def process_profile(profile, dz_segment=200):
         {"N_LEVELS": "PRES"}
     )
 
+    profile_original = profile
     profile = trim_mld_mode_water(profile)
     profile = profile.isel(PRES=profile.PRES.notnull())
 
     if profile.sizes["PRES"] < 13:
-        print("empty!")
-        return []
+        return ["empty!"]
 
     lefts = np.arange(profile.PRES.data[0], profile.PRES.data[-1] + 1, dz_segment // 2)
     rights = lefts + dz_segment
@@ -128,7 +152,7 @@ def process_profile(profile, dz_segment=200):
     results = {
         var: np.full((len(lefts),), fill_value=np.nan)
         for var in [
-            "K",
+            "Kρ",
             "ε",
             "ξvar",
             "ξvargm",
@@ -137,6 +161,8 @@ def process_profile(profile, dz_segment=200):
             "flag",
             "npts",
             "pressure",
+            "Tzlin",
+            "Tzmean",
         ]
     }
     for var in ["γbnds", "pbnds"]:
@@ -171,11 +197,12 @@ def process_profile(profile, dz_segment=200):
 
         results["pressure"][idx] = P.mean()
 
+        # TODO: move earlier?
         N2, _ = dcpy.eos.bfrq(
             seg.PSAL, seg.TEMP, seg.PRES, dim="PRES", lat=seg.LATITUDE
         )
         (
-            results["K"][idx],
+            results["Kρ"][idx],
             results["ε"][idx],
             results["ξvar"][idx],
             results["ξvargm"][idx],
@@ -184,8 +211,75 @@ def process_profile(profile, dz_segment=200):
         ) = estimate_turb_segment(
             N2.PRES_mid.data,
             N2.data,
-            seg.cf["latitude"].item(),
+            seg.cf["latitude"].data,
             max_wavelength=dz_segment,
+            debug=debug,
         )
 
-    return results_to_xarray(results, profile)
+        results["Tzlin"][idx] = (
+            seg.TEMP.polyfit("PRES", deg=1).sel(degree=1).polyfit_coefficients.values
+            * -1
+        )
+        dTdz = (-1 * seg.TEMP.diff("PRES") / seg.PRES.diff("PRES")).assign_coords(
+            {"PRES": N2.PRES_mid.data}
+        )
+        dTdz_fit = xr.polyval(
+            N2.PRES_mid, dTdz.polyfit("PRES", deg=2).polyfit_coefficients
+        )
+        results["Tzmean"][idx] = dTdz_fit.mean().data
+
+        # if debug:
+        #     import matplotlib.pyplot as plt
+
+        #     plt.figure()
+        #     dTdz.plot()
+        #     dTdz_fit.plot()
+
+    dataset = results_to_xarray(results, profile)
+
+    if debug:
+        plot_profile_turb(profile_original, dataset)
+    return dataset
+
+
+def plot_profile_turb(profile, result):
+    p_edges = cfxr.bounds_to_vertices(result.p_bounds, bounds_dim="nbnds")
+
+    f, axx = plt.subplots(1, 4, sharey=True)
+
+    ax = dict(zip(["T", "ξ", "strat", "turb"], axx.flat))
+    xlabels = ["$T$", "$ξ$ var", "", ""]
+
+    ax["S"] = ax["T"].twiny()
+    ax["γ"] = ax["T"].twiny()
+    dcpy.plots.set_axes_color(ax["S"], "r")
+    dcpy.plots.set_axes_color(ax["γ"], "teal")
+
+    profile.TEMP.cf.plot(ax=ax["T"], marker=".", markersize=4)
+    profile.PSAL.cf.plot(ax=ax["S"], color="r", _labels=False)
+    profile.γ.cf.plot(ax=ax["γ"], color="teal", _labels=False)
+
+    title = ax["T"].get_title()
+    [a.set_title("") for a in axx.flat]
+
+    result.ξvar.cf.plot(ax=ax["ξ"], _labels=False)
+    result.ξvargm.cf.plot(ax=ax["ξ"], _labels=False)
+    ax["ξ"].legend(["obs", "GM"])
+
+    (9.81 * 1.7e-4 * result.Tzmean).cf.plot(ax=ax["strat"], _labels=False)
+    result.N2mean.cf.plot(ax=ax["strat"], _labels=False)
+    ax["strat"].legend(["$gαT_z$", "$N²$"])
+
+    result.ε.cf.plot(ax=ax["turb"], _labels=False)
+    result.χ.cf.plot(ax=ax["turb"], _labels=False, xscale="log")
+    ax["turb"].legend(["χ", "ε"])
+
+    dcpy.plots.liney([result.Tmld, result.Tmode], color="k", ax=axx.flat)
+    dcpy.plots.liney([result.σmld, result.σmode], color="b", ax=axx.flat)
+
+    for lab, a in zip(xlabels, axx.flat):
+        a.set_xlabel(lab)
+        a.set_yticks(p_edges, minor=True)
+        a.grid(True, axis="y", which="minor")
+
+    f.suptitle(title)
