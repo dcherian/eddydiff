@@ -38,7 +38,16 @@ def trim_mld_mode_water(profile):
 def results_to_xarray(results, profile):
     data_vars = {
         var: ("pressure", results[var])
-        for var in ["ε", "Kρ", "N2mean", "ξvar", "ξvargm", "Tzlin", "Tzmean"]
+        for var in [
+            "ε",
+            "Kρ",
+            "N2mean",
+            "ξvar",
+            "ξvargm",
+            "Tzlin",
+            "Tzmean",
+            "mean_dTdz_seg",
+        ]
     }
     coords = {
         var: ("pressure", results[var]) for var in ["flag", "pressure", "npts", "γmean"]
@@ -69,6 +78,10 @@ def results_to_xarray(results, profile):
     turb.Tzmean.attrs = {
         "long_name": "$T_z^{quad}$",
         "description": "mean of quadratic fit of Tz with pressure; like N² fitting for strain",
+    }
+    turb.mean_dTdz_seg.attrs = {
+        "description": "mean of dTdz values in segment",
+        "long_name": "$⟨T_z⟩$",
     }
     turb.pressure.attrs = {
         "axis": "Z",
@@ -179,10 +192,19 @@ def process_profile(profile, dz_segment=200, debug=False):
             "pressure",
             "Tzlin",
             "Tzmean",
+            "mean_dTdz_seg",
         ]
     }
     for var in ["γbnds", "pbnds"]:
         results[var] = np.full((len(lefts), 2), fill_value=np.nan)
+
+    # N² calculation is the expensive step; do it only once
+    N2full, _ = dcpy.eos.bfrq(
+        profile.PSAL, profile.TEMP, profile.PRES, dim="PRES", lat=profile.LATITUDE
+    )
+    dTdzfull = (
+        -1 * profile.TEMP.diff("PRES") / profile.PRES.diff("PRES")
+    ).assign_coords({"PRES": N2full.PRES_mid.data})
 
     for idx, (l, r) in enumerate(zip(lefts, rights)):
         seg = profile.sel(PRES=slice(l, r))
@@ -200,10 +222,17 @@ def process_profile(profile, dz_segment=200, debug=False):
         # TODO: despike
         # TODO: unrealistic values
 
+        N2 = N2full.sel(PRES_mid=slice(l, r))
+
         # TODO: Is this interpolation sensible?
         P = seg.PRES
-        dp = P.diff("PRES").median()
-        seg = seg.interp(PRES=np.arange(P[0], P[-1], dp))
+        dp = P.diff("PRES")
+        if dp.max() - dp.min() > 2:
+            dp = dp.median()
+            seg = seg.interp(PRES=np.arange(P[0], P[-1], dp.median()))
+            Pn2 = N2.PRES_mid
+            N2 = N2.interp(PRES_mid=np.arange(Pn2[0], Pn2[-1], dp.median()))
+
         results["pbnds"][idx, 0] = P.data[0]
         results["pbnds"][idx, 1] = P.data[-1]
 
@@ -214,9 +243,9 @@ def process_profile(profile, dz_segment=200, debug=False):
         results["pressure"][idx] = P.mean()
 
         # TODO: move earlier?
-        N2, _ = dcpy.eos.bfrq(
-            seg.PSAL, seg.TEMP, seg.PRES, dim="PRES", lat=seg.LATITUDE
-        )
+        # N2, _ = dcpy.eos.bfrq(
+        #    seg.PSAL, seg.TEMP, seg.PRES, dim="PRES", lat=seg.LATITUDE
+        # )
         (
             results["Kρ"][idx],
             results["ε"][idx],
@@ -236,9 +265,10 @@ def process_profile(profile, dz_segment=200, debug=False):
             seg.TEMP.polyfit("PRES", deg=1).sel(degree=1).polyfit_coefficients.values
             * -1
         )
-        dTdz = (-1 * seg.TEMP.diff("PRES") / seg.PRES.diff("PRES")).assign_coords(
-            {"PRES": N2.PRES_mid.data}
-        )
+        dTdz = dTdzfull.sel(PRES=slice(l, r))
+
+        results["mean_dTdz_seg"][idx] = dTdz.mean("PRES")
+
         dTdz_fit = xr.polyval(
             N2.PRES_mid, dTdz.polyfit("PRES", deg=2).polyfit_coefficients
         )
@@ -259,6 +289,9 @@ def process_profile(profile, dz_segment=200, debug=False):
 
 
 def plot_profile_turb(profile, result):
+    if all(result.ε.isnull().data):
+        print("no output!")
+        return
     p_edges = cfxr.bounds_to_vertices(result.p_bounds, bounds_dim="nbnds")
 
     f, axx = plt.subplots(1, 4, sharey=True)
