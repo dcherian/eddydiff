@@ -1,10 +1,13 @@
 # Field experiment regression tests
 
+import cf_xarray as cfxr
 import numpy as np
 import pandas as pd
 
 import eddydiff as ed
 import xarray as xr
+
+xr.set_options(keep_attrs=True)
 
 
 def test_interval_roundtrip():
@@ -13,8 +16,11 @@ def test_interval_roundtrip():
     da = xr.DataArray(
         data, name="gamma_n_bins", coords={"gamma_n_bins": data}, dims="gamma_n_bins"
     )
-    encoded = ed.intervals_to_vertex(da)
-    decoded = ed.intervals_from_vertex(encoded)
+    bounds = ed.intervals_to_bounds(da)
+    encoded = cfxr.bounds_to_vertices(bounds, bounds_dim="bounds")
+    decoded = ed.intervals_from_vertex(encoded).rename(
+        {"gamma_n_v_bins": "gamma_n_bins"}
+    )
     xr.testing.assert_allclose(da, decoded)
 
 
@@ -36,9 +42,5 @@ def test_natre():
         natre.reset_coords("pres"), "neutral_density", bins
     )
 
-    # chidens.assign(gamma_n_bounds=ed.intervals_to_vertex(chidens.gamma_n_bins)).drop("gamma_n_bins").to_netcdf("../tests/estimates/natre.nc")
     expected = xr.open_dataset("tests/estimates/natre.nc")
-    expected = expected.assign(
-        gamma_n_bins=ed.intervals_from_vertex(expected.gamma_n_bounds)
-    ).drop_vars("gamma_n_bounds")
     xr.testing.assert_allclose(expected, actual)

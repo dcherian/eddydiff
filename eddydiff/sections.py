@@ -341,4 +341,4 @@ def choose_bins(gamma, depth_range):
     mean_over = set(gamma.dims) - set(gamma.cf.axes["Z"])
     bins = gamma.mean(mean_over).cf.interp(Z=depth_range)
     bins[gamma.cf.axes["Z"][0]].attrs["axis"] = "Z"
-    return bins.cf.dropna("Z").data
+    return np.round(bins.cf.dropna("Z").data, 2)
