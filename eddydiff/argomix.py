@@ -128,7 +128,7 @@ def choose_bins(pres, dz_segment):
     lefts = np.sort(
         np.hstack(
             [
-                np.arange(1000 - dz_segment // 2, 108, -dz_segment // 2),
+                np.arange(1000 - dz_segment // 2, pres[0], -dz_segment // 2),
                 np.arange(1000, pres[-1] + 1, dz_segment // 2),
             ]
         )
@@ -161,6 +161,8 @@ def process_profile(profile, dz_segment=200, debug=False):
     """
     for var in ["PRES", "TEMP", "PSAL"]:
         if profile[f"{var}_QC"] != 1:
+            if debug:
+                raise ValueError("bad_quality")
             return ["bad_quality"]
 
     profile["σ_θ"] = dcpy.eos.pden(profile.PSAL, profile.TEMP, profile.PRES, 0)
@@ -174,6 +176,8 @@ def process_profile(profile, dz_segment=200, debug=False):
     profile = profile.isel(PRES=profile.PRES.notnull())
 
     if profile.sizes["PRES"] < 13:
+        if debug:
+            raise ValueError("empty")
         return ["empty!"]
 
     lefts, rights = choose_bins(profile.PRES.data, dz_segment)
@@ -209,23 +213,32 @@ def process_profile(profile, dz_segment=200, debug=False):
     for idx, (l, r) in enumerate(zip(lefts, rights)):
         seg = profile.sel(PRES=slice(l, r))
 
-        results["npts"][idx] = seg.sizes["PRES"]
-
-        if seg.sizes["PRES"] > 1 and seg.PRES.diff("PRES").min() > 18:
-            results["flag"][idx] = -2
-            continue
-
-        if results["npts"][idx] < 12:
+        if seg.sizes["PRES"] == 1:
             results["flag"][idx] = -1
             continue
 
+        # NATRE region: At 1000m sampling dz changes drastically;
+        # it helps to just drop that one point
+        seg = seg.where(seg.PRES.diff("PRES") < 21, drop=True)
+
+        results["npts"][idx] = seg.sizes["PRES"]
+
+        # max dz of 20m; ensure min number of points
+        if results["npts"][idx] < np.ceil(dz_segment / 20):
+            results["flag"][idx] = -1
+            continue
+
+        # if seg.PRES.diff("PRES").max() > 18:
+        #    results["flag"][idx] = -2
+        #    continue
+
         # TODO: despike
         # TODO: unrealistic values
+        P = seg.PRES
 
-        N2 = N2full.sel(PRES_mid=slice(l, r))
+        N2 = N2full.sel(PRES_mid=slice(P[0], P[-1]))
 
         # TODO: Is this interpolation sensible?
-        P = seg.PRES
         dp = P.diff("PRES")
         if dp.max() - dp.min() > 2:
             dp = dp.median()
@@ -233,14 +246,13 @@ def process_profile(profile, dz_segment=200, debug=False):
             Pn2 = N2.PRES_mid
             N2 = N2.interp(PRES_mid=np.arange(Pn2[0], Pn2[-1], dp.median()))
 
+        results["pressure"][idx] = (P.data[0] + P.data[-1]) / 2
         results["pbnds"][idx, 0] = P.data[0]
         results["pbnds"][idx, 1] = P.data[-1]
 
         results["γmean"][idx] = seg.γ.mean()
         results["γbnds"][idx, 0] = seg.γ.data[0]
         results["γbnds"][idx, 1] = seg.γ.data[-1]
-
-        results["pressure"][idx] = P.mean()
 
         # TODO: move earlier?
         # N2, _ = dcpy.eos.bfrq(
@@ -317,7 +329,7 @@ def plot_profile_turb(profile, result):
 
     (9.81 * 1.7e-4 * result.Tzmean).cf.plot(ax=ax["strat"], _labels=False)
     result.N2mean.cf.plot(ax=ax["strat"], _labels=False)
-    ax["strat"].legend(["$gαT_z$", "$N²$"])
+    ax["strat"].legend(["$gαT_z$", "$N^2$"])
 
     result.ε.cf.plot(ax=ax["turb"], _labels=False)
     result.χ.cf.plot(ax=ax["turb"], _labels=False, xscale="log")
