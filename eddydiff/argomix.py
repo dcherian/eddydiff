@@ -165,22 +165,32 @@ def process_profile(profile, dz_segment=200, debug=False):
                 raise ValueError("bad_quality")
             return ["bad_quality"]
 
-    profile["σ_θ"] = dcpy.eos.pden(profile.PSAL, profile.TEMP, profile.PRES, 0)
-    profile["γ"] = dcpy.oceans.neutral_density(profile)
     profile = profile.isel(N_LEVELS=profile.PRES.notnull()).swap_dims(
         {"N_LEVELS": "PRES"}
     )
 
+    profile["σ_θ"] = dcpy.eos.pden(
+        profile.cf["sea_water_salinity"],
+        profile.cf["sea_water_temperature"],
+        profile.cf["sea_water_pressure"],
+        0,
+    )
+    profile["γ"] = dcpy.oceans.neutral_density(profile)
+
     profile_original = profile
     profile = trim_mld_mode_water(profile)
-    profile = profile.isel(PRES=profile.PRES.notnull())
+    # profile = profile.isel("Z"=profile.PRES.notnull())
 
-    if profile.sizes["PRES"] < 13:
+    S = profile.cf["sea_water_salinity"]
+    T = profile.cf["sea_water_temperature"]
+    P = profile.cf["sea_water_pressure"]
+
+    if profile.cf.sizes["Z"] < 13:
         if debug:
             raise ValueError("empty")
         return ["empty!"]
 
-    lefts, rights = choose_bins(profile.PRES.data, dz_segment)
+    lefts, rights = choose_bins(profile.cf["Z"].data, dz_segment)
 
     results = {
         var: np.full((len(lefts),), fill_value=np.nan)
@@ -203,25 +213,29 @@ def process_profile(profile, dz_segment=200, debug=False):
         results[var] = np.full((len(lefts), 2), fill_value=np.nan)
 
     # N² calculation is the expensive step; do it only once
-    N2full, _ = dcpy.eos.bfrq(
-        profile.PSAL, profile.TEMP, profile.PRES, dim="PRES", lat=profile.LATITUDE
-    )
+    Zdim = profile.cf.axes["Z"][0]
+    N2full, _ = dcpy.eos.bfrq(S, T, P, dim=Zdim, lat=profile.cf["latitude"])
+
+    # TODO: Need potential temperature so do this at the segment level
     dTdzfull = (
-        -1 * profile.TEMP.diff("PRES") / profile.PRES.diff("PRES")
-    ).assign_coords({"PRES": N2full.PRES_mid.data})
+        -1 * profile.cf["sea_water_temperature"].cf.diff("Z") / P.cf.diff("Z")
+    ).cf.assign_coords({"Z": N2full.cf["Z"].data})
+    dTdzfull[Zdim].attrs["axis"] = "Z"
 
     for idx, (l, r) in enumerate(zip(lefts, rights)):
-        seg = profile.sel(PRES=slice(l, r))
+        seg = profile.cf.sel(Z=slice(l, r))
 
-        if seg.sizes["PRES"] == 1:
+        if seg.cf.sizes["Z"] == 1:
             results["flag"][idx] = -1
             continue
 
         # NATRE region: At 1000m sampling dz changes drastically;
         # it helps to just drop that one point
-        seg = seg.where(seg.PRES.diff("PRES") < 21, drop=True)
+        P = seg.cf["Z"]
 
-        results["npts"][idx] = seg.sizes["PRES"]
+        seg = seg.where(P.cf.diff("Z") < 21, drop=True)
+
+        results["npts"][idx] = seg.cf.sizes["Z"]
 
         # max dz of 20m; ensure min number of points
         if results["npts"][idx] < np.ceil(dz_segment / 20):
@@ -234,17 +248,16 @@ def process_profile(profile, dz_segment=200, debug=False):
 
         # TODO: despike
         # TODO: unrealistic values
-        P = seg.PRES
 
-        N2 = N2full.sel(PRES_mid=slice(P[0], P[-1]))
+        N2 = N2full.cf.sel(Z=slice(P[0], P[-1]))
 
         # TODO: Is this interpolation sensible?
-        dp = P.diff("PRES")
+        dp = P.cf.diff("Z")
         if dp.max() - dp.min() > 2:
             dp = dp.median()
-            seg = seg.interp(PRES=np.arange(P[0], P[-1], dp.median()))
-            Pn2 = N2.PRES_mid
-            N2 = N2.interp(PRES_mid=np.arange(Pn2[0], Pn2[-1], dp.median()))
+            seg = seg.cf.interp(Z=np.arange(P[0], P[-1], dp.median()))
+            Pn2 = N2.cf["Z"]
+            N2 = N2.cf.interp(Z=np.arange(Pn2[0], Pn2[-1], dp.median()))
 
         results["pressure"][idx] = (P.data[0] + P.data[-1]) / 2
         results["pbnds"][idx, 0] = P.data[0]
@@ -266,7 +279,7 @@ def process_profile(profile, dz_segment=200, debug=False):
             results["N2mean"][idx],
             results["flag"][idx],
         ) = estimate_turb_segment(
-            N2.PRES_mid.data,
+            N2.cf["Z"].data,
             N2.data,
             seg.cf["latitude"].data,
             max_wavelength=dz_segment,
@@ -274,15 +287,15 @@ def process_profile(profile, dz_segment=200, debug=False):
         )
 
         results["Tzlin"][idx] = (
-            seg.TEMP.polyfit("PRES", deg=1).sel(degree=1).polyfit_coefficients.values
+            seg.TEMP.cf.polyfit("Z", deg=1).sel(degree=1).polyfit_coefficients.values
             * -1
         )
-        dTdz = dTdzfull.sel(PRES=slice(l, r))
+        dTdz = dTdzfull.cf.sel(Z=slice(l, r))
 
-        results["mean_dTdz_seg"][idx] = dTdz.mean("PRES")
+        results["mean_dTdz_seg"][idx] = dTdz.cf.mean("Z")
 
         dTdz_fit = xr.polyval(
-            N2.PRES_mid, dTdz.polyfit("PRES", deg=2).polyfit_coefficients
+            N2.cf["Z"], dTdz.cf.polyfit("Z", deg=2).polyfit_coefficients
         )
         results["Tzmean"][idx] = dTdz_fit.mean().data
 
