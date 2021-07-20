@@ -42,8 +42,6 @@
     <script src="_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -313,26 +311,29 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#compare-with-cole-estimate">
-   Compare with Cole estimate
+  <a class="reference internal nav-link" href="#studying-cole-estimate">
+   Studying Cole estimate
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#t-s-diagrams-argo-vs-natre">
+   T-S diagrams: Argo vs. NATRE
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#t-s-diagrams-argo-vs-natre">
-     T-S diagrams: Argo vs. NATRE
+    <a class="reference internal nav-link" href="#all-argo-vs-natre">
+     All argo vs NATRE
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#ts-plots-finestructure-argo-profiles">
-     TS plots: finestructure Argo profiles
+    <a class="reference internal nav-link" href="#finestructure-argo-vs-natre">
+     Finestructure Argo vs NATRE
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#conclusions">
-       Conclusions
-      </a>
-     </li>
-    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#conclusions">
+     Conclusions
+    </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#is-there-spatial-uncertainty-cole-estimate-are-we-looking-in-the-wrong-place-no">
@@ -2379,6 +2380,27 @@ Attributes: (12/13)
 </div>
 <div class="section" id="reproducing-production-vs-dissipation">
 <h2>Reproducing production vs dissipation<a class="headerlink" href="#reproducing-production-vs-dissipation" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">colegrad</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/cole-clim-gradient.nc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+    <span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">360</span> <span class="o">-</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">360</span> <span class="o">-</span> <span class="mi">25</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">cole</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">read_cole</span><span class="p">()</span>
+<span class="n">cole_var_all</span> <span class="o">=</span> <span class="n">cole</span><span class="o">.</span><span class="n">diffusivity</span><span class="o">.</span><span class="n">interp_like</span><span class="p">(</span><span class="n">colegrad</span><span class="o">.</span><span class="n">dTiso</span><span class="p">)</span> <span class="o">*</span> <span class="n">colegrad</span><span class="o">.</span><span class="n">dTiso</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">cole_var_all</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;long_name&quot;</span><span class="p">:</span> <span class="s2">&quot;$K_e^</span><span class="si">{cole}</span><span class="s2"> |∇T_</span><span class="si">{iso}</span><span class="s2">^</span><span class="si">{argo}</span><span class="s2">|²$&quot;</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;°C²/s&quot;</span><span class="p">}</span>
+<span class="n">cole_var</span> <span class="o">=</span> <span class="n">cole_var_all</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
+
+<span class="n">groeskamp</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;/home/deepak/datasets/groeskamp2020/groeskamp2020.nc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+    <span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">360</span> <span class="o">-</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">360</span> <span class="o">-</span> <span class="mi">25</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;dTiso&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">colegrad</span><span class="o">.</span><span class="n">dTiso</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">groeskamp</span><span class="o">.</span><span class="n">depth</span><span class="p">)</span>
+<span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;eddy_var_0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;Ke_0&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">groeskamp</span><span class="o">.</span><span class="n">dTiso</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;eddy_var&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;Ke&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">groeskamp</span><span class="o">.</span><span class="n">dTiso</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">groeskamp</span> <span class="o">=</span> <span class="n">groeskamp</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
 <p>Ferrari &amp; Polzin use <span class="math notranslate nohighlight">\(⟨u_t θ_t⟩.∇θ_m = -Γ ⟨ε⟩/N_m^2  ∂_zθ_m^2\)</span>, we are instead doing <span class="math notranslate nohighlight">\(-⟨K_T θ_z⟩ ∂_zθ_m\)</span>. Our estimate mostly agrees with theirs.</p>
 <ol class="simple">
 <li><p>Filling in NaNs in the temperature profiles was important. This means more estimates are used in the averages</p></li>
@@ -2386,480 +2408,10 @@ Attributes: (12/13)
 <li><p>Masked so that <span class="math notranslate nohighlight">\(|θ_z|\)</span> &gt; 1e-3 (really important, otherwise our estimate is too high)</p></li>
 </ol>
 <p>The comparison with variance production using Cole et al diffusivity and gradients calculated in a similar way disagree significantly between 400 and 1000m. Below that there’s not much data but it seems to agree.</p>
-<div class="cell docutils container">
+<p>The Groeskamp &amp; LaCasce estimate is slightly better but not by much.</p>
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">colegrad</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/cole-clim-gradient.nc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
-    <span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">360</span> <span class="o">-</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">360</span> <span class="o">-</span> <span class="mi">25</span><span class="p">)</span>
-<span class="p">)</span>
-<span class="n">cole</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">read_cole</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">groeskamp</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;/home/deepak/datasets/groeskamp2020/groeskamp2020.nc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
-    <span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">360</span> <span class="o">-</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">360</span> <span class="o">-</span> <span class="mi">25</span><span class="p">)</span>
-<span class="p">)</span>
-<span class="n">groeskamp</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
-<defs>
-<symbol id="icon-database" viewBox="0 0 32 32">
-<path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
-<path d="M16 17c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
-<path d="M16 26c-8.837 0-16-2.239-16-5v6c0 2.761 7.163 5 16 5s16-2.239 16-5v-6c0 2.761-7.163 5-16 5z"></path>
-</symbol>
-<symbol id="icon-file-text2" viewBox="0 0 32 32">
-<path d="M28.681 7.159c-0.694-0.947-1.662-2.053-2.724-3.116s-2.169-2.030-3.116-2.724c-1.612-1.182-2.393-1.319-2.841-1.319h-15.5c-1.378 0-2.5 1.121-2.5 2.5v27c0 1.378 1.122 2.5 2.5 2.5h23c1.378 0 2.5-1.122 2.5-2.5v-19.5c0-0.448-0.137-1.23-1.319-2.841zM24.543 5.457c0.959 0.959 1.712 1.825 2.268 2.543h-4.811v-4.811c0.718 0.556 1.584 1.309 2.543 2.268zM28 29.5c0 0.271-0.229 0.5-0.5 0.5h-23c-0.271 0-0.5-0.229-0.5-0.5v-27c0-0.271 0.229-0.5 0.5-0.5 0 0 15.499-0 15.5 0v7c0 0.552 0.448 1 1 1h7v19.5z"></path>
-<path d="M23 26h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
-<path d="M23 22h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
-<path d="M23 18h-14c-0.552 0-1-0.448-1-1s0.448-1 1-1h14c0.552 0 1 0.448 1 1s-0.448 1-1 1z"></path>
-</symbol>
-</defs>
-</svg>
-<style>/* CSS stylesheet for displaying xarray objects in jupyterlab.
- *
- */
-
-:root {
-  --xr-font-color0: var(--jp-content-font-color0, rgba(0, 0, 0, 1));
-  --xr-font-color2: var(--jp-content-font-color2, rgba(0, 0, 0, 0.54));
-  --xr-font-color3: var(--jp-content-font-color3, rgba(0, 0, 0, 0.38));
-  --xr-border-color: var(--jp-border-color2, #e0e0e0);
-  --xr-disabled-color: var(--jp-layout-color3, #bdbdbd);
-  --xr-background-color: var(--jp-layout-color0, white);
-  --xr-background-color-row-even: var(--jp-layout-color1, white);
-  --xr-background-color-row-odd: var(--jp-layout-color2, #eeeeee);
-}
-
-html[theme=dark],
-body.vscode-dark {
-  --xr-font-color0: rgba(255, 255, 255, 1);
-  --xr-font-color2: rgba(255, 255, 255, 0.54);
-  --xr-font-color3: rgba(255, 255, 255, 0.38);
-  --xr-border-color: #1F1F1F;
-  --xr-disabled-color: #515151;
-  --xr-background-color: #111111;
-  --xr-background-color-row-even: #111111;
-  --xr-background-color-row-odd: #313131;
-}
-
-.xr-wrap {
-  display: block;
-  min-width: 300px;
-  max-width: 700px;
-}
-
-.xr-text-repr-fallback {
-  /* fallback to plain text repr when CSS is not injected (untrusted notebook) */
-  display: none;
-}
-
-.xr-header {
-  padding-top: 6px;
-  padding-bottom: 6px;
-  margin-bottom: 4px;
-  border-bottom: solid 1px var(--xr-border-color);
-}
-
-.xr-header > div,
-.xr-header > ul {
-  display: inline;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.xr-obj-type,
-.xr-array-name {
-  margin-left: 2px;
-  margin-right: 10px;
-}
-
-.xr-obj-type {
-  color: var(--xr-font-color2);
-}
-
-.xr-sections {
-  padding-left: 0 !important;
-  display: grid;
-  grid-template-columns: 150px auto auto 1fr 20px 20px;
-}
-
-.xr-section-item {
-  display: contents;
-}
-
-.xr-section-item input {
-  display: none;
-}
-
-.xr-section-item input + label {
-  color: var(--xr-disabled-color);
-}
-
-.xr-section-item input:enabled + label {
-  cursor: pointer;
-  color: var(--xr-font-color2);
-}
-
-.xr-section-item input:enabled + label:hover {
-  color: var(--xr-font-color0);
-}
-
-.xr-section-summary {
-  grid-column: 1;
-  color: var(--xr-font-color2);
-  font-weight: 500;
-}
-
-.xr-section-summary > span {
-  display: inline-block;
-  padding-left: 0.5em;
-}
-
-.xr-section-summary-in:disabled + label {
-  color: var(--xr-font-color2);
-}
-
-.xr-section-summary-in + label:before {
-  display: inline-block;
-  content: '►';
-  font-size: 11px;
-  width: 15px;
-  text-align: center;
-}
-
-.xr-section-summary-in:disabled + label:before {
-  color: var(--xr-disabled-color);
-}
-
-.xr-section-summary-in:checked + label:before {
-  content: '▼';
-}
-
-.xr-section-summary-in:checked + label > span {
-  display: none;
-}
-
-.xr-section-summary,
-.xr-section-inline-details {
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-.xr-section-inline-details {
-  grid-column: 2 / -1;
-}
-
-.xr-section-details {
-  display: none;
-  grid-column: 1 / -1;
-  margin-bottom: 5px;
-}
-
-.xr-section-summary-in:checked ~ .xr-section-details {
-  display: contents;
-}
-
-.xr-array-wrap {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 20px auto;
-}
-
-.xr-array-wrap > label {
-  grid-column: 1;
-  vertical-align: top;
-}
-
-.xr-preview {
-  color: var(--xr-font-color3);
-}
-
-.xr-array-preview,
-.xr-array-data {
-  padding: 0 5px !important;
-  grid-column: 2;
-}
-
-.xr-array-data,
-.xr-array-in:checked ~ .xr-array-preview {
-  display: none;
-}
-
-.xr-array-in:checked ~ .xr-array-data,
-.xr-array-preview {
-  display: inline-block;
-}
-
-.xr-dim-list {
-  display: inline-block !important;
-  list-style: none;
-  padding: 0 !important;
-  margin: 0;
-}
-
-.xr-dim-list li {
-  display: inline-block;
-  padding: 0;
-  margin: 0;
-}
-
-.xr-dim-list:before {
-  content: '(';
-}
-
-.xr-dim-list:after {
-  content: ')';
-}
-
-.xr-dim-list li:not(:last-child):after {
-  content: ',';
-  padding-right: 5px;
-}
-
-.xr-has-index {
-  font-weight: bold;
-}
-
-.xr-var-list,
-.xr-var-item {
-  display: contents;
-}
-
-.xr-var-item > div,
-.xr-var-item label,
-.xr-var-item > .xr-var-name span {
-  background-color: var(--xr-background-color-row-even);
-  margin-bottom: 0;
-}
-
-.xr-var-item > .xr-var-name:hover span {
-  padding-right: 5px;
-}
-
-.xr-var-list > li:nth-child(odd) > div,
-.xr-var-list > li:nth-child(odd) > label,
-.xr-var-list > li:nth-child(odd) > .xr-var-name span {
-  background-color: var(--xr-background-color-row-odd);
-}
-
-.xr-var-name {
-  grid-column: 1;
-}
-
-.xr-var-dims {
-  grid-column: 2;
-}
-
-.xr-var-dtype {
-  grid-column: 3;
-  text-align: right;
-  color: var(--xr-font-color2);
-}
-
-.xr-var-preview {
-  grid-column: 4;
-}
-
-.xr-var-name,
-.xr-var-dims,
-.xr-var-dtype,
-.xr-preview,
-.xr-attrs dt {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-right: 10px;
-}
-
-.xr-var-name:hover,
-.xr-var-dims:hover,
-.xr-var-dtype:hover,
-.xr-attrs dt:hover {
-  overflow: visible;
-  width: auto;
-  z-index: 1;
-}
-
-.xr-var-attrs,
-.xr-var-data {
-  display: none;
-  background-color: var(--xr-background-color) !important;
-  padding-bottom: 5px !important;
-}
-
-.xr-var-attrs-in:checked ~ .xr-var-attrs,
-.xr-var-data-in:checked ~ .xr-var-data {
-  display: block;
-}
-
-.xr-var-data > table {
-  float: right;
-}
-
-.xr-var-name span,
-.xr-var-data,
-.xr-attrs {
-  padding-left: 25px !important;
-}
-
-.xr-attrs,
-.xr-var-attrs,
-.xr-var-data {
-  grid-column: 1 / -1;
-}
-
-dl.xr-attrs {
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: 125px auto;
-}
-
-.xr-attrs dt,
-.xr-attrs dd {
-  padding: 0;
-  margin: 0;
-  float: left;
-  padding-right: 10px;
-  width: auto;
-}
-
-.xr-attrs dt {
-  font-weight: normal;
-  grid-column: 1;
-}
-
-.xr-attrs dt:hover span {
-  display: inline-block;
-  background: var(--xr-background-color);
-  padding-right: 10px;
-}
-
-.xr-attrs dd {
-  grid-column: 2;
-  white-space: pre-wrap;
-  word-break: break-all;
-}
-
-.xr-icon-database,
-.xr-icon-file-text2 {
-  display: inline-block;
-  vertical-align: middle;
-  width: 1em;
-  height: 1.5em !important;
-  stroke-width: 0;
-  stroke: currentColor;
-  fill: currentColor;
-}
-</style><pre class='xr-text-repr-fallback'>&lt;xarray.Dataset&gt;
-Dimensions:  (depth: 102, lat: 4, lon: 5)
-Coordinates:
-  * depth    (depth) float64 0.0 5.0 10.0 15.0 ... 5.3e+03 5.4e+03 5.5e+03
-  * lat      (lat) float64 24.5 25.5 26.5 27.5
-  * lon      (lon) float64 330.5 331.5 332.5 333.5 334.5
-Data variables:
-    Ke_0     (depth, lat, lon) float64 1.563e+03 1.624e+03 1.712e+03 ... nan nan
-    Ke       (depth, lat, lon) float64 769.2 806.5 848.4 827.1 ... nan nan nan
-    S        (depth, lat, lon) float64 0.4921 0.4966 0.4955 ... nan nan nan</pre><div class='xr-wrap' hidden><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-24dbfe8d-cdb9-4262-b23b-5b36f86bcae9' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-24dbfe8d-cdb9-4262-b23b-5b36f86bcae9' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>depth</span>: 102</li><li><span class='xr-has-index'>lat</span>: 4</li><li><span class='xr-has-index'>lon</span>: 5</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-8ea8b491-5b64-41b4-9039-b58abb74533d' class='xr-section-summary-in' type='checkbox'  checked><label for='section-8ea8b491-5b64-41b4-9039-b58abb74533d' class='xr-section-summary' >Coordinates: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>depth</span></div><div class='xr-var-dims'>(depth)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.0 5.0 10.0 ... 5.4e+03 5.5e+03</div><input id='attrs-04dfbc44-cbf0-4bcd-8b59-cfb2d326fac6' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-04dfbc44-cbf0-4bcd-8b59-cfb2d326fac6' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-451169ce-2d38-4964-94cf-301eb3f5ed3f' class='xr-var-data-in' type='checkbox'><label for='data-451169ce-2d38-4964-94cf-301eb3f5ed3f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>depth</dd><dt><span>units :</span></dt><dd>m</dd><dt><span>positive :</span></dt><dd>down</dd></dl></div><div class='xr-var-data'><pre>array([0.00e+00, 5.00e+00, 1.00e+01, 1.50e+01, 2.00e+01, 2.50e+01, 3.00e+01,
-       3.50e+01, 4.00e+01, 4.50e+01, 5.00e+01, 5.50e+01, 6.00e+01, 6.50e+01,
-       7.00e+01, 7.50e+01, 8.00e+01, 8.50e+01, 9.00e+01, 9.50e+01, 1.00e+02,
-       1.25e+02, 1.50e+02, 1.75e+02, 2.00e+02, 2.25e+02, 2.50e+02, 2.75e+02,
-       3.00e+02, 3.25e+02, 3.50e+02, 3.75e+02, 4.00e+02, 4.25e+02, 4.50e+02,
-       4.75e+02, 5.00e+02, 5.50e+02, 6.00e+02, 6.50e+02, 7.00e+02, 7.50e+02,
-       8.00e+02, 8.50e+02, 9.00e+02, 9.50e+02, 1.00e+03, 1.05e+03, 1.10e+03,
-       1.15e+03, 1.20e+03, 1.25e+03, 1.30e+03, 1.35e+03, 1.40e+03, 1.45e+03,
-       1.50e+03, 1.55e+03, 1.60e+03, 1.65e+03, 1.70e+03, 1.75e+03, 1.80e+03,
-       1.85e+03, 1.90e+03, 1.95e+03, 2.00e+03, 2.10e+03, 2.20e+03, 2.30e+03,
-       2.40e+03, 2.50e+03, 2.60e+03, 2.70e+03, 2.80e+03, 2.90e+03, 3.00e+03,
-       3.10e+03, 3.20e+03, 3.30e+03, 3.40e+03, 3.50e+03, 3.60e+03, 3.70e+03,
-       3.80e+03, 3.90e+03, 4.00e+03, 4.10e+03, 4.20e+03, 4.30e+03, 4.40e+03,
-       4.50e+03, 4.60e+03, 4.70e+03, 4.80e+03, 4.90e+03, 5.00e+03, 5.10e+03,
-       5.20e+03, 5.30e+03, 5.40e+03, 5.50e+03])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>lat</span></div><div class='xr-var-dims'>(lat)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>24.5 25.5 26.5 27.5</div><input id='attrs-3cebecfb-3333-4e3a-b64f-f509254c210a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-3cebecfb-3333-4e3a-b64f-f509254c210a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-1c2fe4a3-ca9f-4c54-9ed7-914e83aee4d7' class='xr-var-data-in' type='checkbox'><label for='data-1c2fe4a3-ca9f-4c54-9ed7-914e83aee4d7' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>latitude</dd><dt><span>units :</span></dt><dd>degrees_north</dd></dl></div><div class='xr-var-data'><pre>array([24.5, 25.5, 26.5, 27.5])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>lon</span></div><div class='xr-var-dims'>(lon)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>330.5 331.5 332.5 333.5 334.5</div><input id='attrs-1b46b62f-74d5-4f0a-915d-9227836e1487' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-1b46b62f-74d5-4f0a-915d-9227836e1487' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c81c674e-3a3f-4727-8fc0-86920481be6d' class='xr-var-data-in' type='checkbox'><label for='data-c81c674e-3a3f-4727-8fc0-86920481be6d' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>standard_name :</span></dt><dd>longitude</dd><dt><span>units :</span></dt><dd>degrees_east</dd></dl></div><div class='xr-var-data'><pre>array([330.5, 331.5, 332.5, 333.5, 334.5])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-60c86b4b-6034-476b-a003-66ce7a2aea8a' class='xr-section-summary-in' type='checkbox'  checked><label for='section-60c86b4b-6034-476b-a003-66ce7a2aea8a' class='xr-section-summary' >Data variables: <span>(3)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>Ke_0</span></div><div class='xr-var-dims'>(depth, lat, lon)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-eb04caf6-122b-404d-86fb-99cead491fcf' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-eb04caf6-122b-404d-86fb-99cead491fcf' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c61b082e-a763-48d2-9877-bb7190fa69ad' class='xr-var-data-in' type='checkbox'><label for='data-c61b082e-a763-48d2-9877-bb7190fa69ad' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>description :</span></dt><dd>unsuppressed diffusivities</dd><dt><span>long_name :</span></dt><dd>$K_e$</dd></dl></div><div class='xr-var-data'><pre>array([[[1.562915e+03, 1.624025e+03, ..., 1.684457e+03, 1.647462e+03],
-        [1.468545e+03, 1.440909e+03, ..., 1.579120e+03, 1.583828e+03],
-        [1.424640e+03, 1.428075e+03, ..., 1.456015e+03, 1.440091e+03],
-        [1.448605e+03, 1.500593e+03, ..., 1.381129e+03, 1.453777e+03]],
-
-       [[1.562842e+03, 1.623950e+03, ..., 1.684379e+03, 1.647384e+03],
-        [1.468476e+03, 1.440842e+03, ..., 1.579048e+03, 1.583754e+03],
-        [1.424571e+03, 1.428007e+03, ..., 1.455946e+03, 1.440024e+03],
-        [1.448526e+03, 1.500515e+03, ..., 1.381058e+03, 1.453702e+03]],
-
-       ...,
-
-       [[4.921996e-01, 5.177866e-01, ..., 5.497068e-01,          nan],
-        [5.214996e-01, 5.063562e-01, ..., 5.199440e-01,          nan],
-        [5.811761e-01,          nan, ...,          nan,          nan],
-        [         nan,          nan, ...,          nan,          nan]],
-
-       [[0.000000e+00, 1.572206e-05, ..., 1.574087e-05,          nan],
-        [7.805747e-06, 6.839388e-06, ..., 6.949363e-06,          nan],
-        [2.960441e-06,          nan, ...,          nan,          nan],
-        [         nan,          nan, ...,          nan,          nan]]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Ke</span></div><div class='xr-var-dims'>(depth, lat, lon)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-fba5df81-5652-4258-a5a1-0c7a464e2e77' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-fba5df81-5652-4258-a5a1-0c7a464e2e77' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-07ce8eff-af33-4e5b-8e00-a81b09cdd13f' class='xr-var-data-in' type='checkbox'><label for='data-07ce8eff-af33-4e5b-8e00-a81b09cdd13f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$K_e$</dd></dl></div><div class='xr-var-data'><pre>array([[[7.691873e+02, 8.064587e+02, ..., 8.271380e+02, 7.914433e+02],
-        [7.541200e+02, 7.403549e+02, ..., 7.929211e+02, 7.751944e+02],
-        [7.630093e+02, 7.612827e+02, ..., 7.594794e+02, 7.339653e+02],
-        [8.030074e+02, 8.345721e+02, ..., 7.562789e+02, 7.905860e+02]],
-
-       [[7.762687e+02, 8.142750e+02, ..., 8.361118e+02, 8.003433e+02],
-        [7.588604e+02, 7.455013e+02, ..., 7.996077e+02, 7.822620e+02],
-        [7.654288e+02, 7.643097e+02, ..., 7.636719e+02, 7.386418e+02],
-        [8.035415e+02, 8.356641e+02, ..., 7.582706e+02, 7.932825e+02]],
-
-       ...,
-
-       [[2.166560e-01, 2.281773e-01, ..., 2.471614e-01,          nan],
-        [2.348751e-01, 2.278743e-01, ..., 2.417644e-01,          nan],
-        [2.704450e-01,          nan, ...,          nan,          nan],
-        [         nan,          nan, ...,          nan,          nan]],
-
-       [[0.000000e+00, 6.935342e-06, ..., 7.082118e-06,          nan],
-        [3.524737e-06, 3.105331e-06, ..., 3.218328e-06,          nan],
-        [1.394359e-06,          nan, ...,          nan,          nan],
-        [         nan,          nan, ...,          nan,          nan]]])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>S</span></div><div class='xr-var-dims'>(depth, lat, lon)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>...</div><input id='attrs-34c001d8-effe-4130-8f8a-1ff01c84609f' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-34c001d8-effe-4130-8f8a-1ff01c84609f' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e793dd55-65d0-43a4-9ffb-89df803f93a9' class='xr-var-data-in' type='checkbox'><label for='data-e793dd55-65d0-43a4-9ffb-89df803f93a9' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$S$</dd><dt><span>description :</span></dt><dd>suppression factor</dd></dl></div><div class='xr-var-data'><pre>array([[[0.492149, 0.49658 , ..., 0.491041, 0.480402],
-        [0.513515, 0.513811, ..., 0.502129, 0.489444],
-        [0.535581, 0.533083, ..., 0.521615, 0.509666],
-        [0.554332, 0.556161, ..., 0.54758 , 0.543815]],
-
-       [[0.496703, 0.501417, ..., 0.496392, 0.485827],
-        [0.516767, 0.517407, ..., 0.506386, 0.493929],
-        [0.537305, 0.535229, ..., 0.524519, 0.512937],
-        [0.554731, 0.556918, ..., 0.549051, 0.545698]],
-
-       ...,
-
-       [[0.440179, 0.440678, ..., 0.449624,      nan],
-        [0.450384, 0.450028, ..., 0.464982,      nan],
-        [0.465341, 0.470046, ...,      nan,      nan],
-        [     nan,      nan, ...,      nan,      nan]],
-
-       [[0.440821, 0.441122, ..., 0.449919,      nan],
-        [0.451557, 0.454036, ..., 0.463111,      nan],
-        [0.470997,      nan, ...,      nan,      nan],
-        [     nan,      nan, ...,      nan,      nan]]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-eee57ba2-9866-4c1e-8c5d-6c9fe8fa0073' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-eee57ba2-9866-4c1e-8c5d-6c9fe8fa0073' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;dTiso&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">colegrad</span><span class="o">.</span><span class="n">dTiso</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">groeskamp</span><span class="o">.</span><span class="n">depth</span><span class="p">)</span>
-<span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;eddy_var_0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;Ke_0&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">groeskamp</span><span class="o">.</span><span class="n">dTiso</span> <span class="o">**</span> <span class="mi">2</span>
-<span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;eddy_var&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;Ke&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">groeskamp</span><span class="o">.</span><span class="n">dTiso</span> <span class="o">**</span> <span class="mi">2</span>
-
-<span class="n">groeskamp</span> <span class="o">=</span> <span class="n">groeskamp</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### cole_var_all = cole.diffusivity.interp_like(colegrad.dTiso) * colegrad.dTiso ** 2</span>
-<span class="n">cole_var_all</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;long_name&quot;</span><span class="p">:</span> <span class="s2">&quot;$K_e^</span><span class="si">{cole}</span><span class="s2"> |∇T_</span><span class="si">{iso}</span><span class="s2">^</span><span class="si">{argo}</span><span class="s2">|²$&quot;</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;°C²/s&quot;</span><span class="p">}</span>
-<span class="n">cole_var</span> <span class="o">=</span> <span class="n">cole_var_all</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
-
-<span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="p">(</span><span class="n">micro</span><span class="o">.</span><span class="n">chi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
     <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span>
@@ -2905,12 +2457,12 @@ Data variables:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_28_0.png" src="_images/natre_28_0.png" />
+<img alt="_images/natre_26_0.png" src="_images/natre_26_0.png" />
 </div>
 </div>
 </div>
-<div class="section" id="compare-with-cole-estimate">
-<h2>Compare with Cole estimate<a class="headerlink" href="#compare-with-cole-estimate" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="studying-cole-estimate">
+<h2>Studying Cole estimate<a class="headerlink" href="#studying-cole-estimate" title="Permalink to this headline">¶</a></h2>
 <p>We expect to see peak <span class="math notranslate nohighlight">\(K_e\)</span> between 600 and 1600m but we mostly don’t! Both <span class="math notranslate nohighlight">\(⟨S'S'⟩\)</span> and <span class="math notranslate nohighlight">\(|∇S|\)</span> are large in the depth we expect a peak. There seems to be approximate agreement in the 1000-1200m range at (-34°E, -32°E) but missing data at deeper depths</p>
 <p>Here are estimates of variance produced by eddy stirring at points in the NATRE box from Cole et al (2015). There is some spread but the peak between 400 and 1000 seems robust. Thick black line is the mean over the box.</p>
 <div class="cell docutils container">
@@ -2928,7 +2480,7 @@ Data variables:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;$K_e^{cole} |∇T_{iso}^{argo}|²$ [°C²/s]&#39;)
 </pre></div>
 </div>
-<img alt="_images/natre_31_1.png" src="_images/natre_31_1.png" />
+<img alt="_images/natre_29_1.png" src="_images/natre_29_1.png" />
 </div>
 </div>
 <p>These are the various terms in the Cole analysis. Note minimum in ∇S between 200 and 800, and associated high mixing lengths ≳ 300km.</p>
@@ -2939,11 +2491,12 @@ Data variables:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_33_0.png" src="_images/natre_33_0.png" />
+<img alt="_images/natre_31_0.png" src="_images/natre_31_0.png" />
+</div>
 </div>
 </div>
 <div class="section" id="t-s-diagrams-argo-vs-natre">
-<h3>T-S diagrams: Argo vs. NATRE<a class="headerlink" href="#t-s-diagrams-argo-vs-natre" title="Permalink to this headline">¶</a></h3>
+<h2>T-S diagrams: Argo vs. NATRE<a class="headerlink" href="#t-s-diagrams-argo-vs-natre" title="Permalink to this headline">¶</a></h2>
 <p>Lets compare T-S to see if they are similar. I am exploring ways to</p>
 <ol class="simple">
 <li><p>interpret the “high” variance production values between 400m and 800m for the Cole estimate. Maybe the NATRE T-S is not representative of the argo T-S?</p>
@@ -2958,20 +2511,24 @@ Data variables:
 </ul>
 </li>
 </ol>
-<p>The density contours are ρ corresponding to depths <code class="docutils literal notranslate"><span class="pre">np.arange(200,</span> <span class="pre">2000,</span> <span class="pre">200)</span></code> in the Cole dataset. Clearly the top few contours see not much T-S stirring and the T-S relationship is “tight”. Ferrari &amp; Polzin interpreted this as a balance between microscale stirring and dissipation. So the estimates in Cole et al (2015) are not really valid.</p>
-<div class="cell docutils container">
+<p>The density contours are ρ corresponding to depths <code class="docutils literal notranslate"><span class="pre">np.arange(200,</span> <span class="pre">2000,</span> <span class="pre">200)</span></code> in the Cole dataset. Clearly the top few contours see not much T-S stirring and the T-S relationship is “tight”. Ferrari &amp; Polzin interpreted this as a balance between microscale stirring and dissipation.</p>
+<ul class="simple">
+<li><p>So the high K_e estimate between 400m and 800m in Cole et al (2015) is not supported by the TS spread.</p></li>
+<li><p>Though interestingly the Groeskamp estimate has the same issue then.</p></li>
+</ul>
+<p>Is the finestructure estimate undersampling eddy stirring periods? Compare T-S spread for</p>
+<ol class="simple">
+<li><p>all argo profiles</p></li>
+<li><p>argo profiles where I can make a finestructure estimate.</p></li>
+<li><p>NATRE profiles</p></li>
+</ol>
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">argo_natre</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/argo/natre.nc&quot;</span><span class="p">)</span>
 <span class="n">argo_natre</span><span class="p">[</span><span class="s2">&quot;THETA&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dcpy</span><span class="o">.</span><span class="n">eos</span><span class="o">.</span><span class="n">ptmp</span><span class="p">(</span>
     <span class="n">argo_natre</span><span class="o">.</span><span class="n">PSAL</span><span class="p">,</span> <span class="n">argo_natre</span><span class="o">.</span><span class="n">TEMP</span><span class="p">,</span> <span class="n">argo_natre</span><span class="o">.</span><span class="n">PRES</span><span class="p">,</span> <span class="n">natre</span><span class="o">.</span><span class="n">reference_pressure</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 <span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">argo_fine_full_profiles</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;argo_profiles_used_for_finestructure.nc&quot;</span><span class="p">)</span>
+<span class="n">argo_fine_full_profiles</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;argo_profiles_used_for_finestructure.nc&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2988,7 +2545,9 @@ Data variables:
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="section" id="all-argo-vs-natre">
+<h3>All argo vs NATRE<a class="headerlink" href="#all-argo-vs-natre" title="Permalink to this headline">¶</a></h3>
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="n">hexbin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -3028,17 +2587,13 @@ Data variables:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_38_0.png" src="_images/natre_38_0.png" />
+<img alt="_images/natre_36_0.png" src="_images/natre_36_0.png" />
 </div>
 </div>
 </div>
-<div class="section" id="ts-plots-finestructure-argo-profiles">
-<h3>TS plots: finestructure Argo profiles<a class="headerlink" href="#ts-plots-finestructure-argo-profiles" title="Permalink to this headline">¶</a></h3>
-<p>Is the finestructure estimate undersampling eddy stirring periods?</p>
-<ul class="simple">
-<li><p>compare T-S diagram for profiles where I can make a finestructure estimate.</p></li>
-</ul>
-<div class="cell docutils container">
+<div class="section" id="finestructure-argo-vs-natre">
+<h3>Finestructure Argo vs NATRE<a class="headerlink" href="#finestructure-argo-vs-natre" title="Permalink to this headline">¶</a></h3>
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="n">hexbin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -3053,7 +2608,7 @@ Data variables:
 </div>
 </div>
 <p>The distributions look similar and the argo data capture more extremes; but the NATRE data fill a lot of the space (though smaller S.D.). Maybe the average isn’t that great and it’s totally undersampling</p>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask</span> <span class="o">=</span> <span class="n">argo_fine_full_profiles</span><span class="o">.</span><span class="n">fine_deepest_bin</span> <span class="o">&gt;</span> <span class="mi">1000</span>
 
@@ -3077,11 +2632,11 @@ Data variables:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_42_0.png" src="_images/natre_42_0.png" />
+<img alt="_images/natre_40_0.png" src="_images/natre_40_0.png" />
 </div>
 </div>
 <p>It’s definitely a big undersampling when compared to all Argo profiles in the area. <strong>How good is good enough?</strong></p>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">dcpy</span><span class="o">.</span><span class="n">oceans</span><span class="o">.</span><span class="n">TSplot</span><span class="p">(</span>
     <span class="n">argo_natre</span><span class="o">.</span><span class="n">PSAL</span><span class="p">,</span>
@@ -3110,11 +2665,12 @@ Data variables:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_44_0.png" src="_images/natre_44_0.png" />
+<img alt="_images/natre_42_0.png" src="_images/natre_42_0.png" />
+</div>
 </div>
 </div>
 <div class="section" id="conclusions">
-<h4>Conclusions<a class="headerlink" href="#conclusions" title="Permalink to this headline">¶</a></h4>
+<h3>Conclusions<a class="headerlink" href="#conclusions" title="Permalink to this headline">¶</a></h3>
 <ol class="simple">
 <li><p>Can we define a metric using (T-S spread in all argo profiles) vs (TS spread in profiles where we can make a finestructure estimate) to decide where we might be able to make an estimate using Argo?</p></li>
 <li><p>Can we refine this?</p>
@@ -3129,7 +2685,6 @@ Data variables:
 </ul>
 </li>
 </ol>
-</div>
 </div>
 <div class="section" id="is-there-spatial-uncertainty-cole-estimate-are-we-looking-in-the-wrong-place-no">
 <h3>Is there spatial uncertainty? Cole estimate: Are we looking in the wrong place? No<a class="headerlink" href="#is-there-spatial-uncertainty-cole-estimate-are-we-looking-in-the-wrong-place-no" title="Permalink to this headline">¶</a></h3>
@@ -3154,7 +2709,7 @@ Data variables:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;xarray.plot.facetgrid.FacetGrid at 0x7fbb1793f2b0&gt;
 </pre></div>
 </div>
-<img alt="_images/natre_47_1.png" src="_images/natre_47_1.png" />
+<img alt="_images/natre_45_1.png" src="_images/natre_45_1.png" />
 </div>
 </div>
 </div>
@@ -3196,7 +2751,7 @@ Data variables:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_50_0.png" src="_images/natre_50_0.png" />
+<img alt="_images/natre_48_0.png" src="_images/natre_48_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -3212,7 +2767,7 @@ Data variables:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_51_0.png" src="_images/natre_51_0.png" />
+<img alt="_images/natre_49_0.png" src="_images/natre_49_0.png" />
 </div>
 </div>
 </div>
@@ -3299,7 +2854,7 @@ Data variables:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_56_0.png" src="_images/natre_56_0.png" />
+<img alt="_images/natre_54_0.png" src="_images/natre_54_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -3333,7 +2888,7 @@ Data variables:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7ff00197a6a0&gt;]
 </pre></div>
 </div>
-<img alt="_images/natre_58_1.png" src="_images/natre_58_1.png" />
+<img alt="_images/natre_56_1.png" src="_images/natre_56_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -3373,7 +2928,7 @@ Data variables:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_59_0.png" src="_images/natre_59_0.png" />
+<img alt="_images/natre_57_0.png" src="_images/natre_57_0.png" />
 </div>
 </div>
 </div>
@@ -4878,7 +4433,9 @@ Attributes:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">argo_fine_full_profiles</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">profiles</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="s2">&quot;N_PROF&quot;</span><span class="p">)</span>
-<span class="n">argo_fine_full_profiles</span><span class="p">[</span><span class="s2">&quot;fine_deepest_bin&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Deepest bin with a finestructure estimate&quot;</span>
+<span class="n">argo_fine_full_profiles</span><span class="p">[</span><span class="s2">&quot;fine_deepest_bin&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span>
+    <span class="s2">&quot;description&quot;</span>
+<span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Deepest bin with a finestructure estimate&quot;</span>
 
 <span class="c1"># sanity check</span>
 <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CYCLE_NUMBER&quot;</span><span class="p">,</span> <span class="s2">&quot;PLATFORM_NUMBER&quot;</span><span class="p">]</span>
@@ -4925,7 +4482,7 @@ Attributes:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_67_0.png" src="_images/natre_67_0.png" />
+<img alt="_images/natre_65_0.png" src="_images/natre_65_0.png" />
 </div>
 </div>
 </div>
@@ -4948,7 +4505,7 @@ Attributes:
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">269</span><span class="o">-</span><span class="mi">51</span><span class="n">fd0a18a38e</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">271</span><span class="o">-</span><span class="mi">51</span><span class="n">fd0a18a38e</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">natre</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">theta</span> <span class="o">/</span> <span class="n">data</span>
 
 <span class="nn">~/work/python/xarray/xarray/core/_typed_ops.py</span> in <span class="ni">__truediv__</span><span class="nt">(self, other)</span>
@@ -5054,12 +4611,6 @@ Attributes:
 </ol>
 </div>
 </div>
-
-
-<script type="application/vnd.jupyter.widget-state+json">
-{"state": {"03e8764610b242c49a6bc941ec188bc2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_6395b8dec2cd4eb98d1028b6730a72e2", "style": "IPY_MODEL_aa2b132f4f6341bdbfdf67e8c94dcce3", "value": " 3583/3583 [00:37&lt;00:00, 88.46it/s]"}}, "05ec720d51374c55bd2ad0be9ce6ae6b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "0991ab77de1d4473b3b8c4a1088fd70f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "09ff8047044d473ebbc10983ec871411": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "0b6fc058571640dc8f13491230398d37": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "0d38cf0f96ee45cea1e84e8d64773911": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "0e108f9ad8d740df935c1bf05adb038a": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "15c63b273f3041768b71674ab103dc84": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "1761410cbfe74f73b8fd5c0435a655f6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_bc5a2f82878a41838367288f0f23275b", "style": "IPY_MODEL_252b2b36f8c4435682477c17fcf3c020", "value": " 31%"}}, "1a182124cc2847dba6f445a504705f1b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "danger", "layout": "IPY_MODEL_6b6ba2aa740a46dcb30854cc919b3835", "max": 3583, "style": "IPY_MODEL_15c63b273f3041768b71674ab103dc84"}}, "1d14296069484b95bf40e02bc75a41df": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "1eee424eeef34b9aba153f14dc9bb212": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "226267fb96ba413a9bfe08575e1028d4": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "252b2b36f8c4435682477c17fcf3c020": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "27c60c8260b24021b4b3f6a166f98b17": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "2af455b91990401c94389923a0f21ddc": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "3081081a385d4688b834a664bd7b54ee": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_5c87f2db5b89405491f836efb4231272", "style": "IPY_MODEL_c95b41d56ceb4ad583a9366a46554bc2", "value": " 3583/3583 [00:37&lt;00:00, 95.73it/s]"}}, "311e6437ce2a4d05bc3df8557e10ec79": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_a53ac4a677b943b4a6b4c324e4bea295", "IPY_MODEL_c4ace2e8506148be82d0196c4fb9f48b", "IPY_MODEL_03e8764610b242c49a6bc941ec188bc2"], "layout": "IPY_MODEL_bb80781fa8c045bb895d1f96e0124915"}}, "31c90ae6b0294a03a203e7534b9c370f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_c9924766c57a4ae4abb23fa351703ef1", "style": "IPY_MODEL_09ff8047044d473ebbc10983ec871411", "value": "  0%"}}, "347f6488a85942589c342e553ad0d127": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "350eebed0c8844cb94c132ea0c54ef9d": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "danger", "layout": "IPY_MODEL_8aef62cfdb9d4d328d628df20e38498d", "max": 1, "style": "IPY_MODEL_d4a9414c47af483598f7e5dedb4bfb8b"}}, "367c0645a9f44507a149bc9578b610fc": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "37e0b202bfc5494db50a90ef3c76d0c2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_7ece2eadf07548dbaadb51819b4e1698", "style": "IPY_MODEL_a9296cc022c54e40be960b3cc06bfc13", "value": " 0/3583 [00:00&lt;?, ?it/s]"}}, "39c8816388eb4a7bbcf2036511313a1b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_51747b52803a4cb384c972541e49e3a9", "IPY_MODEL_a7a5cc25d95e43ca94f358a9b22ba9fa", "IPY_MODEL_e54ef27648e246f3bb7f3194bdee94de"], "layout": "IPY_MODEL_347f6488a85942589c342e553ad0d127"}}, "3f32746a92784b3aaaa8dd72f1bb5aaf": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "3f817f6f85314f6c9a4b4f54fbf388fd": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "3f84020934de471dbd9d96da590e9a09": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "danger", "layout": "IPY_MODEL_596d1bca250646eeae2020cc3a852694", "max": 1, "style": "IPY_MODEL_9fc3945b57134fc2b043d56a39154862"}}, "42079aa4ba9b441f8e2ae3c407f6538d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "43abaa6ea9574be48cd5ca7e8562145a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_7f4931a44327419dbbfc824b5d88cf17", "IPY_MODEL_98fae5a2f1314216a45cba4977efbd88", "IPY_MODEL_3081081a385d4688b834a664bd7b54ee"], "layout": "IPY_MODEL_9f99ad20a2304a5f86e230189a735937"}}, "46023ac5bea84560b79fbfa7c8f26719": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "460c3263e06549beacc7c670a9ba588b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "465a2eb3f2034e90b021c3eb53145844": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "47df3728184742cf8603023497b4de41": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "49a4cf07ec1649c4af03280b28ef0030": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "51747b52803a4cb384c972541e49e3a9": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_0d38cf0f96ee45cea1e84e8d64773911", "style": "IPY_MODEL_e3c36b16cc7244648af5a23dd6cb0ce7", "value": "  0%"}}, "5450a9e0162944218e9f80806b43b358": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_ef4fbe3abe1d46e89aa5ffafd433b1dc", "style": "IPY_MODEL_d55d660318864b42a1edb0a1a140b224", "value": " 0/3583 [00:00&lt;?, ?it/s]"}}, "5598526e010342dcb2edc64411f92a8e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "57d8722115fd4926b8672be01ab60aae": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_460c3263e06549beacc7c670a9ba588b", "style": "IPY_MODEL_226267fb96ba413a9bfe08575e1028d4"}}, "596a0de6aac049eb8c819efbdd150fdd": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "596d1bca250646eeae2020cc3a852694": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"width": "20px"}}, "5a2e44a8f79b4e3dbf68661504a3eb35": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "5c87f2db5b89405491f836efb4231272": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "6395b8dec2cd4eb98d1028b6730a72e2": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "6577660f8a2a4f718f1e637e4a82658e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "65c50483bc6a465392e752149c14ae30": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_d8e13683393946e58aefc7177ade2cea", "IPY_MODEL_70570ab07e654cf7835ed625adc494c2", "IPY_MODEL_5450a9e0162944218e9f80806b43b358"], "layout": "IPY_MODEL_df0fb7f4b61a42ac94c8868c41a86dd4"}}, "6b6ba2aa740a46dcb30854cc919b3835": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "6b767be2016f40b398eed358baa32527": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "6ccc8d0fbb774e3a88ebdf7bac0ee4d8": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_99108b2cf8d14dd58bfb0914c31df9ad", "max": 3583, "style": "IPY_MODEL_6e10178669324eff8b76468b674c65eb", "value": 3583}}, "6e10178669324eff8b76468b674c65eb": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "6f5a3cd4b6cd441c9f2ea6edc33d7090": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "70570ab07e654cf7835ed625adc494c2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "danger", "layout": "IPY_MODEL_958245e715b34ef6b36c11a985a21ae4", "max": 3583, "style": "IPY_MODEL_bb917b2ae69c415aa63e2abb2468c51c"}}, "7163da35aa784fdf82388d545f6f6ea7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "722f3e5c4e5b449d804898030f8f5e24": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "724f117e1e6849f9af985cf6774fb124": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_be22031d909a439e9a79e86e050e3d76", "style": "IPY_MODEL_c9ee4e4687fb435f9891af87f9213ce6", "value": " 0/? [00:00&lt;?, ?it/s]"}}, "7968320de3b846e5a0c0d2b0d17ea8bc": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_1761410cbfe74f73b8fd5c0435a655f6", "IPY_MODEL_bd1f010b2fb24fdeae4a654a9f9d252e", "IPY_MODEL_c298119d24e54a72b1e1f0b97d197072"], "layout": "IPY_MODEL_27c60c8260b24021b4b3f6a166f98b17"}}, "79d47d027f144cf9867c49f60a5757a7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_a496900bc875435889255fd2d61b9278", "style": "IPY_MODEL_2af455b91990401c94389923a0f21ddc", "value": "100%"}}, "7ece2eadf07548dbaadb51819b4e1698": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "7f4931a44327419dbbfc824b5d88cf17": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_596a0de6aac049eb8c819efbdd150fdd", "style": "IPY_MODEL_6f5a3cd4b6cd441c9f2ea6edc33d7090", "value": "100%"}}, "81acb3a4079a460e9166a268c3eb4b77": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_465a2eb3f2034e90b021c3eb53145844", "style": "IPY_MODEL_c3c7e8ec47b9491fafeebbe530f677bb", "value": "100%"}}, "83baf4ebf14c4bf38a2030340bd2b5be": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "8aef62cfdb9d4d328d628df20e38498d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"width": "20px"}}, "8d8ff0a2363640769b3ad1fc8f6a0a63": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "9255a6b1ea344d95a045bc83fa3ec073": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_aca60548009448349e5299286fdeebce", "style": "IPY_MODEL_1eee424eeef34b9aba153f14dc9bb212", "value": " 0/3583 [00:00&lt;?, ?it/s]"}}, "939bde5f009d4a04a11923229fe93709": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_f6565a847b394dc7b064b348f9605e9e", "style": "IPY_MODEL_eb54f418ee9e40fb9e4483c4d06eff77", "value": " 3583/3583 [00:25&lt;00:00, 144.69it/s]"}}, "958245e715b34ef6b36c11a985a21ae4": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "984c7f54381a45ecae9b34b4603db218": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "98fae5a2f1314216a45cba4977efbd88": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_9d998d9642854dc5a3d54900cca43c37", "max": 3583, "style": "IPY_MODEL_9d9b5e6e958844caa786e12a13e6248a", "value": 3583}}, "99108b2cf8d14dd58bfb0914c31df9ad": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "99a3a985339443b08355b92b405145fa": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "9a08c37ffb3e419db477949a2fe32a37": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "9cb8f812c8bd43c48314e7cdd66b31af": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "9d36e39b816a47f8b483dbe6516801d1": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_dd3185ff861044e7a8eab63efd9e088b", "IPY_MODEL_1a182124cc2847dba6f445a504705f1b", "IPY_MODEL_37e0b202bfc5494db50a90ef3c76d0c2"], "layout": "IPY_MODEL_0b6fc058571640dc8f13491230398d37"}}, "9d998d9642854dc5a3d54900cca43c37": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "9d9b5e6e958844caa786e12a13e6248a": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "9f99ad20a2304a5f86e230189a735937": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "9fc3945b57134fc2b043d56a39154862": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "a46fd899aa774dc3b82f4d47067515d4": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "a496900bc875435889255fd2d61b9278": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "a53ac4a677b943b4a6b4c324e4bea295": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_42079aa4ba9b441f8e2ae3c407f6538d", "style": "IPY_MODEL_722f3e5c4e5b449d804898030f8f5e24", "value": "100%"}}, "a73738e33160462581f3168820ad7f2b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "a7a5cc25d95e43ca94f358a9b22ba9fa": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "danger", "layout": "IPY_MODEL_83baf4ebf14c4bf38a2030340bd2b5be", "max": 3583, "style": "IPY_MODEL_05ec720d51374c55bd2ad0be9ce6ae6b"}}, "a7fb3aeac53144e7a3320fd8539f782f": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "a9296cc022c54e40be960b3cc06bfc13": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "aa2b132f4f6341bdbfdf67e8c94dcce3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "aca60548009448349e5299286fdeebce": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "b553804972e74996882526f6f9060dd5": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_0e108f9ad8d740df935c1bf05adb038a", "style": "IPY_MODEL_0991ab77de1d4473b3b8c4a1088fd70f"}}, "b5955490325d4ddda6eee1ec738ddab3": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_b553804972e74996882526f6f9060dd5", "IPY_MODEL_350eebed0c8844cb94c132ea0c54ef9d", "IPY_MODEL_724f117e1e6849f9af985cf6774fb124"], "layout": "IPY_MODEL_5a2e44a8f79b4e3dbf68661504a3eb35"}}, "bb80781fa8c045bb895d1f96e0124915": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "bb917b2ae69c415aa63e2abb2468c51c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "bc5a2f82878a41838367288f0f23275b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "bd1f010b2fb24fdeae4a654a9f9d252e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "danger", "layout": "IPY_MODEL_367c0645a9f44507a149bc9578b610fc", "max": 3583, "style": "IPY_MODEL_6b767be2016f40b398eed358baa32527", "value": 1108}}, "be22031d909a439e9a79e86e050e3d76": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "c298119d24e54a72b1e1f0b97d197072": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_e50cd4b55fba42bfb5f0208459519758", "style": "IPY_MODEL_5598526e010342dcb2edc64411f92a8e", "value": " 1108/3583 [00:06&lt;00:14, 170.78it/s]"}}, "c3c7e8ec47b9491fafeebbe530f677bb": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "c4ace2e8506148be82d0196c4fb9f48b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_d5a57c6b435b4527bb39588a37b1228c", "max": 3583, "style": "IPY_MODEL_47df3728184742cf8603023497b4de41", "value": 3583}}, "c857eaf393594384ae061726427e837d": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "c95b41d56ceb4ad583a9366a46554bc2": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "c9924766c57a4ae4abb23fa351703ef1": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "c9ee4e4687fb435f9891af87f9213ce6": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "cda2815cc41c4cf9aa5dfbe83fbb8a0c": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "danger", "layout": "IPY_MODEL_3f817f6f85314f6c9a4b4f54fbf388fd", "max": 3583, "style": "IPY_MODEL_6577660f8a2a4f718f1e637e4a82658e"}}, "d1cac328ee344348960599b6b9c003a7": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "d41dc0adcd574180a285d5d28a232903": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "d4a9414c47af483598f7e5dedb4bfb8b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "ProgressStyleModel", "state": {"description_width": ""}}, "d4beea0331464eb584dd8268f15bbcac": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_8d8ff0a2363640769b3ad1fc8f6a0a63", "style": "IPY_MODEL_a7fb3aeac53144e7a3320fd8539f782f", "value": " 0/? [00:00&lt;?, ?it/s]"}}, "d55d660318864b42a1edb0a1a140b224": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "d5a57c6b435b4527bb39588a37b1228c": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "d8e13683393946e58aefc7177ade2cea": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_9a08c37ffb3e419db477949a2fe32a37", "style": "IPY_MODEL_a73738e33160462581f3168820ad7f2b", "value": "  0%"}}, "dd3185ff861044e7a8eab63efd9e088b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_7163da35aa784fdf82388d545f6f6ea7", "style": "IPY_MODEL_49a4cf07ec1649c4af03280b28ef0030", "value": "  0%"}}, "df0fb7f4b61a42ac94c8868c41a86dd4": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e3c36b16cc7244648af5a23dd6cb0ce7": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "e3f9acbbe5ed4d12a7dfc9cb5cba8104": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_57d8722115fd4926b8672be01ab60aae", "IPY_MODEL_3f84020934de471dbd9d96da590e9a09", "IPY_MODEL_d4beea0331464eb584dd8268f15bbcac"], "layout": "IPY_MODEL_a46fd899aa774dc3b82f4d47067515d4"}}, "e49a7306cf38466b860821b93927e303": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_79d47d027f144cf9867c49f60a5757a7", "IPY_MODEL_6ccc8d0fbb774e3a88ebdf7bac0ee4d8", "IPY_MODEL_939bde5f009d4a04a11923229fe93709"], "layout": "IPY_MODEL_1d14296069484b95bf40e02bc75a41df"}}, "e50cd4b55fba42bfb5f0208459519758": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "e54ef27648e246f3bb7f3194bdee94de": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_99a3a985339443b08355b92b405145fa", "style": "IPY_MODEL_3f32746a92784b3aaaa8dd72f1bb5aaf", "value": " 0/3583 [00:00&lt;?, ?it/s]"}}, "e79d5b43ce2b4d358dd734c7219b8c51": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "FloatProgressModel", "state": {"bar_style": "success", "layout": "IPY_MODEL_46023ac5bea84560b79fbfa7c8f26719", "max": 3583, "style": "IPY_MODEL_d41dc0adcd574180a285d5d28a232903", "value": 3583}}, "eb54f418ee9e40fb9e4483c4d06eff77": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "DescriptionStyleModel", "state": {"description_width": ""}}, "ef4fbe3abe1d46e89aa5ffafd433b1dc": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f6565a847b394dc7b064b348f9605e9e": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {}}, "f6be08009438403abf6dd2924f066f2b": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_81acb3a4079a460e9166a268c3eb4b77", "IPY_MODEL_e79d5b43ce2b4d358dd734c7219b8c51", "IPY_MODEL_fca20d5d107845579b8c0c756c10ed29"], "layout": "IPY_MODEL_d1cac328ee344348960599b6b9c003a7"}}, "fab6c738f6cd4bd5a6f664ee5b0b4c5e": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HBoxModel", "state": {"children": ["IPY_MODEL_31c90ae6b0294a03a203e7534b9c370f", "IPY_MODEL_cda2815cc41c4cf9aa5dfbe83fbb8a0c", "IPY_MODEL_9255a6b1ea344d95a045bc83fa3ec073"], "layout": "IPY_MODEL_9cb8f812c8bd43c48314e7cdd66b31af"}}, "fca20d5d107845579b8c0c756c10ed29": {"model_module": "@jupyter-widgets/controls", "model_module_version": "1.5.0", "model_name": "HTMLModel", "state": {"layout": "IPY_MODEL_c857eaf393594384ae061726427e837d", "style": "IPY_MODEL_984c7f54381a45ecae9b34b4603db218", "value": " 3583/3583 [00:31&lt;00:00, 106.78it/s]"}}}, "version_major": 2, "version_minor": 0}
-</script>
-
 
     <script type="text/x-thebe-config">
     {
