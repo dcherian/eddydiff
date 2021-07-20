@@ -1,11 +1,11 @@
 format: jb-book
 root: intro
 parts:
-- caption: "Moored \u03C7pod analysis"
+- caption: "Moored χpodpod analysis"
   chapters:
   - file: tao
   - file: equix
-- caption: "CTD \u03C7pod analysis"
+- caption: "CTD χpod analysis"
   chapters:
   - file: BoB-ctd-chipod
   - file: P06
@@ -15,4 +15,4 @@ parts:
   - file: calc-gradients
   - file: natre
   - file: equix-vs-tao
-  - file: ts-diagrams
+  - file: eqpac-ts-diagrams
