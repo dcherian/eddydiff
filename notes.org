@@ -1,7 +1,6 @@
 #+TITLE: Eddy diffusivity from microstructure
 
-* Todo [0/2]
-- [ ] neutral density calculation?
+* Todo [3/15]
 - [ ] equations for mixed layer
 
 eddydiff:
@@ -44,7 +43,8 @@ eddydiff:
 - [X] Cole et al.
 - [X] Gnanadesikan
 - [X] Abernathey
-- [ ] Roach: https://github.com/croachutas/Isopycnal_Diffusivity
+- [X] Roach: https://github.com/croachutas/Isopycnal_Diffusivity
+- [X] Groeskamp
 
 * Conventions
 1. Climatology name: ~clim.attrs.dataset~
@@ -53,8 +53,27 @@ eddydiff:
 4. in-situ density: currently unused, should be ~rho~
 5. ~pres~ is local pressure (dbar), ~P~ is technically co-ordinate. Especially important for BoB xpod!
 
-* Isopycnal gradient methodologies
+* Finestructure work
+Things to try:
+1. Make sure that 200m smoothing is the problem.
+   a. [ ] Construct 200m averages of microstructure quantities for each profile and then do the estimate
+   b. [ ] Do the finestructure estimate on NATRE profiles and try again
 
+2. What if the choice of bins is too fine for the initial averaging.
+   a. Look at actual bins for each 200m segment in the Argo estimate; can I do better?
+
+3. If we can't actually do the Ferrari & Polzin decomposition; what else can we do?
+   a. Groeskamp et al (2020) × gradient gives us an estimate of mesoscale stirring variance production. Argo gives us an estimate of χ. We could look for places where they agree / disagree →
+      a. [ ] if they are close eddies are important; does this line up with EKE at surface
+      b. [ ] problem is groeskamp et al have everything vary with EKE_surface so...
+      c. [ ] Maybe there are locations where eddy variance is larger than finestructure χ
+
+4. Follow up on sampling issues:
+   - [ ] Make sure I am getting all argo profiles in the area; not excluding unnecessary ones
+
+5. Could try GO-SHIP sections
+
+* Isopycnal gradient methodologies
 ** cite:NaveiraGarabato2016
 
 1. ε, χ are averaged in neutral density bins fo 0.08 kg/m³
