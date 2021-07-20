@@ -9,6 +9,10 @@ parts:
   chapters:
   - file: BoB-ctd-chipod
   - file: P06
+- caption: "Finestructure analysis"
+  chapters:
+  - file: iw-fine-devel
+  - file: iw-fine-estimates
 - caption: Ancillary analysis
   chapters:
   - file: compare-Ke-estimates
