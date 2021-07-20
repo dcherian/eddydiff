@@ -242,10 +242,6 @@ def process_profile(profile, dz_segment=200, debug=False):
             results["flag"][idx] = -1
             continue
 
-        # if seg.PRES.diff("PRES").max() > 18:
-        #    results["flag"][idx] = -2
-        #    continue
-
         # TODO: despike
         # TODO: unrealistic values
 
@@ -267,10 +263,6 @@ def process_profile(profile, dz_segment=200, debug=False):
         results["γbnds"][idx, 0] = seg.γ.data[0]
         results["γbnds"][idx, 1] = seg.γ.data[-1]
 
-        # TODO: move earlier?
-        # N2, _ = dcpy.eos.bfrq(
-        #    seg.PSAL, seg.TEMP, seg.PRES, dim="PRES", lat=seg.LATITUDE
-        # )
         (
             results["Kρ"][idx],
             results["ε"][idx],
