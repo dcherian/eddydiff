@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Finestructure Mixing: Development &#8212; Eddy Diffusivity</title>
+    <title>Finescale Mixing Parametrizations: Development &#8212; Eddy Diffusivity</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -118,13 +118,30 @@
 </ul>
 <p class="caption">
  <span class="caption-text">
+  NATRE analysis
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="natre.html">
+   NATRE variance budget
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="natre-finescale.html">
+   NATRE micro vs finescale
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
   Finestructure analysis
  </span>
 </p>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="iw-fine-argo.html">
-   Argo finestructure estimates
+   Argo finescale estimates
   </a>
  </li>
  <li class="toctree-l1">
@@ -134,7 +151,7 @@
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Finestructure Mixing: Development
+   Finescale Mixing Parametrizations: Development
   </a>
  </li>
 </ul>
@@ -151,11 +168,6 @@
     \(K_e\)
    </span>
    estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="natre.html">
-   NATRE
   </a>
  </li>
  <li class="toctree-l1">
@@ -297,8 +309,8 @@
         
               <div>
                 
-  <div class="section" id="finestructure-mixing-development">
-<h1>Finestructure Mixing: Development<a class="headerlink" href="#finestructure-mixing-development" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="finescale-mixing-parametrizations-development">
+<h1>Finescale Mixing Parametrizations: Development<a class="headerlink" href="#finescale-mixing-parametrizations-development" title="Permalink to this headline">¶</a></h1>
 <p>From Whalen et al (2012) Supplementary</p>
 <p>QC:</p>
 <ol class="simple">
@@ -363,8 +375,6 @@ segments.</p>
 <span class="kn">from</span> <span class="nn">dcpy.finestructure</span> <span class="kn">import</span> <span class="n">estimate_turb_segment</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span>
 <span class="kn">from</span> <span class="nn">scipy.io</span> <span class="kn">import</span> <span class="n">loadmat</span>
-
-<span class="kn">from</span> <span class="nn">eddydiff</span> <span class="kn">import</span> <span class="n">argomix</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;bmh&quot;</span><span class="p">)</span>
 <span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.dpi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">140</span>

@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Argo finestructure estimates &#8212; Eddy Diffusivity</title>
+    <title>Argo finescale estimates &#8212; Eddy Diffusivity</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -54,7 +54,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Existing finestructure estimates" href="iw-fine-estimates.html" />
-    <link rel="prev" title="P06 CTD χpod analysis" href="P06.html" />
+    <link rel="prev" title="NATRE micro vs finescale" href="natre-finescale.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -120,13 +120,30 @@
 </ul>
 <p class="caption">
  <span class="caption-text">
+  NATRE analysis
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="natre.html">
+   NATRE variance budget
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="natre-finescale.html">
+   NATRE micro vs finescale
+  </a>
+ </li>
+</ul>
+<p class="caption">
+ <span class="caption-text">
   Finestructure analysis
  </span>
 </p>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Argo finestructure estimates
+   Argo finescale estimates
   </a>
  </li>
  <li class="toctree-l1">
@@ -136,7 +153,7 @@
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="iw-fine-devel.html">
-   Finestructure Mixing: Development
+   Finescale Mixing Parametrizations: Development
   </a>
  </li>
 </ul>
@@ -153,11 +170,6 @@
     \(K_e\)
    </span>
    estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="natre.html">
-   NATRE
   </a>
  </li>
  <li class="toctree-l1">
@@ -321,8 +333,8 @@
         
               <div>
                 
-  <div class="section" id="argo-finestructure-estimates">
-<h1>Argo finestructure estimates<a class="headerlink" href="#argo-finestructure-estimates" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="argo-finescale-estimates">
+<h1>Argo finescale estimates<a class="headerlink" href="#argo-finescale-estimates" title="Permalink to this headline">¶</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> watermark
@@ -341,11 +353,9 @@
 <span class="kn">import</span> <span class="nn">scipy.integrate</span>
 <span class="kn">import</span> <span class="nn">seawater</span> <span class="k">as</span> <span class="nn">sw</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-<span class="kn">from</span> <span class="nn">dcpy.finestructure</span> <span class="kn">import</span> <span class="n">estimate_turb_segment</span>
+<span class="kn">from</span> <span class="nn">dcpy.finestructure</span> <span class="kn">import</span> <span class="n">estimate_turb_segment</span><span class="p">,</span> <span class="n">process_argo_profile</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span>
 <span class="kn">from</span> <span class="nn">scipy.io</span> <span class="kn">import</span> <span class="n">loadmat</span>
-
-<span class="kn">from</span> <span class="nn">eddydiff</span> <span class="kn">import</span> <span class="n">argomix</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;bmh&quot;</span><span class="p">)</span>
 <span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.dpi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">140</span>
@@ -357,19 +367,19 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dask      : 2021.6.2
-cf_xarray : 0.4.1.dev21+gab9dc66
-scipy     : 1.5.3
-eddydiff  : 0.1
-pandas    : 1.2.3
-seawater  : 3.3.4
-dcpy      : 0.1
-mixsea    : 0.1.0
-xarray    : 0.17.1.dev3+g48378c4b1
-numpy     : 1.20.2
-argopy    : 0.1.7
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>seawater  : 3.3.4
 gsw       : 3.4.0
+numpy     : 1.20.2
+mixsea    : 0.1.0
+scipy     : 1.5.3
+xarray    : 0.17.1.dev3+g48378c4b1
+argopy    : 0.1.7
+eddydiff  : 0.1
+dask      : 2021.6.2
+pandas    : 1.2.3
+dcpy      : 0.1
 matplotlib: 3.4.1
+cf_xarray : 0.4.1.dev21+gab9dc66
 </pre></div>
 </div>
 </div>
@@ -602,11 +612,6 @@ matplotlib: 3.4.1
     <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">argo_good</span><span class="o">.</span><span class="n">sizes</span><span class="p">[</span><span class="s2">&quot;N_PROF&quot;</span><span class="p">])</span>
 <span class="p">]</span>
 <span class="nb">len</span><span class="p">(</span><span class="n">tasks</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3885
 </pre></div>
 </div>
 </div>
@@ -1643,7 +1648,7 @@ Data Variables:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">profile</span> <span class="o">=</span> <span class="n">argo</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">N_PROF</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">argomix</span><span class="o">.</span><span class="n">process_profile</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">process_argo_profile</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1660,24 +1665,24 @@ Data Variables:
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">profile</span> <span class="o">=</span> <span class="n">argo</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
     <span class="p">{</span><span class="s2">&quot;N_PROF&quot;</span><span class="p">:</span> <span class="s2">&quot;PLATFORM_NUMBER == 6900695 &amp; CYCLE_NUMBER == 160&quot;</span><span class="p">}</span>
 <span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">argomix</span><span class="o">.</span><span class="n">process_profile</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">process_argo_profile</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 221 —  371dbar: ξgmvar: 0.102, ξvar: 0.024, N2: 2.27e-05 K: 2.14e-07, ε: 2.38e-11
- 336 —  476dbar: ξgmvar: 0.045, ξvar: 0.021, N2: 1.88e-05 K: 8.32e-07, ε: 7.67e-11
- 436 —  586dbar: ξgmvar: 0.104, ξvar: 0.005, N2: 1.55e-05 K: 1.01e-08, ε: 7.68e-13
- 521 —  691dbar: ξgmvar: 0.111, ξvar: 0.187, N2: 1.42e-05 K: 1.09e-05, ε: 7.58e-10
- 621 —  791dbar: ξgmvar: 0.111, ξvar: 0.051, N2: 1.27e-05 K: 8.11e-07, ε: 5.06e-11
- 721 —  891dbar: ξgmvar: 0.112, ξvar: 0.085, N2: 1.01e-05 K: 2.12e-06, ε: 1.05e-10
- 821 —  991dbar: ξgmvar: 0.107, ξvar: 0.153, N2: 7.79e-06 K: 7.40e-06, ε: 2.82e-10
- 921 — 1091dbar: ξgmvar: 0.113, ξvar: 0.049, N2: 7.36e-06 K: 6.83e-07, ε: 2.46e-11
-1022 — 1191dbar: ξgmvar: 0.114, ξvar: 0.120, N2: 6.02e-06 K: 3.88e-06, ε: 1.15e-10
-1121 — 1291dbar: ξgmvar: 0.108, ξvar: 0.070, N2: 5.42e-06 K: 1.43e-06, ε: 3.80e-11
-1221 — 1391dbar: ξgmvar: 0.108, ξvar: 0.105, N2: 5.11e-06 K: 3.21e-06, ε: 8.04e-11
-1321 — 1492dbar: ξgmvar: 0.109, ξvar: 0.058, N2: 4.44e-06 K: 9.48e-07, ε: 2.06e-11
-1421 — 1501dbar: ξgmvar: 0.090, ξvar: 0.115, N2: 4.07e-06 K: 5.46e-06, ε: 1.09e-10
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 211 —  371dbar: ξgmvar: 0.095, ξvar: 0.032, N2: 2.25e-05 K: 4.48e-07, ε: 4.94e-11
+ 316 —  476dbar: ξgmvar: 0.039, ξvar: 0.025, N2: 1.88e-05 K: 1.52e-06, ε: 1.41e-10
+ 416 —  586dbar: ξgmvar: 0.104, ξvar: 0.003, N2: 1.59e-05 K: 3.60e-09, ε: 2.81e-13
+ 511 —  691dbar: ξgmvar: 0.104, ξvar: 0.178, N2: 1.42e-05 K: 1.12e-05, ε: 7.80e-10
+ 611 —  791dbar: ξgmvar: 0.105, ξvar: 0.058, N2: 1.29e-05 K: 1.16e-06, ε: 7.31e-11
+ 711 —  891dbar: ξgmvar: 0.105, ξvar: 0.083, N2: 1.06e-05 K: 2.32e-06, ε: 1.20e-10
+ 811 —  991dbar: ξgmvar: 0.101, ξvar: 0.140, N2: 7.99e-06 K: 6.95e-06, ε: 2.72e-10
+ 911 — 1091dbar: ξgmvar: 0.107, ξvar: 0.053, N2: 7.61e-06 K: 8.85e-07, ε: 3.30e-11
+1012 — 1191dbar: ξgmvar: 0.107, ξvar: 0.099, N2: 6.11e-06 K: 2.96e-06, ε: 8.87e-11
+1111 — 1291dbar: ξgmvar: 0.102, ξvar: 0.071, N2: 5.59e-06 K: 1.67e-06, ε: 4.56e-11
+1211 — 1391dbar: ξgmvar: 0.102, ξvar: 0.095, N2: 5.20e-06 K: 2.94e-06, ε: 7.50e-11
+1311 — 1492dbar: ξgmvar: 0.103, ξvar: 0.054, N2: 4.52e-06 K: 9.23e-07, ε: 2.04e-11
+1411 — 1571dbar: ξgmvar: 0.102, ξvar: 0.080, N2: 3.55e-06 K: 2.02e-06, ε: 3.52e-11
 </pre></div>
 </div>
 <img alt="_images/iw-fine-argo_30_1.png" src="_images/iw-fine-argo_30_1.png" />
@@ -1686,7 +1691,7 @@ Data Variables:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">profile</span> <span class="o">=</span> <span class="n">argo</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">N_PROF</span><span class="o">=</span><span class="mi">2100</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">argomix</span><span class="o">.</span><span class="n">process_profile</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">process_argo_profile</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1709,7 +1714,7 @@ Data Variables:
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">profile</span> <span class="o">=</span> <span class="n">argo</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
     <span class="p">{</span><span class="s2">&quot;N_PROF&quot;</span><span class="p">:</span> <span class="s2">&quot;PLATFORM_NUMBER == 4901588 &amp; CYCLE_NUMBER == 23&quot;</span><span class="p">}</span>
 <span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">argomix</span><span class="o">.</span><span class="n">process_profile</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">process_argo_profile</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2449,7 +2454,7 @@ Data variables: (12/13)
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="P06.html" title="previous page">P06 CTD χpod analysis</a>
+    <a class='left-prev' id="prev-link" href="natre-finescale.html" title="previous page">NATRE micro vs finescale</a>
     <a class='right-next' id="next-link" href="iw-fine-estimates.html" title="next page">Existing finestructure estimates</a>
 
         </div>
