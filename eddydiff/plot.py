@@ -83,7 +83,7 @@ def plot_cole_profile(**sel_kwargs):
     kwargs = dict(hue="lon", y="vertical", xscale="log", yincrease=False)
 
     f, ax = plt.subplots(1, 4, sharey=True, constrained_layout=True)
-    subset.salinity_gradient.cf.plot(**kwargs, ax=ax[0], add_legend=False)
+    subset.salinity_gradient.cf.plot(**kwargs, ax=ax[0], add_legend=True)
     subset.salinity_std.cf.plot(**kwargs, ax=ax[1], add_legend=False)
     subset.mixing_length.cf.plot(**kwargs, ax=ax[2], add_legend=False)
     subset.diffusivity.cf.plot(**kwargs, ax=ax[3], add_legend=False)

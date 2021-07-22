@@ -1,6 +1,7 @@
 from typing import Iterable
 
 import cf_xarray as cfxr
+import dcpy
 import gsw
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -12,6 +13,8 @@ import seawater as sw
 import xgcm
 
 import xarray as xr
+
+from . import jmd95
 
 
 def intervals_to_bounds(da):
@@ -35,6 +38,24 @@ def intervals_from_vertex(vertex):
         for left, right in zip(vertex.data[:-1], vertex.data[1:])
     ]
     return xr.DataArray(data, dims=name, name=name, coords={name: data})
+
+
+def read_ecco_clim():
+    ecco = xr.open_zarr(
+        "../datasets/ecco_monthly_iso_gradients.zarr", decode_times=False
+    )
+    ecco = ecco.cf.guess_coord_axis()
+    ecco.pres.attrs["positive"] = "down"
+    ecco = ecco.cf.add_bounds("pres")
+    ecco["pres"].attrs["standard_name"] = "sea_water_pressure"
+    ecco["pden"] = jmd95.dens(ecco.Smean, ecco.Tmean, 0)
+    ecco["temp"] = dcpy.eos.temp(ecco.Smean, ecco.Tmean, ecco.pres, 0)
+
+    attrs = {"Smean": "sea_water_salinity", "Tmean": "sea_water_potential_temperature"}
+    for k, v in attrs.items():
+        ecco[k].attrs["standard_name"] = v
+    del ecco["ρmean"]
+    return ecco
 
 
 def exchange(input, kwargs):
