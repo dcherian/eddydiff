@@ -4,6 +4,8 @@ import numpy as np
 
 import xarray as xr
 
+from . import sections
+
 
 def preprocess_natre(ds):
     def _regrid(ds):
@@ -73,3 +75,22 @@ def combine_natre_files():
         parallel=True,
     )
     ds.to_netcdf("../datasets/natre_large_scale.nc")
+
+
+def read_natre():
+    natre = xr.open_dataset(
+        "../datasets/natre_large_scale.nc", chunks={"latitude": 5, "longitude": 5}
+    )
+    natre = natre.where(natre.chi.notnull() & natre.eps.notnull())
+    natre = natre.set_coords(["time", "pres"])
+
+    natre = natre.cf.guess_coord_axis()
+    natre.chi.attrs["long_name"] = "$χ$"
+    natre.eps.attrs["long_name"] = "$ε$"
+    natre["depth"].attrs.update(units="m", positive="down")
+    natre["pres"].attrs.update(positive="down")
+
+    natre = sections.add_ancillary_variables(natre, pref=1000)
+    natre = natre.where(natre.chi > 1e-14)
+
+    return natre
