@@ -9,6 +9,10 @@ parts:
   chapters:
   - file: BoB-ctd-chipod
   - file: P06
+- caption: "NATRE analysis"
+  chapters:
+  - file: natre
+  - file: natre-finescale
 - caption: "Finestructure analysis"
   chapters:
   - file: iw-fine-argo
@@ -18,6 +22,5 @@ parts:
   chapters:
   - file: compare-Ke-estimates
   - file: calc-gradients
-  - file: natre
   - file: equix-vs-tao
   - file: eqpac-ts-diagrams
