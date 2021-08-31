@@ -23,7 +23,7 @@
 
     
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/sphinx-book-theme.e8e5499552300ddf5d7adccae7cc3b70.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
@@ -42,15 +42,15 @@
     <script src="_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
         const thebe_selector_input = "pre"
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Argo finescale estimates" href="iw-fine-argo.html" />
@@ -82,7 +82,7 @@
 </div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item active">
         <p class="caption">
  <span class="caption-text">
@@ -281,7 +281,7 @@
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
             </div>
-            <nav id="bd-toc-nav">
+            <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#get-datasets">
@@ -291,6 +291,31 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#finescale-vs-microscale">
    Finescale vs microscale
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#studying-n2-vs-t-z-s-z">
+   Studying N² vs
+   <span class="math notranslate nohighlight">
+    \(T_z, S_z\)
+   </span>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#studying-k-t-vs-k">
+   Studying
+   <span class="math notranslate nohighlight">
+    \(K_T\)
+   </span>
+   vs
+   <span class="math notranslate nohighlight">
+    \(K_ρ\)
+   </span>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#old-stuff">
+   Old stuff
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -472,8 +497,17 @@ eddydiff   : 0.1
 <div class="section" id="finescale-vs-microscale">
 <h2>Finescale vs microscale<a class="headerlink" href="#finescale-vs-microscale" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
-<li><p>Argo finescale <span class="math notranslate nohighlight">\(⟨χ⟩ = ⟨Γε/N² \; T_z^2⟩\)</span> seems to miss the whole eddy contribution to variance production! This is robust to averaging in γ or P, so it is not a question of the bins being too fine for the 200m mean χ estimate in each profile.</p></li>
-<li><p>Mean finestructure <span class="math notranslate nohighlight">\(⟨K_ρ⟩\)</span> (from NATRE profiles) agrees with <span class="math notranslate nohighlight">\(⟨K_ρ⟩\)</span> from Argo <strong>which agrees with <span class="math notranslate nohighlight">\(K_ρ^m\)</span></strong> <span class="math notranslate nohighlight">\(= Γ⟨ε⟩/N_m^2\)</span> i.e. a diapycnal diffusivity for the stirring of the large scale vertical gradient by the microscale</p></li>
+<li><p>The finescale <span class="math notranslate nohighlight">\(⟨ε^{200}⟩\)</span> estimates agree well with microscale <span class="math notranslate nohighlight">\(⟨ε^{0.5}⟩\)</span></p></li>
+<li><p>NATRE finescale <span class="math notranslate nohighlight">\(⟨K_ρ^{200}⟩\)</span> agrees with Argo finescale <span class="math notranslate nohighlight">\(⟨K_ρ^{200}⟩\)</span> <strong>which agrees with <span class="math notranslate nohighlight">\(K_ρ^m\)</span></strong> <span class="math notranslate nohighlight">\(= Γ⟨ε^{0.5}⟩/N_m^2\)</span> i.e. a diapycnal diffusivity for the stirring of the large scale vertical gradient by the microscale. Somehow calculating a 200-m diffusivity using the finestructure <span class="math notranslate nohighlight">\(ε^{200}\)</span> and 200-m scale <span class="math notranslate nohighlight">\(N²\)</span> seems to average us out to the “large scale”</p></li>
+<li><p>Argo finescale <span class="math notranslate nohighlight">\(⟨χ^{200}⟩ = ⟨Γε^{200}/N_{200}^2 \; ∂_zT_{200}^2⟩\)</span> seems to miss the whole eddy contribution to variance production! This is robust to averaging in γ or P, so it is not a question of the bins being too fine for the 200m mean χ estimate in each profile. I think the issue is scaling the 200-m <span class="math notranslate nohighlight">\(ε^{200}\)</span> with 200-m scale gradients to get <span class="math notranslate nohighlight">\(χ^{200}\)</span></p></li>
+<li><p>NATRE microscale <span class="math notranslate nohighlight">\(⟨K_ρ⟩\)</span>  and <span class="math notranslate nohighlight">\(⟨K_T⟩\)</span> is quite different near the top.</p></li>
+<li><p>The large-scale mean <span class="math notranslate nohighlight">\(K_T^m\)</span> is the (meaningless) diffusivity required to explain <span class="math notranslate nohighlight">\(⟨χ⟩\)</span> by microscale stirring on the mean vertical gradient. that’s why there’s a peak where variance is actually being generated by mesoscale stirring of the lateral gradient.</p></li>
+</ol>
+<p>TODO:</p>
+<ol class="simple">
+<li><p>The disagreement between microscale <span class="math notranslate nohighlight">\(⟨K_ρ⟩\)</span> and the <span class="math notranslate nohighlight">\(K_ρ^m\)</span> or finescale <span class="math notranslate nohighlight">\(K_ρ\)</span> is the key I think. I think the 200-m averaging inherent in the finescale estimate is filtering out the mesoscale. BUT then the 200m averaged microscale <span class="math notranslate nohighlight">\(⟨K_ρ⟩\)</span> should also reflect this? But maybe I should calculate the 200m scale diffusivity instead of averaging the 0.5m scale diffusivity in 200m bins.</p></li>
+<li><p>Is there any way I can estimate the <strong>microscale</strong> <span class="math notranslate nohighlight">\(K_ρ\)</span> that gets me back to the “large-scale” <span class="math notranslate nohighlight">\(K_ρ^m\)</span></p></li>
+<li><p>Look at individual profiles of <span class="math notranslate nohighlight">\(χ, ε, χ^{200}, ε^{200}\)</span>; is the 200-m average taking out the eddy stirring contribution to <span class="math notranslate nohighlight">\(T_z\)</span>? Since they are compensated it makes sense that <span class="math notranslate nohighlight">\(N² ≪ gαT_z^2\)</span> at scales smaller than horizontal stirring vertical scale</p></li>
 </ol>
 <div class="cell tag_hide-input tag_full-width docutils container">
 <div class="cell_input docutils container">
@@ -485,12 +519,12 @@ eddydiff   : 0.1
     <span class="k">for</span> <span class="n">ds</span><span class="p">,</span> <span class="n">lw</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
         <span class="p">[</span>
             <span class="n">natre_micro_dens</span><span class="p">,</span>
-            <span class="n">natre_micro_depth</span><span class="p">,</span>
             <span class="n">natre_fine_depth</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">criteria</span><span class="o">=</span><span class="s2">&quot;kunze&quot;</span><span class="p">),</span>
+            <span class="c1"># natre_micro_depth,</span>
             <span class="n">argo_fine_dens</span><span class="p">,</span>
             <span class="n">argo_fine_depth</span><span class="p">,</span>
         <span class="p">],</span>
-        <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
     <span class="p">):</span>
         <span class="k">if</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">:</span>
             <span class="n">h</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="n">var</span><span class="p">]</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
@@ -504,6 +538,9 @@ eddydiff   : 0.1
     <span class="n">y</span><span class="o">=</span><span class="s2">&quot;sea_water_pressure&quot;</span><span class="p">,</span> <span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="s2">&quot;Kt&quot;</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">_labels</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 <span class="n">h</span> <span class="o">=</span> <span class="n">natre_micro_dens</span><span class="p">[</span><span class="s2">&quot;Krho_m&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;sea_water_pressure&quot;</span><span class="p">,</span> <span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="s2">&quot;Kt&quot;</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">_labels</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">natre_micro_dens</span><span class="p">[</span><span class="s2">&quot;Krho_m&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
     <span class="n">y</span><span class="o">=</span><span class="s2">&quot;sea_water_pressure&quot;</span><span class="p">,</span> <span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="s2">&quot;Kρ&quot;</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">_labels</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">)</span>
 <span class="n">hdl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
@@ -512,19 +549,22 @@ eddydiff   : 0.1
     <span class="n">hdl</span><span class="p">,</span>
     <span class="p">[</span>
         <span class="s2">&quot;NATRE μ γ avg&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;NATRE μ P avg&quot;</span><span class="p">,</span>
+        <span class="c1"># &quot;NATRE μ P avg&quot;,</span>
         <span class="s2">&quot;NATRE fine P avg&quot;</span><span class="p">,</span>
         <span class="s2">&quot;Argo fine γ avg&quot;</span><span class="p">,</span>
         <span class="s2">&quot;Argo fine P avg&quot;</span><span class="p">,</span>
         <span class="s2">&quot;NATRE μ large-scale K&quot;</span><span class="p">,</span>
     <span class="p">],</span>
-    <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center left&quot;</span><span class="p">,</span>
-    <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+    <span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+    <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
 <span class="p">)</span>
 
 <span class="n">ax</span><span class="p">[</span><span class="s2">&quot;χ&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mf">1e-10</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">])</span>
 <span class="n">ax</span><span class="p">[</span><span class="s2">&quot;ε&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mf">1e-10</span><span class="p">,</span> <span class="mf">1e-9</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="s2">&quot;Kt&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">([</span><span class="mf">5e-6</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">])</span>
 
+<span class="p">[</span><span class="n">aa</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;minor&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">axx</span><span class="p">]</span>
 <span class="n">ax</span><span class="p">[</span><span class="s2">&quot;Kt&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 <span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">clean_axes</span><span class="p">(</span><span class="n">axx</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">h_pad</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">w_pad</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
@@ -537,6 +577,74 @@ eddydiff   : 0.1
 <img alt="_images/natre-finescale_8_0.png" src="_images/natre-finescale_8_0.png" />
 </div>
 </div>
+</div>
+<div class="section" id="studying-n2-vs-t-z-s-z">
+<h2>Studying N² vs <span class="math notranslate nohighlight">\(T_z, S_z\)</span><a class="headerlink" href="#studying-n2-vs-t-z-s-z" title="Permalink to this headline">¶</a></h2>
+<p>Well this is pretty clear!</p>
+<p>There are compensated vertical gradients of <span class="math notranslate nohighlight">\(T_z\)</span> and <span class="math notranslate nohighlight">\(S_z\)</span> of ≈ 10-30m scale. So a 200-m diffusivity is acting on the much larger scale gradient <span class="math notranslate nohighlight">\(∂_z θ_m\)</span> <em>not</em> <span class="math notranslate nohighlight">\(∂_z(θ_m + θ_e)\)</span>, the latter being the mean for the microscale diffusivity.</p>
+<p>Another interesting thing is that <span class="math notranslate nohighlight">\(⟨K_ρ^μ⟩ = K_ρ^m\)</span> i.e. “large-scale” average <span class="math notranslate nohighlight">\(K_ρ\)</span> <em>is</em> the diffusivity for the “large-scale” because there is no stirring of density!</p>
+<p>The other way to think of it is that <span class="math notranslate nohighlight">\(K_T ≠ K_ρ\)</span> at scales of spiciness i.e. compensated T-S variability.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre</span><span class="p">[</span><span class="s2">&quot;NT2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">9.81</span> <span class="o">*</span> <span class="n">dcpy</span><span class="o">.</span><span class="n">eos</span><span class="o">.</span><span class="n">alpha</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">salt</span><span class="p">,</span> <span class="n">natre</span><span class="o">.</span><span class="n">temp</span><span class="p">,</span> <span class="n">natre</span><span class="o">.</span><span class="n">pres</span><span class="p">)</span> <span class="o">*</span> <span class="n">natre</span><span class="o">.</span><span class="n">Tz</span>
+<span class="n">natre</span><span class="p">[</span><span class="s2">&quot;NS2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mf">9.81</span>
+    <span class="o">*</span> <span class="n">dcpy</span><span class="o">.</span><span class="n">eos</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">salt</span><span class="p">,</span> <span class="n">natre</span><span class="o">.</span><span class="n">temp</span><span class="p">,</span> <span class="n">natre</span><span class="o">.</span><span class="n">pres</span><span class="p">)</span>
+    <span class="o">*</span> <span class="n">natre</span><span class="o">.</span><span class="n">salt</span><span class="o">.</span><span class="n">interpolate_na</span><span class="p">(</span><span class="s2">&quot;depth&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">differentiate</span><span class="p">(</span><span class="s2">&quot;depth&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">profile</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">natre</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">coarsen</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">boundary</span><span class="o">=</span><span class="s2">&quot;trim&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">1500</span><span class="p">))</span>
+<span class="p">)</span>
+<span class="n">profile</span><span class="o">.</span><span class="n">N2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">profile</span><span class="o">.</span><span class="n">NT2</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">profile</span><span class="o">.</span><span class="n">NS2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;C3&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">8e-5</span><span class="p">,</span> <span class="mf">8e-5</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;$N^2$&quot;</span><span class="p">,</span> <span class="s2">&quot;$N_T^2$&quot;</span><span class="p">,</span> <span class="s2">&quot;$N_S^2$&quot;</span><span class="p">])</span>
+
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+<span class="n">profile</span><span class="o">.</span><span class="n">gamma_n</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mi">8</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/natre-finescale_11_0.png" src="_images/natre-finescale_11_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="studying-k-t-vs-k">
+<h2>Studying <span class="math notranslate nohighlight">\(K_T\)</span> vs <span class="math notranslate nohighlight">\(K_ρ\)</span><a class="headerlink" href="#studying-k-t-vs-k" title="Permalink to this headline">¶</a></h2>
+<p>I’m wondering if the <span class="math notranslate nohighlight">\(K_T = K_ρ\)</span> assumption really breaks down at the 200-m scale?</p>
+<ul class="simple">
+<li><p>calculate <span class="math notranslate nohighlight">\(K_T, K_ρ\)</span> from the microstructure data at various averaging scales.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;Kt&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Krho&quot;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">line45</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/natre-finescale_13_0.png" src="_images/natre-finescale_13_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="old-stuff">
+<h2>Old stuff<a class="headerlink" href="#old-stuff" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">decode_bounds_to_intervals</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">bounds_dim</span><span class="o">=</span><span class="s2">&quot;bounds&quot;</span><span class="p">):</span>
@@ -568,7 +676,7 @@ eddydiff   : 0.1
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7ff00197a6a0&gt;]
 </pre></div>
 </div>
-<img alt="_images/natre-finescale_10_1.png" src="_images/natre-finescale_10_1.png" />
+<img alt="_images/natre-finescale_16_1.png" src="_images/natre-finescale_16_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -608,7 +716,7 @@ eddydiff   : 0.1
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre-finescale_11_0.png" src="_images/natre-finescale_11_0.png" />
+<img alt="_images/natre-finescale_17_0.png" src="_images/natre-finescale_17_0.png" />
 </div>
 </div>
 <div class="section" id="t-s">
@@ -642,7 +750,7 @@ eddydiff   : 0.1
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre-finescale_14_0.png" src="_images/natre-finescale_14_0.png" />
+<img alt="_images/natre-finescale_20_0.png" src="_images/natre-finescale_20_0.png" />
 </div>
 </div>
 </div>
@@ -2233,7 +2341,7 @@ Attributes:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre-finescale_25_0.png" src="_images/natre-finescale_25_0.png" />
+<img alt="_images/natre-finescale_31_0.png" src="_images/natre-finescale_31_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2700,13 +2808,6 @@ Attributes:
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">combined</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s2">&quot;../datasets/natre-finescale.nc&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">fix_result</span><span class="p">(</span><span class="n">profile</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span>
         <span class="n">profile</span><span class="o">.</span><span class="n">rename_dims</span><span class="p">({</span><span class="s2">&quot;pressure&quot;</span><span class="p">:</span> <span class="s2">&quot;pressure_&quot;</span><span class="p">})</span>
@@ -2719,6 +2820,13 @@ Attributes:
 
 <span class="n">combined</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">combine_by_coords</span><span class="p">([</span><span class="n">fix_result</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span> <span class="k">for</span> <span class="n">ds</span> <span class="ow">in</span> <span class="n">computed</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
 <span class="n">combined</span> <span class="o">=</span> <span class="n">combined</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">guess_coord_axis</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">combined</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s2">&quot;../datasets/natre-finescale.nc&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2742,7 +2850,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fefa3e34760&gt;]
 </pre></div>
 </div>
-<img alt="_images/natre-finescale_31_1.png" src="_images/natre-finescale_31_1.png" />
+<img alt="_images/natre-finescale_37_1.png" src="_images/natre-finescale_37_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2757,7 +2865,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7feff10f9400&gt;]
 </pre></div>
 </div>
-<img alt="_images/natre-finescale_32_1.png" src="_images/natre-finescale_32_1.png" />
+<img alt="_images/natre-finescale_38_1.png" src="_images/natre-finescale_38_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2773,7 +2881,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fefdd4f9eb0&gt;]
 </pre></div>
 </div>
-<img alt="_images/natre-finescale_33_1.png" src="_images/natre-finescale_33_1.png" />
+<img alt="_images/natre-finescale_39_1.png" src="_images/natre-finescale_39_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2789,7 +2897,7 @@ Attributes:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre-finescale_34_0.png" src="_images/natre-finescale_34_0.png" />
+<img alt="_images/natre-finescale_40_0.png" src="_images/natre-finescale_40_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2805,40 +2913,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fefe462fc10&gt;]
 </pre></div>
 </div>
-<img alt="_images/natre-finescale_35_1.png" src="_images/natre-finescale_35_1.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre_fine_avg</span><span class="o">.</span><span class="n">ε</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
-    <span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">300</span><span class="p">),</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mf">1e-10</span><span class="p">,</span> <span class="mf">5e-8</span><span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fefdd7e2b80&gt;]
-</pre></div>
-</div>
-<img alt="_images/natre-finescale_36_1.png" src="_images/natre-finescale_36_1.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span>
-    <span class="n">combined</span><span class="o">.</span><span class="n">groupby_bins</span><span class="p">(</span><span class="s2">&quot;pressure&quot;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">2001</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span>
-    <span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">guess_coord_axis</span><span class="p">()</span>
-    <span class="o">.</span><span class="n">χ</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fefa35bc880&gt;]
-</pre></div>
-</div>
-<img alt="_images/natre-finescale_37_1.png" src="_images/natre-finescale_37_1.png" />
+<img alt="_images/natre-finescale_41_1.png" src="_images/natre-finescale_41_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2852,7 +2927,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fefdc273d30&gt;]
 </pre></div>
 </div>
-<img alt="_images/natre-finescale_38_1.png" src="_images/natre-finescale_38_1.png" />
+<img alt="_images/natre-finescale_42_1.png" src="_images/natre-finescale_42_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2868,7 +2943,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fefddf66670&gt;]
 </pre></div>
 </div>
-<img alt="_images/natre-finescale_39_1.png" src="_images/natre-finescale_39_1.png" />
+<img alt="_images/natre-finescale_43_1.png" src="_images/natre-finescale_43_1.png" />
 </div>
 </div>
 </div>
@@ -2883,26 +2958,46 @@ Attributes:
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "python"
+            mode: "conda-env-dcpy-py"
         },
         kernelOptions: {
-            kernelName: "python3",
+            kernelName: "conda-env-dcpy-py",
             path: "./."
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'python3'</script>
+    <script>kernelName = 'conda-env-dcpy-py'</script>
 
               </div>
               
         
-        <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="natre.html" title="previous page">NATRE variance budget</a>
-    <a class='right-next' id="next-link" href="iw-fine-argo.html" title="next page">Argo finescale estimates</a>
 
-        </div>
+
+
+<div class='prev-next-bottom'>
+    
+    <div id="prev">
+        <a class="left-prev" href="natre.html" title="previous page">
+            <i class="prevnext-label fas fa-angle-left"></i>
+            <div class="prevnext-info">
+                <p class="prevnext-label">previous</p>
+                <p class="prevnext-title">NATRE variance budget</p>
+            </div>
+        </a>
+    </div>
+     <div id="next">
+        <a class="right-next" href="iw-fine-argo.html" title="next page">
+            <div class="prevnext-info">
+                <p class="prevnext-label">next</p>
+                <p class="prevnext-title">Argo finescale estimates</p>
+            </div>
+            <i class="prevnext-label fas fa-angle-right"></i>
+        </a>
+     </div>
+
+</div>
         
         </div>
     </div>
