@@ -53,7 +53,7 @@ def preprocess_natre(ds):
 
 
 def filenum(filename):
-    """ Gets file number from microstructure file name"""
+    """Gets file number from microstructure file name"""
     return int(filename.split("/")[-1][6:].split(".")[0])
 
 
@@ -92,5 +92,8 @@ def read_natre():
 
     natre = sections.add_ancillary_variables(natre, pref=1000)
     natre = natre.where(natre.chi > 1e-14)
+
+    # messes up cf-xarray
+    natre["time"] = natre.time.isel(depth=0)
 
     return natre
