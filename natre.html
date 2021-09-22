@@ -23,7 +23,7 @@
 
     
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/sphinx-book-theme.e8f53015daec13862f6db5e763c41738.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.e2363ea40746bee74734a24ffefccd78.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
@@ -74,6 +74,10 @@
     
         <div class="navbar-brand-box">
     <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
       
       <img src="_static/logo.png" class="logo" alt="logo">
       
@@ -325,6 +329,18 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mesoscale-variance-budget">
+   1/10° mesoscale variance budget
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#interpretation">
+     Interpretation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#studying-cole-estimate">
    Studying Cole estimate
   </a>
@@ -410,14 +426,14 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distributed: 2021.7.2
-matplotlib : 3.4.2
-dcpy       : 0.1
-numpy      : 1.21.1
-eddydiff   : 0.1
-xarray     : 0.17.1.dev3+g48378c4b1
-cf_xarray  : 0.5.3.dev29+g3660810.d20210729
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dcpy       : 0.1
 tqdm       : 4.62.0
+xarray     : 0.19.1.dev36+gb9dfbe66a.d20210831
+matplotlib : 3.4.2
+eddydiff   : 0.1
+numpy      : 1.21.1
+distributed: 2021.9.0
+cf_xarray  : 0.6.1.dev12+g5523a8f.d20210908
 </pre></div>
 </div>
 </div>
@@ -1367,6 +1383,7 @@ Attributes: (12/13)
 </ol>
 <p>The comparison with variance production using Cole et al diffusivity and gradients calculated in a similar way disagree significantly between 400 and 1000m. Below that there’s not much data but it seems to agree.</p>
 <p>The Groeskamp et al (2020) estimate [G2020] is slightly better but not by much. All predict a maximum in variance production near 800m</p>
+<p>The finescale estimates are interesting, argo with Rω=3 and natre with Rω=7 work well but why?</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="c1">#, constrained_layout=True)</span>
@@ -1394,17 +1411,16 @@ Attributes: (12/13)
 
 <span class="n">ed</span><span class="o">.</span><span class="n">sections</span><span class="o">.</span><span class="n">plot_var_prod_diss</span><span class="p">(</span><span class="n">micro</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">())</span>
 
-<span class="p">(</span><span class="n">argo_fine_depth</span><span class="o">.</span><span class="n">χ</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
-    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C1&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pressure_bins&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$⟨χ⟩^</span><span class="si">{argo}</span><span class="s2">/2$&quot;</span>
+<span class="p">(</span><span class="n">argo_fine_depth</span><span class="o">.</span><span class="n">χ</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">criteria</span><span class="o">=</span><span class="s2">&quot;whalen&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C1&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pressure_bins&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$⟨χ⟩^</span><span class="si">{argo}</span><span class="s2">_{Rω=3}/2$&quot;</span>
 <span class="p">)</span>
 
-<span class="p">(</span><span class="n">natre_fine_avg</span><span class="o">.</span><span class="n">χ</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">criteria</span><span class="o">=</span><span class="s2">&quot;whalen&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
-    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C2&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$⟨χ⟩_{fine-3}^</span><span class="si">{natre}</span><span class="s2">/2$&quot;</span>
-<span class="p">)</span>
+<span class="c1">#(natre_fine_avg.χ.sel(criteria=&quot;whalen&quot;) / 2).cf.plot.step(</span>
+<span class="c1">#    marker=&quot;o&quot;, color=&quot;C2&quot;, ax=plt.gca(), label=&quot;$⟨χ⟩_{fine-3}^{natre}/2$&quot;</span>
+<span class="c1">#)</span>
 <span class="p">(</span><span class="n">natre_fine_avg</span><span class="o">.</span><span class="n">χ</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">criteria</span><span class="o">=</span><span class="s2">&quot;whalen_7&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
-    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C3&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$⟨χ⟩_{fine-7}^</span><span class="si">{natre}</span><span class="s2">/2$&quot;</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C3&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$⟨χ⟩_{Rω=7}^</span><span class="si">{natre}</span><span class="s2">/2$&quot;</span>
 <span class="p">)</span>
-
 
 <span class="c1"># (micro.chi / 2 - micro.Krho * micro.dTdz ** 2).cf.plot.step(</span>
 <span class="c1">#    y=&quot;pres&quot;,</span>
@@ -1418,7 +1434,7 @@ Attributes: (12/13)
 
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.6</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Variance production or dissipation [°C²/s]&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mf">4.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mf">4.5</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;NATRE&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;../images/natre-estimate.png&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1427,6 +1443,53 @@ Attributes: (12/13)
 <div class="cell_output docutils container">
 <img alt="_images/natre_27_0.png" src="_images/natre_27_0.png" />
 </div>
+</div>
+</div>
+<div class="section" id="mesoscale-variance-budget">
+<h2>1/10° mesoscale variance budget<a class="headerlink" href="#mesoscale-variance-budget" title="Permalink to this headline">¶</a></h2>
+<p>Yiming is working with the following variance budget equation for the mesoscale after decomposing <span class="math notranslate nohighlight">\(T = \bar{T} + T' + T'' ≡ T_m + T_e + T_t\)</span> (the latter is Ferrari &amp; Polzin notation)</p>
+<p>\begin{equation}
+∂_t \overline{T’^2} =  -\overline{u’T’} ⋅ ∇_h\overline{T} - \overline{w’T’}∂_z\overline{T} - \overline{\vec{v} ⋅ ∇ T’^2/2} + \overline{T’∂_z \left[K ∂_zT’ \right]} + …
+\end{equation}</p>
+<p>Ferrari &amp; Polzin’s equations (4.6, 4.7) for the mesoscale and microscale are (<span class="math notranslate nohighlight">\(u\)</span> here is the full 3D <span class="math notranslate nohighlight">\(u\)</span>):
+\begin{align}
+⟨u_eT_e⟩ ⋅ ∇T_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;= 0 \
+⟨u_tT_t⟩ ⋅ ∇ T_m + ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;= - \frac 12 ⟨χ⟩
+\end{align}</p>
+<p>In Yiming’s notation this is</p>
+<p>\begin{align}
+⟨u’T’⟩⋅∇\overline{T} + \overline{w’T’}∂_z\overline{T}  - \overline{T’∂_z \left[K ∂_zT’ \right]} = 0 \
+K \left(∂_z(\overline{T} + T’)\right)^2  &amp;= - \frac 12 ⟨χ⟩
+\end{align}</p>
+<p>Now we can identify Yiming’s VMIX term (ignoring solar heating etc.) as the scale transformation term in FP2005 and then use the microscale budget from FP2005 to write
+\begin{equation}
+⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ = - \frac 12 ⟨χ⟩ - ⟨u_tT_t⟩ ⋅ ∇ T_m
+\end{equation}</p>
+<p>i.e. Yiming’s mesoscale dissipation term is really the difference between microscale dissipation and microscale production by stirring of the mean vertical gradient which should match the observations reasonably well.</p>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s2">&quot;../images/Tvariance_budget_NATREregion_with_EKE.png&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/natre_29_0.png" src="_images/natre_29_0.png" />
+</div>
+</div>
+<div class="section" id="interpretation">
+<h3>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">¶</a></h3>
+<p>We can interpret the red mesoscale dissipation term as the amount of variance transferred to the microscale for eventual dissipation. This peaks in regions of high mean spice between 1000m and 1500m. The balance in spicy regions is that horizontal mesoscale stirring converts MPE → EPE (compensated filaments or T-S variance) that is dissipated by the microscale. The approximate budget is (note vertical stirring gets ignored, and <span class="math notranslate nohighlight">\(u^h\)</span> represents horizontal velocity vector)
+\begin{align}
+⟨u^h_eT_e⟩ ⋅ ∇_hT_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;\approx 0 \
+⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;\approx - \frac 12 ⟨χ⟩
+\end{align}
+Yiming sees the first equation as “lateral stirring” balances “mesoscale dissipation”, and FP2005 combine the two equations to conclude that “mesoscale stirring of mean variance” balances “total microscale dissipation”</p>
+<p>In the upper water column that is not spicy, we instead see horizontal stirring MPE→ EPE which is then routed to EKE by “vertical stirring”. Here the scale transformation term is 0 so the budget is
+\begin{align}
+⟨u_eT_e⟩ ⋅ ∇T_m &amp;\approx 0 \
+⟨u_tT_t⟩ ⋅ ∇ T_m &amp;= - \frac 12 ⟨χ⟩
+\end{align}
+Yiming sees the first equation as “low dissipation”; FP2005 seees the second equation as “microscale stirring of the mean” balances “total microscale dissipation”</p>
 </div>
 </div>
 <div class="section" id="studying-cole-estimate">
@@ -1448,7 +1511,7 @@ Attributes: (12/13)
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;$K_e^{cole} |∇T_{iso}^{argo}|²$ [°C²/s]&#39;)
 </pre></div>
 </div>
-<img alt="_images/natre_30_1.png" src="_images/natre_30_1.png" />
+<img alt="_images/natre_33_1.png" src="_images/natre_33_1.png" />
 </div>
 </div>
 <p>These are the various terms in the Cole analysis. Note minimum in ∇S between 200 and 800, and associated high mixing lengths ≳ 300km.</p>
@@ -1459,7 +1522,7 @@ Attributes: (12/13)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_32_0.png" src="_images/natre_32_0.png" />
+<img alt="_images/natre_35_0.png" src="_images/natre_35_0.png" />
 </div>
 </div>
 </div>
@@ -1555,7 +1618,7 @@ Attributes: (12/13)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_37_0.png" src="_images/natre_37_0.png" />
+<img alt="_images/natre_40_0.png" src="_images/natre_40_0.png" />
 </div>
 </div>
 </div>
@@ -1600,7 +1663,7 @@ Attributes: (12/13)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_41_0.png" src="_images/natre_41_0.png" />
+<img alt="_images/natre_44_0.png" src="_images/natre_44_0.png" />
 </div>
 </div>
 <p>It’s definitely a big undersampling when compared to all Argo profiles in the area. <strong>How good is good enough?</strong></p>
@@ -1633,7 +1696,7 @@ Attributes: (12/13)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_43_0.png" src="_images/natre_43_0.png" />
+<img alt="_images/natre_46_0.png" src="_images/natre_46_0.png" />
 </div>
 </div>
 </div>
@@ -1677,7 +1740,7 @@ Attributes: (12/13)
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;xarray.plot.facetgrid.FacetGrid at 0x7fbb1793f2b0&gt;
 </pre></div>
 </div>
-<img alt="_images/natre_46_1.png" src="_images/natre_46_1.png" />
+<img alt="_images/natre_49_1.png" src="_images/natre_49_1.png" />
 </div>
 </div>
 </div>
@@ -1719,7 +1782,7 @@ Attributes: (12/13)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_49_0.png" src="_images/natre_49_0.png" />
+<img alt="_images/natre_52_0.png" src="_images/natre_52_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1737,7 +1800,7 @@ Attributes: (12/13)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_50_0.png" src="_images/natre_50_0.png" />
+<img alt="_images/natre_53_0.png" src="_images/natre_53_0.png" />
 </div>
 </div>
 </div>
@@ -1808,7 +1871,7 @@ Attributes: (12/13)
         
         </div>
     </div>
-    <footer class="footer mt-5 mt-md-0">
+    <footer class="footer">
     <div class="container">
       <p>
         
