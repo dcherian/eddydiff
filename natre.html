@@ -56,7 +56,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="NATRE micro vs finescale" href="natre-finescale.html" />
-    <link rel="prev" title="P06 CTD χpod analysis" href="P06.html" />
+    <link rel="prev" title="Eddy variance generation along GO-SHIP lines" href="sections-variance-estimate.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -123,6 +123,11 @@
    P06 CTD χpod analysis
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sections-variance-estimate.html">
+   Eddy variance generation along GO-SHIP lines
+  </a>
+ </li>
 </ul>
 <p class="caption">
  <span class="caption-text">
@@ -186,6 +191,11 @@
  <li class="toctree-l1">
   <a class="reference internal" href="eqpac-ts-diagrams.html">
    T-S diagrams from TAO &amp; Argo at (0, 145W→135W)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="dataset-processing.html">
+   Dataset processing
   </a>
  </li>
 </ul>
@@ -1460,26 +1470,26 @@ Attributes: (12/13)
 <div class="section" id="pop2-1-10-mesoscale-variance-budget">
 <h2>POP2 1/10° mesoscale variance budget<a class="headerlink" href="#pop2-1-10-mesoscale-variance-budget" title="Permalink to this headline">¶</a></h2>
 <p>Yiming is working with the following variance budget equation for the mesoscale after decomposing <span class="math notranslate nohighlight">\(T = \bar{T} + T' + T'' ≡ T_m + T_e + T_t\)</span> (the latter is Ferrari &amp; Polzin notation). The <span class="math notranslate nohighlight">\(T = \tilde{T} + T''\)</span> decomposition is inherent when using cell-averaged equations.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8eb630c7-8b4d-4b4d-8395-9e729bdb3bf8">
-<span class="eqno">(3)<a class="headerlink" href="#equation-8eb630c7-8b4d-4b4d-8395-9e729bdb3bf8" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3c3aaf70-429d-4309-9039-98763bf283bc">
+<span class="eqno">(3)<a class="headerlink" href="#equation-3c3aaf70-429d-4309-9039-98763bf283bc" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 ∂_t \overline{T'^2} =  -\overline{u'T'} ⋅ ∇_h\overline{T} - \overline{w'T'}∂_z\overline{T} - \overline{\vec{v} ⋅ ∇ T'^2/2} + \overline{T'∂_z \left[K ∂_zT' \right]} + …
 \end{equation}\]</div>
 <p>Ferrari &amp; Polzin’s equations (4.6, 4.7) for the mesoscale and microscale are (<span class="math notranslate nohighlight">\(u\)</span> here is the full 3D <span class="math notranslate nohighlight">\(u\)</span>):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b909da81-3553-48fe-be3e-d75a7bf7f19e">
-<span class="eqno">(4)<a class="headerlink" href="#equation-b909da81-3553-48fe-be3e-d75a7bf7f19e" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-feef87c8-4e98-47d4-a077-be127eaf8354">
+<span class="eqno">(4)<a class="headerlink" href="#equation-feef87c8-4e98-47d4-a077-be127eaf8354" title="Permalink to this equation">¶</a></span>\[\begin{align}
 ⟨u_eT_e⟩ ⋅ ∇T_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;= 0 \\
 ⟨u_tT_t⟩ ⋅ ∇ T_m + ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;= - \frac 12 ⟨χ⟩
 \end{align}\]</div>
 <p>Note that these equations are specialized for the “interior”.</p>
 <p>In Yiming’s notation these equations are</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4cc9c945-dc66-4a1c-9156-dde74f2418c8">
-<span class="eqno">(5)<a class="headerlink" href="#equation-4cc9c945-dc66-4a1c-9156-dde74f2418c8" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-d144eb0b-f482-4aee-8231-424c2a9af2e7">
+<span class="eqno">(5)<a class="headerlink" href="#equation-d144eb0b-f482-4aee-8231-424c2a9af2e7" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \overline{u'T'}⋅∇\overline{T} + \overline{w'T'}∂_z\overline{T}  - \overline{T'∂_z \left[K ∂_zT' \right]} = 0 \\
 K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 \end{align}\]</div>
 <p>Now we can identify Yiming’s dissipation term (“VMIX”, ignoring solar heating etc.) as the scale transformation term in FP2005 and then use the microscale budget from FP2005 to write</p>
-<div class="amsmath math notranslate nohighlight" id="equation-759d056e-68d7-4a01-95a9-5e13e0fd41cd">
-<span class="eqno">(6)<a class="headerlink" href="#equation-759d056e-68d7-4a01-95a9-5e13e0fd41cd" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-0e929369-6f03-4e37-8983-f4ac80761ee5">
+<span class="eqno">(6)<a class="headerlink" href="#equation-0e929369-6f03-4e37-8983-f4ac80761ee5" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ = - \frac 12 ⟨χ⟩ - ⟨u_tT_t⟩ ⋅ ∇ T_m
 \end{equation}\]</div>
 <p>i.e. Yiming’s “mesoscale dissipation” term is really the difference between</p>
@@ -1503,8 +1513,8 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="section" id="spicy-region">
 <h4>Spicy region<a class="headerlink" href="#spicy-region" title="Permalink to this headline">¶</a></h4>
 <p>We can interpret the red mesoscale dissipation term as the amount of variance transferred to the microscale for eventual dissipation. This peaks in regions of high mean spice between 1000m and 1500m. The balance in spicy regions is that horizontal mesoscale stirring converts MPE → EPE (compensated filaments or T-S variance) that is dissipated by the microscale. The approximate budget is (note vertical stirring gets ignored, and <span class="math notranslate nohighlight">\(u^h\)</span> represents horizontal velocity vector)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-82fcc791-15bc-40e3-b837-30fe4f75b0c6">
-<span class="eqno">(7)<a class="headerlink" href="#equation-82fcc791-15bc-40e3-b837-30fe4f75b0c6" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-4b99e9e1-098c-4d7d-ad19-c517684d2cda">
+<span class="eqno">(7)<a class="headerlink" href="#equation-4b99e9e1-098c-4d7d-ad19-c517684d2cda" title="Permalink to this equation">¶</a></span>\[\begin{align}
 ⟨u^h_eT_e⟩ ⋅ ∇_hT_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;\approx 0 \\
 ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;\approx - \frac 12 ⟨χ⟩
 \end{align}\]</div>
@@ -1516,8 +1526,8 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="section" id="weak-spice">
 <h4>Weak spice<a class="headerlink" href="#weak-spice" title="Permalink to this headline">¶</a></h4>
 <p>In the upper water column that is not spicy, we instead see horizontal stirring MPE→ EPE which is then routed to EKE by “vertical stirring”. Here the scale transformation term is 0 so the budget is</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c4ec91dc-379d-429d-932a-ca86ed47b3c9">
-<span class="eqno">(8)<a class="headerlink" href="#equation-c4ec91dc-379d-429d-932a-ca86ed47b3c9" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-d6244886-afaa-4d7e-aede-f4a33eda21ca">
+<span class="eqno">(8)<a class="headerlink" href="#equation-d6244886-afaa-4d7e-aede-f4a33eda21ca" title="Permalink to this equation">¶</a></span>\[\begin{align}
 ⟨u_eT_e⟩ ⋅ ∇T_m &amp;\approx 0 \\
 ⟨u_tT_t⟩ ⋅ ∇ T_m &amp;\approx - \frac 12 ⟨χ⟩
 \end{align}\]</div>
@@ -1885,11 +1895,11 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class='prev-next-bottom'>
     
     <div id="prev">
-        <a class="left-prev" href="P06.html" title="previous page">
+        <a class="left-prev" href="sections-variance-estimate.html" title="previous page">
             <i class="prevnext-label fas fa-angle-left"></i>
             <div class="prevnext-info">
                 <p class="prevnext-label">previous</p>
-                <p class="prevnext-title">P06 CTD χpod analysis</p>
+                <p class="prevnext-title">Eddy variance generation along GO-SHIP lines</p>
             </div>
         </a>
     </div>
