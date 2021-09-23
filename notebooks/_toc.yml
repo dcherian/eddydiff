@@ -25,3 +25,4 @@ parts:
   - file: calc-gradients
   - file: equix-vs-tao
   - file: eqpac-ts-diagrams
+  - file: dataset-processing
