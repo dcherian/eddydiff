@@ -9,6 +9,7 @@ parts:
   chapters:
   - file: BoB-ctd-chipod
   - file: P06
+  - file: sections-variance-estimate
 - caption: "NATRE analysis"
   chapters:
   - file: natre
