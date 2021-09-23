@@ -44,6 +44,8 @@
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -347,10 +349,11 @@ by dividing by the same transfer function a second time
 [a correction not included in Whalen et al. (2012)]. This
 slightly raises the variances in the bin-averaged cases.
 The average increase in the dissipation rate for the Atlantic Ocean is a factor of 1.02, with a range of 1 to 2.6.</p>
-<p>Strain
-\begin{equation}
+<p>Strain</p>
+<div class="amsmath math notranslate nohighlight" id="equation-62fbe381-d1e2-4d4d-959a-71df36a84787">
+<span class="eqno">(9)<a class="headerlink" href="#equation-62fbe381-d1e2-4d4d-959a-71df36a84787" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 ξ_z = \frac{N² - N²_{fit}}{\bar{N²}}
-\end{equation}</p>
+\end{equation}\]</div>
 <hr class="docutils" />
 <p>Waterman et al (2014)</p>
 <p>Segments were constructed
@@ -1545,7 +1548,7 @@ Data variables:
 </div>
 <div class="section" id="compare-to-mixsea-sensitivity-studies">
 <h3>Compare to mixsea &amp; Sensitivity studies<a class="headerlink" href="#compare-to-mixsea-sensitivity-studies" title="Permalink to this headline">¶</a></h3>
-<p>The real difference is because they do some funny interpolating of the spectrum that I do not understand: <a class="reference external" href="https://github.com/modscripps/mixsea/blob/2c1a27b5b18d8b28f1af17e6d7dbe0f505ef78d8/mixsea/helpers.py#L169-L178">https://github.com/modscripps/mixsea/blob/2c1a27b5b18d8b28f1af17e6d7dbe0f505ef78d8/mixsea/helpers.py#L169-L178</a></p>
+<p>The real difference is because they do some funny interpolating of the spectrum that I do not understand: https://github.com/modscripps/mixsea/blob/2c1a27b5b18d8b28f1af17e6d7dbe0f505ef78d8/mixsea/helpers.py#L169-L178</p>
 <p>If I comment out that interp step, spectra agree exactly.</p>
 <p>Sensitivity</p>
 <ol class="simple">

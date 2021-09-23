@@ -44,7 +44,7 @@
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
@@ -1460,24 +1460,28 @@ Attributes: (12/13)
 <div class="section" id="pop2-1-10-mesoscale-variance-budget">
 <h2>POP2 1/10° mesoscale variance budget<a class="headerlink" href="#pop2-1-10-mesoscale-variance-budget" title="Permalink to this headline">¶</a></h2>
 <p>Yiming is working with the following variance budget equation for the mesoscale after decomposing <span class="math notranslate nohighlight">\(T = \bar{T} + T' + T'' ≡ T_m + T_e + T_t\)</span> (the latter is Ferrari &amp; Polzin notation). The <span class="math notranslate nohighlight">\(T = \tilde{T} + T''\)</span> decomposition is inherent when using cell-averaged equations.</p>
-<p>\begin{equation}
-∂_t \overline{T’^2} =  -\overline{u’T’} ⋅ ∇_h\overline{T} - \overline{w’T’}∂_z\overline{T} - \overline{\vec{v} ⋅ ∇ T’^2/2} + \overline{T’∂_z \left[K ∂_zT’ \right]} + …
-\end{equation}</p>
-<p>Ferrari &amp; Polzin’s equations (4.6, 4.7) for the mesoscale and microscale are (<span class="math notranslate nohighlight">\(u\)</span> here is the full 3D <span class="math notranslate nohighlight">\(u\)</span>):
-\begin{align}
-⟨u_eT_e⟩ ⋅ ∇T_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;= 0 \
+<div class="amsmath math notranslate nohighlight" id="equation-8eb630c7-8b4d-4b4d-8395-9e729bdb3bf8">
+<span class="eqno">(3)<a class="headerlink" href="#equation-8eb630c7-8b4d-4b4d-8395-9e729bdb3bf8" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+∂_t \overline{T'^2} =  -\overline{u'T'} ⋅ ∇_h\overline{T} - \overline{w'T'}∂_z\overline{T} - \overline{\vec{v} ⋅ ∇ T'^2/2} + \overline{T'∂_z \left[K ∂_zT' \right]} + …
+\end{equation}\]</div>
+<p>Ferrari &amp; Polzin’s equations (4.6, 4.7) for the mesoscale and microscale are (<span class="math notranslate nohighlight">\(u\)</span> here is the full 3D <span class="math notranslate nohighlight">\(u\)</span>):</p>
+<div class="amsmath math notranslate nohighlight" id="equation-b909da81-3553-48fe-be3e-d75a7bf7f19e">
+<span class="eqno">(4)<a class="headerlink" href="#equation-b909da81-3553-48fe-be3e-d75a7bf7f19e" title="Permalink to this equation">¶</a></span>\[\begin{align}
+⟨u_eT_e⟩ ⋅ ∇T_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;= 0 \\
 ⟨u_tT_t⟩ ⋅ ∇ T_m + ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;= - \frac 12 ⟨χ⟩
-\end{align}
-Note that these equations are specialized for the “interior”.</p>
-<p>In Yiming’s notation these equations are
-\begin{align}
-\overline{u’T’}⋅∇\overline{T} + \overline{w’T’}∂_z\overline{T}  - \overline{T’∂_z \left[K ∂_zT’ \right]} = 0 \
-K \left(∂_z(\overline{T} + T’)\right)^2  &amp;= - \frac 12 ⟨χ⟩
-\end{align}</p>
-<p>Now we can identify Yiming’s dissipation term (“VMIX”, ignoring solar heating etc.) as the scale transformation term in FP2005 and then use the microscale budget from FP2005 to write
-\begin{equation}
+\end{align}\]</div>
+<p>Note that these equations are specialized for the “interior”.</p>
+<p>In Yiming’s notation these equations are</p>
+<div class="amsmath math notranslate nohighlight" id="equation-4cc9c945-dc66-4a1c-9156-dde74f2418c8">
+<span class="eqno">(5)<a class="headerlink" href="#equation-4cc9c945-dc66-4a1c-9156-dde74f2418c8" title="Permalink to this equation">¶</a></span>\[\begin{align}
+\overline{u'T'}⋅∇\overline{T} + \overline{w'T'}∂_z\overline{T}  - \overline{T'∂_z \left[K ∂_zT' \right]} = 0 \\
+K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
+\end{align}\]</div>
+<p>Now we can identify Yiming’s dissipation term (“VMIX”, ignoring solar heating etc.) as the scale transformation term in FP2005 and then use the microscale budget from FP2005 to write</p>
+<div class="amsmath math notranslate nohighlight" id="equation-759d056e-68d7-4a01-95a9-5e13e0fd41cd">
+<span class="eqno">(6)<a class="headerlink" href="#equation-759d056e-68d7-4a01-95a9-5e13e0fd41cd" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ = - \frac 12 ⟨χ⟩ - ⟨u_tT_t⟩ ⋅ ∇ T_m
-\end{equation}</p>
+\end{equation}\]</div>
 <p>i.e. Yiming’s “mesoscale dissipation” term is really the difference between</p>
 <ol class="simple">
 <li><p>total microscale dissipation, and</p></li>
@@ -1498,11 +1502,12 @@ K \left(∂_z(\overline{T} + T’)\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <h3>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="spicy-region">
 <h4>Spicy region<a class="headerlink" href="#spicy-region" title="Permalink to this headline">¶</a></h4>
-<p>We can interpret the red mesoscale dissipation term as the amount of variance transferred to the microscale for eventual dissipation. This peaks in regions of high mean spice between 1000m and 1500m. The balance in spicy regions is that horizontal mesoscale stirring converts MPE → EPE (compensated filaments or T-S variance) that is dissipated by the microscale. The approximate budget is (note vertical stirring gets ignored, and <span class="math notranslate nohighlight">\(u^h\)</span> represents horizontal velocity vector)
-\begin{align}
-⟨u^h_eT_e⟩ ⋅ ∇_hT_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;\approx 0 \
+<p>We can interpret the red mesoscale dissipation term as the amount of variance transferred to the microscale for eventual dissipation. This peaks in regions of high mean spice between 1000m and 1500m. The balance in spicy regions is that horizontal mesoscale stirring converts MPE → EPE (compensated filaments or T-S variance) that is dissipated by the microscale. The approximate budget is (note vertical stirring gets ignored, and <span class="math notranslate nohighlight">\(u^h\)</span> represents horizontal velocity vector)</p>
+<div class="amsmath math notranslate nohighlight" id="equation-82fcc791-15bc-40e3-b837-30fe4f75b0c6">
+<span class="eqno">(7)<a class="headerlink" href="#equation-82fcc791-15bc-40e3-b837-30fe4f75b0c6" title="Permalink to this equation">¶</a></span>\[\begin{align}
+⟨u^h_eT_e⟩ ⋅ ∇_hT_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;\approx 0 \\
 ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;\approx - \frac 12 ⟨χ⟩
-\end{align}</p>
+\end{align}\]</div>
 <ol class="simple">
 <li><p>Yiming sees the first equation as “lateral stirring” balances “mesoscale dissipation”, and</p></li>
 <li><p>FP2005 combine the two equations to conclude that “mesoscale stirring of mean variance” balances “total microscale dissipation”</p></li>
@@ -1510,11 +1515,12 @@ K \left(∂_z(\overline{T} + T’)\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 <div class="section" id="weak-spice">
 <h4>Weak spice<a class="headerlink" href="#weak-spice" title="Permalink to this headline">¶</a></h4>
-<p>In the upper water column that is not spicy, we instead see horizontal stirring MPE→ EPE which is then routed to EKE by “vertical stirring”. Here the scale transformation term is 0 so the budget is
-\begin{align}
-⟨u_eT_e⟩ ⋅ ∇T_m &amp;\approx 0 \
+<p>In the upper water column that is not spicy, we instead see horizontal stirring MPE→ EPE which is then routed to EKE by “vertical stirring”. Here the scale transformation term is 0 so the budget is</p>
+<div class="amsmath math notranslate nohighlight" id="equation-c4ec91dc-379d-429d-932a-ca86ed47b3c9">
+<span class="eqno">(8)<a class="headerlink" href="#equation-c4ec91dc-379d-429d-932a-ca86ed47b3c9" title="Permalink to this equation">¶</a></span>\[\begin{align}
+⟨u_eT_e⟩ ⋅ ∇T_m &amp;\approx 0 \\
 ⟨u_tT_t⟩ ⋅ ∇ T_m &amp;\approx - \frac 12 ⟨χ⟩
-\end{align}</p>
+\end{align}\]</div>
 <ol class="simple">
 <li><p>Yiming sees the first equation as “low dissipation” or “lateral stirring balances vertical stirring”;</p></li>
 <li><p>FP2005 sees the second equation as “microscale stirring of the mean” balances “total microscale dissipation”</p></li>

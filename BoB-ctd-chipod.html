@@ -44,7 +44,7 @@
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script >
@@ -407,9 +407,10 @@
   <div class="section" id="bob-asiri-2013-ctd-pod">
 <h1>BoB ASIRI 2013 CTD χpod<a class="headerlink" href="#bob-asiri-2013-ctd-pod" title="Permalink to this headline">¶</a></h1>
 <p>This notebook will attempt to infer eddy diffusivity <span class="math notranslate nohighlight">\(K_e\)</span> from the basin-wide transect of <span class="math notranslate nohighlight">\(χ, K_T\)</span></p>
-<p>\begin{equation}
-K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T , ∂_z \widetilde{θ}⟩ ; ∂_z θ_m}{|∇θ_m|²}
-\end{equation}</p>
+<div class="amsmath math notranslate nohighlight" id="equation-f6cf5b2b-7cc0-40b4-86e9-7abd87ef1b67">
+<span class="eqno">(1)<a class="headerlink" href="#equation-f6cf5b2b-7cc0-40b4-86e9-7abd87ef1b67" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+    K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z \widetilde{θ}⟩ \; ∂_z θ_m}{|∇θ_m|²}
+\end{equation}\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
@@ -571,9 +572,10 @@ K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T , ∂_z \widetilde{θ}⟩ ; ∂_z θ
 </div>
 <div class="section" id="using-climatological-gradients">
 <h2>Using climatological gradients<a class="headerlink" href="#using-climatological-gradients" title="Permalink to this headline">¶</a></h2>
-<p>\begin{equation}
-K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T , ∂_z \widetilde{θ}⟩ ; ∂_z θ_m}{|∇θ_m|²}
-\end{equation}</p>
+<div class="amsmath math notranslate nohighlight" id="equation-ac1b5a68-0cf4-4134-9901-cf08699b03a5">
+<span class="eqno">(2)<a class="headerlink" href="#equation-ac1b5a68-0cf4-4134-9901-cf08699b03a5" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+    K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z \widetilde{θ}⟩ \; ∂_z θ_m}{|∇θ_m|²}
+\end{equation}\]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eccoKe</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">process_transect_1d</span><span class="p">(</span><span class="n">transect</span><span class="p">,</span> <span class="n">eccograd</span><span class="p">,</span> <span class="s1">&#39;ECCO transect1&#39;</span><span class="p">)</span>
