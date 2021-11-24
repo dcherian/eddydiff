@@ -117,3 +117,6 @@ auto
 .DS_Store
 .auctex-auto
 frag-master.tex
+
+datasets/
+proposal/
