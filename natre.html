@@ -345,16 +345,6 @@
   <a class="reference internal nav-link" href="#variance-production-vs-dissipation">
    Variance production vs dissipation
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#all-microscale-budget-terms">
-   All microscale budget terms
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pop2-1-10-mesoscale-variance-budget">
-   POP2 1/10° mesoscale variance budget
-  </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#interpretation">
@@ -379,6 +369,16 @@
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#all-microscale-budget-terms">
+   All microscale budget terms
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pop2-1-10-mesoscale-variance-budget">
+   POP2 1/10° mesoscale variance budget
+  </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#studying-cole-estimate">
@@ -1422,6 +1422,11 @@ Attributes: (12/13)
 </div>
 <div class="section" id="variance-production-vs-dissipation">
 <h2>Variance production vs dissipation<a class="headerlink" href="#variance-production-vs-dissipation" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>Agreement between POP “mesoscale variance dissipation” and microstructure estimate of “variance received from mesoscale” is great! (Teal dashed steps agree well with teal solid line)</p></li>
+<li><p>POP’s grid-scale temp variance dissipationdissipation is really dominated by the horizontal biharmonic diffusion, but fundamentally the amount of mesoscale variance destroyed by grid-scale diffusion matches that in the microstructure measurements.</p></li>
+<li><p>Comparing to variance dissipated by parameterizations for <span class="math notranslate nohighlight">\(K_e\)</span> (<span class="math notranslate nohighlight">\(K_e |∇_hT|²\)</span>) doesn’t work well. I wonder if I’m doing something wrong with my <span class="math notranslate nohighlight">\(∇_hT\)</span> estimate</p></li>
+</ol>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_pop_natre_meso_micro</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
@@ -1444,10 +1449,10 @@ Attributes: (12/13)
 <span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1">### Mesoscale budget</span>
-<span class="n">pop_natre</span><span class="o">.</span><span class="n">BC</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;POP h. stir$⟨u_eθ_e⟩.∇_hθ_m$&quot;</span><span class="p">)</span>
+<span class="n">pop_natre</span><span class="o">.</span><span class="n">BC</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;POP h. stir$⟨u_e^h θ_e⟩.∇_hθ_m$&quot;</span><span class="p">)</span>
 <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">pop_natre</span><span class="o">.</span><span class="n">PKC</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;POP v. stir $-⟨w_eθ_e⟩.∂_zθ_m$&quot;</span><span class="p">)</span>
 <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">pop_natre</span><span class="o">.</span><span class="n">VMIX</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;POP VMIX&quot;</span><span class="p">)</span>
-<span class="c1">#(-1*pop_natre.HDIFF).cf.plot(ax=ax[0], label=&quot;POP HDIFF&quot;, marker=&#39;x&#39;, ls=&quot;none&quot;)</span>
+<span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">pop_natre</span><span class="o">.</span><span class="n">HDIFF</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;POP HDIFF&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
 
 
 <span class="c1">### Microscale budget</span>
@@ -1481,6 +1486,7 @@ Attributes: (12/13)
 <span class="p">)</span>
 
 <span class="c1">### Cleanup</span>
+
 <span class="k">for</span> <span class="n">axx</span> <span class="ow">in</span> <span class="n">ax</span><span class="p">:</span>
     <span class="n">plot_pop_natre_meso_micro</span><span class="p">(</span><span class="n">axx</span><span class="p">)</span>
     <span class="n">axx</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
@@ -1495,7 +1501,7 @@ Attributes: (12/13)
 <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;(c) Parameterizations&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">)</span>
 
 <span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">clean_axes</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">f</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">f</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mf">9.2</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">f</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;../images/natre-meso-micro-param.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1503,6 +1509,47 @@ Attributes: (12/13)
 <div class="cell_output docutils container">
 <img alt="_images/natre_28_0.png" src="_images/natre_28_0.png" />
 </div>
+</div>
+<div class="section" id="interpretation">
+<h3>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="spicy-region">
+<h4>Spicy region<a class="headerlink" href="#spicy-region" title="Permalink to this headline">¶</a></h4>
+<p>We can interpret the red mesoscale dissipation term in (b) as the amount of variance transferred to the microscale for eventual dissipation. This peaks in regions of high mean spice between 1000m and 1500m. The balance in spicy regions is that horizontal mesoscale stirring converts MPE → EPE (compensated filaments or T-S variance) that is dissipated by the microscale. The approximate budget is (note vertical stirring gets ignored, and <span class="math notranslate nohighlight">\(u^h\)</span> represents horizontal velocity vector)</p>
+<div class="amsmath math notranslate nohighlight" id="equation-d8fe664b-4692-4bf3-830e-4d0a9eb9fa55">
+<span class="eqno">(3)<a class="headerlink" href="#equation-d8fe664b-4692-4bf3-830e-4d0a9eb9fa55" title="Permalink to this equation">¶</a></span>\[\begin{align}
+⟨u^h_eT_e⟩ ⋅ ∇_hT_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;\approx 0 \\
+⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;\approx - \frac 12 ⟨χ⟩
+\end{align}\]</div>
+<ol class="simple">
+<li><p>Yiming sees the first equation as “lateral stirring” balances “mesoscale dissipation”, and</p></li>
+<li><p>FP2005 combine the two equations to conclude that “mesoscale stirring of mean variance” balances “total microscale dissipation”</p></li>
+</ol>
+</div>
+<div class="section" id="weak-spice">
+<h4>Weak spice<a class="headerlink" href="#weak-spice" title="Permalink to this headline">¶</a></h4>
+<p>In the upper water column that is not spicy, we instead see horizontal stirring MPE→ EPE which is then routed to EKE by “vertical stirring”. Here the scale transformation term is 0 so the budget is</p>
+<div class="amsmath math notranslate nohighlight" id="equation-2ed6d200-50d8-488a-9399-5ba3e582febc">
+<span class="eqno">(4)<a class="headerlink" href="#equation-2ed6d200-50d8-488a-9399-5ba3e582febc" title="Permalink to this equation">¶</a></span>\[\begin{align}
+⟨u_eT_e⟩ ⋅ ∇T_m &amp;\approx 0 \\
+⟨u_tT_t⟩ ⋅ ∇ T_m &amp;\approx - \frac 12 ⟨χ⟩
+\end{align}\]</div>
+<ol class="simple">
+<li><p>Yiming sees the first equation as “low dissipation” or “lateral stirring balances vertical stirring”;</p></li>
+<li><p>FP2005 sees the second equation as “microscale stirring of the mean” balances “total microscale dissipation”</p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="next-steps">
+<h3>Next steps:<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h3>
+<ol class="simple">
+<li><p>[ ] Microscale variance budget</p>
+<ol class="simple">
+<li><p>Could estimate  <span class="math notranslate nohighlight">\(⟨u_t T_t⟩ ⋅ ∇T_m = -⟨K_t  T_z⟩ T_z^m\)</span> term (monthly mean heat flux X monthly mean vertical gradient) using the model; just like I do with  the microstructure data.</p></li>
+<li><p>Then add the mesoscale dissipation term to get total <span class="math notranslate nohighlight">\(⟨χ⟩\)</span></p></li>
+</ol>
+</li>
+<li><p>[x] Put observation, model, parameterization estimates on same figure; Add Cole / Groeskamp estimate of <span class="math notranslate nohighlight">\(K_e |∇T_m|^2\)</span></p></li>
+</ol>
 </div>
 </div>
 <div class="section" id="all-microscale-budget-terms">
@@ -1589,38 +1636,38 @@ Attributes: (12/13)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_30_0.png" src="_images/natre_30_0.png" />
+<img alt="_images/natre_31_0.png" src="_images/natre_31_0.png" />
 </div>
 </div>
 </div>
 <div class="section" id="pop2-1-10-mesoscale-variance-budget">
 <h2>POP2 1/10° mesoscale variance budget<a class="headerlink" href="#pop2-1-10-mesoscale-variance-budget" title="Permalink to this headline">¶</a></h2>
 <p>Yiming is working with the following variance budget equation for the mesoscale after decomposing <span class="math notranslate nohighlight">\(T = \bar{T} + T' + T'' ≡ T_m + T_e + T_t\)</span> (the latter is Ferrari &amp; Polzin notation). The <span class="math notranslate nohighlight">\(T = \tilde{T} + T''\)</span> decomposition is inherent when using cell-averaged equations.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f461d95f-99e5-48a7-a82b-4031f1d24fa9">
-<span class="eqno">(3)<a class="headerlink" href="#equation-f461d95f-99e5-48a7-a82b-4031f1d24fa9" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-75a23ec2-6627-4147-ba56-c56383a1dc5b">
+<span class="eqno">(5)<a class="headerlink" href="#equation-75a23ec2-6627-4147-ba56-c56383a1dc5b" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 ∂_t \overline{T'^2} =  -\overline{u'T'} ⋅ ∇_h\overline{T} - \overline{w'T'}∂_z\overline{T} - \overline{\vec{v} ⋅ ∇ T'^2/2} + \overline{T'∂_z \left[K ∂_zT' \right]} + …
 \end{equation}\]</div>
 <p>Ferrari &amp; Polzin’s equations (4.6, 4.7) for the mesoscale and microscale are (<span class="math notranslate nohighlight">\(u\)</span> here is the full 3D <span class="math notranslate nohighlight">\(u\)</span>):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-911e8a60-e0af-4f37-ac0c-f1178d056d94">
-<span class="eqno">(4)<a class="headerlink" href="#equation-911e8a60-e0af-4f37-ac0c-f1178d056d94" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-610a9bf6-d011-4ff1-949d-3990a2402e53">
+<span class="eqno">(6)<a class="headerlink" href="#equation-610a9bf6-d011-4ff1-949d-3990a2402e53" title="Permalink to this equation">¶</a></span>\[\begin{align}
 ⟨u_eT_e⟩ ⋅ ∇T_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;= 0 \\
 ⟨u_tT_t⟩ ⋅ ∇ T_m + ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;= - \frac 12 ⟨χ⟩
 \end{align}\]</div>
 <p>Note that these equations are specialized for the “interior”.</p>
 <p>For the model the averaging scales are:</p>
 <ol class="simple">
-<li><p>~: grid-scale in vertical; single time-step in time</p></li>
+<li><p>~: grid-scale in vertical; single time-step in time i.e. the “microscale” is the “grid-scale”</p></li>
 <li><p>⟨⟩: monthly in time; NATRE domain size in (x,y)</p></li>
 </ol>
 <p>In Yiming’s notation these equations are</p>
-<div class="amsmath math notranslate nohighlight" id="equation-99a5bbb5-752b-44bf-9922-2c033aead4fd">
-<span class="eqno">(5)<a class="headerlink" href="#equation-99a5bbb5-752b-44bf-9922-2c033aead4fd" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f4efbe38-1380-457a-a00a-2681d1a87678">
+<span class="eqno">(7)<a class="headerlink" href="#equation-f4efbe38-1380-457a-a00a-2681d1a87678" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \overline{u'T'}⋅∇\overline{T} + \overline{w'T'}∂_z\overline{T}  - \overline{T'∂_z \left[K ∂_zT' \right]} = 0 \\
 K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 \end{align}\]</div>
 <p>Now we can identify Yiming’s dissipation term (“VMIX”, ignoring solar heating etc.) as the scale transformation term in FP2005 and then use the microscale budget from FP2005 to write</p>
-<div class="amsmath math notranslate nohighlight" id="equation-613bfd14-c411-4713-b462-2a622d358edd">
-<span class="eqno">(6)<a class="headerlink" href="#equation-613bfd14-c411-4713-b462-2a622d358edd" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-98cca85a-d84e-42f0-9c32-ef5a275814a6">
+<span class="eqno">(8)<a class="headerlink" href="#equation-98cca85a-d84e-42f0-9c32-ef5a275814a6" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ = - \frac 12 ⟨χ⟩ - ⟨u_tT_t⟩ ⋅ ∇ T_m
 \end{equation}\]</div>
 <p>i.e. Yiming’s “mesoscale dissipation” term is really the difference between</p>
@@ -1636,49 +1683,8 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_32_0.png" src="_images/natre_32_0.png" />
+<img alt="_images/natre_33_0.png" src="_images/natre_33_0.png" />
 </div>
-</div>
-<div class="section" id="interpretation">
-<h3>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="spicy-region">
-<h4>Spicy region<a class="headerlink" href="#spicy-region" title="Permalink to this headline">¶</a></h4>
-<p>We can interpret the red mesoscale dissipation term as the amount of variance transferred to the microscale for eventual dissipation. This peaks in regions of high mean spice between 1000m and 1500m. The balance in spicy regions is that horizontal mesoscale stirring converts MPE → EPE (compensated filaments or T-S variance) that is dissipated by the microscale. The approximate budget is (note vertical stirring gets ignored, and <span class="math notranslate nohighlight">\(u^h\)</span> represents horizontal velocity vector)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7d97cf60-28fd-443e-bf2a-08a6d043b289">
-<span class="eqno">(7)<a class="headerlink" href="#equation-7d97cf60-28fd-443e-bf2a-08a6d043b289" title="Permalink to this equation">¶</a></span>\[\begin{align}
-⟨u^h_eT_e⟩ ⋅ ∇_hT_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;\approx 0 \\
-⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;\approx - \frac 12 ⟨χ⟩
-\end{align}\]</div>
-<ol class="simple">
-<li><p>Yiming sees the first equation as “lateral stirring” balances “mesoscale dissipation”, and</p></li>
-<li><p>FP2005 combine the two equations to conclude that “mesoscale stirring of mean variance” balances “total microscale dissipation”</p></li>
-</ol>
-</div>
-<div class="section" id="weak-spice">
-<h4>Weak spice<a class="headerlink" href="#weak-spice" title="Permalink to this headline">¶</a></h4>
-<p>In the upper water column that is not spicy, we instead see horizontal stirring MPE→ EPE which is then routed to EKE by “vertical stirring”. Here the scale transformation term is 0 so the budget is</p>
-<div class="amsmath math notranslate nohighlight" id="equation-dbb735a3-613c-4a17-8a27-9ed3988afbf8">
-<span class="eqno">(8)<a class="headerlink" href="#equation-dbb735a3-613c-4a17-8a27-9ed3988afbf8" title="Permalink to this equation">¶</a></span>\[\begin{align}
-⟨u_eT_e⟩ ⋅ ∇T_m &amp;\approx 0 \\
-⟨u_tT_t⟩ ⋅ ∇ T_m &amp;\approx - \frac 12 ⟨χ⟩
-\end{align}\]</div>
-<ol class="simple">
-<li><p>Yiming sees the first equation as “low dissipation” or “lateral stirring balances vertical stirring”;</p></li>
-<li><p>FP2005 sees the second equation as “microscale stirring of the mean” balances “total microscale dissipation”</p></li>
-</ol>
-</div>
-</div>
-<div class="section" id="next-steps">
-<h3>Next steps:<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h3>
-<ol class="simple">
-<li><p>[ ] Microscale variance budget</p>
-<ol class="simple">
-<li><p>Could estimate  <span class="math notranslate nohighlight">\(⟨u_t T_t⟩ ⋅ ∇T_m = -⟨K_t  T_z⟩ T_z^m\)</span> term (monthly mean heat flux X monthly mean vertical gradient) using the model; just like I do with  the microstructure data.</p></li>
-<li><p>Then add the mesoscale dissipation term to get total <span class="math notranslate nohighlight">\(⟨χ⟩\)</span></p></li>
-</ol>
-</li>
-<li><p>[x] Put observation, model, parameterization estimates on same figure; Add Cole / Groeskamp estimate of <span class="math notranslate nohighlight">\(K_e |∇T_m|^2\)</span></p></li>
-</ol>
 </div>
 </div>
 <div class="section" id="studying-cole-estimate">
