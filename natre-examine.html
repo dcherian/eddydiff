@@ -1,0 +1,913 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NATRE microstructure dataset &#8212; Eddy Diffusivity</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet">
+  <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.css?digest=c3fdc42140077d1ad13ad2f1588a4309" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.be7d3bbb2ef33a8344ce.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
+    <script>
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="NATRE micro vs finescale" href="natre-finescale.html" />
+    <link rel="prev" title="NATRE region variance budget" href="natre.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Eddy Diffusivity</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Moored χpod analysis
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="tao.html">
+   TAO (0, 140) χpod
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="equix.html">
+   EQUIX
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  CTD χpod analysis
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="BoB-ctd-chipod.html">
+   BoB ASIRI 2013 CTD χpod
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="P06.html">
+   P06 CTD χpod analysis
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="sections-variance-estimate.html">
+   Eddy variance generation along GO-SHIP lines
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Variance budgets
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="natre.html">
+   NATRE region variance budget
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  NATRE analysis
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   NATRE microstructure dataset
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="natre-finescale.html">
+   NATRE micro vs finescale
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Finestructure analysis
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="iw-fine-argo.html">
+   Argo finescale estimates
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="iw-fine-estimates.html">
+   Existing finestructure estimates
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="iw-fine-devel.html">
+   Finescale Mixing Parametrizations: Development
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Ancillary analysis
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="compare-Ke-estimates.html">
+   Compare different
+   <span class="math notranslate nohighlight">
+    \(K_e\)
+   </span>
+   estimates
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="equix-vs-tao.html">
+   χpods: EQUIX vs TAO
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="eqpac-ts-diagrams.html">
+   T-S diagrams from TAO &amp; Argo at (0, 145W→135W)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="dataset-processing.html">
+   Dataset processing
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/natre-examine.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/dcherian/eddydiff"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/dcherian/eddydiff/master?urlpath=tree/notebooks/natre-examine.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav" aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#read-dataset">
+   Read dataset
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ts-plot">
+   TS plot
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#procedure">
+   Procedure
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#choose-bins">
+     Choose bins
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#make-estimate">
+   Make estimate
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#bin-average-in-density-bins">
+     Bin-average in density bins
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="tex2jax_ignore mathjax_ignore section" id="natre-microstructure-dataset">
+<h1>NATRE microstructure dataset<a class="headerlink" href="#natre-microstructure-dataset" title="Permalink to this headline">¶</a></h1>
+<p>Study NATRE dataset, reproduce Ferrari &amp; Polzin (2005)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> watermark
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">import</span> <span class="nn">glob</span>
+
+<span class="kn">import</span> <span class="nn">cf_xarray</span> <span class="k">as</span> <span class="nn">cfxr</span>
+<span class="kn">import</span> <span class="nn">dcpy</span>
+<span class="kn">import</span> <span class="nn">distributed</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tqdm</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="kn">import</span> <span class="nn">eddydiff</span> <span class="k">as</span> <span class="nn">ed</span>
+
+<span class="n">xr</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span><span class="n">keep_attrs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.dpi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">140</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;savefig.dpi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;ggplot&quot;</span><span class="p">)</span>
+
+<span class="o">%</span><span class="k">watermark</span> -iv
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>matplotlib : 3.4.3
+cf_xarray  : 0.5.3.dev29+g3660810.d20210729
+dcpy       : 0.1
+numpy      : 1.21.3
+tqdm       : 4.62.3
+distributed: 2021.10.0
+xarray     : 0.17.1.dev3+g48378c4b1
+eddydiff   : 0.1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="s2">&quot;client&quot;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">cluster</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">distributed</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">n_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">threads_per_worker</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">client</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/distributed/node.py:160: UserWarning: Port 8787 is already in use.
+Perhaps you already have a cluster running?
+Hosting the HTTP server on port 44397 instead
+  warnings.warn(
+</pre></div>
+</div>
+<div class="output text_html"><div>
+    <div style="width: 24px; height: 24px; background-color: #e1e1e1; border: 3px solid #9D9D9D; border-radius: 5px; position: absolute;"> </div>
+    <div style="margin-left: 48px;">
+        <h3 style="margin-bottom: 0px;">Client</h3>
+        <p style="color: #9D9D9D; margin-bottom: 0px;">Client-f3c9e4f8-513b-11ec-affa-0028f8270ea7</p>
+        <table style="width: 100%; text-align: left;">
+
+        <tr>
+
+            <td style="text-align: left;"><strong>Connection method:</strong> Cluster object</td>
+            <td style="text-align: left;"><strong>Cluster type:</strong> distributed.LocalCluster</td>
+
+        </tr>
+
+
+            <tr>
+                <td style="text-align: left;">
+                    <strong>Dashboard: </strong> <a href="http://127.0.0.1:44397/status" target="_blank">http://127.0.0.1:44397/status</a>
+                </td>
+                <td style="text-align: left;"></td>
+            </tr>
+
+
+        </table>
+
+
+            <details>
+            <summary style="margin-bottom: 20px;"><h3 style="display: inline;">Cluster Info</h3></summary>
+            <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-mod-trusted jp-OutputArea-output">
+    <div style="width: 24px; height: 24px; background-color: #e1e1e1; border: 3px solid #9D9D9D; border-radius: 5px; position: absolute;">
+    </div>
+    <div style="margin-left: 48px;">
+        <h3 style="margin-bottom: 0px; margin-top: 0px;">LocalCluster</h3>
+        <p style="color: #9D9D9D; margin-bottom: 0px;">04249df4</p>
+        <table style="width: 100%; text-align: left;">
+            <tr>
+                <td style="text-align: left;">
+                    <strong>Dashboard:</strong> <a href="http://127.0.0.1:44397/status" target="_blank">http://127.0.0.1:44397/status</a>
+                </td>
+                <td style="text-align: left;">
+                    <strong>Workers:</strong> 2
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">
+                    <strong>Total threads:</strong> 4
+                </td>
+                <td style="text-align: left;">
+                    <strong>Total memory:</strong> 31.09 GiB
+                </td>
+            </tr>
+
+            <tr>
+    <td style="text-align: left;"><strong>Status:</strong> running</td>
+    <td style="text-align: left;"><strong>Using processes:</strong> True</td>
+</tr>
+
+
+        </table>
+
+        <details>
+            <summary style="margin-bottom: 20px;">
+                <h3 style="display: inline;">Scheduler Info</h3>
+            </summary>
+
+            <div style="">
+    <div>
+        <div style="width: 24px; height: 24px; background-color: #FFF7E5; border: 3px solid #FF6132; border-radius: 5px; position: absolute;"> </div>
+        <div style="margin-left: 48px;">
+            <h3 style="margin-bottom: 0px;">Scheduler</h3>
+            <p style="color: #9D9D9D; margin-bottom: 0px;">Scheduler-709717c7-6aec-4209-a97d-fc7e957a55ac</p>
+            <table style="width: 100%; text-align: left;">
+                <tr>
+                    <td style="text-align: left;">
+                        <strong>Comm:</strong> tcp://127.0.0.1:45051
+                    </td>
+                    <td style="text-align: left;">
+                        <strong>Workers:</strong> 2
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;">
+                        <strong>Dashboard:</strong> <a href="http://127.0.0.1:44397/status" target="_blank">http://127.0.0.1:44397/status</a>
+                    </td>
+                    <td style="text-align: left;">
+                        <strong>Total threads:</strong> 4
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;">
+                        <strong>Started:</strong> Just now
+                    </td>
+                    <td style="text-align: left;">
+                        <strong>Total memory:</strong> 31.09 GiB
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <details style="margin-left: 48px;">
+        <summary style="margin-bottom: 20px;">
+            <h3 style="display: inline;">Workers</h3>
+        </summary>
+
+
+        <div style="margin-bottom: 20px;">
+            <div style="width: 24px; height: 24px; background-color: #DBF5FF; border: 3px solid #4CC9FF; border-radius: 5px; position: absolute;"> </div>
+            <div style="margin-left: 48px;">
+            <details>
+                <summary>
+                    <h4 style="margin-bottom: 0px; display: inline;">Worker: 0</h4>
+                </summary>
+                <table style="width: 100%; text-align: left;">
+                    <tr>
+                        <td style="text-align: left;">
+                            <strong>Comm: </strong> tcp://127.0.0.1:35215
+                        </td>
+                        <td style="text-align: left;">
+                            <strong>Total threads: </strong> 2
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;">
+                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:37419/status" target="_blank">http://127.0.0.1:37419/status</a>
+                        </td>
+                        <td style="text-align: left;">
+                            <strong>Memory: </strong> 15.54 GiB
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;">
+                            <strong>Nanny: </strong> tcp://127.0.0.1:46017
+                        </td>
+                        <td style="text-align: left;"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left;">
+                            <strong>Local directory: </strong> /tmp/dask-worker-space/worker-cp54j35u
+                        </td>
+                    </tr>
+
+
+
+
+
+                </table>
+            </details>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <div style="width: 24px; height: 24px; background-color: #DBF5FF; border: 3px solid #4CC9FF; border-radius: 5px; position: absolute;"> </div>
+            <div style="margin-left: 48px;">
+            <details>
+                <summary>
+                    <h4 style="margin-bottom: 0px; display: inline;">Worker: 1</h4>
+                </summary>
+                <table style="width: 100%; text-align: left;">
+                    <tr>
+                        <td style="text-align: left;">
+                            <strong>Comm: </strong> tcp://127.0.0.1:32981
+                        </td>
+                        <td style="text-align: left;">
+                            <strong>Total threads: </strong> 2
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;">
+                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:33227/status" target="_blank">http://127.0.0.1:33227/status</a>
+                        </td>
+                        <td style="text-align: left;">
+                            <strong>Memory: </strong> 15.54 GiB
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: left;">
+                            <strong>Nanny: </strong> tcp://127.0.0.1:44127
+                        </td>
+                        <td style="text-align: left;"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="text-align: left;">
+                            <strong>Local directory: </strong> /tmp/dask-worker-space/worker-qfol5_ls
+                        </td>
+                    </tr>
+
+
+
+
+
+                </table>
+            </details>
+            </div>
+        </div>
+
+
+    </details>
+</div>
+
+        </details>
+    </div>
+</div>
+            </details>
+
+
+    </div>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s2">&quot;../images/natre-large-scale.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/natre-examine_3_0.png" src="_images/natre-examine_3_0.png" />
+</div>
+</div>
+<div class="section" id="read-dataset">
+<h2>Read dataset<a class="headerlink" href="#read-dataset" title="Permalink to this headline">¶</a></h2>
+<p>created using <code class="docutils literal notranslate"><span class="pre">eddydiff.natre.combine_natre_files()</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">natre</span><span class="o">.</span><span class="n">read_natre</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ed</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">histogram_turb_estimates</span><span class="p">(</span><span class="n">natre</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/deepak/work/python/xarray/xarray/core/computation.py:733: RuntimeWarning: invalid value encountered in log10
+  result_data = func(*input_data)
+/home/deepak/work/python/xarray/xarray/core/computation.py:733: RuntimeWarning: invalid value encountered in log10
+  result_data = func(*input_data)
+</pre></div>
+</div>
+<img alt="_images/natre-examine_6_1.png" src="_images/natre-examine_6_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="ts-plot">
+<h2>TS plot<a class="headerlink" href="#ts-plot" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hdl</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">dcpy</span><span class="o">.</span><span class="n">oceans</span><span class="o">.</span><span class="n">TSplot</span><span class="p">(</span>
+    <span class="n">natre</span><span class="o">.</span><span class="n">salt</span><span class="p">[::</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">natre</span><span class="o">.</span><span class="n">theta</span><span class="p">[::</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">Pref</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="c1"># rho_levels=bins,</span>
+    <span class="n">Sbins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">35</span><span class="p">,</span> <span class="mf">35.5</span><span class="p">,</span> <span class="mf">0.025</span><span class="p">),</span>
+    <span class="n">Tbins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span>
+    <span class="n">hexbin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">plot_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/natre-examine_8_0.png" src="_images/natre-examine_8_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span>
+    <span class="n">natre</span><span class="p">[</span><span class="s2">&quot;chi&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">rolling</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">min_periods</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span>
+    <span class="n">col</span><span class="o">=</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span>
+    <span class="n">row</span><span class="o">=</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span>
+    <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="mf">1e-12</span><span class="p">,</span> <span class="mf">1e-7</span><span class="p">],</span>
+    <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+    <span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tornado.application - ERROR - Exception in callback functools.partial(&lt;bound method IOLoop._discard_future_result of &lt;zmq.eventloop.ioloop.ZMQIOLoop object at 0x7f70c8187340&gt;&gt;, &lt;Task finished name=&#39;Task-481&#39; coro=&lt;Cluster._sync_cluster_info() done, defined at /home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/distributed/deploy/cluster.py:104&gt; exception=OSError(&#39;Timed out trying to connect to tcp://127.0.0.1:45051 after 3 s&#39;)&gt;)
+Traceback (most recent call last):
+  File &quot;/home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/distributed/comm/core.py&quot;, line 284, in connect
+    comm = await asyncio.wait_for(
+  File &quot;/home/deepak/miniconda3/envs/dcpy/lib/python3.8/asyncio/tasks.py&quot;, line 498, in wait_for
+    raise exceptions.TimeoutError()
+asyncio.exceptions.TimeoutError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File &quot;/home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/tornado/ioloop.py&quot;, line 741, in _run_callback
+    ret = callback()
+  File &quot;/home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/tornado/ioloop.py&quot;, line 765, in _discard_future_result
+    future.result()
+  File &quot;/home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/distributed/deploy/cluster.py&quot;, line 105, in _sync_cluster_info
+    await self.scheduler_comm.set_metadata(
+  File &quot;/home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/distributed/core.py&quot;, line 785, in send_recv_from_rpc
+    comm = await self.live_comm()
+  File &quot;/home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/distributed/core.py&quot;, line 742, in live_comm
+    comm = await connect(
+  File &quot;/home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/distributed/comm/core.py&quot;, line 308, in connect
+    raise OSError(
+OSError: Timed out trying to connect to tcp://127.0.0.1:45051 after 3 s
+tornado.application - ERROR - Exception in callback functools.partial(&lt;bound method IOLoop._discard_future_result of &lt;zmq.eventloop.ioloop.ZMQIOLoop object at 0x7f70c8187340&gt;&gt;, &lt;Task finished name=&#39;Task-488&#39; coro=&lt;Cluster._sync_cluster_info() done, defined at /home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/distributed/deploy/cluster.py:104&gt; exception=OSError(&#39;Timed out trying to connect to tcp://127.0.0.1:45051 after 3 s&#39;)&gt;)
+Traceback (most recent call last):
+  File &quot;/home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/distributed/comm/core.py&quot;, line 284, in connect
+    comm = await asyncio.wait_for(
+  File &quot;/home/deepak/miniconda3/envs/dcpy/lib/python3.8/asyncio/tasks.py&quot;, line 498, in wait_for
+    raise exceptions.TimeoutError()
+asyncio.exceptions.TimeoutError
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File &quot;/home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/tornado/ioloop.py&quot;, line 741, in _run_callback
+    ret = callback()
+  File &quot;/home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/tornado/ioloop.py&quot;, line 765, in _discard_future_result
+    future.result()
+  File &quot;/home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/distributed/deploy/cluster.py&quot;, line 105, in _sync_cluster_info
+    await self.scheduler_comm.set_metadata(
+  File &quot;/home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/distributed/core.py&quot;, line 785, in send_recv_from_rpc
+    comm = await self.live_comm()
+  File &quot;/home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/distributed/core.py&quot;, line 742, in live_comm
+    comm = await connect(
+  File &quot;/home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/distributed/comm/core.py&quot;, line 308, in connect
+    raise OSError(
+OSError: Timed out trying to connect to tcp://127.0.0.1:45051 after 3 s
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;xarray.plot.facetgrid.FacetGrid at 0x7f70a01c4e50&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="procedure">
+<h2>Procedure<a class="headerlink" href="#procedure" title="Permalink to this headline">¶</a></h2>
+<p>The large-scale average operator ⟨⟩ represents</p>
+<ol class="simple">
+<li><p>a horizontal average over the survey lateral scale,</p></li>
+<li><p>a vertical average over O(100) m, and</p></li>
+<li><p>a time average over the 18-day survey.</p></li>
+</ol>
+<p>The mean fields are derived by averaging all variables along neutral-density surfaces <span class="math notranslate nohighlight">\(γ_n\)</span></p>
+<p>Mean vertical gradients <span class="math notranslate nohighlight">\(∂_z θ_m\)</span>, <span class="math notranslate nohighlight">\(∂_z S_m\)</span>, and <span class="math notranslate nohighlight">\(∂_z b_m\)</span>, are calculated from O(100)-m linear fits to <span class="math notranslate nohighlight">\(θ_m(z_n)\)</span>,
+<span class="math notranslate nohighlight">\(S_m(z_n)\)</span>, and <span class="math notranslate nohighlight">\(b_m(z_n)\)</span>, where <span class="math notranslate nohighlight">\(z_n\)</span> is the mean depth of each surface <span class="math notranslate nohighlight">\(γ_n\)</span>.</p>
+<p>large-scale temperature gradient <span class="math notranslate nohighlight">\(|∇_n θ_m|\)</span> is estimated by fitting
+a plane to the 100 stations in the 400 km × 400 km
+large-scale survey grid and rms is computed as the standard deviation of the departures from the plane fit.</p>
+<p>In theory, these bins are approx. 100m apart in neutral density</p>
+<div class="section" id="choose-bins">
+<h3>Choose bins<a class="headerlink" href="#choose-bins" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># bins = (</span>
+<span class="c1">#    natre.gamma_n.mean([&quot;latitude&quot;, &quot;longitude&quot;])</span>
+<span class="c1">#    .interp(depth=np.arange(150, 2001, 100))</span>
+<span class="c1">#    .dropna(&quot;depth&quot;)</span>
+<span class="c1">#    .data</span>
+<span class="c1"># )</span>
+
+<span class="n">bins</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">sections</span><span class="o">.</span><span class="n">choose_bins</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">gamma_n</span><span class="p">,</span> <span class="n">depth_range</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">2001</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
+<span class="n">natre</span><span class="o">.</span><span class="n">gamma_n</span><span class="o">.</span><span class="n">stack</span><span class="p">({</span><span class="s2">&quot;latlon&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">]})</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;latlon&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;latlon&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span>
+    <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">add_legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">linex</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="make-estimate">
+<h2>Make estimate<a class="headerlink" href="#make-estimate" title="Permalink to this headline">¶</a></h2>
+<p><strong>Vertical gradients:</strong> <code class="docutils literal notranslate"><span class="pre">ed.sections.fit1D</span></code></p>
+<blockquote>
+<div><p>Mean vertical gradients <span class="math notranslate nohighlight">\(∂_z θ_m\)</span>, <span class="math notranslate nohighlight">\(∂_z S_m\)</span>, and <span class="math notranslate nohighlight">\(∂_z b_m\)</span>, are calculated from O(100)-m linear fits to <span class="math notranslate nohighlight">\(θ_m(z_n)\)</span>, <span class="math notranslate nohighlight">\(S_m(z_n)\)</span>, and <span class="math notranslate nohighlight">\(b_m(z_n)\)</span>, where <span class="math notranslate nohighlight">\(z_n\)</span> is the mean depth of each surface <span class="math notranslate nohighlight">\(γ_n\)</span>.</p>
+</div></blockquote>
+<p>I don’t understand this. The bins are O(100m) apart, so how do you “fit” straight lines over O(100)-m to a profile that has points every O(100)m.</p>
+<p><strong>Horizontal gradients:</strong> <code class="docutils literal notranslate"><span class="pre">ed.sections.fit2D</span></code></p>
+<p>large-scale temperature gradient <span class="math notranslate nohighlight">\(|∇_n θ_m|\)</span> is estimated by fitting
+a plane to the 100 stations in the 400 km × 400 km
+large-scale survey grid and rms is computed as the standard deviation of the departures from the plane fit.</p>
+<p>Ke is totally wrong!, I need to fix my plane fitting</p>
+<div class="section" id="bin-average-in-density-bins">
+<h3>Bin-average in density bins<a class="headerlink" href="#bin-average-in-density-bins" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">micro</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">sections</span><span class="o">.</span><span class="n">bin_average_vertical</span><span class="p">(</span>
+    <span class="n">natre</span><span class="o">.</span><span class="n">reset_coords</span><span class="p">(</span><span class="s2">&quot;pres&quot;</span><span class="p">),</span> <span class="s2">&quot;neutral_density&quot;</span><span class="p">,</span> <span class="n">bins</span>
+<span class="p">)</span>
+<span class="n">micro</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Replicate some Ferrari &amp; Polzin (2005) figures. <span class="math notranslate nohighlight">\(K_ρ, ε\)</span> look OK. <span class="math notranslate nohighlight">\(K_e\)</span> is wrong, something is wrong with my slope estimate / plane fitting</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">micro</span><span class="o">.</span><span class="n">drop_vars</span><span class="p">(</span><span class="s2">&quot;pres&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">Krho_m</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mf">4e-6</span><span class="p">,</span> <span class="mf">1e-4</span><span class="p">),</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">micro</span><span class="o">.</span><span class="n">drop_vars</span><span class="p">(</span><span class="s2">&quot;pres&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="c1"># chidens[&quot;Ke&quot;].cf.plot(ax=ax[2])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "conda-env-dcpy-py"
+        },
+        kernelOptions: {
+            kernelName: "conda-env-dcpy-py",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'conda-env-dcpy-py'</script>
+
+              </div>
+              
+        
+            <!-- Previous / next buttons -->
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="natre.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">NATRE region variance budget</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="natre-finescale.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">NATRE micro vs finescale</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+        
+        </div>
+    </div>
+    <footer class="footer">
+    <div class="container">
+      <p>
+        
+          By Deepak Cherian<br/>
+        
+            &copy; Copyright 2021.<br/>
+          <div class="extra_footer">
+            <div>
+<script data-goatcounter="https://count.cherian.net/count"
+        async src="count.js"></script>
+</div>
+
+          </div>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.be7d3bbb2ef33a8344ce.js"></script>
+
+  </body>
+</html>
