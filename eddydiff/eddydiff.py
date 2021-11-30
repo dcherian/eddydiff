@@ -1311,24 +1311,29 @@ def estimate_gradients(grad, bins, bin_var="pden", debug=False):
     return isoT, edgeT
 
 
-def gradient_cole(da, dim, dxy=2):
+def gradient_cole(da, dim, dxy=3):
     """
-    Calculates gradient using an approximate version of the procedure described in Cole et al (2015).
+    Calculates gradient using the procedure described in Cole et al (2015).
 
     - Uses Roemmich & Gilson climatology.
     - Calculates average of forward and backward gradient over `dxy` points, so equivalent to 2*dxy
       centered gradient.
-    - Does not do anything special near continental boundaries
     - The Cole version interpolates to sampled profile locations and then averages. This does not do that.
     """
-    Δd = dxy * 110e3  # da[dim].diff(dim)
+    Δd = dxy * 111194.92664456
 
-    if dim == "lat":
+    if dim == "lon":
         Δd *= np.cos(da["lat"] * np.pi / 180)
 
-    def diff_(da):
-        return da - da.shift({dim: dxy})
+    def diff_(da, d):
+        # Filling attempts to replicate nearest neighbour interpolation
+        # at coastline
+        if d < 0:
+            da = da.ffill(dim)
+        else:
+            da = da.bfill(dim)
+        return np.abs(da.roll({dim: d}) - da)
 
-    grad = 1 / 2 / Δd * (diff_(da) - diff_(da.isel({dim: slice(None, None, -1)})))
+    grad = 1 / 2 / Δd * (diff_(da, dxy) + diff_(da, -dxy))
     grad.attrs["description"] = f"gradient calculated over {2*dxy} points"
     return grad
