@@ -224,7 +224,7 @@ def project_vector(vector, proj, kind=None):
     """
 
     def dot_product(a, b):
-        """ dot product of 2 gradient vectors """
+        """dot product of 2 gradient vectors"""
         return a.dx * b.dx + a.dy * b.dy + a.dz * b.dz
 
     dot = dot_product(vector, proj)
@@ -810,7 +810,7 @@ def convert_mat_to_netcdf():
 
 
 def average_transect_1d(transect, nbins=10):
-    """ Given transect, group by density bins and average in those bins. """
+    """Given transect, group by density bins and average in those bins."""
 
     # TODO: Keep or remove?
     try:
@@ -940,7 +940,7 @@ def transect_to_density_space(transect, nbins=12):
 
 
 def bin_to_density_space(transect, bins=30):
-    """ Attempt number 3. """
+    """Attempt number 3."""
 
     if np.isscalar(bins):
         _, bins = pd.qcut(transect.rho.values.ravel(), bins, retbins=True)
