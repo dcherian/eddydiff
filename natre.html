@@ -362,6 +362,21 @@
   <a class="reference internal nav-link" href="#studying-cole-estimate">
    Studying Cole estimate
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#depth-vs-density-space-estimation-of-k-e-t-2">
+     Depth-vs-density space estimation of
+     <span class="math notranslate nohighlight">
+      \(K_e |∇T|²\)
+     </span>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#depth-space-calculation">
+     Depth space calculation
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#t-s-diagrams-argo-vs-natre">
@@ -429,6 +444,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">tqdm</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">xgcm</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
 
 <span class="kn">import</span> <span class="nn">eddydiff</span> <span class="k">as</span> <span class="nn">ed</span>
@@ -444,13 +460,16 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distributed: 2021.10.0
-numpy      : 1.21.3
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The watermark extension is already loaded. To reload it, use:
+  %reload_ext watermark
 matplotlib : 3.4.3
-cf_xarray  : 0.5.3.dev29+g3660810.d20210729
-eddydiff   : 0.1
-xarray     : 0.17.1.dev3+g48378c4b1
 dcpy       : 0.1
+xarray     : 0.20.2.dev43+gb40678934
+xgcm       : 0.5.3.dev3+g1601865
+numpy      : 1.21.3
+eddydiff   : 0.1
+distributed: 2021.10.0
+cf_xarray  : 0.5.3.dev29+g3660810.d20210729
 tqdm       : 4.62.3
 </pre></div>
 </div>
@@ -467,11 +486,17 @@ tqdm       : 4.62.3
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/distributed/node.py:160: UserWarning: Port 8787 is already in use.
+Perhaps you already have a cluster running?
+Hosting the HTTP server on port 37379 instead
+  warnings.warn(
+</pre></div>
+</div>
 <div class="output text_html"><div>
     <div style="width: 24px; height: 24px; background-color: #e1e1e1; border: 3px solid #9D9D9D; border-radius: 5px; position: absolute;"> </div>
     <div style="margin-left: 48px;">
         <h3 style="margin-bottom: 0px;">Client</h3>
-        <p style="color: #9D9D9D; margin-bottom: 0px;">Client-1fa3c8d2-513a-11ec-97da-0028f8270ea7</p>
+        <p style="color: #9D9D9D; margin-bottom: 0px;">Client-48ef1d74-5231-11ec-887b-0028f8270ea7</p>
         <table style="width: 100%; text-align: left;">
 
         <tr>
@@ -484,7 +509,7 @@ tqdm       : 4.62.3
 
             <tr>
                 <td style="text-align: left;">
-                    <strong>Dashboard: </strong> <a href="http://127.0.0.1:8787/status" target="_blank">http://127.0.0.1:8787/status</a>
+                    <strong>Dashboard: </strong> <a href="http://127.0.0.1:37379/status" target="_blank">http://127.0.0.1:37379/status</a>
                 </td>
                 <td style="text-align: left;"></td>
             </tr>
@@ -500,11 +525,11 @@ tqdm       : 4.62.3
     </div>
     <div style="margin-left: 48px;">
         <h3 style="margin-bottom: 0px; margin-top: 0px;">LocalCluster</h3>
-        <p style="color: #9D9D9D; margin-bottom: 0px;">3b84d9cf</p>
+        <p style="color: #9D9D9D; margin-bottom: 0px;">a87ab7d7</p>
         <table style="width: 100%; text-align: left;">
             <tr>
                 <td style="text-align: left;">
-                    <strong>Dashboard:</strong> <a href="http://127.0.0.1:8787/status" target="_blank">http://127.0.0.1:8787/status</a>
+                    <strong>Dashboard:</strong> <a href="http://127.0.0.1:37379/status" target="_blank">http://127.0.0.1:37379/status</a>
                 </td>
                 <td style="text-align: left;">
                     <strong>Workers:</strong> 2
@@ -537,11 +562,11 @@ tqdm       : 4.62.3
         <div style="width: 24px; height: 24px; background-color: #FFF7E5; border: 3px solid #FF6132; border-radius: 5px; position: absolute;"> </div>
         <div style="margin-left: 48px;">
             <h3 style="margin-bottom: 0px;">Scheduler</h3>
-            <p style="color: #9D9D9D; margin-bottom: 0px;">Scheduler-cc9b7823-118d-4cd2-86db-8d4d5c9f8096</p>
+            <p style="color: #9D9D9D; margin-bottom: 0px;">Scheduler-87fc0375-9b76-4dd2-ae28-9266b3563780</p>
             <table style="width: 100%; text-align: left;">
                 <tr>
                     <td style="text-align: left;">
-                        <strong>Comm:</strong> tcp://127.0.0.1:32789
+                        <strong>Comm:</strong> tcp://127.0.0.1:39167
                     </td>
                     <td style="text-align: left;">
                         <strong>Workers:</strong> 2
@@ -549,7 +574,7 @@ tqdm       : 4.62.3
                 </tr>
                 <tr>
                     <td style="text-align: left;">
-                        <strong>Dashboard:</strong> <a href="http://127.0.0.1:8787/status" target="_blank">http://127.0.0.1:8787/status</a>
+                        <strong>Dashboard:</strong> <a href="http://127.0.0.1:37379/status" target="_blank">http://127.0.0.1:37379/status</a>
                     </td>
                     <td style="text-align: left;">
                         <strong>Total threads:</strong> 4
@@ -583,7 +608,7 @@ tqdm       : 4.62.3
                 <table style="width: 100%; text-align: left;">
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Comm: </strong> tcp://127.0.0.1:40049
+                            <strong>Comm: </strong> tcp://127.0.0.1:33639
                         </td>
                         <td style="text-align: left;">
                             <strong>Total threads: </strong> 2
@@ -591,7 +616,7 @@ tqdm       : 4.62.3
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:33443/status" target="_blank">http://127.0.0.1:33443/status</a>
+                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:46067/status" target="_blank">http://127.0.0.1:46067/status</a>
                         </td>
                         <td style="text-align: left;">
                             <strong>Memory: </strong> 15.54 GiB
@@ -599,13 +624,13 @@ tqdm       : 4.62.3
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Nanny: </strong> tcp://127.0.0.1:39691
+                            <strong>Nanny: </strong> tcp://127.0.0.1:34635
                         </td>
                         <td style="text-align: left;"></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left;">
-                            <strong>Local directory: </strong> /tmp/dask-worker-space/worker-vra01y1q
+                            <strong>Local directory: </strong> /tmp/dask-worker-space/worker-v5ilqr0t
                         </td>
                     </tr>
 
@@ -628,7 +653,7 @@ tqdm       : 4.62.3
                 <table style="width: 100%; text-align: left;">
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Comm: </strong> tcp://127.0.0.1:39571
+                            <strong>Comm: </strong> tcp://127.0.0.1:43451
                         </td>
                         <td style="text-align: left;">
                             <strong>Total threads: </strong> 2
@@ -636,7 +661,7 @@ tqdm       : 4.62.3
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:37223/status" target="_blank">http://127.0.0.1:37223/status</a>
+                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:33741/status" target="_blank">http://127.0.0.1:33741/status</a>
                         </td>
                         <td style="text-align: left;">
                             <strong>Memory: </strong> 15.54 GiB
@@ -644,13 +669,13 @@ tqdm       : 4.62.3
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Nanny: </strong> tcp://127.0.0.1:40105
+                            <strong>Nanny: </strong> tcp://127.0.0.1:35133
                         </td>
                         <td style="text-align: left;"></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left;">
-                            <strong>Local directory: </strong> /tmp/dask-worker-space/worker-ppnlebes
+                            <strong>Local directory: </strong> /tmp/dask-worker-space/worker-qmth5pry
                         </td>
                     </tr>
 
@@ -711,10 +736,6 @@ tqdm       : 4.62.3
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distributed.utils_perf - WARNING - full garbage collections took 13% CPU time recently (threshold: 10%)
-distributed.utils_perf - WARNING - full garbage collections took 14% CPU time recently (threshold: 10%)
-</pre></div>
-</div>
 <div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
 <defs>
 <symbol id="icon-database" viewBox="0 0 32 32">
@@ -1102,83 +1123,83 @@ Attributes: (12/13)
     chief_scientist:       Raymond W. Schmitt
     data_originator:       Polzin
     institution:           WHOI
-    data_assembly_center:  CCHDO</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-b68123a8-3cfc-480d-9cef-d04f51d8198d' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-b68123a8-3cfc-480d-9cef-d04f51d8198d' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>gamma_n</span>: 17</li><li><span>bounds</span>: 2</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-6beca266-8beb-4181-8c57-a8df1f6c57de' class='xr-section-summary-in' type='checkbox'  checked><label for='section-6beca266-8beb-4181-8c57-a8df1f6c57de' class='xr-section-summary' >Coordinates: <span>(5)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>gamma_n</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>26.79 26.96 27.1 ... 27.95 27.96</div><input id='attrs-905760ec-be17-4ec6-af7b-782fbea9ee75' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-905760ec-be17-4ec6-af7b-782fbea9ee75' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-ff83177d-e3ba-4d0c-a54a-6e6f47b0c446' class='xr-var-data-in' type='checkbox'><label for='data-ff83177d-e3ba-4d0c-a54a-6e6f47b0c446' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>bounds :</span></dt><dd>gamma_n_bounds</dd><dt><span>long_name :</span></dt><dd>$γ_n$</dd><dt><span>standard_name :</span></dt><dd>neutral_density</dd><dt><span>units :</span></dt><dd>kg/m3</dd><dt><span>positive :</span></dt><dd>down</dd><dt><span>axis :</span></dt><dd>Z</dd></dl></div><div class='xr-var-data'><pre>array([26.785, 26.96 , 27.1  , 27.225, 27.35 , 27.465, 27.56 , 27.64 , 27.71 ,
-       27.765, 27.815, 27.855, 27.885, 27.91 , 27.93 , 27.95 , 27.965])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>pres</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>303.1 407.2 ... 1.826e+03 1.902e+03</div><input id='attrs-3338b4b5-a94d-4a04-a167-2a862cc2f690' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-3338b4b5-a94d-4a04-a167-2a862cc2f690' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-20850cc2-33b9-4931-8b0c-a44d878cb94d' class='xr-var-data-in' type='checkbox'><label for='data-20850cc2-33b9-4931-8b0c-a44d878cb94d' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>axis :</span></dt><dd>Z</dd><dt><span>long_name :</span></dt><dd>Sea water pressure</dd><dt><span>standard_name :</span></dt><dd>sea_water_pressure</dd><dt><span>units :</span></dt><dd>dbar</dd><dt><span>positive :</span></dt><dd>down</dd></dl></div><div class='xr-var-data'><pre>array([ 303.14977483,  407.18618719,  504.83168549,  603.97880801,
+    data_assembly_center:  CCHDO</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.Dataset</div></div><ul class='xr-sections'><li class='xr-section-item'><input id='section-77db66ac-fc40-4fb0-8873-67c71dcd56be' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-77db66ac-fc40-4fb0-8873-67c71dcd56be' class='xr-section-summary'  title='Expand/collapse section'>Dimensions:</label><div class='xr-section-inline-details'><ul class='xr-dim-list'><li><span class='xr-has-index'>gamma_n</span>: 17</li><li><span>bounds</span>: 2</li></ul></div><div class='xr-section-details'></div></li><li class='xr-section-item'><input id='section-f755f1a5-88c6-4d70-a2d1-8b8c707bb9b7' class='xr-section-summary-in' type='checkbox'  checked><label for='section-f755f1a5-88c6-4d70-a2d1-8b8c707bb9b7' class='xr-section-summary' >Coordinates: <span>(5)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span class='xr-has-index'>gamma_n</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>26.79 26.96 27.1 ... 27.95 27.96</div><input id='attrs-84419d58-2ed2-4a23-a3f9-1a3d776a7392' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-84419d58-2ed2-4a23-a3f9-1a3d776a7392' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-caaf76c5-6e49-4768-953c-bb0a7253a12c' class='xr-var-data-in' type='checkbox'><label for='data-caaf76c5-6e49-4768-953c-bb0a7253a12c' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>bounds :</span></dt><dd>gamma_n_bounds</dd><dt><span>long_name :</span></dt><dd>$γ_n$</dd><dt><span>standard_name :</span></dt><dd>neutral_density</dd><dt><span>units :</span></dt><dd>kg/m3</dd><dt><span>positive :</span></dt><dd>down</dd><dt><span>axis :</span></dt><dd>Z</dd></dl></div><div class='xr-var-data'><pre>array([26.785, 26.96 , 27.1  , 27.225, 27.35 , 27.465, 27.56 , 27.64 , 27.71 ,
+       27.765, 27.815, 27.855, 27.885, 27.91 , 27.93 , 27.95 , 27.965])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>pres</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>303.1 407.2 ... 1.826e+03 1.902e+03</div><input id='attrs-14e097e7-8beb-4c53-a668-258c2bd511ad' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-14e097e7-8beb-4c53-a668-258c2bd511ad' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-f7b6abeb-de54-4386-8861-bfc6b6dc7260' class='xr-var-data-in' type='checkbox'><label for='data-f7b6abeb-de54-4386-8861-bfc6b6dc7260' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>axis :</span></dt><dd>Z</dd><dt><span>long_name :</span></dt><dd>Sea water pressure</dd><dt><span>standard_name :</span></dt><dd>sea_water_pressure</dd><dt><span>units :</span></dt><dd>dbar</dd><dt><span>positive :</span></dt><dd>down</dd></dl></div><div class='xr-var-data'><pre>array([ 303.14977483,  407.18618719,  504.83168549,  603.97880801,
         707.08648881,  809.14925137,  905.96688177, 1005.94330591,
        1109.16782105, 1206.099286  , 1314.9928138 , 1419.26969921,
        1518.84016235, 1620.55391437, 1716.56806407, 1826.33373703,
-       1902.24426834])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>reference_pressure</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>1000</div><input id='attrs-4f876ac5-7551-400a-93ea-4387538e7954' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-4f876ac5-7551-400a-93ea-4387538e7954' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-dc087c16-4ce6-47f1-9f13-4705c28d5312' class='xr-var-data-in' type='checkbox'><label for='data-dc087c16-4ce6-47f1-9f13-4705c28d5312' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>dbar</dd></dl></div><div class='xr-var-data'><pre>array(1000)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>num_obs</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>19763 19424 17093 ... 21881 10032</div><input id='attrs-6cce870d-2a59-48af-b6ba-906085f610b5' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-6cce870d-2a59-48af-b6ba-906085f610b5' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-441efaab-e0b2-49ae-9959-e153f0513a0e' class='xr-var-data-in' type='checkbox'><label for='data-441efaab-e0b2-49ae-9959-e153f0513a0e' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>count(χ) in bins</dd></dl></div><div class='xr-var-data'><pre>array([19763, 19424, 17093, 19866, 18592, 18968, 16426, 20055, 17614,
-       17787, 21917, 16257, 20696, 16350, 18916, 21881, 10032])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>gamma_n_bounds</span></div><div class='xr-var-dims'>(bounds, gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>26.69 26.88 27.04 ... 27.96 27.97</div><input id='attrs-c4ae1f98-393c-41b9-92b8-3491b7348499' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-c4ae1f98-393c-41b9-92b8-3491b7348499' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-21503b6d-182a-408d-917c-65653096bdbf' class='xr-var-data-in' type='checkbox'><label for='data-21503b6d-182a-408d-917c-65653096bdbf' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[26.69, 26.88, 27.04, 27.16, 27.29, 27.41, 27.52, 27.6 , 27.68,
+       1902.24426834])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>reference_pressure</span></div><div class='xr-var-dims'>()</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>1000</div><input id='attrs-2f8236d7-adbd-4e17-b245-1795947a0631' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-2f8236d7-adbd-4e17-b245-1795947a0631' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-dac9c7b0-933d-43cc-a94a-9870cb32fed1' class='xr-var-data-in' type='checkbox'><label for='data-dac9c7b0-933d-43cc-a94a-9870cb32fed1' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>units :</span></dt><dd>dbar</dd></dl></div><div class='xr-var-data'><pre>array(1000)</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>num_obs</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>int64</div><div class='xr-var-preview xr-preview'>19763 19424 17093 ... 21881 10032</div><input id='attrs-8759b70e-b443-4819-8a5d-c5b0f0552dfd' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-8759b70e-b443-4819-8a5d-c5b0f0552dfd' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-59baea6b-5060-45ae-befa-91c897c6c25a' class='xr-var-data-in' type='checkbox'><label for='data-59baea6b-5060-45ae-befa-91c897c6c25a' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>count(χ) in bins</dd></dl></div><div class='xr-var-data'><pre>array([19763, 19424, 17093, 19866, 18592, 18968, 16426, 20055, 17614,
+       17787, 21917, 16257, 20696, 16350, 18916, 21881, 10032])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>gamma_n_bounds</span></div><div class='xr-var-dims'>(bounds, gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>26.69 26.88 27.04 ... 27.96 27.97</div><input id='attrs-9cd316d2-80a0-412d-94cf-8bbeb9def326' class='xr-var-attrs-in' type='checkbox' disabled><label for='attrs-9cd316d2-80a0-412d-94cf-8bbeb9def326' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e761793a-7d38-4f99-96f9-8f3c2c91394d' class='xr-var-data-in' type='checkbox'><label for='data-e761793a-7d38-4f99-96f9-8f3c2c91394d' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'></dl></div><div class='xr-var-data'><pre>array([[26.69, 26.88, 27.04, 27.16, 27.29, 27.41, 27.52, 27.6 , 27.68,
         27.74, 27.79, 27.84, 27.87, 27.9 , 27.92, 27.94, 27.96],
        [26.88, 27.04, 27.16, 27.29, 27.41, 27.52, 27.6 , 27.68, 27.74,
-        27.79, 27.84, 27.87, 27.9 , 27.92, 27.94, 27.96, 27.97]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-efedc6ee-a6b8-48d4-91fa-9060a86c2f2c' class='xr-section-summary-in' type='checkbox'  ><label for='section-efedc6ee-a6b8-48d4-91fa-9060a86c2f2c' class='xr-section-summary' >Data variables: <span>(18)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>chi</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>6.112e-09 3.64e-09 ... 2.707e-10</div><input id='attrs-1385d0ec-2dc1-4daf-aae0-8b92bbd6e48e' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-1385d0ec-2dc1-4daf-aae0-8b92bbd6e48e' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-d7ef78cd-d908-426f-a095-83d1adc204c6' class='xr-var-data-in' type='checkbox'><label for='data-d7ef78cd-d908-426f-a095-83d1adc204c6' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$⟨χ⟩$</dd><dt><span>standard_name :</span></dt><dd>ocean_dissipation_rate_of_thermal_variance_from_microtemperature</dd><dt><span>units :</span></dt><dd>C^2 s^-1</dd></dl></div><div class='xr-var-data'><pre>array([6.11191220e-09, 3.64004820e-09, 2.93213839e-09, 2.20005859e-09,
+        27.79, 27.84, 27.87, 27.9 , 27.92, 27.94, 27.96, 27.97]])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-8813c3ba-a66a-4a36-bc58-34f69b800a41' class='xr-section-summary-in' type='checkbox'  ><label for='section-8813c3ba-a66a-4a36-bc58-34f69b800a41' class='xr-section-summary' >Data variables: <span>(18)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'><li class='xr-var-item'><div class='xr-var-name'><span>chi</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>6.112e-09 3.64e-09 ... 2.707e-10</div><input id='attrs-040425cb-48f8-4cec-a7cf-27d9c7828f6a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-040425cb-48f8-4cec-a7cf-27d9c7828f6a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-6ea97689-e0db-43a4-a73f-6d057b507c47' class='xr-var-data-in' type='checkbox'><label for='data-6ea97689-e0db-43a4-a73f-6d057b507c47' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$⟨χ⟩$</dd><dt><span>standard_name :</span></dt><dd>ocean_dissipation_rate_of_thermal_variance_from_microtemperature</dd><dt><span>units :</span></dt><dd>C^2 s^-1</dd></dl></div><div class='xr-var-data'><pre>array([6.11191220e-09, 3.64004820e-09, 2.93213839e-09, 2.20005859e-09,
        2.43544246e-09, 2.69167656e-09, 3.34715322e-09, 2.25216704e-09,
        3.14198235e-09, 1.39306138e-09, 1.10171838e-09, 5.82004083e-10,
        5.38586887e-10, 4.63451248e-10, 3.59220243e-10, 3.03523379e-10,
-       2.70693817e-10])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>eps</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>6.149e-10 5.53e-10 ... 1.16e-10</div><input id='attrs-bffd5565-7091-48ae-94cd-e228fad40cc6' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-bffd5565-7091-48ae-94cd-e228fad40cc6' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-be44d234-48ac-43af-b140-3aecbea34264' class='xr-var-data-in' type='checkbox'><label for='data-be44d234-48ac-43af-b140-3aecbea34264' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$⟨ε⟩$</dd><dt><span>standard_name :</span></dt><dd>ocean_turbulent_kinetic_energy_dissipation_rate</dd><dt><span>units :</span></dt><dd>W kg^-1</dd></dl></div><div class='xr-var-data'><pre>array([6.14858913e-10, 5.52979941e-10, 5.61292560e-10, 4.36365057e-10,
+       2.70693817e-10])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>eps</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>6.149e-10 5.53e-10 ... 1.16e-10</div><input id='attrs-d2d431c7-d078-47be-87c7-28209f85ed50' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-d2d431c7-d078-47be-87c7-28209f85ed50' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-a7c7528c-92d1-4e3f-afc8-e80e62f22e67' class='xr-var-data-in' type='checkbox'><label for='data-a7c7528c-92d1-4e3f-afc8-e80e62f22e67' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$⟨ε⟩$</dd><dt><span>standard_name :</span></dt><dd>ocean_turbulent_kinetic_energy_dissipation_rate</dd><dt><span>units :</span></dt><dd>W kg^-1</dd></dl></div><div class='xr-var-data'><pre>array([6.14858913e-10, 5.52979941e-10, 5.61292560e-10, 4.36365057e-10,
        4.02200803e-10, 4.19164041e-10, 3.95763518e-10, 3.08279408e-10,
        2.90603089e-10, 2.91380306e-10, 2.56440457e-10, 1.90137881e-10,
        1.84726030e-10, 1.82619921e-10, 1.50394878e-10, 1.35881095e-10,
-       1.16024996e-10])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>salt</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>36.16 35.87 35.68 ... 35.1 35.09</div><input id='attrs-cea142cf-83ee-481c-adcf-682d88ae297b' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-cea142cf-83ee-481c-adcf-682d88ae297b' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-7a48c683-2b3e-49ec-b233-358ceba681d5' class='xr-var-data-in' type='checkbox'><label for='data-7a48c683-2b3e-49ec-b233-358ceba681d5' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>Sea water salinity</dd><dt><span>standard_name :</span></dt><dd>sea_water_salinity</dd><dt><span>units :</span></dt><dd>1e-3</dd></dl></div><div class='xr-var-data'><pre>array([36.16195099, 35.8660754 , 35.67628348, 35.54111457, 35.4212318 ,
+       1.16024996e-10])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>salt</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>36.16 35.87 35.68 ... 35.1 35.09</div><input id='attrs-796812be-a231-451f-934f-d89f1938d552' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-796812be-a231-451f-934f-d89f1938d552' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-72e479e2-b521-4149-8698-97b0acec67e2' class='xr-var-data-in' type='checkbox'><label for='data-72e479e2-b521-4149-8698-97b0acec67e2' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>Sea water salinity</dd><dt><span>standard_name :</span></dt><dd>sea_water_salinity</dd><dt><span>units :</span></dt><dd>1e-3</dd></dl></div><div class='xr-var-data'><pre>array([36.16195099, 35.8660754 , 35.67628348, 35.54111457, 35.4212318 ,
        35.30775249, 35.22670281, 35.19241056, 35.19524526, 35.20973075,
        35.2142712 , 35.20484301, 35.18381118, 35.15575399, 35.12967613,
-       35.10114928, 35.08540305])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>temp</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>15.64 13.83 12.45 ... 4.47 4.271</div><input id='attrs-951cabf9-c8e1-4bfe-8320-aab7c950f6c9' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-951cabf9-c8e1-4bfe-8320-aab7c950f6c9' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-0ea64c27-0f72-4562-800f-d3236d11bf85' class='xr-var-data-in' type='checkbox'><label for='data-0ea64c27-0f72-4562-800f-d3236d11bf85' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>Sea water temperature</dd><dt><span>standard_name :</span></dt><dd>sea_water_temperature</dd><dt><span>units :</span></dt><dd>degrees_Celsius</dd></dl></div><div class='xr-var-data'><pre>array([15.6394356 , 13.83490097, 12.45406074, 11.27483893, 10.08771818,
+       35.10114928, 35.08540305])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>temp</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>15.64 13.83 12.45 ... 4.47 4.271</div><input id='attrs-03d90d3e-2ad9-4224-a5e9-083fefb6716a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-03d90d3e-2ad9-4224-a5e9-083fefb6716a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-f588965f-06be-4c8a-99c7-0a1f7915a145' class='xr-var-data-in' type='checkbox'><label for='data-f588965f-06be-4c8a-99c7-0a1f7915a145' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>Sea water temperature</dd><dt><span>standard_name :</span></dt><dd>sea_water_temperature</dd><dt><span>units :</span></dt><dd>degrees_Celsius</dd></dl></div><div class='xr-var-data'><pre>array([15.6394356 , 13.83490097, 12.45406074, 11.27483893, 10.08771818,
         8.9023527 ,  7.95002477,  7.2603667 ,  6.79356777,  6.47057627,
         6.12234582,  5.76861504,  5.41936229,  5.07305716,  4.77563615,
-        4.47028251,  4.27149182])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>theta</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>15.75 13.92 12.52 ... 4.393 4.187</div><input id='attrs-04eeb1b3-b77c-4342-b081-dba923783516' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-04eeb1b3-b77c-4342-b081-dba923783516' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-e79beef3-3295-422d-9566-f6c1f418ae58' class='xr-var-data-in' type='checkbox'><label for='data-e79beef3-3295-422d-9566-f6c1f418ae58' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$θ$</dd><dt><span>standard_name :</span></dt><dd>sea_water_potential_temperature</dd><dt><span>units :</span></dt><dd>degC</dd></dl></div><div class='xr-var-data'><pre>array([15.75323363, 13.92469712, 12.52457788, 11.32822245, 10.12494057,
+        4.47028251,  4.27149182])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>theta</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>15.75 13.92 12.52 ... 4.393 4.187</div><input id='attrs-98e94b99-c8e4-4319-b7f6-b06f039bf681' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-98e94b99-c8e4-4319-b7f6-b06f039bf681' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-760ddf85-d3da-41d9-8875-bd4389a6db10' class='xr-var-data-in' type='checkbox'><label for='data-760ddf85-d3da-41d9-8875-bd4389a6db10' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$θ$</dd><dt><span>standard_name :</span></dt><dd>sea_water_potential_temperature</dd><dt><span>units :</span></dt><dd>degC</dd></dl></div><div class='xr-var-data'><pre>array([15.75323363, 13.92469712, 12.52457788, 11.32822245, 10.12494057,
         8.92514067,  7.96068322,  7.25976862,  6.78202952,  6.44910177,
         6.09007039,  5.72641091,  5.36809532,  5.01285166,  4.70718865,
-        4.39254954,  4.18740869])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>pden</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>1.031e+03 1.031e+03 ... 1.032e+03</div><input id='attrs-0c6055ae-b491-4183-8bdd-5087a917ab28' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-0c6055ae-b491-4183-8bdd-5087a917ab28' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-77835f8f-19dc-4900-949b-e356891f6813' class='xr-var-data-in' type='checkbox'><label for='data-77835f8f-19dc-4900-949b-e356891f6813' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$ρ$</dd><dt><span>standard_name :</span></dt><dd>sea_water_potential_density</dd><dt><span>units :</span></dt><dd>kg/m3</dd></dl></div><div class='xr-var-data'><pre>array([1031.0713247 , 1031.27584377, 1031.4400358 , 1031.58611416,
+        4.39254954,  4.18740869])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>pden</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>1.031e+03 1.031e+03 ... 1.032e+03</div><input id='attrs-c2533824-5a7b-4581-bb3f-f69108a78cdc' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-c2533824-5a7b-4581-bb3f-f69108a78cdc' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-5d47cb51-1cfd-46b6-af4d-f8abbcfae6db' class='xr-var-data-in' type='checkbox'><label for='data-5d47cb51-1cfd-46b6-af4d-f8abbcfae6db' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$ρ$</dd><dt><span>standard_name :</span></dt><dd>sea_water_potential_density</dd><dt><span>units :</span></dt><dd>kg/m3</dd></dl></div><div class='xr-var-data'><pre>array([1031.0713247 , 1031.27584377, 1031.4400358 , 1031.58611416,
        1031.73167219, 1031.86730949, 1031.97408301, 1032.06480354,
        1032.14430248, 1032.20812437, 1032.26699929, 1032.31426589,
        1032.35018214, 1032.37881342, 1032.40077243, 1032.42097555,
-       1032.43587687])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Tz</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.02135 0.01736 ... 0.002798</div><input id='attrs-b1f0fdbe-16c0-4923-9e43-663a119fcd4d' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-b1f0fdbe-16c0-4923-9e43-663a119fcd4d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-7eced69c-6a36-4c84-981e-b3ae96235ca4' class='xr-var-data-in' type='checkbox'><label for='data-7eced69c-6a36-4c84-981e-b3ae96235ca4' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$θ_z$</dd></dl></div><div class='xr-var-data'><pre>array([0.0213547 , 0.0173551 , 0.01405599, 0.01277803, 0.01298851,
+       1032.43587687])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Tz</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.02135 0.01736 ... 0.002798</div><input id='attrs-9350288f-7afa-4c7d-a423-346e41f15de4' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-9350288f-7afa-4c7d-a423-346e41f15de4' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-8d5da815-6403-4222-96a0-8263c7ab33d3' class='xr-var-data-in' type='checkbox'><label for='data-8d5da815-6403-4222-96a0-8263c7ab33d3' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$θ_z$</dd></dl></div><div class='xr-var-data'><pre>array([0.0213547 , 0.0173551 , 0.01405599, 0.01277803, 0.01298851,
        0.01218899, 0.00960108, 0.00628046, 0.00425628, 0.00374161,
        0.00367665, 0.00402137, 0.00392539, 0.00368797, 0.00336195,
-       0.00300525, 0.00279804])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>N2</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>1.903e-05 1.625e-05 ... 1.646e-06</div><input id='attrs-e6ca798d-1311-4dae-85be-3230e1819cdd' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-e6ca798d-1311-4dae-85be-3230e1819cdd' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c0781e61-e533-4e6a-83e6-c1d05c94c6f3' class='xr-var-data-in' type='checkbox'><label for='data-c0781e61-e533-4e6a-83e6-c1d05c94c6f3' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$N²$</dd></dl></div><div class='xr-var-data'><pre>array([1.90338195e-05, 1.62486294e-05, 1.36817779e-05, 1.27888394e-05,
+       0.00300525, 0.00279804])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>N2</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>1.903e-05 1.625e-05 ... 1.646e-06</div><input id='attrs-30693719-3ed3-4b49-8dc5-e2b670b988be' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-30693719-3ed3-4b49-8dc5-e2b670b988be' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-fff7b23a-da74-4bbb-a01c-52f00fc5885b' class='xr-var-data-in' type='checkbox'><label for='data-fff7b23a-da74-4bbb-a01c-52f00fc5885b' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$N²$</dd></dl></div><div class='xr-var-data'><pre>array([1.90338195e-05, 1.62486294e-05, 1.36817779e-05, 1.27888394e-05,
        1.25305489e-05, 1.12404937e-05, 9.33900764e-06, 7.60322160e-06,
        6.46729887e-06, 5.36186005e-06, 4.38477188e-06, 3.58953422e-06,
        2.81759145e-06, 2.38449216e-06, 2.07073958e-06, 1.75648523e-06,
-       1.64632812e-06])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>chi_masked</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>6.182e-09 3.693e-09 ... 3.316e-10</div><input id='attrs-8a149ddf-c1d6-40c4-bc47-a4ca22360714' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-8a149ddf-c1d6-40c4-bc47-a4ca22360714' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-24453090-c894-4d33-a9ba-921e09403f8f' class='xr-var-data-in' type='checkbox'><label for='data-24453090-c894-4d33-a9ba-921e09403f8f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$χ$</dd><dt><span>standard_name :</span></dt><dd>ocean_dissipation_rate_of_thermal_variance_from_microtemperature</dd><dt><span>units :</span></dt><dd>C^2 s^-1</dd></dl></div><div class='xr-var-data'><pre>array([6.18161269e-09, 3.69276518e-09, 2.98010192e-09, 2.25047270e-09,
+       1.64632812e-06])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>chi_masked</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>6.182e-09 3.693e-09 ... 3.316e-10</div><input id='attrs-dd1906d2-264b-48c6-bc22-1a4f39aa0f9f' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-dd1906d2-264b-48c6-bc22-1a4f39aa0f9f' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-09bc9dc1-55c9-43c2-94d5-feabdc1c3a47' class='xr-var-data-in' type='checkbox'><label for='data-09bc9dc1-55c9-43c2-94d5-feabdc1c3a47' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$χ$</dd><dt><span>standard_name :</span></dt><dd>ocean_dissipation_rate_of_thermal_variance_from_microtemperature</dd><dt><span>units :</span></dt><dd>C^2 s^-1</dd></dl></div><div class='xr-var-data'><pre>array([6.18161269e-09, 3.69276518e-09, 2.98010192e-09, 2.25047270e-09,
        2.52238101e-09, 2.79529527e-09, 3.53706386e-09, 2.51178680e-09,
        3.86306513e-09, 1.68266902e-09, 1.33029721e-09, 6.80997765e-10,
        6.34978054e-10, 5.37364699e-10, 4.23364444e-10, 3.63549656e-10,
-       3.31587799e-10])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Krho</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>1.437e-05 1.428e-05 ... 8.986e-06</div><input id='attrs-a9756fb2-7b2a-46ff-a5f7-d9e986bc7241' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-a9756fb2-7b2a-46ff-a5f7-d9e986bc7241' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-48220cd3-3d7b-4126-b9c3-d0983a0a1918' class='xr-var-data-in' type='checkbox'><label for='data-48220cd3-3d7b-4126-b9c3-d0983a0a1918' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$K_ρ$</dd><dt><span>standard_name :</span></dt><dd>ocean_turbulent_kinetic_energy_dissipation_rate</dd><dt><span>units :</span></dt><dd>m²/s</dd></dl></div><div class='xr-var-data'><pre>array([1.43696047e-05, 1.42770011e-05, 1.51778947e-05, 1.41968808e-05,
+       3.31587799e-10])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Krho</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>1.437e-05 1.428e-05 ... 8.986e-06</div><input id='attrs-03ffb0f6-0356-409d-8895-a45ec5e93d5a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-03ffb0f6-0356-409d-8895-a45ec5e93d5a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-015746a4-1abe-4504-9a14-9de1323acb5c' class='xr-var-data-in' type='checkbox'><label for='data-015746a4-1abe-4504-9a14-9de1323acb5c' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$K_ρ$</dd><dt><span>standard_name :</span></dt><dd>ocean_turbulent_kinetic_energy_dissipation_rate</dd><dt><span>units :</span></dt><dd>m²/s</dd></dl></div><div class='xr-var-data'><pre>array([1.43696047e-05, 1.42770011e-05, 1.51778947e-05, 1.41968808e-05,
        1.19687840e-05, 1.25531437e-05, 1.32123929e-05, 1.27308645e-05,
        1.18191706e-05, 1.31644357e-05, 1.27953600e-05, 1.10659624e-05,
        1.16627512e-05, 1.28020457e-05, 1.02384491e-05, 9.62246604e-06,
-       8.98647848e-06])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>KrhoTz</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>1.433e-07 1.131e-07 ... 2.758e-08</div><input id='attrs-ec9210ac-66eb-4c31-a82d-b9512fa2eed4' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-ec9210ac-66eb-4c31-a82d-b9512fa2eed4' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-77e8e318-6079-40b4-9ecd-b33850635b04' class='xr-var-data-in' type='checkbox'><label for='data-77e8e318-6079-40b4-9ecd-b33850635b04' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$K_ρ θ_z$</dd><dt><span>standard_name :</span></dt><dd>ocean_turbulent_kinetic_energy_dissipation_rate</dd><dt><span>units :</span></dt><dd>m²/s</dd></dl></div><div class='xr-var-data'><pre>array([1.43280964e-07, 1.13067163e-07, 1.10517455e-07, 9.16522003e-08,
+       8.98647848e-06])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>KrhoTz</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>1.433e-07 1.131e-07 ... 2.758e-08</div><input id='attrs-a129bd2c-0a28-4128-96a4-e0086234c33a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-a129bd2c-0a28-4128-96a4-e0086234c33a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-03401c12-d313-4809-935d-562c7bed149f' class='xr-var-data-in' type='checkbox'><label for='data-03401c12-d313-4809-935d-562c7bed149f' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$K_ρ θ_z$</dd><dt><span>standard_name :</span></dt><dd>ocean_turbulent_kinetic_energy_dissipation_rate</dd><dt><span>units :</span></dt><dd>m²/s</dd></dl></div><div class='xr-var-data'><pre>array([1.43280964e-07, 1.13067163e-07, 1.10517455e-07, 9.16522003e-08,
        7.90203220e-08, 8.97113585e-08, 7.05604786e-08, 4.80119390e-08,
        4.23878468e-08, 2.98411058e-08, 3.51120109e-08, 3.79677806e-08,
        4.65380969e-08, 4.73024918e-08, 3.85179876e-08, 3.39005878e-08,
-       2.75809443e-08])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>eps_chi</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>7.952e-10 6.062e-10 ... 1.744e-10</div><input id='attrs-f864798f-64c4-4933-9636-106f04288375' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-f864798f-64c4-4933-9636-106f04288375' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-577c9d47-6c00-4643-9ece-28fbadf1e265' class='xr-var-data-in' type='checkbox'><label for='data-577c9d47-6c00-4643-9ece-28fbadf1e265' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$ε_χ$</dd><dt><span>standard_name :</span></dt><dd>ocean_dissipation_rate_of_thermal_variance_from_microtemperature</dd><dt><span>units :</span></dt><dd>W/kg</dd></dl></div><div class='xr-var-data'><pre>array([7.95175705e-10, 6.06170801e-10, 5.73276838e-10, 5.11203486e-10,
+       2.75809443e-08])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>eps_chi</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>7.952e-10 6.062e-10 ... 1.744e-10</div><input id='attrs-75b5a148-7680-4efd-b3ee-7236b18245c1' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-75b5a148-7680-4efd-b3ee-7236b18245c1' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-163d0613-3118-40c5-be04-adf405590560' class='xr-var-data-in' type='checkbox'><label for='data-163d0613-3118-40c5-be04-adf405590560' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$ε_χ$</dd><dt><span>standard_name :</span></dt><dd>ocean_dissipation_rate_of_thermal_variance_from_microtemperature</dd><dt><span>units :</span></dt><dd>W/kg</dd></dl></div><div class='xr-var-data'><pre>array([7.95175705e-10, 6.06170801e-10, 5.73276838e-10, 5.11203486e-10,
        5.30724090e-10, 5.46521278e-10, 1.10325321e-09, 6.34746131e-10,
        6.01413875e-10, 6.63422555e-10, 4.27278626e-10, 2.35772565e-10,
        2.42745013e-10, 2.60894980e-10, 1.78706019e-10, 1.84367460e-10,
-       1.74406988e-10])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Kt</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>2.416e-05 2.335e-05 ... 1.511e-05</div><input id='attrs-3d4a1bb7-54a0-45d8-979e-714930a3907d' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-3d4a1bb7-54a0-45d8-979e-714930a3907d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-5ffc9dca-dc79-4383-85de-41f67a5d6bd1' class='xr-var-data-in' type='checkbox'><label for='data-5ffc9dca-dc79-4383-85de-41f67a5d6bd1' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$K_T$</dd><dt><span>standard_name :</span></dt><dd>ocean_dissipation_rate_of_thermal_variance_from_microtemperature</dd><dt><span>units :</span></dt><dd>m²/s</dd></dl></div><div class='xr-var-data'><pre>array([2.41609968e-05, 2.33530256e-05, 2.26237432e-05, 1.74277276e-05,
+       1.74406988e-10])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Kt</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>2.416e-05 2.335e-05 ... 1.511e-05</div><input id='attrs-3979190a-59fa-403d-a25f-83f40c44af63' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-3979190a-59fa-403d-a25f-83f40c44af63' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c1091945-c37b-4740-b050-1983350cf507' class='xr-var-data-in' type='checkbox'><label for='data-c1091945-c37b-4740-b050-1983350cf507' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$K_T$</dd><dt><span>standard_name :</span></dt><dd>ocean_dissipation_rate_of_thermal_variance_from_microtemperature</dd><dt><span>units :</span></dt><dd>m²/s</dd></dl></div><div class='xr-var-data'><pre>array([2.41609968e-05, 2.33530256e-05, 2.26237432e-05, 1.74277276e-05,
        2.16086350e-05, 1.84686947e-05, 3.31397773e-05, 3.18414408e-05,
        2.80238520e-05, 2.34701640e-05, 2.33170806e-05, 1.60402809e-05,
        2.04946998e-05, 2.14321767e-05, 1.59509705e-05, 1.82941251e-05,
-       1.51061122e-05])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>KtTz</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>1.398e-07 1.077e-07 ... 3.357e-08</div><input id='attrs-d5a57fbf-7426-494d-8e0a-65f5966144ab' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-d5a57fbf-7426-494d-8e0a-65f5966144ab' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-561efc0d-caae-4c27-90e3-14ea7aa0f77a' class='xr-var-data-in' type='checkbox'><label for='data-561efc0d-caae-4c27-90e3-14ea7aa0f77a' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$K_t θ_z$</dd><dt><span>standard_name :</span></dt><dd>ocean_dissipation_rate_of_thermal_variance_from_microtemperature</dd><dt><span>units :</span></dt><dd>m²/s</dd></dl></div><div class='xr-var-data'><pre>array([1.39767028e-07, 1.07725891e-07, 9.87770812e-08, 8.23142312e-08,
+       1.51061122e-05])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>KtTz</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>1.398e-07 1.077e-07 ... 3.357e-08</div><input id='attrs-867ad232-e549-4397-99fc-5a49e613dfeb' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-867ad232-e549-4397-99fc-5a49e613dfeb' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-d9d208fd-378e-4e0e-b11a-44e921294dc8' class='xr-var-data-in' type='checkbox'><label for='data-d9d208fd-378e-4e0e-b11a-44e921294dc8' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$K_t θ_z$</dd><dt><span>standard_name :</span></dt><dd>ocean_dissipation_rate_of_thermal_variance_from_microtemperature</dd><dt><span>units :</span></dt><dd>m²/s</dd></dl></div><div class='xr-var-data'><pre>array([1.39767028e-07, 1.07725891e-07, 9.87770812e-08, 8.23142312e-08,
        8.54939985e-08, 8.60300014e-08, 9.30916784e-08, 4.59693437e-08,
        5.49172007e-08, 3.46773962e-08, 4.02368123e-08, 3.53705391e-08,
        4.80536213e-08, 4.33723223e-08, 3.79265836e-08, 3.83649446e-08,
-       3.35712040e-08])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>dTdz_m</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.01861 0.01519 ... 0.002534</div><input id='attrs-5f81e210-f99d-41a5-b802-beb50fc8fe5d' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-5f81e210-f99d-41a5-b802-beb50fc8fe5d' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-95b9bc10-2c20-4513-96f6-3e409e6a2d7e' class='xr-var-data-in' type='checkbox'><label for='data-95b9bc10-2c20-4513-96f6-3e409e6a2d7e' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>name :</span></dt><dd>$∂_z θ_m$</dd><dt><span>units :</span></dt><dd>°C/m</dd></dl></div><div class='xr-var-data'><pre>array([0.01860601, 0.01518843, 0.01253555, 0.01144651, 0.01210989,
+       3.35712040e-08])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>dTdz_m</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>0.01861 0.01519 ... 0.002534</div><input id='attrs-f31b0db3-c70d-4401-b287-20a2029408e2' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-f31b0db3-c70d-4401-b287-20a2029408e2' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-fecd5763-17d0-48ed-8dbe-0a92e1b0da80' class='xr-var-data-in' type='checkbox'><label for='data-fecd5763-17d0-48ed-8dbe-0a92e1b0da80' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>name :</span></dt><dd>$∂_z θ_m$</dd><dt><span>units :</span></dt><dd>°C/m</dd></dl></div><div class='xr-var-data'><pre>array([0.01860601, 0.01518843, 0.01253555, 0.01144651, 0.01210989,
        0.01084742, 0.00849867, 0.00534857, 0.00329303, 0.00347204,
        0.0033224 , 0.00371077, 0.00339592, 0.00332789, 0.00303267,
-       0.00275188, 0.00253441])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>N2_m</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>1.95e-05 1.679e-05 ... 1.355e-06</div><input id='attrs-5b2a6845-045a-4046-9924-a3a402e76012' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-5b2a6845-045a-4046-9924-a3a402e76012' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c2b057fb-e0d8-41ce-ba3d-4486dc081fe1' class='xr-var-data-in' type='checkbox'><label for='data-c2b057fb-e0d8-41ce-ba3d-4486dc081fe1' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>name :</span></dt><dd>$∂_zb_m$</dd><dt><span>units :</span></dt><dd>s$^{-2}$</dd></dl></div><div class='xr-var-data'><pre>array([1.94965498e-05, 1.67850240e-05, 1.44284024e-05, 1.34394310e-05,
+       0.00275188, 0.00253441])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>N2_m</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>1.95e-05 1.679e-05 ... 1.355e-06</div><input id='attrs-c7e8c990-cf99-4002-9528-5eae70069834' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-c7e8c990-cf99-4002-9528-5eae70069834' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-7c7cbd3d-f7e6-479e-8741-e4c42827af89' class='xr-var-data-in' type='checkbox'><label for='data-7c7cbd3d-f7e6-479e-8741-e4c42827af89' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>name :</span></dt><dd>$∂_zb_m$</dd><dt><span>units :</span></dt><dd>s$^{-2}$</dd></dl></div><div class='xr-var-data'><pre>array([1.94965498e-05, 1.67850240e-05, 1.44284024e-05, 1.34394310e-05,
        1.32900928e-05, 1.13640114e-05, 9.54862824e-06, 7.71013883e-06,
        6.67335453e-06, 5.56998526e-06, 4.56524318e-06, 3.74344497e-06,
        2.84670850e-06, 2.36948307e-06, 1.88250951e-06, 1.55073540e-06,
-       1.35476662e-06])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Krho_m</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>6.307e-06 6.589e-06 ... 1.713e-05</div><input id='attrs-ab46e609-73e0-4307-afea-7b966a336d54' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-ab46e609-73e0-4307-afea-7b966a336d54' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-c5a1a238-e8c0-44b3-ac03-98a6c91553e3' class='xr-var-data-in' type='checkbox'><label for='data-c5a1a238-e8c0-44b3-ac03-98a6c91553e3' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$K_ρ^m$</dd><dt><span>standard_name :</span></dt><dd>ocean_turbulent_kinetic_energy_dissipation_rate</dd><dt><span>units :</span></dt><dd>m²/s</dd></dl></div><div class='xr-var-data'><pre>array([6.30736125e-06, 6.58896812e-06, 7.78038405e-06, 6.49380256e-06,
+       1.35476662e-06])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Krho_m</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>6.307e-06 6.589e-06 ... 1.713e-05</div><input id='attrs-73bb287a-1f99-4f50-a996-760ad3beddf1' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-73bb287a-1f99-4f50-a996-760ad3beddf1' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-f07fb22b-4f32-410c-8d47-47da74a67b07' class='xr-var-data-in' type='checkbox'><label for='data-f07fb22b-4f32-410c-8d47-47da74a67b07' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$K_ρ^m$</dd><dt><span>standard_name :</span></dt><dd>ocean_turbulent_kinetic_energy_dissipation_rate</dd><dt><span>units :</span></dt><dd>m²/s</dd></dl></div><div class='xr-var-data'><pre>array([6.30736125e-06, 6.58896812e-06, 7.78038405e-06, 6.49380256e-06,
        6.05264101e-06, 7.37704367e-06, 8.28943191e-06, 7.99672781e-06,
        8.70935563e-06, 1.04625162e-05, 1.12344708e-05, 1.01584440e-05,
        1.29782188e-05, 1.54143259e-05, 1.59781268e-05, 1.75247299e-05,
-       1.71284108e-05])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Kt_m</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>8.828e-06 7.89e-06 ... 2.107e-05</div><input id='attrs-f4dee17e-1acc-4eb5-ba0b-d491242a454a' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-f4dee17e-1acc-4eb5-ba0b-d491242a454a' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-f1960aa5-64ed-4640-a4a6-dfaaa8bf1f5c' class='xr-var-data-in' type='checkbox'><label for='data-f1960aa5-64ed-4640-a4a6-dfaaa8bf1f5c' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$K_T^m$</dd><dt><span>standard_name :</span></dt><dd>ocean_dissipation_rate_of_thermal_variance_from_microtemperature</dd><dt><span>units :</span></dt><dd>m²/s</dd></dl></div><div class='xr-var-data'><pre>array([8.82756026e-06, 7.88953662e-06, 9.32970167e-06, 8.39572654e-06,
+       1.71284108e-05])</pre></div></li><li class='xr-var-item'><div class='xr-var-name'><span>Kt_m</span></div><div class='xr-var-dims'>(gamma_n)</div><div class='xr-var-dtype'>float64</div><div class='xr-var-preview xr-preview'>8.828e-06 7.89e-06 ... 2.107e-05</div><input id='attrs-5cfb3240-20da-4bd1-957c-9d95181ffa6e' class='xr-var-attrs-in' type='checkbox' ><label for='attrs-5cfb3240-20da-4bd1-957c-9d95181ffa6e' title='Show/Hide attributes'><svg class='icon xr-icon-file-text2'><use xlink:href='#icon-file-text2'></use></svg></label><input id='data-f192fbb9-da3a-42e7-bd10-f19ee2a78c6a' class='xr-var-data-in' type='checkbox'><label for='data-f192fbb9-da3a-42e7-bd10-f19ee2a78c6a' title='Show/Hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-var-attrs'><dl class='xr-attrs'><dt><span>long_name :</span></dt><dd>$K_T^m$</dd><dt><span>standard_name :</span></dt><dd>ocean_dissipation_rate_of_thermal_variance_from_microtemperature</dd><dt><span>units :</span></dt><dd>m²/s</dd></dl></div><div class='xr-var-data'><pre>array([8.82756026e-06, 7.88953662e-06, 9.32970167e-06, 8.39572654e-06,
        8.30361534e-06, 1.14377355e-05, 2.31709671e-05, 3.93635915e-05,
        1.44871220e-04, 5.77789669e-05, 4.99042567e-05, 2.11333229e-05,
        2.33512243e-05, 2.09235486e-05, 1.95290244e-05, 2.00402355e-05,
-       2.10714426e-05])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-45fef385-586a-4c75-89f7-adf1ccaac75e' class='xr-section-summary-in' type='checkbox'  ><label for='section-45fef385-586a-4c75-89f7-adf1ccaac75e' class='xr-section-summary' >Attributes: <span>(13)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>Conventions :</span></dt><dd>CF-1.6</dd><dt><span>netcdf_version :</span></dt><dd>4</dd><dt><span>project :</span></dt><dd>North Atlantic Tracer Release Experiment (NATRE)</dd><dt><span>expocode :</span></dt><dd>32OC250_4</dd><dt><span>cast_number :</span></dt><dd>3.0</dd><dt><span>title :</span></dt><dd>Microstructure profiler data from the ship Oceanus with cruise dates 1992-03-25 to 1992-04-22.</dd><dt><span>time :</span></dt><dd>Mar-28-1992</dd><dt><span>latitude :</span></dt><dd>27.533166666666666</dd><dt><span>longitude :</span></dt><dd>-30.723333333333333</dd><dt><span>chief_scientist :</span></dt><dd>Raymond W. Schmitt</dd><dt><span>data_originator :</span></dt><dd>Polzin</dd><dt><span>institution :</span></dt><dd>WHOI</dd><dt><span>data_assembly_center :</span></dt><dd>CCHDO</dd></dl></div></li></ul></div></div></div><img alt="_images/natre_6_2.png" src="_images/natre_6_2.png" />
+       2.10714426e-05])</pre></div></li></ul></div></li><li class='xr-section-item'><input id='section-d029f4d0-f6bc-4f07-8adf-c0ac098f0e8d' class='xr-section-summary-in' type='checkbox'  ><label for='section-d029f4d0-f6bc-4f07-8adf-c0ac098f0e8d' class='xr-section-summary' >Attributes: <span>(13)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'><dt><span>Conventions :</span></dt><dd>CF-1.6</dd><dt><span>netcdf_version :</span></dt><dd>4</dd><dt><span>project :</span></dt><dd>North Atlantic Tracer Release Experiment (NATRE)</dd><dt><span>expocode :</span></dt><dd>32OC250_4</dd><dt><span>cast_number :</span></dt><dd>3.0</dd><dt><span>title :</span></dt><dd>Microstructure profiler data from the ship Oceanus with cruise dates 1992-03-25 to 1992-04-22.</dd><dt><span>time :</span></dt><dd>Mar-28-1992</dd><dt><span>latitude :</span></dt><dd>27.533166666666666</dd><dt><span>longitude :</span></dt><dd>-30.723333333333333</dd><dt><span>chief_scientist :</span></dt><dd>Raymond W. Schmitt</dd><dt><span>data_originator :</span></dt><dd>Polzin</dd><dt><span>institution :</span></dt><dd>WHOI</dd><dt><span>data_assembly_center :</span></dt><dd>CCHDO</dd></dl></div></li></ul></div></div></div><img alt="_images/natre_6_1.png" src="_images/natre_6_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1231,11 +1252,6 @@ Attributes: (12/13)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distributed.utils_perf - WARNING - full garbage collections took 13% CPU time recently (threshold: 10%)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1244,20 +1260,40 @@ Attributes: (12/13)
 </div>
 </div>
 </div>
+<p>This uses a crappier gradient.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">colegrad</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/cole-clim-gradient.nc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
-    <span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">360</span> <span class="o">-</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">360</span> <span class="o">-</span> <span class="mi">25</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cole</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">read_cole</span><span class="p">()</span>
+
+<span class="c1"># read, take mean in region; swap to pressure coordinate</span>
+<span class="n">argograd</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/cole-clim-gradient-natre.nc&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">reset_coords</span><span class="p">(</span><span class="s2">&quot;pres&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">360</span> <span class="o">-</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">360</span> <span class="o">-</span> <span class="mi">25</span><span class="p">))</span>
 <span class="p">)</span>
-<span class="n">cole</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">read_cole</span><span class="p">()</span>
-<span class="n">cole_var_all</span> <span class="o">=</span> <span class="n">cole</span><span class="o">.</span><span class="n">diffusivity</span><span class="o">.</span><span class="n">interp_like</span><span class="p">(</span><span class="n">colegrad</span><span class="o">.</span><span class="n">dTiso</span><span class="p">)</span> <span class="o">*</span> <span class="n">colegrad</span><span class="o">.</span><span class="n">dTiso</span> <span class="o">**</span> <span class="mi">2</span>
-<span class="n">cole_var_all</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;long_name&quot;</span><span class="p">:</span> <span class="s2">&quot;$K_e^</span><span class="si">{cole}</span><span class="s2"> |∇T_</span><span class="si">{iso}</span><span class="s2">^</span><span class="si">{argo}</span><span class="s2">|²$&quot;</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;°C²/s&quot;</span><span class="p">}</span>
-<span class="n">cole_var</span> <span class="o">=</span> <span class="n">cole_var_all</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
+
+<span class="n">cole_natre</span> <span class="o">=</span> <span class="n">cole</span><span class="p">[[</span><span class="s2">&quot;diffusivity&quot;</span><span class="p">,</span> <span class="s2">&quot;density_mean_depth&quot;</span><span class="p">,</span> <span class="s2">&quot;depth_mean_sig&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span>
+    <span class="n">lat</span><span class="o">=</span><span class="n">argograd</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">lon</span><span class="o">=</span><span class="n">argograd</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">data</span>
+<span class="p">)</span>
+
+<span class="c1"># move from sigma to depth space</span>
+<span class="n">argo_dTiso</span> <span class="o">=</span> <span class="n">xgcm</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">linear_interpolation</span><span class="p">(</span>
+    <span class="n">argograd</span><span class="o">.</span><span class="n">dTiso</span><span class="p">,</span>
+    <span class="n">argograd</span><span class="o">.</span><span class="n">pres</span><span class="p">,</span>
+    <span class="n">cole</span><span class="o">.</span><span class="n">pres</span><span class="p">,</span>
+    <span class="s2">&quot;sigma&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sigma&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pres&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">cole_var</span> <span class="o">=</span> <span class="p">(</span><span class="n">cole_region</span><span class="o">.</span><span class="n">diffusivity</span> <span class="o">*</span> <span class="n">argo_dTiso</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
+<span class="n">cole_var</span><span class="p">[</span><span class="s2">&quot;pres&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cole_region</span><span class="p">[</span><span class="s2">&quot;pres&quot;</span><span class="p">]</span>
+<span class="n">cole_var</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;long_name&quot;</span><span class="p">:</span> <span class="s2">&quot;$K_e^</span><span class="si">{cole}</span><span class="s2"> |∇T_</span><span class="si">{iso}</span><span class="s2">^</span><span class="si">{argo}</span><span class="s2">|²$&quot;</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;°C²/s&quot;</span><span class="p">}</span>
 
 <span class="n">groeskamp</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;/home/deepak/datasets/groeskamp2020/groeskamp2020.nc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
     <span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">360</span> <span class="o">-</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">360</span> <span class="o">-</span> <span class="mi">25</span><span class="p">)</span>
 <span class="p">)</span>
-<span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;dTiso&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">colegrad</span><span class="o">.</span><span class="n">dTiso</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">groeskamp</span><span class="o">.</span><span class="n">depth</span><span class="p">)</span>
+<span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;dTiso&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">argo_dTiso</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">groeskamp</span><span class="o">.</span><span class="n">depth</span><span class="p">)</span>
 <span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;eddy_var_0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;Ke_0&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">groeskamp</span><span class="o">.</span><span class="n">dTiso</span> <span class="o">**</span> <span class="mi">2</span>
 <span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;eddy_var&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;Ke&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">groeskamp</span><span class="o">.</span><span class="n">dTiso</span> <span class="o">**</span> <span class="mi">2</span>
 <span class="n">groeskamp</span> <span class="o">=</span> <span class="n">groeskamp</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
@@ -1270,13 +1306,19 @@ Attributes: (12/13)
 <h2>Variance production vs dissipation<a class="headerlink" href="#variance-production-vs-dissipation" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>Agreement between POP “mesoscale variance dissipation” and microstructure estimate of “variance received from mesoscale” is great! (Teal dashed steps agree well with teal solid line)</p></li>
-<li><p>POP’s grid-scale temp variance dissipationdissipation is really dominated by the horizontal biharmonic diffusion, but fundamentally the amount of mesoscale variance destroyed by grid-scale diffusion matches that in the microstructure measurements.</p></li>
-<li><p>Comparing to variance dissipated by parameterizations for <span class="math notranslate nohighlight">\(K_e\)</span> (<span class="math notranslate nohighlight">\(K_e |∇_hT|²\)</span>) doesn’t work well. I wonder if I’m doing something wrong with my <span class="math notranslate nohighlight">\(∇_hT\)</span> estimate</p></li>
+<li><p>POP’s grid-scale temp variance dissipation is really dominated by the horizontal biharmonic diffusion, but fundamentally the amount of mesoscale variance destroyed by grid-scale diffusion matches that in the microstructure measurements.</p></li>
+<li><p>Cole/Groeskamp <span class="math notranslate nohighlight">\(K_e\)</span> estimate based variance dissipation compares much better now.</p>
+<ol class="simple">
+<li><p>~Comparing to variance dissipated by parameterizations for <span class="math notranslate nohighlight">\(K_e\)</span> (<span class="math notranslate nohighlight">\(K_e |∇_hT|²\)</span>) doesn’t work well. I wonder if I’m doing something wrong with my <span class="math notranslate nohighlight">\(∇_hT\)</span> estimate~</p></li>
+<li><p>I updated my |∇T| estimation code; now estimate along-isopycnal gradients in σ space instead of just a lateral gradient</p></li>
+<li><p>While the current algo still doesn’t match Silvia’s ∇S (but much better than earlier), it seems to improve agreement (panel c)</p></li>
+</ol>
+</li>
 </ol>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_pop_natre_meso_micro</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
-    <span class="n">mesomicrocolor</span> <span class="o">=</span> <span class="s2">&quot;teal&quot;</span>
+    <span class="n">mesomicrocolor</span> <span class="o">=</span> <span class="s2">&quot;darkorchid&quot;</span>
     <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">pop_natre</span><span class="o">.</span><span class="n">DISS</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
         <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">mesomicrocolor</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;POP meso $→$ micro&quot;</span>
     <span class="p">)</span>
@@ -1295,9 +1337,9 @@ Attributes: (12/13)
 <span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1">### Mesoscale budget</span>
-<span class="n">pop_natre</span><span class="o">.</span><span class="n">BC</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;POP h. stir$⟨u_e^h θ_e⟩.∇_hθ_m$&quot;</span><span class="p">)</span>
+<span class="n">pop_natre</span><span class="o">.</span><span class="n">BC</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;POP h. stir $⟨u_e^h θ_e⟩.∇_hθ_m$&quot;</span><span class="p">)</span>
 <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">pop_natre</span><span class="o">.</span><span class="n">PKC</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;POP v. stir $-⟨w_eθ_e⟩.∂_zθ_m$&quot;</span><span class="p">)</span>
-<span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">pop_natre</span><span class="o">.</span><span class="n">VMIX</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;POP VMIX&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">pop_natre</span><span class="o">.</span><span class="n">VMIX</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;sienna&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;POP VMIX&quot;</span><span class="p">)</span>
 <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">pop_natre</span><span class="o">.</span><span class="n">HDIFF</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;POP HDIFF&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
 
 
@@ -1323,12 +1365,12 @@ Attributes: (12/13)
 <span class="p">)</span>
 
 <span class="c1">### Parameterizations</span>
-<span class="n">cole_var</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$K_e^</span><span class="si">{cole}</span><span class="s2"> |∇T^</span><span class="si">{cole}</span><span class="s2">|²$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">cole_var</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$K_e^</span><span class="si">{cole}</span><span class="s2"> |∇_hT^</span><span class="si">{cole}</span><span class="s2">|²$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 <span class="n">groeskamp</span><span class="o">.</span><span class="n">eddy_var_0</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$K_e^</span><span class="si">{G2020unsupp}</span><span class="s2"> |∇T^</span><span class="si">{cole}</span><span class="s2">|²$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;teal&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;-.&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$K_e^</span><span class="si">{G2020unsupp}</span><span class="s2"> |∇_hT^</span><span class="si">{cole}</span><span class="s2">|²$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;limegreen&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;-.&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 <span class="p">)</span>
 <span class="n">groeskamp</span><span class="o">.</span><span class="n">eddy_var</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$K_e^</span><span class="si">{G2020}</span><span class="s2"> |∇T^</span><span class="si">{cole}</span><span class="s2">|²$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;teal&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$K_e^</span><span class="si">{G2020}</span><span class="s2"> |∇_hT^</span><span class="si">{cole}</span><span class="s2">|²$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;limegreen&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 <span class="p">)</span>
 
 <span class="c1">### Cleanup</span>
@@ -1353,7 +1395,7 @@ Attributes: (12/13)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_12_0.png" src="_images/natre_12_0.png" />
+<img alt="_images/natre_14_0.png" src="_images/natre_14_0.png" />
 </div>
 </div>
 <div class="section" id="interpretation">
@@ -1361,8 +1403,8 @@ Attributes: (12/13)
 <div class="section" id="spicy-region">
 <h4>Spicy region<a class="headerlink" href="#spicy-region" title="Permalink to this headline">¶</a></h4>
 <p>We can interpret the red mesoscale dissipation term in (b) as the amount of variance transferred to the microscale for eventual dissipation. This peaks in regions of high mean spice between 1000m and 1500m. The balance in spicy regions is that horizontal mesoscale stirring converts MPE → EPE (compensated filaments or T-S variance) that is dissipated by the microscale. The approximate budget is (note vertical stirring gets ignored, and <span class="math notranslate nohighlight">\(u^h\)</span> represents horizontal velocity vector)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-fb25b5d7-bd4a-4446-bdcd-f8ddc42c8008">
-<span class="eqno">(3)<a class="headerlink" href="#equation-fb25b5d7-bd4a-4446-bdcd-f8ddc42c8008" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-7c7897de-2a2e-4a6e-95d3-1ffff7915cab">
+<span class="eqno">(3)<a class="headerlink" href="#equation-7c7897de-2a2e-4a6e-95d3-1ffff7915cab" title="Permalink to this equation">¶</a></span>\[\begin{align}
 ⟨u^h_eT_e⟩ ⋅ ∇_hT_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;\approx 0 \\
 ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;\approx - \frac 12 ⟨χ⟩
 \end{align}\]</div>
@@ -1374,8 +1416,8 @@ Attributes: (12/13)
 <div class="section" id="weak-spice">
 <h4>Weak spice<a class="headerlink" href="#weak-spice" title="Permalink to this headline">¶</a></h4>
 <p>In the upper water column that is not spicy, we instead see horizontal stirring MPE→ EPE which is then routed to EKE by “vertical stirring”. Here the scale transformation term is 0 so the budget is</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c4c5fcaf-8a55-4f60-91db-d0782496eec2">
-<span class="eqno">(4)<a class="headerlink" href="#equation-c4c5fcaf-8a55-4f60-91db-d0782496eec2" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-daf84adf-ece3-4c54-ae9f-3f05c80020f2">
+<span class="eqno">(4)<a class="headerlink" href="#equation-daf84adf-ece3-4c54-ae9f-3f05c80020f2" title="Permalink to this equation">¶</a></span>\[\begin{align}
 ⟨u_eT_e⟩ ⋅ ∇T_m &amp;\approx 0 \\
 ⟨u_tT_t⟩ ⋅ ∇ T_m &amp;\approx - \frac 12 ⟨χ⟩
 \end{align}\]</div>
@@ -1423,7 +1465,7 @@ Attributes: (12/13)
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="c1">#, constrained_layout=True)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># , constrained_layout=True)</span>
 
 <span class="p">(</span><span class="n">micro</span><span class="o">.</span><span class="n">chi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
     <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span>
@@ -1449,12 +1491,16 @@ Attributes: (12/13)
 <span class="n">ed</span><span class="o">.</span><span class="n">sections</span><span class="o">.</span><span class="n">plot_var_prod_diss</span><span class="p">(</span><span class="n">micro</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">())</span>
 
 <span class="p">(</span><span class="n">argo_fine_depth</span><span class="o">.</span><span class="n">χ</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">criteria</span><span class="o">=</span><span class="s2">&quot;whalen&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
-    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C1&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pressure_bins&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$⟨χ⟩^</span><span class="si">{argo}</span><span class="s2">_{Rω=3}/2$&quot;</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C1&quot;</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pressure_bins&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$⟨χ⟩^</span><span class="si">{argo}</span><span class="s2">_{Rω=3}/2$&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="c1">#(natre_fine_avg.χ.sel(criteria=&quot;whalen&quot;) / 2).cf.plot.step(</span>
+<span class="c1"># (natre_fine_avg.χ.sel(criteria=&quot;whalen&quot;) / 2).cf.plot.step(</span>
 <span class="c1">#    marker=&quot;o&quot;, color=&quot;C2&quot;, ax=plt.gca(), label=&quot;$⟨χ⟩_{fine-3}^{natre}/2$&quot;</span>
-<span class="c1">#)</span>
+<span class="c1"># )</span>
 <span class="p">(</span><span class="n">natre_fine_avg</span><span class="o">.</span><span class="n">χ</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">criteria</span><span class="o">=</span><span class="s2">&quot;whalen_7&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
     <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C3&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$⟨χ⟩_{Rω=7}^</span><span class="si">{natre}</span><span class="s2">/2$&quot;</span>
 <span class="p">)</span>
@@ -1478,20 +1524,20 @@ Attributes: (12/13)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_15_0.png" src="_images/natre_15_0.png" />
+<img alt="_images/natre_17_0.png" src="_images/natre_17_0.png" />
 </div>
 </div>
 </div>
 <div class="section" id="pop2-1-10-mesoscale-variance-budget">
 <h2>POP2 1/10° mesoscale variance budget<a class="headerlink" href="#pop2-1-10-mesoscale-variance-budget" title="Permalink to this headline">¶</a></h2>
 <p>Yiming is working with the following variance budget equation for the mesoscale after decomposing <span class="math notranslate nohighlight">\(T = \bar{T} + T' + T'' ≡ T_m + T_e + T_t\)</span> (the latter is Ferrari &amp; Polzin notation). The <span class="math notranslate nohighlight">\(T = \tilde{T} + T''\)</span> decomposition is inherent when using cell-averaged equations.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c800be01-f9fc-4623-b998-8b715918437a">
-<span class="eqno">(5)<a class="headerlink" href="#equation-c800be01-f9fc-4623-b998-8b715918437a" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-8516f510-0f48-4b8f-8397-2e579f117bde">
+<span class="eqno">(5)<a class="headerlink" href="#equation-8516f510-0f48-4b8f-8397-2e579f117bde" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 ∂_t \overline{T'^2} =  -\overline{u'T'} ⋅ ∇_h\overline{T} - \overline{w'T'}∂_z\overline{T} - \overline{\vec{v} ⋅ ∇ T'^2/2} + \overline{T'∂_z \left[K ∂_zT' \right]} + …
 \end{equation}\]</div>
 <p>Ferrari &amp; Polzin’s equations (4.6, 4.7) for the mesoscale and microscale are (<span class="math notranslate nohighlight">\(u\)</span> here is the full 3D <span class="math notranslate nohighlight">\(u\)</span>):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e73187ad-0ce0-4f63-bcee-4c6d82d7d6f2">
-<span class="eqno">(6)<a class="headerlink" href="#equation-e73187ad-0ce0-4f63-bcee-4c6d82d7d6f2" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-a67257cc-55b4-4092-bae1-10467cb19868">
+<span class="eqno">(6)<a class="headerlink" href="#equation-a67257cc-55b4-4092-bae1-10467cb19868" title="Permalink to this equation">¶</a></span>\[\begin{align}
 ⟨u_eT_e⟩ ⋅ ∇T_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;= 0 \\
 ⟨u_tT_t⟩ ⋅ ∇ T_m + ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;= - \frac 12 ⟨χ⟩
 \end{align}\]</div>
@@ -1502,14 +1548,14 @@ Attributes: (12/13)
 <li><p>⟨⟩: monthly in time; NATRE domain size in (x,y)</p></li>
 </ol>
 <p>In Yiming’s notation these equations are</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9b7bdfbe-bd81-4829-a61d-4e9bbaa3be83">
-<span class="eqno">(7)<a class="headerlink" href="#equation-9b7bdfbe-bd81-4829-a61d-4e9bbaa3be83" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-d5fd7ab9-3d06-4e7e-b595-072e95c0483b">
+<span class="eqno">(7)<a class="headerlink" href="#equation-d5fd7ab9-3d06-4e7e-b595-072e95c0483b" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \overline{u'T'}⋅∇\overline{T} + \overline{w'T'}∂_z\overline{T}  - \overline{T'∂_z \left[K ∂_zT' \right]} = 0 \\
 K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 \end{align}\]</div>
 <p>Now we can identify Yiming’s dissipation term (“VMIX”, ignoring solar heating etc.) as the scale transformation term in FP2005 and then use the microscale budget from FP2005 to write</p>
-<div class="amsmath math notranslate nohighlight" id="equation-db8dbc71-01a5-4331-b8d6-b30a04279268">
-<span class="eqno">(8)<a class="headerlink" href="#equation-db8dbc71-01a5-4331-b8d6-b30a04279268" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-418f127c-3d47-43d0-8831-b7a2c744fd0e">
+<span class="eqno">(8)<a class="headerlink" href="#equation-418f127c-3d47-43d0-8831-b7a2c744fd0e" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ = - \frac 12 ⟨χ⟩ - ⟨u_tT_t⟩ ⋅ ∇ T_m
 \end{equation}\]</div>
 <p>i.e. Yiming’s “mesoscale dissipation” term is really the difference between</p>
@@ -1525,13 +1571,76 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_17_0.png" src="_images/natre_17_0.png" />
+<img alt="_images/natre_19_0.png" src="_images/natre_19_0.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distributed.utils_perf - WARNING - full garbage collections took 13% CPU time recently (threshold: 10%)
+</pre></div>
+</div>
 </div>
 </div>
 </div>
 <div class="section" id="studying-cole-estimate">
 <h2>Studying Cole estimate<a class="headerlink" href="#studying-cole-estimate" title="Permalink to this headline">¶</a></h2>
 <p>We expect to see peak <span class="math notranslate nohighlight">\(K_e\)</span> between 600 and 1600m but we mostly don’t! Both <span class="math notranslate nohighlight">\(⟨S'S'⟩\)</span> and <span class="math notranslate nohighlight">\(|∇S|\)</span> are large in the depth we expect a peak. There seems to be approximate agreement in the 1000-1200m range at (-34°E, -32°E) but missing data at deeper depths</p>
+<div class="section" id="depth-vs-density-space-estimation-of-k-e-t-2">
+<h3>Depth-vs-density space estimation of <span class="math notranslate nohighlight">\(K_e |∇T|²\)</span><a class="headerlink" href="#depth-vs-density-space-estimation-of-k-e-t-2" title="Permalink to this headline">¶</a></h3>
+<p>Turns out this does not matter; I was worried that diffusivity in depth space and |∇T| estimated in density space might combine badly. But moving diffusivity to sigma space or |∇T| to depth space results in same mean variance tendency</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cole</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">read_cole</span><span class="p">()</span>
+
+<span class="kn">import</span> <span class="nn">xgcm</span>
+
+<span class="n">cole</span><span class="p">[</span><span class="s2">&quot;diffusivity_sig&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xgcm</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">linear_interpolation</span><span class="p">(</span>
+    <span class="n">cole</span><span class="o">.</span><span class="n">diffusivity</span><span class="p">,</span> <span class="n">cole</span><span class="o">.</span><span class="n">density_mean_depth</span><span class="p">,</span> <span class="n">cole</span><span class="o">.</span><span class="n">sigma</span><span class="p">,</span> <span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="s2">&quot;sigma&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># read, take mean in region; swap to pressure coordinate</span>
+<span class="n">colegrad</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/cole-clim-gradient-natre.nc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+    <span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">360</span> <span class="o">-</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">360</span> <span class="o">-</span> <span class="mi">25</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">colegrad</span><span class="p">[</span><span class="s2">&quot;sigma&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cole</span><span class="o">.</span><span class="n">sigma</span>
+
+<span class="n">cole_natre</span> <span class="o">=</span> <span class="n">cole</span><span class="p">[</span>
+    <span class="p">[</span><span class="s2">&quot;diffusivity&quot;</span><span class="p">,</span> <span class="s2">&quot;diffusivity_sig&quot;</span><span class="p">,</span> <span class="s2">&quot;density_mean_depth&quot;</span><span class="p">,</span> <span class="s2">&quot;depth_mean_sig&quot;</span><span class="p">]</span>
+<span class="p">]</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="n">colegrad</span><span class="o">.</span><span class="n">lat</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">lon</span><span class="o">=</span><span class="n">colegrad</span><span class="o">.</span><span class="n">lon</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+<span class="n">dTiso_pres</span> <span class="o">=</span> <span class="n">xgcm</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">linear_interpolation</span><span class="p">(</span>
+    <span class="n">colegrad</span><span class="o">.</span><span class="n">dTiso</span><span class="p">,</span>
+    <span class="n">colegrad</span><span class="o">.</span><span class="n">pres</span><span class="p">,</span>
+    <span class="n">cole</span><span class="o">.</span><span class="n">pres</span><span class="p">,</span>
+    <span class="s2">&quot;sigma&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sigma&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;pres&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cole_var_sig</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="n">cole_natre</span><span class="o">.</span><span class="n">diffusivity_sig</span> <span class="o">*</span> <span class="n">colegrad</span><span class="o">.</span><span class="n">dTiso</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
+    <span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">cole_natre</span><span class="o">.</span><span class="n">depth_mean_sig</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">]))</span>
+<span class="p">)</span>
+<span class="n">cole_var_pres</span> <span class="o">=</span> <span class="p">(</span><span class="n">cole_natre</span><span class="o">.</span><span class="n">diffusivity</span> <span class="o">*</span> <span class="n">dTiso_pres</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
+
+<span class="n">cole_var_sig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">)</span>
+<span class="n">cole_var_pres</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s2">&quot;sigma space&quot;</span><span class="p">,</span> <span class="s2">&quot;depth space&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fa53eb855b0&gt;
+</pre></div>
+</div>
+<img alt="_images/natre_24_1.png" src="_images/natre_24_1.png" />
+</div>
+</div>
+</div>
+<div class="section" id="depth-space-calculation">
+<h3>Depth space calculation<a class="headerlink" href="#depth-space-calculation" title="Permalink to this headline">¶</a></h3>
+<p>The following is when I was using <span class="math notranslate nohighlight">\(|∇T|\)</span> estimated in depth space and multiplying by a <span class="math notranslate nohighlight">\(K_e\)</span> provided in depth space</p>
 <p>Here are estimates of variance produced by eddy stirring at points in the NATRE box from Cole et al (2015). There is some spread but the peak between 400 and 1000 seems robust. Thick black line is the mean over the box.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1548,7 +1657,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;$K_e^{cole} |∇T_{iso}^{argo}|²$ [°C²/s]&#39;)
 </pre></div>
 </div>
-<img alt="_images/natre_20_1.png" src="_images/natre_20_1.png" />
+<img alt="_images/natre_27_1.png" src="_images/natre_27_1.png" />
 </div>
 </div>
 <p>These are the various terms in the Cole analysis. Note minimum in ∇S between 200 and 800, and associated high mixing lengths ≳ 300km.</p>
@@ -1559,7 +1668,8 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_22_0.png" src="_images/natre_22_0.png" />
+<img alt="_images/natre_29_0.png" src="_images/natre_29_0.png" />
+</div>
 </div>
 </div>
 </div>
@@ -1655,7 +1765,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_27_0.png" src="_images/natre_27_0.png" />
+<img alt="_images/natre_34_0.png" src="_images/natre_34_0.png" />
 </div>
 </div>
 </div>
@@ -1700,7 +1810,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_31_0.png" src="_images/natre_31_0.png" />
+<img alt="_images/natre_38_0.png" src="_images/natre_38_0.png" />
 </div>
 </div>
 <p>It’s definitely a big undersampling when compared to all Argo profiles in the area. <strong>How good is good enough?</strong></p>
@@ -1733,7 +1843,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_33_0.png" src="_images/natre_33_0.png" />
+<img alt="_images/natre_40_0.png" src="_images/natre_40_0.png" />
 </div>
 </div>
 </div>
@@ -1777,7 +1887,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;xarray.plot.facetgrid.FacetGrid at 0x7fbb1793f2b0&gt;
 </pre></div>
 </div>
-<img alt="_images/natre_36_1.png" src="_images/natre_36_1.png" />
+<img alt="_images/natre_43_1.png" src="_images/natre_43_1.png" />
 </div>
 </div>
 </div>
@@ -1819,7 +1929,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_39_0.png" src="_images/natre_39_0.png" />
+<img alt="_images/natre_46_0.png" src="_images/natre_46_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1837,7 +1947,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_40_0.png" src="_images/natre_40_0.png" />
+<img alt="_images/natre_47_0.png" src="_images/natre_47_0.png" />
 </div>
 </div>
 </div>
