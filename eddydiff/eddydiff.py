@@ -685,10 +685,10 @@ def plot_transect_Ke(transKe):
     plt.tight_layout()
 
 
-def read_cole():
+def read_cole(resolution="1deg"):
     cole = (
         xr.open_dataset(
-            "../datasets/argo-diffusivity/" + "ArgoTS_eddydiffusivity_20052015_1deg.nc",
+            f"../datasets/argo-diffusivity/ArgoTS_eddydiffusivity_20052015_{resolution}.nc",
         )
         .rename(
             {"latitude": "lat", "longitude": "lon", "density": "sigma", "depth": "pres"}
