@@ -81,6 +81,8 @@ dependencies:
   - pandas!=1.1.0
   - scipy
   - seaborn
+### project specific
+  - arch-py
 ###  pip stuff
   - pip:
     - icecream

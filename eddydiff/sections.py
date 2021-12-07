@@ -2,6 +2,7 @@ import cf_xarray  # noqa
 import dcpy
 import matplotlib.pyplot as plt
 import numpy as np
+from flox.xarray import xarray_reduce
 
 import xarray as xr
 
@@ -107,7 +108,7 @@ def to_netcdf(infile, outfile, transect_name):
 
 
 def add_ancillary_variables(ds, pref=0):
-    """ Adds ancillary variables."""
+    """Adds ancillary variables."""
 
     salt, temp, pres = (
         ds.cf["sea_water_salinity"],
@@ -175,48 +176,180 @@ def add_ancillary_variables(ds, pref=0):
     return ds
 
 
+def compute_mean_ci(data, dof=None, alpha=0.05):
+    from scipy.stats import distributions
+
+    assert data.ndim == 1
+    data = data[~np.isnan(data)]
+    if dof is None:
+        dof = len(data)
+
+    lower, upper = distributions.t.ppf((alpha, 1 - alpha), dof)
+
+    mean = np.mean(data, keepdims=True)
+    std = np.std(data, keepdims=True)
+    lower = mean + lower * std / np.sqrt(dof)
+    upper = mean + upper * std / np.sqrt(dof)
+    return np.concatenate([lower, mean, upper])
+
+
+def compute_bootstrapped_mean_ci(array, blocksize):
+    from arch.bootstrap import MovingBlockBootstrap
+    from numpy.random import RandomState
+
+    rs = RandomState(1234)
+
+    # drop nans
+    array = array[~np.isnan(array)]
+
+    return np.insert(
+        MovingBlockBootstrap(blocksize, array, seed=rs)
+        .conf_int(func=np.mean, method="bca")
+        .squeeze(),
+        1,
+        np.mean(array),
+    )
+
+
+def average_density_bin(group, skip_fits=False):
+    profiles = (
+        group.unstack()
+        .stack({"latlon": ("latitude", "longitude")})
+        .sortby("depth")
+        .interpolate_na("depth")
+        .drop("time")
+    )
+    reshaped = (
+        profiles[["chi", "eps"]]
+        .reset_coords(drop=True)
+        # .drop("gamma_n")
+        .coarsen(depth=20, boundary="pad")
+        .construct({"depth": ("depth_", "block")})
+    )
+    # fill NaNs in blocks with the mean of available obs
+    filled = xr.where(reshaped.isnull(), reshaped.mean("block"), reshaped)
+    # flatten for bootstrap
+    flattened = filled.drop("latlon").stack(flat=[...])
+
+    ci = xr.apply_ufunc(
+        compute_bootstrapped_mean_ci,
+        flattened.chunk({"flat": -1}),
+        input_core_dims=[["flat"]],
+        exclude_dims={
+            "flat",
+        },
+        # TODO: configure this
+        kwargs={"blocksize": 20},
+        output_core_dims=[["bound"]],
+        dask_gufunc_kwargs=dict(output_sizes={"bound": 3}),
+        dask="parallelized",
+        output_dtypes=[float],
+    ).assign_coords(bound=["lower", "center", "upper"])
+
+    pres = profiles.depth.where(profiles.chi.notnull())
+    hm = pres.max("depth") - pres.min("depth")
+    hm = hm.where(hm > 1)
+
+    ci["hm"] = xr.apply_ufunc(
+        compute_mean_ci,
+        hm,
+        input_core_dims=[["latlon"]],
+        exclude_dims={
+            "latlon",
+        },
+        output_core_dims=[["bound"]],
+        dask_gufunc_kwargs=dict(output_sizes={"bound": 3}),
+        dask="parallelized",
+    )
+    # ci["hm"] = ("bound", compute_mean_ci(hm.data, hm.count("latlon")))
+
+    chidens = ci.sel(bound="center")
+    bounds = ci.sel(bound=["lower", "upper"])
+    delta = bounds.diff("bound").squeeze()
+
+    unit = xr.DataArray([-1, 1], dims="bound", coords={"bound": ["lower", "upper"]})
+
+    G = 0.2
+    delta["G"] = 0.04
+
+    if not skip_fits:
+        chidens["dTdz_m"] = -1 * fit1D(group, var="theta", dim="depth")
+        chidens.dTdz_m.attrs.update(dict(name="$∂_z θ_m$", units="°C/m"))
+
+        chidens["N2_m"] = 9.81 / 1030 * fit1D(group, var="pden", dim="depth")
+        chidens.N2_m.attrs.update(dict(name="$∂_zb_m$", units="s$^{-2}$"))
+
+        chidens["Krho_m"] = G * chidens.eps / chidens.N2_m
+        chidens.Krho_m.attrs.update(dict(long_name="$K_ρ^m$", units="m²/s"))
+        delta["Krho_m"] = chidens.Krho_m * np.sqrt(
+            (delta.G / G) ** 2
+            + (delta.eps / chidens.eps) ** 2
+            + (delta.hm / chidens.hm) ** 2
+        )
+        bounds["Krho_m"] = chidens.Krho_m + unit * delta.Krho_m
+
+        chidens["Kt_m"] = 1 / 2 * chidens.chi / chidens.dTdz_m
+        delta["Kt_m"] = chidens.Kt_m * np.sqrt(
+            (delta.chi / chidens.chi) ** 2 + (delta.hm / chidens.hm) ** 2
+        )
+        bounds["Kt_m"] = chidens.Kt_m + unit * delta.Kt_m
+        chidens.Kt_m.attrs.update(dict(long_name="$K_T^m$", units="m²/s"))
+
+        chidens["wTTz"] = chidens.Krho_m * chidens.dTdz_m ** 2
+        delta["wTTz"] = chidens.wTTz * np.sqrt(
+            (delta.Krho_m / chidens.Krho_m) ** 2 + 2 * (delta.hm / chidens.hm) ** 2
+        )
+        bounds["wTTz"] = chidens.wTTz + unit * delta.wTTz
+        chidens.wTTz.attrs = {"long_name": "$K_ρ  ∂_zθ_m^2$"}
+
+    # Keep these as data_vars otherwise triggers compute at combine-stage
+    chidens["num_obs"] = profiles.chi.count().data
+    chidens["pres"] = pres.mean().data
+
+    chidens = chidens.update({f"{name}_err": var for name, var in bounds.items()})
+    chidens = chidens.update({f"delta_{name}": var for name, var in delta.items()})
+
+    for v in set(chidens) & set(delta):
+        chidens[v].attrs.update({"bounds": f"{v}_err"})
+    return chidens
+
+
+def lazy_map(grouped, func, *args, **kwargs):
+    return grouped.map(lambda g: func(g.chunk(), *args, **kwargs))
+
+
 def bin_average_vertical(ds, stdname, bins, skip_fits=False):
-    """ Bin averages in the vertical."""
+    """Bin averages in the vertical."""
 
     grouped = ds.reset_coords().cf.groupby_bins(stdname, bins=bins)
-    chidens = grouped.mean()
-    for var in chidens.variables:
-        if var in ds.variables:
-            chidens[var].attrs = ds[var].attrs
+    chidens = lazy_map(grouped, average_density_bin, skip_fits=skip_fits)
 
-    var = ds.cf["neutral_density"]
+    for var in set(chidens.variables) & set(ds.variables):
+        chidens[var].attrs = ds[var].attrs
+
+    var = ds.cf[stdname]
     groupvar = f"{var.name}_bins"
     chidens[groupvar].attrs = var.attrs
     # chidens[groupvar].attrs["positive"] = "down"
     chidens[groupvar].attrs["axis"] = "Z"
-    chidens = chidens.set_coords("pres")
+    chidens = chidens.set_coords(["pres", "num_obs"])
     chidens["pres"].attrs["positive"] = "down"
 
+    chidens.coords["num_obs"] = ds.chi.groupby_bins(ds.cf[stdname], bins=bins).count()
     chidens.eps.attrs.update(long_name="$⟨ε⟩$")
     chidens.chi.attrs.update(long_name="$⟨χ⟩$")
-
-    if not skip_fits:
-        chidens["dTdz_m"] = -1 * grouped.apply(fit1D, var="theta", dim="depth")
-        chidens.dTdz_m.attrs.update(dict(name="$∂_z θ_m$", units="°C/m"))
-
-        chidens["N2_m"] = 9.81 / 1030 * grouped.apply(fit1D, var="pden", dim="depth")
-        chidens.N2_m.attrs.update(dict(name="$∂_zb_m$", units="s$^{-2}$"))
-
-        chidens["Krho_m"] = 0.2 * chidens.eps / chidens.N2_m
-        chidens.Krho_m.attrs.update(dict(long_name="$K_ρ^m$", units="m²/s"))
-
-        chidens["Kt_m"] = chidens.chi / 2 / chidens.dTdz_m ** 2
-        chidens.Kt_m.attrs.update(dict(long_name="$K_T^m$", units="m²/s"))
-
-    chidens.coords["num_obs"] = ds.chi.groupby_bins(ds.cf[stdname], bins=bins).count()
     chidens.num_obs.attrs = {"long_name": "count(χ) in bins"}
+
+    chidens["chib2"] = chidens.chi / 2
+    chidens["chib2_err"] = chidens.chi_err / 2
+    chidens.chib2.attrs.update({"bounds": "chib2_err", "long_name": "$⟨χ⟩/2$"})
 
     chidens = chidens.cf.guess_coord_axis()
     # iso_slope = grouped.apply(fit2D)
     # chidens["dTiso"] = np.hypot(iso_slope.x, iso_slope.y)
 
-    bounds = intervals_to_bounds(chidens.gamma_n_bins)
-    chidens = chidens.drop_vars("gamma_n").rename({"gamma_n_bins": "gamma_n"})
+    bounds = intervals_to_bounds(chidens.gamma_n_bins).rename({"bounds": "bound"})
+    chidens = chidens.rename({"gamma_n_bins": "gamma_n"})
     chidens["gamma_n"] = bounds.gamma_n
     chidens.coords["gamma_n_bounds"] = bounds
     chidens["gamma_n"].attrs.update(ds.gamma_n.attrs)
@@ -247,11 +380,24 @@ def fit1D(group, var, dim="depth", debug=False):
         stacked.plot.line(y=dim, ax=ax[0, 0], **kwargs)
         stacked.plot.line(y="z0", **kwargs, ax=ax[0, 1])
 
-    binned = stacked.groupby_bins("z0", bins=np.arange(-10, 200, 2))
-    count = binned.count()
-    min_count = 300  # count.median() / 1.25
-    mean_profile = binned.mean().where(count > min_count)
-    mean_profile["z0_bins"] = mean_profile.indexes["z0_bins"].mid
+    mean_profile = xarray_reduce(
+        stacked,
+        "z0",
+        func="mean",
+        min_count=300,
+        fill_value=np.nan,
+        expected_groups=(np.arange(-10, 200, 2),),
+        isbin=True,
+    )
+    mean_profile["z0_bins"] = [
+        interval.mid for interval in mean_profile.indexes["z0_bins"].values
+    ]
+
+    # binned = stacked.groupby_bins("z0", bins=np.arange(-10, 200, 2))
+    # count = binned.count()
+    # min_count = 300  # count.median() / 1.25
+    # mean_profile = binned.mean().where(count > min_count)
+    # mean_profile["z0_bins"] = mean_profile.indexes["z0_bins"].mid
 
     poly = (mean_profile).polyfit("z0_bins", deg=1)
     slope = poly.polyfit_coefficients.sel(degree=1, drop=True)
