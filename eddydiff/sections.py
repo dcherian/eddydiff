@@ -302,12 +302,21 @@ def average_density_bin(group, skip_fits=False):
         bounds["wTTz"] = chidens.wTTz + unit * delta.wTTz
         chidens.wTTz.attrs = {"long_name": "$K_ρ  ∂_zθ_m^2$"}
 
+        chidens["residual"] = chidens.chi / 2 - chidens.Krho_m * chidens.dTdz_m ** 2
+        delta["residual"] = chidens.residual * np.sqrt(
+            (delta.chi / chidens.chi) ** 2 + (delta.wTTz / chidens.wTTz) ** 2
+        )
+        bounds["residual"] = chidens.residual + unit * delta.residual
+
     # Keep these as data_vars otherwise triggers compute at combine-stage
+    delta["pres"] = chidens.hm / 2
+
     chidens["num_obs"] = profiles.chi.count().data
     chidens["pres"] = pres.mean().data
+    chidens["pres_err"] = chidens.pres + unit * delta.pres
 
     chidens = chidens.update({f"{name}_err": var for name, var in bounds.items()})
-    chidens = chidens.update({f"delta_{name}": var for name, var in delta.items()})
+    chidens = chidens.update({f"δ{name}": var for name, var in delta.items()})
 
     for v in set(chidens) & set(delta):
         chidens[v].attrs.update({"bounds": f"{v}_err"})
