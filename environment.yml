@@ -1,0 +1,89 @@
+name: eddydiff
+channels:
+  - conda-forge
+  - pyviz
+dependencies:
+### misc python
+  - mamba
+  - pip
+  - line_profiler
+  - memory_profiler
+  - pytest
+  - pytest-xdist
+  - snakeviz
+  - tqdm
+  - watermark
+### linters
+  - black
+  - flake8
+  - isort
+  - pre-commit
+  - mypy
+### matplotlib
+  - cartopy
+  - cmocean
+  - colorcet
+  - ipympl
+  - ipywidgets
+  - matplotlib
+  - nc-time-axis
+  - viscm
+### holoviews
+  - bokeh
+  - datashader
+  - geoviews
+  - holoviews
+  - hvplot
+  - panel
+  - pyviz_comms
+### dask
+  - cachey
+  - dask
+  - dask-jobqueue
+  - dask_labextension
+  - distributed
+  - ncar-jobqueue
+  - python-graphviz
+### jupyter / ipython
+  - ipdb
+  - ipython
+  - jupyter
+  - jupyterlab
+  - jupyterlab_code_formatter
+  - jupyter-server-proxy
+  - nbconvert
+  - nbdime
+  - nbformat
+  - notebook
+  - qtconsole
+### io
+  - netcdf4
+  - h5netcdf
+  - h5py
+  - zarr
+### xarray
+  - bottleneck
+  - flox
+  - cftime
+  - cf_xarray
+  - pint-xarray
+  - xarray
+  - xoak
+  - xrft
+  - xgcm
+  - xhistogram
+  - xmitgcm
+### oceanography
+  - gsw
+  - seawater
+### scientific python
+  - numpy
+  - pandas!=1.1.0
+  - scipy
+  - seaborn
+### project specific
+  - arch-py
+###  pip stuff
+  - pip:
+    - icecream
+    - jupyter-book

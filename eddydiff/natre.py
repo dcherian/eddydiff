@@ -63,6 +63,7 @@ def combine_natre_files():
         "/home/deepak/datasets/microstructure/natre_microstructure/natre_*.nc"
     )
     files = sorted(files, key=filenum)
+    # First 100 are stations 3-102; part of the large-scale survey
     nested = np.reshape(files[:100], (10, 10))
     for a in np.arange(1, 10, 2):
         nested[a, :] = np.flip(nested[a, :])
@@ -74,14 +75,15 @@ def combine_natre_files():
         preprocess=preprocess_natre,
         parallel=True,
     )
-    ds.to_netcdf("../datasets/natre_large_scale.nc")
+    # ds.to_netcdf("../datasets/natre_large_scale.nc")
+    return ds
 
 
 def read_natre():
     natre = xr.open_dataset(
         "../datasets/natre_large_scale.nc", chunks={"latitude": 5, "longitude": 5}
     )
-    natre = natre.where(natre.chi.notnull() & natre.eps.notnull())
+    # natre = natre.where(natre.chi.notnull() & natre.eps.notnull())
     natre = natre.set_coords(["time", "pres"])
 
     natre = natre.cf.guess_coord_axis()
@@ -91,9 +93,10 @@ def read_natre():
     natre["pres"].attrs.update(positive="down")
 
     natre = sections.add_ancillary_variables(natre, pref=1000)
-    natre = natre.where(natre.chi > 1e-14)
+    # natre = natre.where(natre.chi > 1e-14)
 
     # messes up cf-xarray
-    natre["time"] = natre.time.isel(depth=0)
+    if "depth" in natre.time.dims:
+        natre["time"] = natre.time.isel(depth=0)
 
     return natre

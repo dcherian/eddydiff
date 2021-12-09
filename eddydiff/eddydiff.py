@@ -224,7 +224,7 @@ def project_vector(vector, proj, kind=None):
     """
 
     def dot_product(a, b):
-        """ dot product of 2 gradient vectors """
+        """dot product of 2 gradient vectors"""
         return a.dx * b.dx + a.dy * b.dy + a.dz * b.dz
 
     dot = dot_product(vector, proj)
@@ -685,10 +685,10 @@ def plot_transect_Ke(transKe):
     plt.tight_layout()
 
 
-def read_cole():
+def read_cole(resolution="1deg"):
     cole = (
         xr.open_dataset(
-            "../datasets/argo-diffusivity/" + "ArgoTS_eddydiffusivity_20052015_1deg.nc",
+            f"../datasets/argo-diffusivity/ArgoTS_eddydiffusivity_20052015_{resolution}.nc",
         )
         .rename(
             {"latitude": "lat", "longitude": "lon", "density": "sigma", "depth": "pres"}
@@ -810,7 +810,7 @@ def convert_mat_to_netcdf():
 
 
 def average_transect_1d(transect, nbins=10):
-    """ Given transect, group by density bins and average in those bins. """
+    """Given transect, group by density bins and average in those bins."""
 
     # TODO: Keep or remove?
     try:
@@ -940,7 +940,7 @@ def transect_to_density_space(transect, nbins=12):
 
 
 def bin_to_density_space(transect, bins=30):
-    """ Attempt number 3. """
+    """Attempt number 3."""
 
     if np.isscalar(bins):
         _, bins = pd.qcut(transect.rho.values.ravel(), bins, retbins=True)
@@ -1311,24 +1311,29 @@ def estimate_gradients(grad, bins, bin_var="pden", debug=False):
     return isoT, edgeT
 
 
-def gradient_cole(da, dim, dxy=2):
+def gradient_cole(da, dim, dxy=3):
     """
-    Calculates gradient using an approximate version of the procedure described in Cole et al (2015).
+    Calculates gradient using the procedure described in Cole et al (2015).
 
     - Uses Roemmich & Gilson climatology.
     - Calculates average of forward and backward gradient over `dxy` points, so equivalent to 2*dxy
       centered gradient.
-    - Does not do anything special near continental boundaries
     - The Cole version interpolates to sampled profile locations and then averages. This does not do that.
     """
-    Δd = dxy * 110e3  # da[dim].diff(dim)
+    Δd = dxy * 111194.92664456
 
-    if dim == "lat":
+    if dim == "lon":
         Δd *= np.cos(da["lat"] * np.pi / 180)
 
-    def diff_(da):
-        return da - da.shift({dim: dxy})
+    def diff_(da, d):
+        # Filling attempts to replicate nearest neighbour interpolation
+        # at coastline
+        if d < 0:
+            da = da.ffill(dim)
+        else:
+            da = da.bfill(dim)
+        return np.abs(da.roll({dim: d}) - da)
 
-    grad = 1 / 2 / Δd * (diff_(da) - diff_(da.isel({dim: slice(None, None, -1)})))
+    grad = 1 / 2 / Δd * (diff_(da, dxy) + diff_(da, -dxy))
     grad.attrs["description"] = f"gradient calculated over {2*dxy} points"
     return grad
