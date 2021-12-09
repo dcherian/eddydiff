@@ -1,5 +1,6 @@
 import glob
 
+import dcpy
 import numpy as np
 
 import xarray as xr
@@ -91,6 +92,10 @@ def read_natre():
     natre.eps.attrs["long_name"] = "$ε$"
     natre["depth"].attrs.update(units="m", positive="down")
     natre["pres"].attrs.update(positive="down")
+
+    if "neutral_density" not in natre.cf:
+        natre["gamma_n"] = dcpy.oceans.neutral_density(natre)
+    natre = dcpy.oceans.thorpesort(natre, natre.gamma_n.cf.interpolate_na("Z"))
 
     natre = sections.add_ancillary_variables(natre, pref=1000)
     # natre = natre.where(natre.chi > 1e-14)
