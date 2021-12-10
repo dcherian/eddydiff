@@ -214,10 +214,10 @@ def compute_bootstrapped_mean_ci(array, blocksize):
 def average_density_bin(group, skip_fits=False):
     profiles = (
         group.unstack()
+        .drop_vars("time")
         .stack({"latlon": ("latitude", "longitude")})
         .sortby("depth")
         .interpolate_na("depth")
-        .drop("time")
     )
     reshaped = (
         profiles[["chi", "eps"]]
@@ -273,10 +273,17 @@ def average_density_bin(group, skip_fits=False):
     delta["G"] = 0.04
 
     if not skip_fits:
-        chidens["dTdz_m"] = -1 * fit1D(group, var="theta", dim="depth")
+        # reference to mean pressure of obs in this bin
+        pref = group.pres.mean().data
+        group["theta"] = dcpy.eos.ptmp(group.salt, group.temp, group.pres, pr=pref)
+        chidens["theta"] = group.theta.mean()
+        chidens["salt"] = group.salt.mean()
+
+        chidens["dTdz_m"] = -1 * fit1D(group, var="theta", dim="pres")
         chidens.dTdz_m.attrs.update(dict(name="$∂_z θ_m$", units="°C/m"))
 
-        chidens["N2_m"] = 9.81 / 1030 * fit1D(group, var="pden", dim="depth")
+        # TODO: compute using γ_n instead
+        chidens["N2_m"] = 9.81 / 1030 * fit1D(group, var="gamma_n", dim="depth")
         chidens.N2_m.attrs.update(dict(name="$∂_zb_m$", units="s$^{-2}$"))
 
         chidens["Krho_m"] = G * chidens.eps / chidens.N2_m
@@ -368,9 +375,34 @@ def bin_average_vertical(ds, stdname, bins, skip_fits=False):
 
 
 def fit1D(group, var, dim="depth", debug=False):
+    ds = group.unstack()
+    # Some weirdness about binning by dim in grouped variable
+    if dim in ds.dims:
+        ds = ds.rename({dim: f"{dim}_"})
+        ds[dim] = ds[f"{dim}_"].broadcast_like(ds[var])
+    bins2 = np.linspace(ds.gamma_n.min().data, ds.gamma_n.max().data, 11)
+    mean = (
+        ds[[var, "gamma_n", dim]]
+        .groupby_bins("gamma_n", bins2)
+        .mean()
+        .swap_dims({"gamma_n_bins": dim})
+    )
+    fit = mean[var].polyfit(dim, deg=1)
+    slope = fit.polyfit_coefficients.sel(degree=1).data
+    if debug:
+        recon = xr.polyval(mean[dim], fit)
+        plt.figure()
+        mean[var].cf.plot(marker=".")
+        recon.polyfit_coefficients.cf.plot(marker="x")
+
+    return slope
+
+
+def fit1D_old(group, var, dim="depth", debug=False):
     """
-    Expects a bunch of profiles at differ lat, lons.
+    Expects a bunch of profiles at different lat, lons.
     Calculates mean profile and then takes linear fit to estimate gradient.
+    This works by depth-space averaging...
     """
 
     ds = group.unstack()
@@ -492,8 +524,8 @@ def plot_var_prod_diss(chidens, prefix="", ax=None, **kwargs):
     plt.gcf().set_size_inches((4, 5))
 
 
-def choose_bins(gamma, depth_range):
+def choose_bins(gamma, depth_range, decimals=2):
     mean_over = set(gamma.dims) - set(gamma.cf.axes["Z"])
     bins = gamma.mean(mean_over).cf.interp(Z=depth_range)
     bins[gamma.cf.axes["Z"][0]].attrs["axis"] = "Z"
-    return np.round(bins.cf.dropna("Z").data, 2)
+    return np.round(bins.cf.dropna("Z").data, decimals)
