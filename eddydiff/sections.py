@@ -182,7 +182,7 @@ def compute_mean_ci(data, dof=None, alpha=0.05):
     if dof is None:
         dof = len(data)
 
-    lower, upper = distributions.t.ppf((alpha, 1 - alpha), dof)
+    lower, upper = distributions.t.ppf((alpha / 2, 1 - alpha / 2), dof)
 
     mean = np.mean(data, keepdims=True)
     std = np.std(data, keepdims=True)
