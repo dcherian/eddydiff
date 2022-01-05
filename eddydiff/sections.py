@@ -199,14 +199,13 @@ def compute_bootstrapped_mean_ci(array, blocksize):
 
     # drop nans
     assert array.ndim == 1
-    array = array[~np.isnan(array)]
 
     return np.insert(
         MovingBlockBootstrap(blocksize, array, seed=rs)
-        .conf_int(func=np.mean, method="bca")
+        .conf_int(func=np.nanmean, method="bca")
         .squeeze(),
         1,
-        np.mean(array),
+        np.nanmean(array),
     )
 
 
@@ -217,7 +216,7 @@ def average_density_bin(group, skip_fits=False):
         .drop_vars("time")
         .stack({"latlon": ("latitude", "longitude")})
         .sortby(Z)
-        .interpolate_na(Z)
+        # .interpolate_na(Z)
     )
     reshaped = (
         profiles[["chi", "eps"]]
@@ -226,18 +225,17 @@ def average_density_bin(group, skip_fits=False):
         .coarsen({Z: 20}, boundary="pad")
         .construct({Z: (f"{Z}_", "block")})
     )
-    # fill NaNs in blocks with the mean of available obs
-    filled = xr.where(reshaped.isnull(), reshaped.mean("block"), reshaped)
+    # I've taken this step out in favour of using np.nanmean
+    #   - fill NaNs in blocks with the mean of available obs
+    # filled = xr.where(reshaped.isnull(), reshaped.mean("block"), reshaped)
     # flatten for bootstrap
-    flattened = filled.drop("latlon").stack(flat=[...])
+    flattened = reshaped.drop("latlon").stack(flat=[...])
 
     ci = xr.apply_ufunc(
         compute_bootstrapped_mean_ci,
         flattened.chunk({"flat": -1}),
         input_core_dims=[["flat"]],
-        exclude_dims={
-            "flat",
-        },
+        exclude_dims=set(("flat",)),
         # TODO: configure this
         kwargs={"blocksize": 20},
         output_core_dims=[["bound"]],
