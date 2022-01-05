@@ -41,7 +41,7 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -259,7 +259,7 @@
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
         <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
-            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+                onclick="printPdf(this)" data-toggle="tooltip" data-placement="left">.pdf</button>
     </div>
 </div>
 
@@ -307,7 +307,7 @@
         </div>
 
         <!-- Table of contents -->
-        <div class="d-none d-md-block col-md-2 bd-toc show">
+        <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
             <div class="tocsection onthispage pt-5 pb-3">
                 <i class="fas fa-list"></i> Contents
@@ -426,14 +426,136 @@
 </div>
     <div id="main-content" class="row">
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
-        
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>BoB ASIRI 2013 CTD χpod</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#transect-ts-plots">
+   Transect TS plots
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#read-and-plot-single-transect">
+   Read and plot single transect
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#process-transect-data">
+   Process transect data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#read-in-other-datasets">
+   Read in other datasets
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-climatological-gradients">
+   Using climatological gradients
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#naveira-garabato-et-al-2016-approach">
+   Naveira Garabato et al. (2016) approach
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#calculation">
+     Calculation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#debugging-plots">
+     Debugging plots
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#distributions-dt-dz-and-dt-diapycnal">
+     Distributions: dT/dz and dT_diapycnal
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#ferrari-polzin-2005-approach">
+   Ferrari &amp; Polzin (2005) approach
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#without-interpolating-to-convert-to-density-space">
+   Without interpolating to convert to density space
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#compare-various-mean-fields-gradients">
+   Compare various mean fields / gradients
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#argo-estimate-cole-et-al-2015">
+   Argo estimate (Cole et al, 2015)
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#all-data-combined">
+   All data combined
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#lessons-learned">
+   Lessons learned
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#don-t-interpolate-when-converting-to-density-space">
+     Don’t interpolate when converting to density space
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#spline-smooth-both-temperature-and-pressure">
+     Spline-smooth both temperature and pressure
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#groupby-on-dataframe-or-xarray-consistently">
+     Groupby on dataframe or xarray consistently
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#test-gradients-in-isopycnal-planes">
+     Test gradients in isopycnal planes
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#convert-transect-mat-to-netcdf-files">
+     Convert transect .mat to netcdf files
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            
               <div>
                 
   <div class="tex2jax_ignore mathjax_ignore section" id="bob-asiri-2013-ctd-pod">
 <h1>BoB ASIRI 2013 CTD χpod<a class="headerlink" href="#bob-asiri-2013-ctd-pod" title="Permalink to this headline">¶</a></h1>
 <p>This notebook will attempt to infer eddy diffusivity <span class="math notranslate nohighlight">\(K_e\)</span> from the basin-wide transect of <span class="math notranslate nohighlight">\(χ, K_T\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-bab4b109-5051-48d7-976b-c8923ffb3b22">
-<span class="eqno">(1)<a class="headerlink" href="#equation-bab4b109-5051-48d7-976b-c8923ffb3b22" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-e4eb348b-8da0-4adc-83bb-343e68b92831">
+<span class="eqno">(1)<a class="headerlink" href="#equation-e4eb348b-8da0-4adc-83bb-343e68b92831" title="Permalink to this equation">¶</a></span>\[\begin{equation}
     K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z \widetilde{θ}⟩ \; ∂_z θ_m}{|∇θ_m|²}
 \end{equation}\]</div>
 <div class="cell docutils container">
@@ -597,8 +719,8 @@
 </div>
 <div class="section" id="using-climatological-gradients">
 <h2>Using climatological gradients<a class="headerlink" href="#using-climatological-gradients" title="Permalink to this headline">¶</a></h2>
-<div class="amsmath math notranslate nohighlight" id="equation-60b7d60f-8631-4bb4-abfa-13113398e1fb">
-<span class="eqno">(2)<a class="headerlink" href="#equation-60b7d60f-8631-4bb4-abfa-13113398e1fb" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-ed88ebd2-8ec4-40fd-8b6a-eebd13ee9d23">
+<span class="eqno">(2)<a class="headerlink" href="#equation-ed88ebd2-8ec4-40fd-8b6a-eebd13ee9d23" title="Permalink to this equation">¶</a></span>\[\begin{equation}
     K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z \widetilde{θ}⟩ \; ∂_z θ_m}{|∇θ_m|²}
 \end{equation}\]</div>
 <div class="cell docutils container">
@@ -2168,8 +2290,8 @@ Attributes:
 
               </div>
               
-        
-            <!-- Previous / next buttons -->
+            
+                <!-- Previous / next buttons -->
 <div class='prev-next-area'> 
     <a class='left-prev' id="prev-link" href="equix.html" title="previous page">
         <i class="fas fa-angle-left"></i>
@@ -2186,26 +2308,24 @@ Attributes:
     <i class="fas fa-angle-right"></i>
     </a>
 </div>
-        
+            
         </div>
     </div>
     <footer class="footer">
-    <div class="container">
-      <p>
-        
-          By Deepak Cherian<br/>
-        
-            &copy; Copyright 2021.<br/>
-          <div class="extra_footer">
-            <div>
+  <p>
+    
+      By Deepak Cherian<br/>
+    
+        &copy; Copyright 2021.<br/>
+      <div class="extra_footer">
+        <div>
 <script data-goatcounter="https://count.cherian.net/count"
         async src="count.js"></script>
 </div>
 
-          </div>
-      </p>
-    </div>
-  </footer>
+      </div>
+  </p>
+</footer>
 </main>
 
 
