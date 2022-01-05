@@ -83,6 +83,8 @@ dependencies:
   - seaborn
 ### project specific
   - arch-py
+  - netcdf-fortran  # pygamma
+  - clang  # pygamma
 ###  pip stuff
   - pip:
     - icecream
