@@ -272,8 +272,8 @@ def average_density_bin(group, skip_fits=False):
 
     unit = xr.DataArray([-1, 1], dims="bound", coords={"bound": ["lower", "upper"]})
 
-    G = 0.2
-    delta["G"] = 0.04
+    Γ = 0.2
+    delta["Γ"] = 0.04
 
     if not skip_fits:
         # reference to mean pressure of obs in this bin
@@ -302,10 +302,10 @@ def average_density_bin(group, skip_fits=False):
             )
         )
 
-        chidens["Krho_m"] = G * chidens.eps / chidens.N2_m
+        chidens["Krho_m"] = Γ * chidens.eps / chidens.N2_m
         chidens.Krho_m.attrs.update(dict(long_name="$K_ρ^m$", units="m²/s"))
         delta["Krho_m"] = chidens.Krho_m * np.sqrt(
-            (delta.G / G) ** 2
+            (delta.Γ / Γ) ** 2
             + (delta.eps / chidens.eps) ** 2
             + (delta.hm / chidens.hm) ** 2
         )
