@@ -198,6 +198,7 @@ def compute_bootstrapped_mean_ci(array, blocksize):
     rs = RandomState(1234)
 
     # drop nans
+    assert array.ndim == 1
     array = array[~np.isnan(array)]
 
     return np.insert(
