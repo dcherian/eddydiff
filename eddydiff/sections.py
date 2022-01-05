@@ -555,7 +555,8 @@ def plot_var_prod_diss(chidens, prefix="", ax=None, **kwargs):
 
 
 def choose_bins(gamma, depth_range, decimals=2):
-    mean_over = set(gamma.dims) - set(gamma.cf.axes["Z"])
+    Z = gamma.reset_coords(drop=True).cf.axes["Z"]
+    mean_over = set(gamma.dims) - set(Z)
     bins = gamma.mean(mean_over).cf.interp(Z=depth_range)
-    bins[gamma.cf.axes["Z"][0]].attrs["axis"] = "Z"
+    bins[Z[0]].attrs["axis"] = "Z"
     return np.round(bins.cf.dropna("Z").data, decimals)
