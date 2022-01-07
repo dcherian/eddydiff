@@ -76,9 +76,10 @@ def filenum(filename):
 
 def combine_natre_files():
 
-    files = glob.glob(
-        "/home/deepak/datasets/microstructure/natre_microstructure/natre_*.nc"
-    )
+    import os
+
+    home = os.path.expanduser("~/")
+    files = glob.glob(f"{home}/datasets/microstructure/natre_microstructure/natre_*.nc")
     files = sorted(files, key=filenum)
     # First 100 are stations 3-102; part of the large-scale survey
     nested = np.reshape(files[:100], (10, 10))

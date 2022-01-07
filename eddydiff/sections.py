@@ -378,7 +378,8 @@ def bin_average_vertical(ds, stdname, bins, skip_fits=False):
     # chidens[groupvar].attrs["positive"] = "down"
     chidens[groupvar].attrs["axis"] = "Z"
     chidens = chidens.set_coords(["pres", "num_obs"])
-    chidens["pres"].attrs["positive"] = "down"
+
+    chidens["pres"].attrs.update({"positive": "down", "bounds": "pres_err"})
 
     chidens.coords["num_obs"] = ds.chi.groupby_bins(ds.cf[stdname], bins=bins).count()
     chidens.eps.attrs.update(long_name="$⟨ε⟩$")
