@@ -7,6 +7,7 @@ from flox.xarray import xarray_reduce
 import xarray as xr
 
 from .eddydiff import intervals_to_bounds
+from .utils import get_hashes
 
 
 def to_netcdf(infile, outfile, transect_name):
@@ -397,6 +398,10 @@ def bin_average_vertical(ds, stdname, bins, skip_fits=False):
     chidens.coords["gamma_n_bounds"] = bounds
     chidens["gamma_n"].attrs.update(ds.gamma_n.attrs)
     chidens["gamma_n"].attrs.update({"positive": "down", "axis": "Z"})
+
+    hashes = get_hashes()
+    hash_string = " |  ".join(f"{k}: {v}" for k, v in hashes.items())
+    chidens.attrs["commit"] = hash_string
 
     return chidens
 
