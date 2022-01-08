@@ -93,16 +93,16 @@ def combine_natre_files():
         preprocess=preprocess_natre,
         parallel=True,
     )
-    # ds.to_netcdf("../datasets/natre_large_scale.nc")
+    ds.load().to_netcdf("../datasets/natre_large_scale.nc")
     return ds
 
 
 def read_natre():
-    # natre = xr.open_dataset(
-    #    "../datasets/natre_large_scale.nc", chunks={"latitude": 5, "longitude": 5}
-    # )
+    natre = xr.open_dataset(
+       "../datasets/natre_large_scale.nc", chunks={"latitude": 5, "longitude": 5}
+    )
     # natre = natre.where(natre.chi.notnull() & natre.eps.notnull())
-    natre = combine_natre_files()
+    # natre = combine_natre_files()
     natre = natre.set_coords(["time", "pres"])
 
     natre = natre.cf.guess_coord_axis()
