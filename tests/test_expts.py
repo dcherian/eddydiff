@@ -1,11 +1,19 @@
 # Field experiment regression tests
 
+import os
+
 import cf_xarray as cfxr
 import numpy as np
 import pandas as pd
 
 import eddydiff as ed
 import xarray as xr
+import distributed
+
+# from distributed.utils_test import client, cluster_fixture, loop
+from eddydiff.natre import read_natre
+from xarray.testing import assert_allclose
+from xarray.tests import raise_if_dask_computes
 
 xr.set_options(keep_attrs=True)
 
@@ -25,22 +33,24 @@ def test_interval_roundtrip():
 
 
 def test_natre():
-    natre = xr.open_dataset(
-        "datasets/natre_large_scale.nc", chunks={"latitude": 5, "longitude": 5}
-    )
-    natre = natre.where(natre.chi.notnull() & natre.eps.notnull())
-    natre = natre.set_coords(["time", "pres"])
-    natre = natre.cf.guess_coord_axis()
-    natre["depth"].attrs.update(units="m", positive="down")
 
-    natre = ed.sections.add_ancillary_variables(natre, pref=1000)
-    natre = natre.where(natre.chi > 1e-14)
-    natre.load()
+    os.chdir("./notebooks/")
 
-    bins = ed.sections.choose_bins(natre.gamma_n, depth_range=np.arange(150, 2001, 100))
-    actual = ed.sections.bin_average_vertical(
-        natre.reset_coords("pres"), "neutral_density", bins
-    )
+    with distributed.Client(
+        n_workers=2,
+        threads_per_worker=3,
+        env={"OMP_NUM_THREADS": 1, "NUMBA_NUM_THREADS": 1, "MKL_NUM_THREADS": 1},
+    ) as client:
 
-    expected = xr.open_dataset("tests/estimates/natre.nc")
-    xr.testing.assert_allclose(expected, actual)
+        natre = read_natre().load(client=client)
+        bins = ed.sections.choose_bins(
+            natre.gamma_n, depth_range=np.arange(150, 2001, 100)
+        )
+        with raise_if_dask_computes():
+            actual = ed.sections.bin_average_vertical(natre, "neutral_density", bins)
+        actual.load(client=client)
+        actual.attrs.pop("commit", None)
+
+        expected = xr.load_dataset("../tests/estimates/natre.nc")
+        expected.attrs.pop("commit", None)
+        assert_allclose(expected, actual)
