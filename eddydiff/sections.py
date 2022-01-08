@@ -198,15 +198,16 @@ def compute_bootstrapped_mean_ci(array, blocksize):
 
     rs = RandomState(1234)
 
-    # drop nans
+    # drop nans, significantly faster to do this than bootstrap with nanmean
     assert array.ndim == 1
+    array = array[~np.isnan(array)]
 
     return np.insert(
         MovingBlockBootstrap(blocksize, array, seed=rs)
-        .conf_int(func=np.nanmean, method="bca")
+        .conf_int(func=np.mean, method="bca")
         .squeeze(),
         1,
-        np.nanmean(array),
+        np.mean(array),
     )
 
 
