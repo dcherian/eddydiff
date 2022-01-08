@@ -309,27 +309,26 @@ def average_density_bin(group, skip_fits=False):
             + (delta.eps / chidens.eps) ** 2
             + (delta.hm / chidens.hm) ** 2
         )
-        bounds["Krho_m"] = chidens.Krho_m + unit * delta.Krho_m
 
         chidens["Kt_m"] = 1 / 2 * chidens.chi / chidens.dTdz_m
         delta["Kt_m"] = chidens.Kt_m * np.sqrt(
             (delta.chi / chidens.chi) ** 2 + (delta.hm / chidens.hm) ** 2
         )
-        bounds["Kt_m"] = chidens.Kt_m + unit * delta.Kt_m
         chidens.Kt_m.attrs.update(dict(long_name="$K_T^m$", units="m²/s"))
 
-        chidens["wTTz"] = chidens.Krho_m * chidens.dTdz_m ** 2
-        delta["wTTz"] = chidens.wTTz * np.sqrt(
+        chidens["KρTz2"] = chidens.Krho_m * chidens.dTdz_m ** 2
+        delta["KρTz2"] = chidens.KρTz2 * np.sqrt(
             (delta.Krho_m / chidens.Krho_m) ** 2 + 2 * (delta.hm / chidens.hm) ** 2
         )
-        bounds["wTTz"] = chidens.wTTz + unit * delta.wTTz
-        chidens.wTTz.attrs = {"long_name": "$K_ρ  ∂_zθ_m^2$"}
+        chidens.KρTz2.attrs = {"long_name": "$K_ρ ∂_zθ_m^2$"}
 
         chidens["residual"] = chidens.chi / 2 - chidens.Krho_m * chidens.dTdz_m ** 2
         delta["residual"] = chidens.residual * np.sqrt(
-            (delta.chi / chidens.chi) ** 2 + (delta.wTTz / chidens.wTTz) ** 2
+            (delta.chi / chidens.chi) ** 2 + (delta.KρTz2 / chidens.KρTz2) ** 2
         )
-        bounds["residual"] = chidens.residual + unit * delta.residual
+
+    for var in ["Krho_m", "Kt_m", "KρTz2", "residual"]:
+        bounds[var] = chidens[var] + unit * delta[var]
 
     # Keep these as data_vars otherwise triggers compute at combine-stage
     delta["pres"] = chidens.hm / 2
