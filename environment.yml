@@ -13,6 +13,7 @@ dependencies:
   - snakeviz
   - tqdm
   - watermark
+  - gitpython
 ### linters
   - black
   - flake8
