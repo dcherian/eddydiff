@@ -214,30 +214,21 @@ def compute_bootstrapped_mean_ci(array, blocksize):
 def average_density_bin(group, skip_fits=False):
     Z = "pres"
     profiles = (
-        group.unstack()
-        .drop_vars("time")
-        .stack({"latlon": ("latitude", "longitude")})
-        .sortby(Z)
-        # .interpolate_na(Z)
+        group.unstack().drop_vars("time").stack({"latlon": ("latitude", "longitude")})
     )
-    reshaped = (
+    # flatten for bootstrap
+    flattened = (
         profiles[["chi", "eps"]]
         .reset_coords(drop=True)
-        # .drop("gamma_n")
-        .coarsen({Z: 20}, boundary="pad")
-        .construct({Z: (f"{Z}_", "block")})
+        .drop("latlon")
+        .stack(flat=[...])
     )
-    # I've taken this step out in favour of using np.nanmean
-    #   - fill NaNs in blocks with the mean of available obs
-    # filled = xr.where(reshaped.isnull(), reshaped.mean("block"), reshaped)
-    # flatten for bootstrap
-    flattened = reshaped.drop("latlon").stack(flat=[...])
 
     ci = xr.apply_ufunc(
         compute_bootstrapped_mean_ci,
         flattened.chunk({"flat": -1}),
         input_core_dims=[["flat"]],
-        exclude_dims=set(("flat",)),
+        exclude_dims={"flat"},
         # TODO: configure this
         kwargs={"blocksize": 20},
         output_core_dims=[["bound"]],
