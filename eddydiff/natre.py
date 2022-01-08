@@ -114,7 +114,7 @@ def read_natre():
     if "neutral_density" not in natre.cf:
         natre["gamma_n"] = dcpy.oceans.neutral_density(natre)
     natre = dcpy.oceans.thorpesort(
-        natre, natre.gamma_n.drop("depth").interpolate_na("pres")
+        natre, natre.gamma_n.drop("depth").interpolate_na("pres"), core_dim="pres"
     )
 
     natre = sections.add_ancillary_variables(natre, pref=1000)
