@@ -53,4 +53,4 @@ def test_natre():
 
         expected = xr.load_dataset("../tests/estimates/natre.nc")
         expected.attrs.pop("commit", None)
-        assert_allclose(expected, actual)
+        assert_allclose(expected, actual, atol=0, rtol=1e-5)
