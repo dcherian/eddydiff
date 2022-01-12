@@ -601,7 +601,7 @@
   <div class="tex2jax_ignore mathjax_ignore section" id="natre-region-variance-budget">
 <h1>NATRE region variance budget<a class="headerlink" href="#natre-region-variance-budget" title="Permalink to this headline">¶</a></h1>
 <p>Reproducing the Ferrari &amp; Polzin (2005) estimate using NATRE data, and comparing differences with our version</p>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> watermark
 <span class="o">%</span><span class="k">matplotlib</span> inline
@@ -637,16 +637,18 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>xgcm       : 0.6.0
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The watermark extension is already loaded. To reload it, use:
+  %reload_ext watermark
 numpy      : 1.22.0
-dcpy       : 0.1
-xarray     : 0.10.3+dev29.ga8e0be8d1
-distributed: 2021.12.0
-matplotlib : 3.5.1
 scipy      : 1.7.3
+cf_xarray  : 0.6.3.dev22+gaba4dbb.d20220112
+xarray     : 0.10.3+dev29.ga8e0be8d1
 tqdm       : 4.62.3
+xgcm       : 0.6.0
+matplotlib : 3.5.1
+distributed: 2021.12.0
+dcpy       : 0.1
 eddydiff   : 0.1
-cf_xarray  : 0.6.3
 </pre></div>
 </div>
 <div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
@@ -1002,9 +1004,9 @@ dl.xr-attrs {
 }
 </style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray (dim_0: 1)&gt;
 array([1.])
-Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'></div><ul class='xr-dim-list'><li><span>dim_0</span>: 1</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-4e0232b2-5fc9-4ddb-9b6c-346ada0785a4' class='xr-array-in' type='checkbox' checked><label for='section-4e0232b2-5fc9-4ddb-9b6c-346ada0785a4' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>1.0</span></div><div class='xr-array-data'><pre>array([1.])</pre></div></div></li><li class='xr-section-item'><input id='section-e8217a83-5ebc-47ba-a8af-182de2f8a268' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-e8217a83-5ebc-47ba-a8af-182de2f8a268' class='xr-section-summary'  title='Expand/collapse section'>Coordinates: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'></ul></div></li><li class='xr-section-item'><input id='section-5421bf9b-bb95-47ef-ae36-f89bc484f253' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-5421bf9b-bb95-47ef-ae36-f89bc484f253' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div></div>
+Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'></div><ul class='xr-dim-list'><li><span>dim_0</span>: 1</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-178bafd1-94e1-4a78-be0c-c9eb95b9493b' class='xr-array-in' type='checkbox' checked><label for='section-178bafd1-94e1-4a78-be0c-c9eb95b9493b' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>1.0</span></div><div class='xr-array-data'><pre>array([1.])</pre></div></div></li><li class='xr-section-item'><input id='section-2a163c99-e5f4-4ded-a826-b1d397c8e856' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-2a163c99-e5f4-4ded-a826-b1d397c8e856' class='xr-section-summary'  title='Expand/collapse section'>Coordinates: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'></ul></div></li><li class='xr-section-item'><input id='section-ac42c4e8-0a7e-4eb2-b461-b81172d984c2' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-ac42c4e8-0a7e-4eb2-b461-b81172d984c2' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div></div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="s2">&quot;client&quot;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span>
     <span class="n">client</span><span class="o">.</span><span class="n">cluster</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -1015,11 +1017,17 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/dcherian/mambaforge/envs/eddydiff/lib/python3.9/site-packages/distributed/node.py:160: UserWarning: Port 8787 is already in use.
+Perhaps you already have a cluster running?
+Hosting the HTTP server on port 61178 instead
+  warnings.warn(
+</pre></div>
+</div>
 <div class="output text_html"><div>
     <div style="width: 24px; height: 24px; background-color: #e1e1e1; border: 3px solid #9D9D9D; border-radius: 5px; position: absolute;"> </div>
     <div style="margin-left: 48px;">
         <h3 style="margin-bottom: 0px;">Client</h3>
-        <p style="color: #9D9D9D; margin-bottom: 0px;">Client-297a2c6c-7191-11ec-836c-3af9d394f1c6</p>
+        <p style="color: #9D9D9D; margin-bottom: 0px;">Client-b46f0726-7401-11ec-88cd-3af9d394f1c6</p>
         <table style="width: 100%; text-align: left;">
 
         <tr>
@@ -1032,7 +1040,7 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
 
             <tr>
                 <td style="text-align: left;">
-                    <strong>Dashboard: </strong> <a href="http://127.0.0.1:8787/status" target="_blank">http://127.0.0.1:8787/status</a>
+                    <strong>Dashboard: </strong> <a href="http://127.0.0.1:61178/status" target="_blank">http://127.0.0.1:61178/status</a>
                 </td>
                 <td style="text-align: left;"></td>
             </tr>
@@ -1048,11 +1056,11 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
     </div>
     <div style="margin-left: 48px;">
         <h3 style="margin-bottom: 0px; margin-top: 0px;">LocalCluster</h3>
-        <p style="color: #9D9D9D; margin-bottom: 0px;">2a277bae</p>
+        <p style="color: #9D9D9D; margin-bottom: 0px;">6b13fdbb</p>
         <table style="width: 100%; text-align: left;">
             <tr>
                 <td style="text-align: left;">
-                    <strong>Dashboard:</strong> <a href="http://127.0.0.1:8787/status" target="_blank">http://127.0.0.1:8787/status</a>
+                    <strong>Dashboard:</strong> <a href="http://127.0.0.1:61178/status" target="_blank">http://127.0.0.1:61178/status</a>
                 </td>
                 <td style="text-align: left;">
                     <strong>Workers:</strong> 6
@@ -1085,11 +1093,11 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
         <div style="width: 24px; height: 24px; background-color: #FFF7E5; border: 3px solid #FF6132; border-radius: 5px; position: absolute;"> </div>
         <div style="margin-left: 48px;">
             <h3 style="margin-bottom: 0px;">Scheduler</h3>
-            <p style="color: #9D9D9D; margin-bottom: 0px;">Scheduler-5357aed9-6100-4eb8-b7cd-214f5ace026d</p>
+            <p style="color: #9D9D9D; margin-bottom: 0px;">Scheduler-3aa0f222-3b65-4ff0-bd9f-f21c2d592d0a</p>
             <table style="width: 100%; text-align: left;">
                 <tr>
                     <td style="text-align: left;">
-                        <strong>Comm:</strong> tcp://127.0.0.1:59120
+                        <strong>Comm:</strong> tcp://127.0.0.1:61179
                     </td>
                     <td style="text-align: left;">
                         <strong>Workers:</strong> 6
@@ -1097,7 +1105,7 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                 </tr>
                 <tr>
                     <td style="text-align: left;">
-                        <strong>Dashboard:</strong> <a href="http://127.0.0.1:8787/status" target="_blank">http://127.0.0.1:8787/status</a>
+                        <strong>Dashboard:</strong> <a href="http://127.0.0.1:61178/status" target="_blank">http://127.0.0.1:61178/status</a>
                     </td>
                     <td style="text-align: left;">
                         <strong>Total threads:</strong> 6
@@ -1131,7 +1139,7 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                 <table style="width: 100%; text-align: left;">
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Comm: </strong> tcp://127.0.0.1:59140
+                            <strong>Comm: </strong> tcp://127.0.0.1:61196
                         </td>
                         <td style="text-align: left;">
                             <strong>Total threads: </strong> 1
@@ -1139,7 +1147,7 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:59143/status" target="_blank">http://127.0.0.1:59143/status</a>
+                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:61200/status" target="_blank">http://127.0.0.1:61200/status</a>
                         </td>
                         <td style="text-align: left;">
                             <strong>Memory: </strong> 2.67 GiB
@@ -1147,13 +1155,13 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Nanny: </strong> tcp://127.0.0.1:59123
+                            <strong>Nanny: </strong> tcp://127.0.0.1:61182
                         </td>
                         <td style="text-align: left;"></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left;">
-                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-3xsltr_p
+                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-p8actdpi
                         </td>
                     </tr>
 
@@ -1176,7 +1184,7 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                 <table style="width: 100%; text-align: left;">
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Comm: </strong> tcp://127.0.0.1:59150
+                            <strong>Comm: </strong> tcp://127.0.0.1:61207
                         </td>
                         <td style="text-align: left;">
                             <strong>Total threads: </strong> 1
@@ -1184,7 +1192,7 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:59152/status" target="_blank">http://127.0.0.1:59152/status</a>
+                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:61208/status" target="_blank">http://127.0.0.1:61208/status</a>
                         </td>
                         <td style="text-align: left;">
                             <strong>Memory: </strong> 2.67 GiB
@@ -1192,13 +1200,13 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Nanny: </strong> tcp://127.0.0.1:59125
+                            <strong>Nanny: </strong> tcp://127.0.0.1:61187
                         </td>
                         <td style="text-align: left;"></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left;">
-                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-69cjygun
+                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-m7mkde0v
                         </td>
                     </tr>
 
@@ -1221,7 +1229,7 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                 <table style="width: 100%; text-align: left;">
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Comm: </strong> tcp://127.0.0.1:59141
+                            <strong>Comm: </strong> tcp://127.0.0.1:61209
                         </td>
                         <td style="text-align: left;">
                             <strong>Total threads: </strong> 1
@@ -1229,7 +1237,7 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:59145/status" target="_blank">http://127.0.0.1:59145/status</a>
+                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:61211/status" target="_blank">http://127.0.0.1:61211/status</a>
                         </td>
                         <td style="text-align: left;">
                             <strong>Memory: </strong> 2.67 GiB
@@ -1237,13 +1245,13 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Nanny: </strong> tcp://127.0.0.1:59127
+                            <strong>Nanny: </strong> tcp://127.0.0.1:61186
                         </td>
                         <td style="text-align: left;"></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left;">
-                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-8a0m_bdw
+                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-05t23cum
                         </td>
                     </tr>
 
@@ -1266,7 +1274,7 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                 <table style="width: 100%; text-align: left;">
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Comm: </strong> tcp://127.0.0.1:59151
+                            <strong>Comm: </strong> tcp://127.0.0.1:61197
                         </td>
                         <td style="text-align: left;">
                             <strong>Total threads: </strong> 1
@@ -1274,7 +1282,7 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:59153/status" target="_blank">http://127.0.0.1:59153/status</a>
+                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:61201/status" target="_blank">http://127.0.0.1:61201/status</a>
                         </td>
                         <td style="text-align: left;">
                             <strong>Memory: </strong> 2.67 GiB
@@ -1282,13 +1290,13 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Nanny: </strong> tcp://127.0.0.1:59126
+                            <strong>Nanny: </strong> tcp://127.0.0.1:61183
                         </td>
                         <td style="text-align: left;"></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left;">
-                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-dj5s0vil
+                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-ljm56ykq
                         </td>
                     </tr>
 
@@ -1311,7 +1319,7 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                 <table style="width: 100%; text-align: left;">
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Comm: </strong> tcp://127.0.0.1:59138
+                            <strong>Comm: </strong> tcp://127.0.0.1:61204
                         </td>
                         <td style="text-align: left;">
                             <strong>Total threads: </strong> 1
@@ -1319,7 +1327,7 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:59142/status" target="_blank">http://127.0.0.1:59142/status</a>
+                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:61205/status" target="_blank">http://127.0.0.1:61205/status</a>
                         </td>
                         <td style="text-align: left;">
                             <strong>Memory: </strong> 2.67 GiB
@@ -1327,13 +1335,13 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Nanny: </strong> tcp://127.0.0.1:59124
+                            <strong>Nanny: </strong> tcp://127.0.0.1:61185
                         </td>
                         <td style="text-align: left;"></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left;">
-                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-2pe_dm53
+                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-d7pmzfck
                         </td>
                     </tr>
 
@@ -1356,7 +1364,7 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                 <table style="width: 100%; text-align: left;">
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Comm: </strong> tcp://127.0.0.1:59139
+                            <strong>Comm: </strong> tcp://127.0.0.1:61195
                         </td>
                         <td style="text-align: left;">
                             <strong>Total threads: </strong> 1
@@ -1364,7 +1372,7 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:59144/status" target="_blank">http://127.0.0.1:59144/status</a>
+                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:61198/status" target="_blank">http://127.0.0.1:61198/status</a>
                         </td>
                         <td style="text-align: left;">
                             <strong>Memory: </strong> 2.67 GiB
@@ -1372,13 +1380,13 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Nanny: </strong> tcp://127.0.0.1:59128
+                            <strong>Nanny: </strong> tcp://127.0.0.1:61184
                         </td>
                         <td style="text-align: left;"></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left;">
-                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-lre9g12e
+                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-mg6672ss
                         </td>
                     </tr>
 
@@ -1417,7 +1425,7 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
 <div class="section" id="prepare-various-production-and-dissipation-terms">
 <h2>Prepare various production and dissipation terms<a class="headerlink" href="#prepare-various-production-and-dissipation-terms" title="Permalink to this headline">¶</a></h2>
 <p>In theory, these bins are approx. 100m apart in neutral density</p>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">natre</span><span class="o">.</span><span class="n">read_natre</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">()</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;depth&quot;</span><span class="p">)</span>
 <span class="n">bins</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">sections</span><span class="o">.</span><span class="n">choose_bins</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">gamma_n</span><span class="p">,</span> <span class="n">depth_range</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">2001</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
@@ -1433,7 +1441,7 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">raise_if_dask_computes</span><span class="p">():</span>
     <span class="n">micro</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">sections</span><span class="o">.</span><span class="n">bin_average_vertical</span><span class="p">(</span>
@@ -1447,7 +1455,7 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">micro</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">scheduler</span><span class="o">=</span><span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s2">&quot;../datasets/natre-density-binned.nc&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1460,7 +1468,7 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">micro</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">scheduler</span><span class="o">=</span><span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s2">&quot;../test/estimates/natre.nc&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1468,6 +1476,13 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 </div>
 </div>
 <div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">micro</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/natre-density-binned.nc&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre_fine</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/natre-finescale.nc&quot;</span><span class="p">)</span>
 <span class="n">natre_fine_avg</span> <span class="o">=</span> <span class="p">(</span>
@@ -1483,7 +1498,7 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">argo_fine_profiles</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span>
     <span class="s2">&quot;../datasets/argomix_natre.zarr&quot;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;zarr&quot;</span>
@@ -1518,7 +1533,7 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 </div>
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pop_natre</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/natre-pop-variance.nc&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1556,7 +1571,7 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 <span class="n">cole_var</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;long_name&quot;</span><span class="p">:</span> <span class="s2">&quot;$K_e^</span><span class="si">{cole}</span><span class="s2"> |∇T_</span><span class="si">{iso}</span><span class="s2">^</span><span class="si">{argo}</span><span class="s2">|²$&quot;</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;°C²/s&quot;</span><span class="p">}</span>
 
 <span class="n">groeskamp</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;/home/deepak/datasets/groeskamp2020/groeskamp2020.nc&quot;</span><span class="p">)</span>
+    <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;~/datasets/groeskamp2020/groeskamp2020.nc&quot;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">360</span> <span class="o">-</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">360</span> <span class="o">-</span> <span class="mi">25</span><span class="p">))</span>
     <span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="s2">&quot;pres&quot;</span><span class="p">})</span>
 <span class="p">)</span>
@@ -1564,6 +1579,12 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 <span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;eddy_var_0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;Ke_0&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">groeskamp</span><span class="o">.</span><span class="n">dTiso</span> <span class="o">**</span> <span class="mi">2</span>
 <span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;eddy_var&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;Ke&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">groeskamp</span><span class="o">.</span><span class="n">dTiso</span> <span class="o">**</span> <span class="mi">2</span>
 <span class="n">groeskamp</span> <span class="o">=</span> <span class="n">groeskamp</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/dcherian/work/python/xarray/xarray/core/indexing.py:549: RuntimeWarning: deallocating CachingFileManager(&lt;class &#39;netCDF4._netCDF4.Dataset&#39;&gt;, &#39;/Users/dcherian/datasets/groeskamp2020/groeskamp2020.nc&#39;, mode=&#39;r&#39;, kwargs={&#39;clobber&#39;: True, &#39;diskless&#39;: False, &#39;persist&#39;: False, &#39;format&#39;: &#39;NETCDF4&#39;}), but file is not already closed. This may indicate a bug.
+  self.array = NumpyIndexingAdapter(np.asarray(self.array))
 </pre></div>
 </div>
 </div>
@@ -1588,7 +1609,7 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 </ol>
 </li>
 </ol>
-<div class="cell docutils container">
+<div class="cell tag_hide-input tag_full-width docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">micro</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;bounds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pres_err&quot;</span>
 
@@ -1622,7 +1643,7 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 
 
 <span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">fill_between_bounds</span><span class="p">(</span>
-    <span class="n">micro</span><span class="p">,</span> <span class="s2">&quot;wTTz&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;FP2005: $K_ρ  ∂_zθ_m^2$&quot;</span>
+    <span class="n">micro</span><span class="p">,</span> <span class="s2">&quot;KρTz2&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;FP2005: $K_ρ  ∂_zθ_m^2$&quot;</span>
 <span class="p">)</span>
 <span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">fill_between_bounds</span><span class="p">(</span>
     <span class="n">micro</span><span class="p">,</span> <span class="s2">&quot;chib2&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C0&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;FP2005: $⟨χ⟩/2$&quot;</span>
@@ -1687,7 +1708,7 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_17_0.png" src="_images/natre_17_0.png" />
+<img alt="_images/natre_18_0.png" src="_images/natre_18_0.png" />
 </div>
 </div>
 <div class="section" id="interpretation">
@@ -1695,8 +1716,8 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 <div class="section" id="spicy-region">
 <h4>Spicy region<a class="headerlink" href="#spicy-region" title="Permalink to this headline">¶</a></h4>
 <p>We can interpret the red mesoscale dissipation term in (b) as the amount of variance transferred to the microscale for eventual dissipation. This peaks in regions of high mean spice between 1000m and 1500m. The balance in spicy regions is that horizontal mesoscale stirring converts MPE → EPE (compensated filaments or T-S variance) that is dissipated by the microscale. The approximate budget is (note vertical stirring gets ignored, and <span class="math notranslate nohighlight">\(u^h\)</span> represents horizontal velocity vector)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-66617b00-ab30-488d-b181-812a47d1064c">
-<span class="eqno">(3)<a class="headerlink" href="#equation-66617b00-ab30-488d-b181-812a47d1064c" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-01120550-b5b9-43fc-a90c-f9277c03349b">
+<span class="eqno">(3)<a class="headerlink" href="#equation-01120550-b5b9-43fc-a90c-f9277c03349b" title="Permalink to this equation">¶</a></span>\[\begin{align}
 ⟨u^h_eT_e⟩ ⋅ ∇_hT_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;\approx 0 \\
 ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;\approx - \frac 12 ⟨χ⟩
 \end{align}\]</div>
@@ -1708,8 +1729,8 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 <div class="section" id="weak-spice">
 <h4>Weak spice<a class="headerlink" href="#weak-spice" title="Permalink to this headline">¶</a></h4>
 <p>In the upper water column that is not spicy, we instead see horizontal stirring MPE→ EPE which is then routed to EKE by “vertical stirring”. Here the scale transformation term is 0 so the budget is</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a0b02709-6b3f-4dee-b317-e30351dd4274">
-<span class="eqno">(4)<a class="headerlink" href="#equation-a0b02709-6b3f-4dee-b317-e30351dd4274" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-721f21ac-e735-4912-b903-a0513e28fb2e">
+<span class="eqno">(4)<a class="headerlink" href="#equation-721f21ac-e735-4912-b903-a0513e28fb2e" title="Permalink to this equation">¶</a></span>\[\begin{align}
 ⟨u_eT_e⟩ ⋅ ∇T_m &amp;\approx 0 \\
 ⟨u_tT_t⟩ ⋅ ∇ T_m &amp;\approx - \frac 12 ⟨χ⟩
 \end{align}\]</div>
@@ -1816,20 +1837,20 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_20_0.png" src="_images/natre_20_0.png" />
+<img alt="_images/natre_22_0.png" src="_images/natre_22_0.png" />
 </div>
 </div>
 </div>
 <div class="section" id="pop2-1-10-mesoscale-variance-budget">
 <h2>POP2 1/10° mesoscale variance budget<a class="headerlink" href="#pop2-1-10-mesoscale-variance-budget" title="Permalink to this headline">¶</a></h2>
 <p>Yiming is working with the following variance budget equation for the mesoscale after decomposing <span class="math notranslate nohighlight">\(T = \bar{T} + T' + T'' ≡ T_m + T_e + T_t\)</span> (the latter is Ferrari &amp; Polzin notation). The <span class="math notranslate nohighlight">\(T = \tilde{T} + T''\)</span> decomposition is inherent when using cell-averaged equations.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-508710ba-756f-4919-b401-4f66df056686">
-<span class="eqno">(5)<a class="headerlink" href="#equation-508710ba-756f-4919-b401-4f66df056686" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-b9268371-76af-4aad-911f-149266e4e965">
+<span class="eqno">(5)<a class="headerlink" href="#equation-b9268371-76af-4aad-911f-149266e4e965" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 ∂_t \overline{T'^2} =  -\overline{u'T'} ⋅ ∇_h\overline{T} - \overline{w'T'}∂_z\overline{T} - \overline{\vec{v} ⋅ ∇ T'^2/2} + \overline{T'∂_z \left[K ∂_zT' \right]} + …
 \end{equation}\]</div>
 <p>Ferrari &amp; Polzin’s equations (4.6, 4.7) for the mesoscale and microscale are (<span class="math notranslate nohighlight">\(u\)</span> here is the full 3D <span class="math notranslate nohighlight">\(u\)</span>):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-10bc974f-bcad-4482-bfc9-0163d13e76f0">
-<span class="eqno">(6)<a class="headerlink" href="#equation-10bc974f-bcad-4482-bfc9-0163d13e76f0" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-4f777425-189c-4cd3-8e7d-4c9daed7dafb">
+<span class="eqno">(6)<a class="headerlink" href="#equation-4f777425-189c-4cd3-8e7d-4c9daed7dafb" title="Permalink to this equation">¶</a></span>\[\begin{align}
 ⟨u_eT_e⟩ ⋅ ∇T_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;= 0 \\
 ⟨u_tT_t⟩ ⋅ ∇ T_m + ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;= - \frac 12 ⟨χ⟩
 \end{align}\]</div>
@@ -1840,14 +1861,14 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 <li><p>⟨⟩: monthly in time; NATRE domain size in (x,y)</p></li>
 </ol>
 <p>In Yiming’s notation these equations are</p>
-<div class="amsmath math notranslate nohighlight" id="equation-92ffd3dc-a49e-4db5-a89e-8af72ae07704">
-<span class="eqno">(7)<a class="headerlink" href="#equation-92ffd3dc-a49e-4db5-a89e-8af72ae07704" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f44ddc86-f78a-4baa-9519-691e7e3ed803">
+<span class="eqno">(7)<a class="headerlink" href="#equation-f44ddc86-f78a-4baa-9519-691e7e3ed803" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \overline{u'T'}⋅∇\overline{T} + \overline{w'T'}∂_z\overline{T}  - \overline{T'∂_z \left[K ∂_zT' \right]} = 0 \\
 K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 \end{align}\]</div>
 <p>Now we can identify Yiming’s dissipation term (“VMIX”, ignoring solar heating etc.) as the scale transformation term in FP2005 and then use the microscale budget from FP2005 to write</p>
-<div class="amsmath math notranslate nohighlight" id="equation-c414bd13-408f-49b6-90d9-a5d036281e73">
-<span class="eqno">(8)<a class="headerlink" href="#equation-c414bd13-408f-49b6-90d9-a5d036281e73" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-310e0f63-9d6b-4e2a-abf1-dd9bf1ec6d88">
+<span class="eqno">(8)<a class="headerlink" href="#equation-310e0f63-9d6b-4e2a-abf1-dd9bf1ec6d88" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ = - \frac 12 ⟨χ⟩ - ⟨u_tT_t⟩ ⋅ ∇ T_m
 \end{equation}\]</div>
 <p>i.e. Yiming’s “mesoscale dissipation” term is really the difference between</p>
@@ -1863,7 +1884,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_22_0.png" src="_images/natre_22_0.png" />
+<img alt="_images/natre_24_0.png" src="_images/natre_24_0.png" />
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distributed.utils_perf - WARNING - full garbage collections took 13% CPU time recently (threshold: 10%)
 </pre></div>
 </div>
@@ -1937,7 +1958,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f6a3f8c57f0&gt;
 </pre></div>
 </div>
-<img alt="_images/natre_27_2.png" src="_images/natre_27_2.png" />
+<img alt="_images/natre_29_2.png" src="_images/natre_29_2.png" />
 </div>
 </div>
 </div>
@@ -1994,7 +2015,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fa53eb855b0&gt;
 </pre></div>
 </div>
-<img alt="_images/natre_31_1.png" src="_images/natre_31_1.png" />
+<img alt="_images/natre_33_1.png" src="_images/natre_33_1.png" />
 </div>
 </div>
 </div>
@@ -2018,7 +2039,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;$K_e^{cole} |∇T_{iso}^{argo}|²$ [°C²/s]&#39;)
 </pre></div>
 </div>
-<img alt="_images/natre_34_1.png" src="_images/natre_34_1.png" />
+<img alt="_images/natre_36_1.png" src="_images/natre_36_1.png" />
 </div>
 </div>
 <p>These are the various terms in the Cole analysis. Note minimum in ∇S between 200 and 800, and associated high mixing lengths ≳ 300km.</p>
@@ -2029,7 +2050,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_36_0.png" src="_images/natre_36_0.png" />
+<img alt="_images/natre_38_0.png" src="_images/natre_38_0.png" />
 </div>
 </div>
 </div>
@@ -2126,7 +2147,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_41_0.png" src="_images/natre_41_0.png" />
+<img alt="_images/natre_43_0.png" src="_images/natre_43_0.png" />
 </div>
 </div>
 </div>
@@ -2171,7 +2192,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_45_0.png" src="_images/natre_45_0.png" />
+<img alt="_images/natre_47_0.png" src="_images/natre_47_0.png" />
 </div>
 </div>
 <p>It’s definitely a big undersampling when compared to all Argo profiles in the area. <strong>How good is good enough?</strong></p>
@@ -2204,7 +2225,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_47_0.png" src="_images/natre_47_0.png" />
+<img alt="_images/natre_49_0.png" src="_images/natre_49_0.png" />
 </div>
 </div>
 </div>
@@ -2248,7 +2269,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;xarray.plot.facetgrid.FacetGrid at 0x7fbb1793f2b0&gt;
 </pre></div>
 </div>
-<img alt="_images/natre_50_1.png" src="_images/natre_50_1.png" />
+<img alt="_images/natre_52_1.png" src="_images/natre_52_1.png" />
 </div>
 </div>
 </div>
@@ -2290,7 +2311,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_53_0.png" src="_images/natre_53_0.png" />
+<img alt="_images/natre_55_0.png" src="_images/natre_55_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2308,7 +2329,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_54_0.png" src="_images/natre_54_0.png" />
+<img alt="_images/natre_56_0.png" src="_images/natre_56_0.png" />
 </div>
 </div>
 </div>
@@ -2345,7 +2366,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f2cd6b69f70&gt;
 </pre></div>
 </div>
-<img alt="_images/natre_58_1.png" src="_images/natre_58_1.png" />
+<img alt="_images/natre_60_1.png" src="_images/natre_60_1.png" />
 </div>
 </div>
 </div>
