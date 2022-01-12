@@ -10,13 +10,15 @@ parts:
   - file: BoB-ctd-chipod
   - file: P06
   - file: sections-variance-estimate
+  - file: ctd-χ-A05
 - caption: "Variance budgets"
   chapters:
   - file: natre
-- caption: "NATRE analysis"
+- caption: "NATRE region analysis"
   chapters:
   - file: natre-examine
   - file: natre-finescale
+  - file: natre-vs-ctd-chipod
 - caption: "Finestructure analysis"
   chapters:
   - file: iw-fine-argo

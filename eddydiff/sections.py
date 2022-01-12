@@ -135,12 +135,14 @@ def add_ancillary_variables(ds, pref=0):
 
     if "dTdz" in ds:
         ds = ds.rename_vars({"dTdz": "Tz"})
+
+    Z = "sea_water_pressure"
     if "Tz" not in ds:
-        ds["Tz"] = -1 * ds.theta.interpolate_na("pres").differentiate("pres")
+        ds["Tz"] = -1 * ds.theta.cf.interpolate_na(Z).cf.differentiate(Z)
     ds["Tz"].attrs["long_name"] = "$θ_z$"
 
     if "N2" not in ds:
-        ds["N2"] = 9.81 / 1030 * ds.gamma_n.interpolate_na("pres").differentiate("pres")
+        ds["N2"] = 9.81 / 1030 * ds.gamma_n.cf.interpolate_na(Z).cf.differentiate(Z)
     ds["N2"].attrs["long_name"] = "$N²$"
 
     Tz_mask = np.abs(ds.Tz) > 1e-3
@@ -212,17 +214,20 @@ def compute_bootstrapped_mean_ci(array, blocksize):
 
 
 def average_density_bin(group, skip_fits=False):
-    Z = "pres"
-    profiles = (
-        group.unstack().drop_vars("time").stack({"latlon": ("latitude", "longitude")})
-    )
+    # groupby_bins ends up stacking the pressure coordinate
+    # which deletes attrs so we can't use cf-xarray here
+    # Z = "sea_water_pressure"
+
+    profiles = group.unstack().drop_vars("time")
+    if "pres" in profiles.dims:
+        Z = "pres"
+    elif "pressure" in profiles.dims:
+        Z = "pressure"
+    else:
+        raise ValueError("Don't know what the pressure dimension is.")
+
     # flatten for bootstrap
-    flattened = (
-        profiles[["chi", "eps"]]
-        .reset_coords(drop=True)
-        .drop("latlon")
-        .stack(flat=[...])
-    )
+    flattened = profiles[["chi", "eps", "KtTz"]].reset_coords(drop=True).stack(flat=[...])
 
     ci = xr.apply_ufunc(
         compute_bootstrapped_mean_ci,
@@ -237,17 +242,15 @@ def average_density_bin(group, skip_fits=False):
         output_dtypes=[float],
     ).assign_coords(bound=["lower", "center", "upper"])
 
-    pres = profiles.pres.where(profiles.chi.notnull())
+    pres = profiles[Z].where(profiles.chi.notnull())
     hm = pres.max(Z) - pres.min(Z)
     hm = hm.where(hm > 1)
 
     ci["hm"] = xr.apply_ufunc(
         compute_mean_ci,
         hm,
-        input_core_dims=[["latlon"]],
-        exclude_dims={
-            "latlon",
-        },
+        input_core_dims=[["cast"]],
+        exclude_dims={"cast"},
         output_core_dims=[["bound"]],
         dask_gufunc_kwargs=dict(output_sizes={"bound": 3}),
         dask="parallelized",
@@ -270,14 +273,12 @@ def average_density_bin(group, skip_fits=False):
 
     if not skip_fits:
         # reference to mean pressure of obs in this bin
-        pref = group.pres.mean().data
-        group["theta"] = dcpy.eos.ptmp(group.salt, group.temp, group.pres, pr=pref)
+        pref = group[Z].mean().data
+        group["theta"] = dcpy.eos.ptmp(group.salt, group.temp, group[Z], pr=pref)
         chidens["theta"] = group.theta.mean()
-        chidens["theta"].attrs["long_name"] = "$θ$"
-        chidens["theta"].attrs["standar"] = "$θ$"
         chidens["salt"] = group.salt.mean()
 
-        chidens["dTdz_m"] = -1 * fit1D(group, var="theta", dim="pres")
+        chidens["dTdz_m"] = -1 * fit1D(group, var="theta", dim=Z)
         chidens.dTdz_m.attrs.update(
             dict(
                 name="$∂_z θ_m$",
@@ -286,7 +287,7 @@ def average_density_bin(group, skip_fits=False):
             )
         )
 
-        chidens["N2_m"] = 9.81 / 1030 * fit1D(group, var="gamma_n", dim="pres")
+        chidens["N2_m"] = 9.81 / 1030 * fit1D(group, var="gamma_n", dim=Z)
         chidens.N2_m.attrs.update(
             dict(
                 name="$∂_zb_m$",
@@ -315,12 +316,18 @@ def average_density_bin(group, skip_fits=False):
         )
         chidens.KρTz2.attrs = {"long_name": "$K_ρ ∂_zθ_m^2$"}
 
+        chidens["KtTzTz"] = chidens.KtTz * chidens.dTdz_m
+        delta["KtTzTz"] = chidens.KtTzTz * np.sqrt(
+            (delta.KtTz / chidens.KtTz) ** 2 + (delta.hm / chidens.hm) ** 2
+        )
+        chidens.KtTzTz.attrs = {"long_name": "$⟨K_T θ_z⟩ ∂_zθ_m$"}
+
         chidens["residual"] = chidens.chi / 2 - chidens.Krho_m * chidens.dTdz_m ** 2
         delta["residual"] = chidens.residual * np.sqrt(
             (delta.chi / chidens.chi) ** 2 + (delta.KρTz2 / chidens.KρTz2) ** 2
         )
 
-    for var in ["Krho_m", "Kt_m", "KρTz2", "residual"]:
+    for var in ["Krho_m", "Kt_m", "KρTz2", "KtTzTz", "residual"]:
         bounds[var] = chidens[var] + unit * delta[var]
 
     # Keep these as data_vars otherwise triggers compute at combine-stage
@@ -338,7 +345,7 @@ def average_density_bin(group, skip_fits=False):
     chidens = chidens.update({f"{name}_err": var for name, var in bounds.items()})
     chidens = chidens.update({f"δ{name}": var for name, var in delta.items()})
 
-    for v in set(chidens) & set(delta):
+    for v in set(chidens) & set(bounds):
         chidens[v].attrs.update({"bounds": f"{v}_err"})
     return chidens
 
@@ -359,8 +366,8 @@ def bin_average_vertical(ds, stdname, bins, skip_fits=False):
     grouped = ds.reset_coords().cf.groupby_bins(stdname, bins=bins)
     chidens = lazy_map(grouped, average_density_bin, skip_fits=skip_fits)
 
-    for var in set(chidens.variables) & set(ds.variables):
-        chidens[var].attrs = ds[var].attrs
+    # for var in set(chidens.variables) & set(ds.variables):
+    #    chidens[var].attrs = ds[var].attrs
 
     var = ds.cf[stdname]
     groupvar = f"{var.name}_bins"
@@ -374,6 +381,7 @@ def bin_average_vertical(ds, stdname, bins, skip_fits=False):
     chidens.coords["num_obs"] = ds.chi.groupby_bins(ds.cf[stdname], bins=bins).count()
     chidens.eps.attrs.update(long_name="$⟨ε⟩$")
     chidens.chi.attrs.update(long_name="$⟨χ⟩$")
+    chidens.KtTz.attrs.update(long_name="$⟨K_T θ_z⟩$")
     chidens.num_obs.attrs = {"long_name": "count(χ) in bins"}
 
     chidens["chib2"] = chidens.chi / 2

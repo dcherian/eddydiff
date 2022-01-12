@@ -47,7 +47,11 @@ def test_natre():
             natre.gamma_n, depth_range=np.arange(150, 2001, 100)
         )
         with raise_if_dask_computes():
-            actual = ed.sections.bin_average_vertical(natre, "neutral_density", bins)
+            actual = ed.sections.bin_average_vertical(
+                natre.cf.stack({"cast": ("latitude", "longitude")}).drop("cast"),
+                "neutral_density",
+                bins,
+            )
         actual.load(client=client)
         actual.attrs.pop("commit", None)
 
