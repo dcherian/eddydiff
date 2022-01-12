@@ -51,6 +51,7 @@ def test_natre():
                 natre.cf.stack({"cast": ("latitude", "longitude")}).drop("cast"),
                 "neutral_density",
                 bins,
+                blocksize=20,
             )
         actual.load(client=client)
         actual.attrs.pop("commit", None)

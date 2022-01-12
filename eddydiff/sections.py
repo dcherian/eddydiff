@@ -213,7 +213,7 @@ def compute_bootstrapped_mean_ci(array, blocksize):
     )
 
 
-def average_density_bin(group, skip_fits=False):
+def average_density_bin(group, blocksize, skip_fits=False):
     # groupby_bins ends up stacking the pressure coordinate
     # which deletes attrs so we can't use cf-xarray here
     # Z = "sea_water_pressure"
@@ -235,7 +235,7 @@ def average_density_bin(group, skip_fits=False):
         input_core_dims=[["flat"]],
         exclude_dims={"flat"},
         # TODO: configure this
-        kwargs={"blocksize": 20},
+        kwargs={"blocksize": blocksize},
         output_core_dims=[["bound"]],
         dask_gufunc_kwargs=dict(output_sizes={"bound": 3}),
         dask="parallelized",
@@ -360,11 +360,11 @@ def lazy_map(grouped, func, *args, **kwargs):
     )
 
 
-def bin_average_vertical(ds, stdname, bins, skip_fits=False):
+def bin_average_vertical(ds, stdname, bins, blocksize, skip_fits=False):
     """Bin averages in the vertical."""
 
     grouped = ds.reset_coords().cf.groupby_bins(stdname, bins=bins)
-    chidens = lazy_map(grouped, average_density_bin, skip_fits=skip_fits)
+    chidens = lazy_map(grouped, average_density_bin, blocksize=blocksize, skip_fits=skip_fits)
 
     # for var in set(chidens.variables) & set(ds.variables):
     #    chidens[var].attrs = ds[var].attrs
