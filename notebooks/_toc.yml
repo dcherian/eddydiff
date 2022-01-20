@@ -11,6 +11,7 @@ parts:
   - file: P06
   - file: sections-variance-estimate
   - file: ctd-χ-A05
+  - file: bootstrap-ctd-chipod-estimates
 - caption: "Variance budgets"
   chapters:
   - file: natre
