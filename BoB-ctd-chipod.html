@@ -44,8 +44,8 @@
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
     <script>
         const thebe_selector = ".thebe"
@@ -134,6 +134,11 @@
  <li class="toctree-l1">
   <a class="reference internal" href="ctd-%CF%87-A05.html">
    CTD χpod A05 section
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="bootstrap-ctd-chipod-estimates.html">
+   Bootstrapped outlier detection for CTD-χpod
   </a>
  </li>
 </ul>
@@ -559,8 +564,8 @@
   <div class="tex2jax_ignore mathjax_ignore section" id="bob-asiri-2013-ctd-pod">
 <h1>BoB ASIRI 2013 CTD χpod<a class="headerlink" href="#bob-asiri-2013-ctd-pod" title="Permalink to this headline">¶</a></h1>
 <p>This notebook will attempt to infer eddy diffusivity <span class="math notranslate nohighlight">\(K_e\)</span> from the basin-wide transect of <span class="math notranslate nohighlight">\(χ, K_T\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-2a5b66d2-544e-4b4b-8119-d209950d088d">
-<span class="eqno">(1)<a class="headerlink" href="#equation-2a5b66d2-544e-4b4b-8119-d209950d088d" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c7c068ef-2746-4216-87c2-9435ac410e26">
+<span class="eqno">(1)<a class="headerlink" href="#equation-c7c068ef-2746-4216-87c2-9435ac410e26" title="Permalink to this equation">¶</a></span>\[\begin{equation}
     K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z \widetilde{θ}⟩ \; ∂_z θ_m}{|∇θ_m|²}
 \end{equation}\]</div>
 <div class="cell docutils container">
@@ -724,8 +729,8 @@
 </div>
 <div class="section" id="using-climatological-gradients">
 <h2>Using climatological gradients<a class="headerlink" href="#using-climatological-gradients" title="Permalink to this headline">¶</a></h2>
-<div class="amsmath math notranslate nohighlight" id="equation-a973f9a7-be42-4416-a9fc-1371f1f143bd">
-<span class="eqno">(2)<a class="headerlink" href="#equation-a973f9a7-be42-4416-a9fc-1371f1f143bd" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-10052089-59c0-477b-9aa6-93a91b39a9c1">
+<span class="eqno">(2)<a class="headerlink" href="#equation-10052089-59c0-477b-9aa6-93a91b39a9c1" title="Permalink to this equation">¶</a></span>\[\begin{equation}
     K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z \widetilde{θ}⟩ \; ∂_z θ_m}{|∇θ_m|²}
 \end{equation}\]</div>
 <div class="cell docutils container">
