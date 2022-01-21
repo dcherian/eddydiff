@@ -124,4 +124,7 @@ def read_natre():
     if "depth" in natre.time.dims:
         natre["time"] = natre.time.isel(depth=0)
 
+    # messes up pint
+    del natre.salt.attrs["units"]
+
     return natre
