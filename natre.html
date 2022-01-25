@@ -325,8 +325,18 @@
             <nav id="bd-toc-nav" aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#compute-natre-microstructure-terms">
+   Compute NATRE microstructure terms
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#prepare-various-production-and-dissipation-terms">
    Prepare various production and dissipation terms
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pop-1-10-vs-pop-1">
+   POP 1/10 vs POP 1
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -470,8 +480,18 @@
                         <nav aria-label="Page">
                             <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#compute-natre-microstructure-terms">
+   Compute NATRE microstructure terms
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#prepare-various-production-and-dissipation-terms">
    Prepare various production and dissipation terms
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pop-1-10-vs-pop-1">
+   POP 1/10 vs POP 1
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -642,17 +662,15 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The watermark extension is already loaded. To reload it, use:
-  %reload_ext watermark
-numpy      : 1.22.0
-scipy      : 1.7.3
-cf_xarray  : 0.6.3.dev22+gaba4dbb.d20220112
-xarray     : 0.10.3+dev29.ga8e0be8d1
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>matplotlib : 3.5.1
 tqdm       : 4.62.3
-xgcm       : 0.6.0
-matplotlib : 3.5.1
-distributed: 2021.12.0
+scipy      : 1.7.3
 dcpy       : 0.1
+distributed: 2021.12.0
+xgcm       : 0.6.0
+xarray     : 0.20.3.dev137+g3f3a197c8
+cf_xarray  : 0.6.4.dev14+g9b4d1e0.d20220121
+numpy      : 1.22.0
 eddydiff   : 0.1
 </pre></div>
 </div>
@@ -1009,7 +1027,7 @@ dl.xr-attrs {
 }
 </style><pre class='xr-text-repr-fallback'>&lt;xarray.DataArray (dim_0: 1)&gt;
 array([1.])
-Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'></div><ul class='xr-dim-list'><li><span>dim_0</span>: 1</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-178bafd1-94e1-4a78-be0c-c9eb95b9493b' class='xr-array-in' type='checkbox' checked><label for='section-178bafd1-94e1-4a78-be0c-c9eb95b9493b' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>1.0</span></div><div class='xr-array-data'><pre>array([1.])</pre></div></div></li><li class='xr-section-item'><input id='section-2a163c99-e5f4-4ded-a826-b1d397c8e856' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-2a163c99-e5f4-4ded-a826-b1d397c8e856' class='xr-section-summary'  title='Expand/collapse section'>Coordinates: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'></ul></div></li><li class='xr-section-item'><input id='section-ac42c4e8-0a7e-4eb2-b461-b81172d984c2' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-ac42c4e8-0a7e-4eb2-b461-b81172d984c2' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div></div>
+Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'></div><ul class='xr-dim-list'><li><span>dim_0</span>: 1</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-5b05e5f4-5804-423b-888e-a7bd00eeaf80' class='xr-array-in' type='checkbox' checked><label for='section-5b05e5f4-5804-423b-888e-a7bd00eeaf80' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>1.0</span></div><div class='xr-array-data'><pre>array([1.])</pre></div></div></li><li class='xr-section-item'><input id='section-7c5fe2ff-e6f4-4607-a150-073864892f27' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-7c5fe2ff-e6f4-4607-a150-073864892f27' class='xr-section-summary'  title='Expand/collapse section'>Coordinates: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'></ul></div></li><li class='xr-section-item'><input id='section-647d11cb-34d6-4bbf-bcfe-eb256953d68a' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-647d11cb-34d6-4bbf-bcfe-eb256953d68a' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div></div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -1022,17 +1040,25 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/dcherian/mambaforge/envs/eddydiff/lib/python3.9/site-packages/distributed/node.py:160: UserWarning: Port 8787 is already in use.
-Perhaps you already have a cluster running?
-Hosting the HTTP server on port 61178 instead
-  warnings.warn(
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distributed.diskutils - INFO - Found stale lock file and directory &#39;/Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-vx1p4w_z&#39;, purging
+distributed.diskutils - INFO - Found stale lock file and directory &#39;/Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-zjpgc9hg&#39;, purging
+distributed.diskutils - INFO - Found stale lock file and directory &#39;/Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-bxn_9lb1&#39;, purging
+distributed.diskutils - INFO - Found stale lock file and directory &#39;/Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-z_4tl93n&#39;, purging
+distributed.diskutils - INFO - Found stale lock file and directory &#39;/Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-pge_7w4c&#39;, purging
+distributed.diskutils - INFO - Found stale lock file and directory &#39;/Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-0pf3zhz7&#39;, purging
+distributed.diskutils - INFO - Found stale lock file and directory &#39;/Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-qqeldho7&#39;, purging
+distributed.diskutils - INFO - Found stale lock file and directory &#39;/Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-21q0kw62&#39;, purging
+distributed.diskutils - INFO - Found stale lock file and directory &#39;/Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-8jrjh7pt&#39;, purging
+distributed.diskutils - INFO - Found stale lock file and directory &#39;/Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-7ms7ug_a&#39;, purging
+distributed.diskutils - INFO - Found stale lock file and directory &#39;/Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-qm93w0j0&#39;, purging
+distributed.diskutils - INFO - Found stale lock file and directory &#39;/Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-pio0yyiw&#39;, purging
 </pre></div>
 </div>
 <div class="output text_html"><div>
     <div style="width: 24px; height: 24px; background-color: #e1e1e1; border: 3px solid #9D9D9D; border-radius: 5px; position: absolute;"> </div>
     <div style="margin-left: 48px;">
         <h3 style="margin-bottom: 0px;">Client</h3>
-        <p style="color: #9D9D9D; margin-bottom: 0px;">Client-b46f0726-7401-11ec-88cd-3af9d394f1c6</p>
+        <p style="color: #9D9D9D; margin-bottom: 0px;">Client-3ec4e580-7d58-11ec-925d-acde48001122</p>
         <table style="width: 100%; text-align: left;">
 
         <tr>
@@ -1045,7 +1071,7 @@ Hosting the HTTP server on port 61178 instead
 
             <tr>
                 <td style="text-align: left;">
-                    <strong>Dashboard: </strong> <a href="http://127.0.0.1:61178/status" target="_blank">http://127.0.0.1:61178/status</a>
+                    <strong>Dashboard: </strong> <a href="http://127.0.0.1:8787/status" target="_blank">http://127.0.0.1:8787/status</a>
                 </td>
                 <td style="text-align: left;"></td>
             </tr>
@@ -1061,11 +1087,11 @@ Hosting the HTTP server on port 61178 instead
     </div>
     <div style="margin-left: 48px;">
         <h3 style="margin-bottom: 0px; margin-top: 0px;">LocalCluster</h3>
-        <p style="color: #9D9D9D; margin-bottom: 0px;">6b13fdbb</p>
+        <p style="color: #9D9D9D; margin-bottom: 0px;">74c552cb</p>
         <table style="width: 100%; text-align: left;">
             <tr>
                 <td style="text-align: left;">
-                    <strong>Dashboard:</strong> <a href="http://127.0.0.1:61178/status" target="_blank">http://127.0.0.1:61178/status</a>
+                    <strong>Dashboard:</strong> <a href="http://127.0.0.1:8787/status" target="_blank">http://127.0.0.1:8787/status</a>
                 </td>
                 <td style="text-align: left;">
                     <strong>Workers:</strong> 6
@@ -1098,11 +1124,11 @@ Hosting the HTTP server on port 61178 instead
         <div style="width: 24px; height: 24px; background-color: #FFF7E5; border: 3px solid #FF6132; border-radius: 5px; position: absolute;"> </div>
         <div style="margin-left: 48px;">
             <h3 style="margin-bottom: 0px;">Scheduler</h3>
-            <p style="color: #9D9D9D; margin-bottom: 0px;">Scheduler-3aa0f222-3b65-4ff0-bd9f-f21c2d592d0a</p>
+            <p style="color: #9D9D9D; margin-bottom: 0px;">Scheduler-1c98ec5c-49dd-47c7-822f-4cc0d1775aaf</p>
             <table style="width: 100%; text-align: left;">
                 <tr>
                     <td style="text-align: left;">
-                        <strong>Comm:</strong> tcp://127.0.0.1:61179
+                        <strong>Comm:</strong> tcp://127.0.0.1:55680
                     </td>
                     <td style="text-align: left;">
                         <strong>Workers:</strong> 6
@@ -1110,7 +1136,7 @@ Hosting the HTTP server on port 61178 instead
                 </tr>
                 <tr>
                     <td style="text-align: left;">
-                        <strong>Dashboard:</strong> <a href="http://127.0.0.1:61178/status" target="_blank">http://127.0.0.1:61178/status</a>
+                        <strong>Dashboard:</strong> <a href="http://127.0.0.1:8787/status" target="_blank">http://127.0.0.1:8787/status</a>
                     </td>
                     <td style="text-align: left;">
                         <strong>Total threads:</strong> 6
@@ -1144,7 +1170,7 @@ Hosting the HTTP server on port 61178 instead
                 <table style="width: 100%; text-align: left;">
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Comm: </strong> tcp://127.0.0.1:61196
+                            <strong>Comm: </strong> tcp://127.0.0.1:55696
                         </td>
                         <td style="text-align: left;">
                             <strong>Total threads: </strong> 1
@@ -1152,7 +1178,7 @@ Hosting the HTTP server on port 61178 instead
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:61200/status" target="_blank">http://127.0.0.1:61200/status</a>
+                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:55699/status" target="_blank">http://127.0.0.1:55699/status</a>
                         </td>
                         <td style="text-align: left;">
                             <strong>Memory: </strong> 2.67 GiB
@@ -1160,13 +1186,13 @@ Hosting the HTTP server on port 61178 instead
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Nanny: </strong> tcp://127.0.0.1:61182
+                            <strong>Nanny: </strong> tcp://127.0.0.1:55683
                         </td>
                         <td style="text-align: left;"></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left;">
-                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-p8actdpi
+                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-fcd0uyfn
                         </td>
                     </tr>
 
@@ -1189,7 +1215,7 @@ Hosting the HTTP server on port 61178 instead
                 <table style="width: 100%; text-align: left;">
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Comm: </strong> tcp://127.0.0.1:61207
+                            <strong>Comm: </strong> tcp://127.0.0.1:55697
                         </td>
                         <td style="text-align: left;">
                             <strong>Total threads: </strong> 1
@@ -1197,7 +1223,7 @@ Hosting the HTTP server on port 61178 instead
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:61208/status" target="_blank">http://127.0.0.1:61208/status</a>
+                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:55700/status" target="_blank">http://127.0.0.1:55700/status</a>
                         </td>
                         <td style="text-align: left;">
                             <strong>Memory: </strong> 2.67 GiB
@@ -1205,13 +1231,13 @@ Hosting the HTTP server on port 61178 instead
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Nanny: </strong> tcp://127.0.0.1:61187
+                            <strong>Nanny: </strong> tcp://127.0.0.1:55688
                         </td>
                         <td style="text-align: left;"></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left;">
-                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-m7mkde0v
+                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-mb_nheaa
                         </td>
                     </tr>
 
@@ -1234,7 +1260,7 @@ Hosting the HTTP server on port 61178 instead
                 <table style="width: 100%; text-align: left;">
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Comm: </strong> tcp://127.0.0.1:61209
+                            <strong>Comm: </strong> tcp://127.0.0.1:55703
                         </td>
                         <td style="text-align: left;">
                             <strong>Total threads: </strong> 1
@@ -1242,7 +1268,7 @@ Hosting the HTTP server on port 61178 instead
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:61211/status" target="_blank">http://127.0.0.1:61211/status</a>
+                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:55706/status" target="_blank">http://127.0.0.1:55706/status</a>
                         </td>
                         <td style="text-align: left;">
                             <strong>Memory: </strong> 2.67 GiB
@@ -1250,13 +1276,13 @@ Hosting the HTTP server on port 61178 instead
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Nanny: </strong> tcp://127.0.0.1:61186
+                            <strong>Nanny: </strong> tcp://127.0.0.1:55684
                         </td>
                         <td style="text-align: left;"></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left;">
-                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-05t23cum
+                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-dkhwfke6
                         </td>
                     </tr>
 
@@ -1279,7 +1305,7 @@ Hosting the HTTP server on port 61178 instead
                 <table style="width: 100%; text-align: left;">
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Comm: </strong> tcp://127.0.0.1:61197
+                            <strong>Comm: </strong> tcp://127.0.0.1:55705
                         </td>
                         <td style="text-align: left;">
                             <strong>Total threads: </strong> 1
@@ -1287,7 +1313,7 @@ Hosting the HTTP server on port 61178 instead
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:61201/status" target="_blank">http://127.0.0.1:61201/status</a>
+                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:55709/status" target="_blank">http://127.0.0.1:55709/status</a>
                         </td>
                         <td style="text-align: left;">
                             <strong>Memory: </strong> 2.67 GiB
@@ -1295,13 +1321,13 @@ Hosting the HTTP server on port 61178 instead
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Nanny: </strong> tcp://127.0.0.1:61183
+                            <strong>Nanny: </strong> tcp://127.0.0.1:55685
                         </td>
                         <td style="text-align: left;"></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left;">
-                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-ljm56ykq
+                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-w9dz_epm
                         </td>
                     </tr>
 
@@ -1324,7 +1350,7 @@ Hosting the HTTP server on port 61178 instead
                 <table style="width: 100%; text-align: left;">
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Comm: </strong> tcp://127.0.0.1:61204
+                            <strong>Comm: </strong> tcp://127.0.0.1:55707
                         </td>
                         <td style="text-align: left;">
                             <strong>Total threads: </strong> 1
@@ -1332,7 +1358,7 @@ Hosting the HTTP server on port 61178 instead
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:61205/status" target="_blank">http://127.0.0.1:61205/status</a>
+                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:55711/status" target="_blank">http://127.0.0.1:55711/status</a>
                         </td>
                         <td style="text-align: left;">
                             <strong>Memory: </strong> 2.67 GiB
@@ -1340,13 +1366,13 @@ Hosting the HTTP server on port 61178 instead
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Nanny: </strong> tcp://127.0.0.1:61185
+                            <strong>Nanny: </strong> tcp://127.0.0.1:55687
                         </td>
                         <td style="text-align: left;"></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left;">
-                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-d7pmzfck
+                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-1m0sg0bx
                         </td>
                     </tr>
 
@@ -1369,7 +1395,7 @@ Hosting the HTTP server on port 61178 instead
                 <table style="width: 100%; text-align: left;">
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Comm: </strong> tcp://127.0.0.1:61195
+                            <strong>Comm: </strong> tcp://127.0.0.1:55695
                         </td>
                         <td style="text-align: left;">
                             <strong>Total threads: </strong> 1
@@ -1377,7 +1403,7 @@ Hosting the HTTP server on port 61178 instead
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:61198/status" target="_blank">http://127.0.0.1:61198/status</a>
+                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:55698/status" target="_blank">http://127.0.0.1:55698/status</a>
                         </td>
                         <td style="text-align: left;">
                             <strong>Memory: </strong> 2.67 GiB
@@ -1385,13 +1411,13 @@ Hosting the HTTP server on port 61178 instead
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Nanny: </strong> tcp://127.0.0.1:61184
+                            <strong>Nanny: </strong> tcp://127.0.0.1:55686
                         </td>
                         <td style="text-align: left;"></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left;">
-                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-mg6672ss
+                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-niko7llp
                         </td>
                     </tr>
 
@@ -1427,8 +1453,8 @@ Hosting the HTTP server on port 61178 instead
 <img alt="_images/natre_3_0.png" src="_images/natre_3_0.png" />
 </div>
 </div>
-<div class="section" id="prepare-various-production-and-dissipation-terms">
-<h2>Prepare various production and dissipation terms<a class="headerlink" href="#prepare-various-production-and-dissipation-terms" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="compute-natre-microstructure-terms">
+<h2>Compute NATRE microstructure terms<a class="headerlink" href="#compute-natre-microstructure-terms" title="Permalink to this headline">¶</a></h2>
 <p>In theory, these bins are approx. 100m apart in neutral density</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
@@ -1442,6 +1468,14 @@ Hosting the HTTP server on port 61178 instead
     <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">linex</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active_levels instead.
+OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active_levels instead.
+OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active_levels instead.
+OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active_levels instead.
 </pre></div>
 </div>
 </div>
@@ -1473,13 +1507,9 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 </div>
 </div>
 </div>
-<div class="cell tag_hide-input docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">micro</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">scheduler</span><span class="o">=</span><span class="n">client</span><span class="p">)</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s2">&quot;../test/estimates/natre.nc&quot;</span><span class="p">)</span>
-</pre></div>
 </div>
-</div>
-</div>
+<div class="section" id="prepare-various-production-and-dissipation-terms">
+<h2>Prepare various production and dissipation terms<a class="headerlink" href="#prepare-various-production-and-dissipation-terms" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">micro</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/natre-density-binned.nc&quot;</span><span class="p">)</span>
@@ -1537,10 +1567,23 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/dcherian/mambaforge/envs/eddydiff/lib/python3.9/site-packages/pandas/core/arrays/interval.py:1388: RuntimeWarning: deallocating CachingFileManager(&lt;class &#39;netCDF4._netCDF4.Dataset&#39;&gt;, &#39;/Users/dcherian/work/eddydiff/datasets/natre_large_scale.nc&#39;, mode=&#39;r&#39;, kwargs={&#39;clobber&#39;: True, &#39;diskless&#39;: False, &#39;persist&#39;: False, &#39;format&#39;: &#39;NETCDF4&#39;}), but file is not already closed. This may indicate a bug.
+  result[i] = Interval(left[i], right[i], closed)
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pop_natre</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/natre-pop-variance.nc&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pop_1deg_natre</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/pop-1deg-redivar-natre.nc&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1592,6 +1635,53 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
   self.array = NumpyIndexingAdapter(np.asarray(self.array))
 </pre></div>
 </div>
+</div>
+</div>
+</div>
+<div class="section" id="pop-1-10-vs-pop-1">
+<h2>POP 1/10 vs POP 1<a class="headerlink" href="#pop-1-10-vs-pop-1" title="Permalink to this headline">¶</a></h2>
+<p>Smooth 1/10∂egree to 1degree hydrography and then compare delT2 at the scale of 1 degree model.</p>
+<p>1degree model has 1/N2 dependence</p>
+<p>scott’s work to invert kappa</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.dpi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">140</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.facecolor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.91</span><span class="p">,</span> <span class="mf">0.91</span><span class="p">,</span> <span class="mf">0.91</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.facecolor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.99</span><span class="p">,)</span><span class="o">*</span><span class="mi">3</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;grid.color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,)</span><span class="o">*</span><span class="mi">3</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;grid.alpha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;grid.linewidth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+
+<span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">cycle</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]:</span>
+    <span class="n">pop</span> <span class="o">=</span> <span class="n">pop_1deg_natre</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">cycle</span><span class="o">=</span><span class="n">cycle</span><span class="p">)</span>
+    <span class="n">pop</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">z_t</span><span class="o">.</span><span class="n">notnull</span><span class="p">(),</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">pop</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">add_bounds</span><span class="p">(</span><span class="s2">&quot;z_t&quot;</span><span class="p">)</span>
+    <span class="n">ybounds</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">z_t_bounds</span>
+    <span class="n">bdim</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">get_bounds_dim_name</span><span class="p">(</span><span class="s2">&quot;z_t&quot;</span><span class="p">)</span>
+    <span class="n">yedges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ybounds</span><span class="o">.</span><span class="n">isel</span><span class="p">({</span><span class="n">bdim</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">ybounds</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">stairs</span><span class="p">(</span>
+        <span class="n">pop</span><span class="o">.</span><span class="n">RediVar</span><span class="p">,</span>
+        <span class="n">edges</span><span class="o">=</span><span class="n">yedges</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span>
+        <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;POP 1° cycle=</span><span class="si">{</span><span class="n">cycle</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">((</span><span class="mi">5000</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span>
+
+<span class="n">mesomicrocolor</span> <span class="o">=</span> <span class="s2">&quot;darkorchid&quot;</span>
+<span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">pop_natre</span><span class="o">.</span><span class="n">DISS</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">mesomicrocolor</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;POP 1/10°&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;minor&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">f</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/natre_18_0.png" src="_images/natre_18_0.png" />
 </div>
 </div>
 </div>
@@ -1713,7 +1803,7 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_18_0.png" src="_images/natre_18_0.png" />
+<img alt="_images/natre_20_0.png" src="_images/natre_20_0.png" />
 </div>
 </div>
 <div class="section" id="interpretation">
@@ -1721,8 +1811,8 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 <div class="section" id="spicy-region">
 <h4>Spicy region<a class="headerlink" href="#spicy-region" title="Permalink to this headline">¶</a></h4>
 <p>We can interpret the red mesoscale dissipation term in (b) as the amount of variance transferred to the microscale for eventual dissipation. This peaks in regions of high mean spice between 1000m and 1500m. The balance in spicy regions is that horizontal mesoscale stirring converts MPE → EPE (compensated filaments or T-S variance) that is dissipated by the microscale. The approximate budget is (note vertical stirring gets ignored, and <span class="math notranslate nohighlight">\(u^h\)</span> represents horizontal velocity vector)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-92d2f39b-abd0-415e-a902-2feecdb26f6f">
-<span class="eqno">(3)<a class="headerlink" href="#equation-92d2f39b-abd0-415e-a902-2feecdb26f6f" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-e985a845-330a-44e2-b63a-4887ba0391f9">
+<span class="eqno">(3)<a class="headerlink" href="#equation-e985a845-330a-44e2-b63a-4887ba0391f9" title="Permalink to this equation">¶</a></span>\[\begin{align}
 ⟨u^h_eT_e⟩ ⋅ ∇_hT_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;\approx 0 \\
 ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;\approx - \frac 12 ⟨χ⟩
 \end{align}\]</div>
@@ -1734,8 +1824,8 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 <div class="section" id="weak-spice">
 <h4>Weak spice<a class="headerlink" href="#weak-spice" title="Permalink to this headline">¶</a></h4>
 <p>In the upper water column that is not spicy, we instead see horizontal stirring MPE→ EPE which is then routed to EKE by “vertical stirring”. Here the scale transformation term is 0 so the budget is</p>
-<div class="amsmath math notranslate nohighlight" id="equation-597cc7da-7cb8-49bd-8b42-4774ac3d8bc3">
-<span class="eqno">(4)<a class="headerlink" href="#equation-597cc7da-7cb8-49bd-8b42-4774ac3d8bc3" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-2c6f4966-09d5-46ec-b6e9-be78c904002c">
+<span class="eqno">(4)<a class="headerlink" href="#equation-2c6f4966-09d5-46ec-b6e9-be78c904002c" title="Permalink to this equation">¶</a></span>\[\begin{align}
 ⟨u_eT_e⟩ ⋅ ∇T_m &amp;\approx 0 \\
 ⟨u_tT_t⟩ ⋅ ∇ T_m &amp;\approx - \frac 12 ⟨χ⟩
 \end{align}\]</div>
@@ -1842,20 +1932,20 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_22_0.png" src="_images/natre_22_0.png" />
+<img alt="_images/natre_24_0.png" src="_images/natre_24_0.png" />
 </div>
 </div>
 </div>
 <div class="section" id="pop2-1-10-mesoscale-variance-budget">
 <h2>POP2 1/10° mesoscale variance budget<a class="headerlink" href="#pop2-1-10-mesoscale-variance-budget" title="Permalink to this headline">¶</a></h2>
 <p>Yiming is working with the following variance budget equation for the mesoscale after decomposing <span class="math notranslate nohighlight">\(T = \bar{T} + T' + T'' ≡ T_m + T_e + T_t\)</span> (the latter is Ferrari &amp; Polzin notation). The <span class="math notranslate nohighlight">\(T = \tilde{T} + T''\)</span> decomposition is inherent when using cell-averaged equations.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-499e4127-fe8b-44b0-a049-a1d23875926a">
-<span class="eqno">(5)<a class="headerlink" href="#equation-499e4127-fe8b-44b0-a049-a1d23875926a" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-cd7b76f9-353f-400e-8b67-9718e2028f99">
+<span class="eqno">(5)<a class="headerlink" href="#equation-cd7b76f9-353f-400e-8b67-9718e2028f99" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 ∂_t \overline{T'^2} =  -\overline{u'T'} ⋅ ∇_h\overline{T} - \overline{w'T'}∂_z\overline{T} - \overline{\vec{v} ⋅ ∇ T'^2/2} + \overline{T'∂_z \left[K ∂_zT' \right]} + …
 \end{equation}\]</div>
 <p>Ferrari &amp; Polzin’s equations (4.6, 4.7) for the mesoscale and microscale are (<span class="math notranslate nohighlight">\(u\)</span> here is the full 3D <span class="math notranslate nohighlight">\(u\)</span>):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a632c722-39c2-4c48-9528-831fccee5adf">
-<span class="eqno">(6)<a class="headerlink" href="#equation-a632c722-39c2-4c48-9528-831fccee5adf" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-243bab45-066e-42c7-8e7e-57df9c46a1af">
+<span class="eqno">(6)<a class="headerlink" href="#equation-243bab45-066e-42c7-8e7e-57df9c46a1af" title="Permalink to this equation">¶</a></span>\[\begin{align}
 ⟨u_eT_e⟩ ⋅ ∇T_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;= 0 \\
 ⟨u_tT_t⟩ ⋅ ∇ T_m + ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;= - \frac 12 ⟨χ⟩
 \end{align}\]</div>
@@ -1866,14 +1956,14 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 <li><p>⟨⟩: monthly in time; NATRE domain size in (x,y)</p></li>
 </ol>
 <p>In Yiming’s notation these equations are</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2ae8e3d9-c040-456d-8a3e-0d4da968fa70">
-<span class="eqno">(7)<a class="headerlink" href="#equation-2ae8e3d9-c040-456d-8a3e-0d4da968fa70" title="Permalink to this equation">¶</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-db1cc6f5-2101-4752-90e2-2be1432905ff">
+<span class="eqno">(7)<a class="headerlink" href="#equation-db1cc6f5-2101-4752-90e2-2be1432905ff" title="Permalink to this equation">¶</a></span>\[\begin{align}
 \overline{u'T'}⋅∇\overline{T} + \overline{w'T'}∂_z\overline{T}  - \overline{T'∂_z \left[K ∂_zT' \right]} = 0 \\
 K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 \end{align}\]</div>
 <p>Now we can identify Yiming’s dissipation term (“VMIX”, ignoring solar heating etc.) as the scale transformation term in FP2005 and then use the microscale budget from FP2005 to write</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d3ec6193-a057-4154-8421-4445701ef204">
-<span class="eqno">(8)<a class="headerlink" href="#equation-d3ec6193-a057-4154-8421-4445701ef204" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-f0a3ea4b-b907-43e4-b18a-af25be833a2d">
+<span class="eqno">(8)<a class="headerlink" href="#equation-f0a3ea4b-b907-43e4-b18a-af25be833a2d" title="Permalink to this equation">¶</a></span>\[\begin{equation}
 ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ = - \frac 12 ⟨χ⟩ - ⟨u_tT_t⟩ ⋅ ∇ T_m
 \end{equation}\]</div>
 <p>i.e. Yiming’s “mesoscale dissipation” term is really the difference between</p>
@@ -1889,7 +1979,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_24_0.png" src="_images/natre_24_0.png" />
+<img alt="_images/natre_26_0.png" src="_images/natre_26_0.png" />
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distributed.utils_perf - WARNING - full garbage collections took 13% CPU time recently (threshold: 10%)
 </pre></div>
 </div>
@@ -1963,7 +2053,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f6a3f8c57f0&gt;
 </pre></div>
 </div>
-<img alt="_images/natre_29_2.png" src="_images/natre_29_2.png" />
+<img alt="_images/natre_31_2.png" src="_images/natre_31_2.png" />
 </div>
 </div>
 </div>
@@ -2020,7 +2110,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fa53eb855b0&gt;
 </pre></div>
 </div>
-<img alt="_images/natre_33_1.png" src="_images/natre_33_1.png" />
+<img alt="_images/natre_35_1.png" src="_images/natre_35_1.png" />
 </div>
 </div>
 </div>
@@ -2044,7 +2134,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;$K_e^{cole} |∇T_{iso}^{argo}|²$ [°C²/s]&#39;)
 </pre></div>
 </div>
-<img alt="_images/natre_36_1.png" src="_images/natre_36_1.png" />
+<img alt="_images/natre_38_1.png" src="_images/natre_38_1.png" />
 </div>
 </div>
 <p>These are the various terms in the Cole analysis. Note minimum in ∇S between 200 and 800, and associated high mixing lengths ≳ 300km.</p>
@@ -2055,7 +2145,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_38_0.png" src="_images/natre_38_0.png" />
+<img alt="_images/natre_40_0.png" src="_images/natre_40_0.png" />
 </div>
 </div>
 </div>
@@ -2152,7 +2242,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_43_0.png" src="_images/natre_43_0.png" />
+<img alt="_images/natre_45_0.png" src="_images/natre_45_0.png" />
 </div>
 </div>
 </div>
@@ -2197,7 +2287,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_47_0.png" src="_images/natre_47_0.png" />
+<img alt="_images/natre_49_0.png" src="_images/natre_49_0.png" />
 </div>
 </div>
 <p>It’s definitely a big undersampling when compared to all Argo profiles in the area. <strong>How good is good enough?</strong></p>
@@ -2230,7 +2320,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_49_0.png" src="_images/natre_49_0.png" />
+<img alt="_images/natre_51_0.png" src="_images/natre_51_0.png" />
 </div>
 </div>
 </div>
@@ -2274,7 +2364,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;xarray.plot.facetgrid.FacetGrid at 0x7fbb1793f2b0&gt;
 </pre></div>
 </div>
-<img alt="_images/natre_52_1.png" src="_images/natre_52_1.png" />
+<img alt="_images/natre_54_1.png" src="_images/natre_54_1.png" />
 </div>
 </div>
 </div>
@@ -2316,7 +2406,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_55_0.png" src="_images/natre_55_0.png" />
+<img alt="_images/natre_57_0.png" src="_images/natre_57_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2334,7 +2424,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_56_0.png" src="_images/natre_56_0.png" />
+<img alt="_images/natre_58_0.png" src="_images/natre_58_0.png" />
 </div>
 </div>
 </div>
@@ -2371,7 +2461,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f2cd6b69f70&gt;
 </pre></div>
 </div>
-<img alt="_images/natre_60_1.png" src="_images/natre_60_1.png" />
+<img alt="_images/natre_62_1.png" src="_images/natre_62_1.png" />
 </div>
 </div>
 </div>
