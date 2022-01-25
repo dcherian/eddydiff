@@ -1,7 +1,11 @@
+import os
+
 import cf_xarray  # noqa
 import dcpy
+import gsw
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 from flox.xarray import xarray_reduce
 
 import xarray as xr
@@ -227,7 +231,9 @@ def average_density_bin(group, blocksize, skip_fits=False):
         raise ValueError("Don't know what the pressure dimension is.")
 
     # flatten for bootstrap
-    flattened = profiles[["chi", "eps", "KtTz"]].reset_coords(drop=True).stack(flat=[...])
+    flattened = (
+        profiles[["chi", "eps", "KtTz"]].reset_coords(drop=True).stack(flat=[...])
+    )
 
     ci = xr.apply_ufunc(
         compute_bootstrapped_mean_ci,
@@ -364,7 +370,9 @@ def bin_average_vertical(ds, stdname, bins, blocksize, skip_fits=False):
     """Bin averages in the vertical."""
 
     grouped = ds.reset_coords().cf.groupby_bins(stdname, bins=bins)
-    chidens = lazy_map(grouped, average_density_bin, blocksize=blocksize, skip_fits=skip_fits)
+    chidens = lazy_map(
+        grouped, average_density_bin, blocksize=blocksize, skip_fits=skip_fits
+    )
 
     # for var in set(chidens.variables) & set(ds.variables):
     #    chidens[var].attrs = ds[var].attrs
@@ -562,3 +570,110 @@ def choose_bins(gamma, depth_range, decimals=2):
     bins = gamma.mean(mean_over).cf.interp(Z=depth_range)
     bins[Z[0]].attrs["axis"] = "Z"
     return np.round(bins.cf.dropna("Z").data, decimals)
+
+
+def read_ctd_chipod_mat_file(chifile, ctdfile=None):
+    from scipy.io import loadmat
+
+    mat = loadmat(chifile)
+    ds = xr.Dataset()
+
+    print("Found variables: ", mat["XPsum"][0,0].dtype.names)
+
+    varnames = [
+        "eps_f",
+        "chi_f",
+        "KT_f",
+        "P_f",
+        "cast",
+        "sn_avail",
+        "SN",
+        "lon",
+        "lat",
+        "datenum",
+    ]
+    attrs = {
+        "eps_f": {"long_name": "$ε$", "units": "W/kg"},
+        "chi_f": {"long_name": "$χ$", "units": "C^2/s"},
+        "KT_f": {"long_name": "$K_T$", "units": "m^2/s"},
+        "P_f": {
+            "standard_name": "sea_water_pressure",
+            "units": "dbar",
+            "axis": "Z",
+            "positive": "down",
+        },
+        "lon": {"standard_name": "longitude"},
+        "lat": {"standard_name": "latitude"},
+    }
+
+    for var in varnames:
+        data = mat["XPsum"][0, 0][var].squeeze()
+        if data.ndim == 2:
+            if var == "SN":
+                dims = ("cast", "sensor")
+            else:
+                dims = ("P", "cast")
+        elif var not in ("cast", "SN", "sn_avail", "lat", "lon", "datenum"):
+            dims = ("P",)
+        else:
+            dims = ("cast",)
+        ds[var.split("_")[0]] = (dims, data, attrs.get(var, {}))
+    ds = ds.rename({"sn": "num_sensors", "SN": "avail_sensors"}).set_coords(
+        ["lat", "lon", "datenum", "num_sensors", "avail_sensors"]
+    )
+    # TODO
+    # ds["time"] = dcpy.util.mdatenum2dt64(ds.datenum)
+    ds = ds.cf.guess_coord_axis()
+    ds["P"] = ds.P.astype(float)
+    ds["cast"] = ("cast", np.arange(2, 145), {"cf_role": "profile_id"})
+    ds = ds.rename({"P": "pressure"})
+
+    for var in ["chi", "eps", "KT"]:
+        ds[var] = ds[var].where(ds[var] > 0)
+
+    if ctdfile is not None:
+        # drop gappy lat, lon from Aurelie
+        # We can use the CTD data instead
+        ds = ds.drop_vars(["lat", "lon"])
+
+        ctd_raw = xr.open_dataset(ctdfile)
+        # line up cast numbers with CTD-χpod
+        ctd_raw["cast"] = ctd_raw.station.astype(int)
+        ctd_raw = ctd_raw.drop_vars("station").swap_dims({"N_PROF": "cast"})
+        ctd_raw.cast.attrs["cf_role"] = "profile_id"
+
+        P = ds.cf["sea_water_pressure"].data
+        edges = (P[:-1] + P[1:]) / 2
+
+        grouped = ctd_raw.cf.groupby_bins("sea_water_pressure", bins=edges)
+        ctd = grouped.mean("N_LEVELS")
+        index = pd.IntervalIndex(ctd.xindexes["pressure_bins"].to_pandas_index())
+        ctd.coords["pressure"] = ("pressure_bins", index.mid.values)
+        ctd = ctd.swap_dims({"pressure_bins": "pressure"})
+        ctd.pressure.attrs = ctd_raw.pressure.attrs
+        ctd.pressure.attrs["bounds"] = "pressure_bins"
+
+        ds["temp"] = ctd.ctd_temperature
+        ds["salt"] = ctd.ctd_salinity
+        ds.coords["bottom_depth"] = ctd.btm_depth
+        ds["gamma_n"] = dcpy.oceans.neutral_density(ds)
+
+        ds["SA"] = gsw.SA_from_SP(
+            ds.cf["sea_water_practical_salinity"],
+            ds.cf["sea_water_pressure"],
+            ds.cf["longitude"],
+            ds.cf["latitude"],
+        )
+        ds.SA.attrs["standard_name"] = "sea_water_absolute_salinity"
+
+        ds["CT"] = gsw.CT_from_t(
+            ds.cf["sea_water_absolute_salinity"],
+            ds.cf["sea_water_temperature"],
+            ds.cf["sea_water_pressure"],
+        )
+        ds.CT.attrs = {
+            "standard_name": "sea_water_conservative_temperature",
+            "units": "degC",
+        }
+
+    return ds
