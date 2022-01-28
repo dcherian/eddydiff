@@ -224,6 +224,18 @@
   </a>
  </li>
 </ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Presentation figures
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="figs-2022-02-omwg.html">
+   Nice matplotlib map
+  </a>
+ </li>
+</ul>
 
     </div>
 </nav> <!-- To handle the deprecated key -->
@@ -368,6 +380,11 @@
    </li>
   </ul>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#computing-along-latitude-and-longitude-lines">
+   Computing along latitude and longitude lines
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -431,6 +448,11 @@
     </a>
    </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#computing-along-latitude-and-longitude-lines">
+   Computing along latitude and longitude lines
+  </a>
  </li>
 </ul>
 
@@ -3309,6 +3331,28 @@ Coordinates:
 </pre></div>
 </div>
 <img alt="_images/natre-examine_30_2.png" src="_images/natre-examine_30_2.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="computing-along-latitude-and-longitude-lines">
+<h2>Computing along latitude and longitude lines<a class="headerlink" href="#computing-along-latitude-and-longitude-lines" title="Permalink to this headline">¶</a></h2>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compute_single_line</span><span class="p">(</span><span class="n">section</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ed</span><span class="o">.</span><span class="n">sections</span><span class="o">.</span><span class="n">bin_average_vertical</span><span class="p">(</span>
+        <span class="n">section</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">stack</span><span class="p">({</span><span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">)})</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;cast&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;neutral_density&quot;</span><span class="p">,</span>
+        <span class="n">bins</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="n">lonlines</span> <span class="o">=</span> <span class="n">natre</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;longitude&quot;</span><span class="p">,</span> <span class="n">squeeze</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">compute_single_line</span><span class="p">)</span>
+<span class="n">latlines</span> <span class="o">=</span> <span class="n">natre</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="n">squeeze</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">compute_single_line</span><span class="p">)</span>
+
+<span class="n">latlines</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s2">&quot;../datasets/natre-along-lat-lines.nc&quot;</span><span class="p">)</span>
+<span class="n">lonlines</span><span class="o">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s2">&quot;../datasets/natre-along-lon-lines.nc&quot;</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 </div>

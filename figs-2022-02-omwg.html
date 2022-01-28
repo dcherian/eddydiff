@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>&lt;no title&gt; &#8212; Eddy Diffusivity</title>
+    <title>Nice matplotlib map &#8212; Eddy Diffusivity</title>
     
   <link href="_static/css/theme.css" rel="stylesheet">
   <link href="_static/css/index.ff1ffe594081f20da1ef19478df9384b.css" rel="stylesheet">
@@ -53,6 +53,7 @@
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Dataset processing" href="dataset-processing.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -220,6 +221,18 @@
   </a>
  </li>
 </ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Presentation figures
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Nice matplotlib map
+  </a>
+ </li>
+</ul>
 
     </div>
 </nav> <!-- To handle the deprecated key -->
@@ -315,14 +328,6 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show noprint">
             
-            <div class="tocsection onthispage pt-5 pb-3">
-                <i class="fas fa-list"></i> Contents
-            </div>
-            <nav id="bd-toc-nav" aria-label="Page">
-                <ul class="simple visible nav section-nav flex-column">
-</ul>
-
-            </nav>
         </div>
     </div>
 </div>
@@ -330,19 +335,11 @@
         <div class="col-12 col-md-9 pl-md-3 pr-md-0">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1><no title></h1>
+                <h1>Nice matplotlib map</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="simple visible nav section-nav flex-column">
-</ul>
-
-                        </nav>
                     </div>
                 </div>
             </div>
@@ -352,6 +349,9 @@
   <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span> <span class="nn">eddydiff</span> <span class="k">as</span> <span class="nn">ed</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 </pre></div>
 </div>
 </div>
@@ -560,6 +560,180 @@
 <img alt="_images/figs-2022-02-omwg_5_0.png" src="_images/figs-2022-02-omwg_5_0.png" />
 </div>
 </div>
+<div class="section" id="nice-matplotlib-map">
+<h1>Nice matplotlib map<a class="headerlink" href="#nice-matplotlib-map" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+
+<span class="n">natre</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">natre</span><span class="o">.</span><span class="n">read_natre</span><span class="p">()</span>
+<span class="n">lats</span><span class="p">,</span> <span class="n">lons</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">natre</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
+
+<span class="n">a05</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/a05-section.nc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">query</span><span class="p">({</span><span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="s2">&quot;longitude &gt; -35&quot;</span><span class="p">})</span>
+<span class="n">with_chi</span> <span class="o">=</span> <span class="n">a05</span><span class="p">[[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+    <span class="n">a05</span><span class="o">.</span><span class="n">chi</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;pressure&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.facecolor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>
+
+<span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()))</span>
+
+<span class="n">topo</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+    <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=-</span><span class="mi">5000</span><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;RdBu_r&quot;</span><span class="p">,</span>
+    <span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">topo</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">levels</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+
+
+<span class="p">(</span><span class="n">h1</span><span class="p">,)</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">lons</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+    <span class="n">lats</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span>
+    <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+    <span class="n">ms</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+<span class="p">)</span>
+
+<span class="p">(</span><span class="n">h0</span><span class="p">,)</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">a05</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span> <span class="n">a05</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="p">(</span><span class="n">h1</span><span class="p">,)</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">with_chi</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+    <span class="n">with_chi</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span>
+    <span class="n">ms</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+<span class="p">)</span>
+
+<span class="k">for</span> <span class="n">cast</span> <span class="ow">in</span> <span class="n">with_chi</span><span class="o">.</span><span class="n">cast</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+    <span class="n">subset</span> <span class="o">=</span> <span class="n">with_chi</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">cast</span><span class="o">=</span><span class="n">cast</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="n">subset</span><span class="o">.</span><span class="n">longitude</span><span class="p">,</span>
+        <span class="n">subset</span><span class="o">.</span><span class="n">latitude</span> <span class="o">-</span> <span class="mf">0.75</span><span class="p">,</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">cast</span><span class="p">),</span>
+        <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span>
+        <span class="n">va</span><span class="o">=</span><span class="s2">&quot;top&quot;</span><span class="p">,</span>
+        <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;../images/A05-NATRE-domain.png&quot;</span><span class="p">)</span>
+
+<span class="c1"># ax.legend([h0, h1], [&quot;GO-SHIP A05&quot;, &quot;NATRE&quot;])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
+<span class="nn">File ~/work/python/xarray/xarray/core/dataset.py:1403,</span> in <span class="ni">Dataset._construct_dataarray</span><span class="nt">(self, name)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1402</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1403</span>     <span class="n">variable</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+<span class="g g-Whitespace">   </span><span class="mi">1404</span> <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+
+<span class="ne">KeyError</span>: &#39;sea_water_salinity&#39;
+
+<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
+
+<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
+<span class="nn">File ~/work/python/cf-xarray/cf_xarray/accessor.py:689,</span> in <span class="ni">_getitem</span><span class="nt">(accessor, key, skip)</span>
+<span class="g g-Whitespace">    </span><span class="mi">688</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">allnames</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">689</span>     <span class="n">extravars</span> <span class="o">=</span> <span class="n">accessor</span><span class="o">.</span><span class="n">get_associated_variable_names</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">690</span>         <span class="n">name</span><span class="p">,</span> <span class="n">skip_bounds</span><span class="o">=</span><span class="n">scalar_key</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="kc">False</span>
+<span class="g g-Whitespace">    </span><span class="mi">691</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">692</span>     <span class="n">coords</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">extravars</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+
+<span class="nn">File ~/work/python/cf-xarray/cf_xarray/accessor.py:1486,</span> in <span class="ni">CFAccessor.get_associated_variable_names</span><span class="nt">(self, name, skip_bounds, error)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1485</span> <span class="n">coords</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">}</span>
+<span class="ne">-&gt; </span><span class="mi">1486</span> <span class="n">attrs_or_encoding</span> <span class="o">=</span> <span class="n">ChainMap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_obj</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1488</span> <span class="k">if</span> <span class="s2">&quot;coordinates&quot;</span> <span class="ow">in</span> <span class="n">attrs_or_encoding</span><span class="p">:</span>
+
+<span class="nn">File ~/work/python/xarray/xarray/core/dataset.py:1507,</span> in <span class="ni">Dataset.__getitem__</span><span class="nt">(self, key)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1506</span> <span class="k">if</span> <span class="n">hashable</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">1507</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_construct_dataarray</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1508</span> <span class="k">else</span><span class="p">:</span>
+
+<span class="nn">File ~/work/python/xarray/xarray/core/dataset.py:1405,</span> in <span class="ni">Dataset._construct_dataarray</span><span class="nt">(self, name)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1404</span> <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1405</span>     <span class="n">_</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">variable</span> <span class="o">=</span> <span class="n">_get_virtual_variable</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1406</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_variables</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_level_coords</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dims</span>
+<span class="g g-Whitespace">   </span><span class="mi">1407</span>     <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1409</span> <span class="n">needed_dims</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">variable</span><span class="o">.</span><span class="n">dims</span><span class="p">)</span>
+
+<span class="nn">File ~/work/python/xarray/xarray/core/dataset.py:178,</span> in <span class="ni">_get_virtual_variable</span><span class="nt">(variables, key, level_vars, dim_sizes)</span>
+<span class="g g-Whitespace">    </span><span class="mi">177</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">178</span>     <span class="n">ref_var</span> <span class="o">=</span> <span class="n">variables</span><span class="p">[</span><span class="n">ref_name</span><span class="p">]</span>
+<span class="g g-Whitespace">    </span><span class="mi">180</span> <span class="k">if</span> <span class="n">var_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+<span class="ne">KeyError</span>: &#39;sea_water_salinity&#39;
+
+<span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
+
+<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
+<span class="n">Input</span> <span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">natre</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">natre</span><span class="o">.</span><span class="n">read_natre</span><span class="p">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">lats</span><span class="p">,</span> <span class="n">lons</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">natre</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">a05</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/a05-section.nc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">query</span><span class="p">({</span><span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="s2">&quot;longitude &gt; -35&quot;</span><span class="p">})</span>
+
+<span class="nn">File ~/work/eddydiff/eddydiff/natre.py:120,</span> in <span class="ni">read_natre</span><span class="nt">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">115</span>     <span class="n">natre</span><span class="p">[</span><span class="s2">&quot;gamma_n&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dcpy</span><span class="o">.</span><span class="n">oceans</span><span class="o">.</span><span class="n">neutral_density</span><span class="p">(</span><span class="n">natre</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">116</span> <span class="n">natre</span> <span class="o">=</span> <span class="n">dcpy</span><span class="o">.</span><span class="n">oceans</span><span class="o">.</span><span class="n">thorpesort</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">117</span>     <span class="n">natre</span><span class="p">,</span> <span class="n">natre</span><span class="o">.</span><span class="n">gamma_n</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;depth&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">interpolate_na</span><span class="p">(</span><span class="s2">&quot;pres&quot;</span><span class="p">),</span> <span class="n">core_dim</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">118</span> <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">120</span> <span class="n">natre</span> <span class="o">=</span> <span class="n">sections</span><span class="o">.</span><span class="n">add_ancillary_variables</span><span class="p">(</span><span class="n">natre</span><span class="p">,</span> <span class="n">pref</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">121</span> <span class="n">natre</span> <span class="o">=</span> <span class="n">natre</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">chi</span> <span class="o">&gt;</span> <span class="mf">1e-14</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">123</span> <span class="c1"># messes up cf-xarray</span>
+
+<span class="nn">File ~/work/eddydiff/eddydiff/sections.py:119,</span> in <span class="ni">add_ancillary_variables</span><span class="nt">(ds, pref)</span>
+<span class="g g-Whitespace">    </span><span class="mi">115</span> <span class="k">def</span> <span class="nf">add_ancillary_variables</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">pref</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">116</span>     <span class="sd">&quot;&quot;&quot;Adds ancillary variables.&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">118</span>     <span class="n">salt</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">pres</span> <span class="o">=</span> <span class="p">(</span>
+<span class="ne">--&gt; </span><span class="mi">119</span>         <span class="n">ds</span><span class="o">.</span><span class="n">cf</span><span class="p">[</span><span class="s2">&quot;sea_water_salinity&quot;</span><span class="p">],</span>
+<span class="g g-Whitespace">    </span><span class="mi">120</span>         <span class="n">ds</span><span class="o">.</span><span class="n">cf</span><span class="p">[</span><span class="s2">&quot;sea_water_temperature&quot;</span><span class="p">],</span>
+<span class="g g-Whitespace">    </span><span class="mi">121</span>         <span class="n">ds</span><span class="o">.</span><span class="n">cf</span><span class="p">[</span><span class="s2">&quot;sea_water_pressure&quot;</span><span class="p">],</span>
+<span class="g g-Whitespace">    </span><span class="mi">122</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">124</span>     <span class="k">if</span> <span class="s2">&quot;theta&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ds</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">125</span>         <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;theta&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dcpy</span><span class="o">.</span><span class="n">eos</span><span class="o">.</span><span class="n">ptmp</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">126</span>             <span class="n">salt</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">127</span>             <span class="n">temp</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">128</span>             <span class="n">pres</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">129</span>             <span class="n">pr</span><span class="o">=</span><span class="n">pref</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">130</span>         <span class="p">)</span>
+
+<span class="nn">File ~/work/python/cf-xarray/cf_xarray/accessor.py:1911,</span> in <span class="ni">CFDatasetAccessor.__getitem__</span><span class="nt">(self, key)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1881</span> <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">DataArray</span> <span class="o">|</span> <span class="n">Dataset</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1882</span>     <span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1883</span><span class="sd">     Index into a Dataset making use of CF attributes.</span>
+<span class="g g-Whitespace">   </span><span class="mi">1884</span><span class="sd"> </span>
+<span class="sd">   (...)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1909</span><span class="sd">     Add additional keys by specifying &quot;custom criteria&quot;. See :ref:`custom_criteria` for more.</span>
+<span class="g g-Whitespace">   </span><span class="mi">1910</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">1911</span>     <span class="k">return</span> <span class="n">_getitem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+<span class="nn">File ~/work/python/cf-xarray/cf_xarray/accessor.py:732,</span> in <span class="ni">_getitem</span><span class="nt">(accessor, key, skip)</span>
+<span class="g g-Whitespace">    </span><span class="mi">729</span>     <span class="k">return</span> <span class="n">ds</span><span class="o">.</span><span class="n">set_coords</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">731</span> <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">732</span>     <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">733</span>         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">.cf does not understand the key </span><span class="si">{</span><span class="n">k</span><span class="si">!r}</span><span class="s2">. &quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">734</span>         <span class="sa">f</span><span class="s2">&quot;Use &#39;repr(</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">.cf)&#39; (or &#39;</span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">.cf&#39; in a Jupyter environment) to see a list of key names that can be interpreted.&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">735</span>     <span class="p">)</span>
+
+<span class="ne">KeyError</span>: &quot;Dataset.cf does not understand the key &#39;sea_water_salinity&#39;. Use &#39;repr(Dataset.cf)&#39; (or &#39;Dataset.cf&#39; in a Jupyter environment) to see a list of key names that can be interpreted.&quot;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 
     <script type="text/x-thebe-config">
     {
@@ -585,7 +759,14 @@
               
             
                 <!-- Previous / next buttons -->
-<div class='prev-next-area'>
+<div class='prev-next-area'> 
+    <a class='left-prev' id="prev-link" href="dataset-processing.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Dataset processing</p>
+        </div>
+    </a>
 </div>
             
         </div>
