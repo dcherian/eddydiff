@@ -33,4 +33,5 @@ parts:
   - file: eqpac-ts-diagrams
   - file: dataset-processing
 - caption: Presentation figures
+  chapters:
   - file: figs-2022-02-omwg
