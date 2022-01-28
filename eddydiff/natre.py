@@ -2,7 +2,7 @@ import glob
 
 import dcpy
 import numpy as np
-
+import matplotlib.pyplot as plt
 import xarray as xr
 
 from . import sections
@@ -99,7 +99,7 @@ def combine_natre_files():
 
 def read_natre():
     natre = xr.open_dataset(
-       "../datasets/natre_large_scale.nc", chunks={"latitude": 5, "longitude": 5}
+        "../datasets/natre_large_scale.nc", chunks={"latitude": 5, "longitude": 5}
     )
     # natre = natre.where(natre.chi.notnull() & natre.eps.notnull())
     # natre = combine_natre_files()
@@ -128,3 +128,55 @@ def read_natre():
     del natre.salt.attrs["units"]
 
     return natre
+
+
+def compare_chi_distributions(a05_grouped, natre_grouped):
+    from eddydiff.sections import compute_bootstrapped_mean_ci
+
+    binsize = 20
+    for label, group in a05_grouped:
+        print(label)
+        group.attrs["name"] = "A05"
+        natre_group = natre_grouped[label]
+        natre_group.attrs["name"] = "NATRE"
+
+        f, ax = plt.subplots(1, 2, sharey=True, constrained_layout=True)
+
+        for group_, yerr in zip((group, natre_group), [0.5, 0.6]):
+            mask = (group_.chi < 1e-7) & (group_.eps < 1e-7)
+            group_ = group_.pint.quantify().pint.dequantify("~P")
+
+            for varname, axx in zip(["chi", "eps"], ax):
+
+                kwargs = dict(ax=axx, density=True, histtype="step", lw=1.5)
+
+                var = group_[varname]
+                npts = var.notnull().sum().item()
+                err = compute_bootstrapped_mean_ci(var.to_numpy(), binsize)
+                _, histbins, hdl = np.log10(var.as_numpy()).plot.hist(
+                    bins=101, label=f"{group_.attrs['name']}, {npts} pts", **kwargs
+                )
+
+                var = group_[varname].where(mask)
+                npts = var.notnull().sum().item()
+                mask_err = compute_bootstrapped_mean_ci(
+                    var.where(mask).to_numpy(), binsize
+                )
+                _, _, hdl1 = np.log10(var.as_numpy()).plot.hist(
+                    bins=histbins,
+                    label=f"{group_.attrs['name']}, masked,  {npts} pts",
+                    **kwargs,
+                )
+
+                ecolors = (hdl[0].get_edgecolor(), hdl1[0].get_edgecolor())
+                for e, dy, c in zip([err, mask_err], [-0.01, +0.01], ecolors):
+                    axx.plot(
+                        np.log10(e), np.ones((3,)) * (yerr + dy), color=c, marker="."
+                    )
+                axx.set_xticks(np.arange(-13, -5, 1))
+                axx.set_title("")
+        axx.legend(bbox_to_anchor=(1, 1))
+        f.suptitle(
+            f"$γ_n$ bin = {label} | depth bin = {group.pressure.mean().item():.2f}, {natre_group.pres.mean().item():.2f}"
+        )
+        f.set_size_inches((8, 3))

@@ -32,3 +32,5 @@ parts:
   - file: equix-vs-tao
   - file: eqpac-ts-diagrams
   - file: dataset-processing
+- caption: Presentation figures
+  - file: figs-2022-02-omwg
