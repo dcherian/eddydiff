@@ -709,3 +709,32 @@ def read_ctd_chipod_mat_file(chifile, ctdfile=None):
     return ds
 
 
+def compute_eke(section):
+    """Computes climatological, monthly mean, and cruise EKE."""
+
+    aviso = xr.open_dataset(
+        os.path.expanduser("~/datasets/aviso_monthly.zarr"),
+        chunks="auto",
+        engine="zarr",
+    )
+    aviso["eke"] = (aviso.ugosa ** 2 + aviso.vgosa ** 2) / 2
+    t0, t1 = tuple(pd.Timestamp(t.values) for t in section.time[[0, -1]])
+    months = np.concatenate([np.arange(t0.month, 13), np.arange(1, t1.month + 1)])
+
+    eke = xr.Dataset()
+
+    sub = aviso.eke.sel(time=slice(t0 - pd.DateOffset(months=1), t1)).mean("time")
+    interp_kwargs = dict(
+        latitude=section.cf["latitude"], longitude=section.cf["longitude"] + 360
+    )
+    eke["cruise"] = sub.interp(**interp_kwargs)
+    eke["monthly"] = (
+        aviso.eke.sel(time=aviso.time.dt.month.isin(months))
+        .groupby("time.month")
+        .mean()
+        .mean("month")
+        .interp(**interp_kwargs)
+    )
+    eke["clim"] = aviso.eke.mean("time").interp(**interp_kwargs)
+    eke = eke.drop_vars(["latitude", "longitude"])
+    return eke
