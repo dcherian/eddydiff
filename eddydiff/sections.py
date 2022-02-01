@@ -1,6 +1,6 @@
 import os
 
-import cf_xarray  # noqa
+import cf_xarray as cfxr  # noqa
 import dcpy
 import gsw
 import matplotlib.pyplot as plt
@@ -12,6 +12,13 @@ import xarray as xr
 
 from .eddydiff import intervals_to_bounds
 from .utils import get_hashes
+
+
+criteria = {
+    "sea_water_salinity": {
+        "standard_name": "sea_water_salinity|sea_water_practical_salinity"
+    }
+}
 
 
 def to_netcdf(infile, outfile, transect_name):
@@ -112,42 +119,82 @@ def to_netcdf(infile, outfile, transect_name):
     ctd.to_netcdf(outfile)
 
 
-def add_ancillary_variables(ds, pref=0):
+def add_ancillary_variables(ds):
     """Adds ancillary variables."""
 
-    salt, temp, pres = (
-        ds.cf["sea_water_salinity"],
-        ds.cf["sea_water_temperature"],
-        ds.cf["sea_water_pressure"],
-    )
-
-    if "theta" not in ds:
-        ds["theta"] = dcpy.eos.ptmp(
-            salt,
-            temp,
-            pres,
-            pr=pref,
+    with cfxr.set_options(custom_criteria=criteria):
+        salt, temp, pres = (
+            ds.cf["sea_water_salinity"],
+            ds.cf["sea_water_temperature"],
+            ds.cf["sea_water_pressure"],
         )
-    ds["theta"].attrs.update(long_name="$θ$")
 
-    if "pden" not in ds:
-        ds["pden"] = dcpy.eos.pden(salt, temp, pres, pr=pref)
-    ds["pden"].attrs.update(long_name="$ρ$")
+    # if "theta" not in ds:
+    #     ds["theta"] = dcpy.eos.ptmp(
+    #         salt,
+    #         temp,
+    #         pres,
+    #         pr=pref,
+    #     )
+    # ds["theta"].attrs.update(long_name="$θ$")
+
+    # if "pden" not in ds:
+    #    ds["pden"] = dcpy.eos.pden(salt, temp, pres, pr=pref)
+    # ds["pden"].attrs.update(long_name="$ρ$")
+
+    ds["SA"] = gsw.SA_from_SP(
+        salt,
+        pres,
+        ds.cf["longitude"],
+        ds.cf["latitude"],
+    )
+    ds.SA.attrs["standard_name"] = "sea_water_absolute_salinity"
+    ds.SA.attrs["long_name"] = "$S_A$"
+    ds.SA.attrs["units"] = "g/kg"
+
+    ds["CT"] = gsw.CT_from_t(salt, temp, pres)
+    ds.CT.attrs = {
+        "standard_name": "sea_water_conservative_temperature",
+        "long_name": "$Θ$",
+        "units": "degC",
+    }
 
     if "neutral_density" not in ds.cf:
         ds["gamma_n"] = dcpy.oceans.neutral_density(ds)
 
     if "dTdz" in ds:
-        ds = ds.rename_vars({"dTdz": "Tz"})
+        ds = ds.rename_vars({"dTdz": "Tz_orig"})
 
     Z = "sea_water_pressure"
     if "Tz" not in ds:
-        ds["Tz"] = -1 * ds.theta.cf.interpolate_na(Z).cf.differentiate(Z)
+        ds["Tz"] = -1 * ds.CT.cf.interpolate_na(Z).cf.differentiate(Z)
     ds["Tz"].attrs["long_name"] = "$θ_z$"
+    ds["Tz"].attrs["units"] = "degC/m"
+
+    def take_(arr, slicer, axis):
+        idxr = [slice(None)] * arr.ndim
+        idxr[axis] = slicer
+        return arr[tuple(idxr)]
 
     if "N2" not in ds:
-        ds["N2"] = 9.81 / 1030 * ds.gamma_n.cf.interpolate_na(Z).cf.differentiate(Z)
+        zaxis = ds.SA.cf.get_axis_num("Z")
+        N2, pmid = gsw.Nsquared(
+            ds.SA,
+            ds.CT,
+            pres.broadcast_like(ds.SA),
+            ds.cf["latitude"].broadcast_like(ds.SA),
+            axis=zaxis,
+        )
+        ds["N2"] = xr.DataArray(
+            (take_(N2, slice(-1), zaxis) + take_(N2, slice(1, None), zaxis)) / 2,
+            dims=ds.SA.dims,
+            coords={pres.name: (pres.dims, pres.data[1:-1], pres.attrs)},
+        )
     ds["N2"].attrs["long_name"] = "$N²$"
+    ds["N2"].attrs["units"] = "s-2"
+
+    ds["τ1"] = gsw.spiciness1(ds.SA, ds.CT)
+    ds.τ1.attrs = {"standard_name": "spiciness", "long_name": "$τ_1$"}
 
     Tz_mask = np.abs(ds.Tz) > 1e-3
     N2_mask = (ds.N2) > 1e-6
@@ -578,7 +625,7 @@ def read_ctd_chipod_mat_file(chifile, ctdfile=None):
     mat = loadmat(chifile)
     ds = xr.Dataset()
 
-    print("Found variables: ", mat["XPsum"][0,0].dtype.names)
+    print("Found variables: ", mat["XPsum"][0, 0].dtype.names)
 
     varnames = [
         "eps_f",
@@ -658,22 +705,7 @@ def read_ctd_chipod_mat_file(chifile, ctdfile=None):
         ds.coords["bottom_depth"] = ctd.btm_depth
         ds["gamma_n"] = dcpy.oceans.neutral_density(ds)
 
-        ds["SA"] = gsw.SA_from_SP(
-            ds.cf["sea_water_practical_salinity"],
-            ds.cf["sea_water_pressure"],
-            ds.cf["longitude"],
-            ds.cf["latitude"],
-        )
-        ds.SA.attrs["standard_name"] = "sea_water_absolute_salinity"
-
-        ds["CT"] = gsw.CT_from_t(
-            ds.cf["sea_water_absolute_salinity"],
-            ds.cf["sea_water_temperature"],
-            ds.cf["sea_water_pressure"],
-        )
-        ds.CT.attrs = {
-            "standard_name": "sea_water_conservative_temperature",
-            "units": "degC",
-        }
-
+        ds = add_ancillary_variables(ds)
     return ds
+
+

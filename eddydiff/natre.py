@@ -117,7 +117,7 @@ def read_natre():
         natre, natre.gamma_n.drop("depth").interpolate_na("pres"), core_dim="pres"
     )
 
-    natre = sections.add_ancillary_variables(natre, pref=1000)
+    natre = sections.add_ancillary_variables(natre)
     natre = natre.where(natre.chi > 1e-14)
 
     # messes up cf-xarray
@@ -180,3 +180,19 @@ def compare_chi_distributions(a05_grouped, natre_grouped):
             f"$γ_n$ bin = {label} | depth bin = {group.pressure.mean().item():.2f}, {natre_group.pres.mean().item():.2f}"
         )
         f.set_size_inches((8, 3))
+
+
+def plot_terms(ds, *, ax, x, y, color, **kwargs):
+    dcpy.plots.fill_between_bounds(ds, x, color=color, y=y, ax=ax)
+
+
+def plot_lines(ds, col):
+    fg = xr.plot.FacetGrid(ds, col=col, col_wrap=5, aspect=1 / 1.8)
+    fg.map_dataset(plot_terms, x="chib2", hue=None, y="pres", color="r")
+    fg.map_dataset(plot_terms, x="KρTz2", hue=None, y="pres", color="k")
+    ax = fg.axes[0, 0]
+    ax.set_ylim((2000, 200))
+    ax.set_xlim(1e-11, 1e-8)
+    ax.set_xscale("log")
+
+    return fg
