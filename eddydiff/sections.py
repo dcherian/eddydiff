@@ -738,3 +738,47 @@ def compute_eke(section):
     )
     eke["clim"] = aviso.eke.mean("time").interp(**interp_kwargs)
     return eke
+
+
+def diapycnal_spiciness_curvature(section):
+    import xfilter
+    from xgcm.transform import linear_interpolation
+
+    to = xr.DataArray(
+        np.arange(23, 28.5, 0.02),
+        dims="gamma_n",
+        attrs={
+            "axis": "Z",
+            "positive": "down",
+            "long_name": "$γ_n$",
+            "standard_name": "neutral_density",
+            "units": "kg/m3",
+        },
+    )
+    interped = linear_interpolation(
+        np.tan(section.Tu),
+        section.gamma_n,
+        to,
+        "pressure",
+        "pressure",
+        "gamma_n",
+    )
+    pi = linear_interpolation(
+        section.pressure,
+        section.gamma_n,
+        to,
+        "pressure",
+        "pressure",
+        "gamma_n",
+    )
+    interped["gamma_n"] = to
+    interped.coords["pressure"] = pi
+    dsc = xfilter.lowpass(
+        interped.differentiate("gamma_n"), "gamma_n", freq=1 / 0.08, num_discard=0
+    )
+    dsc.name = "dsc"
+    dsc.attrs["standard_name"] = "diapycnal_spiciness_curvature"
+    dsc.attrs["long_name"] = "$τ_{σσ}$"
+
+    dsc["pressure"] = dsc.pressure.fillna(0)
+    return dsc
