@@ -158,6 +158,7 @@ def add_ancillary_variables(ds):
         "long_name": "$Θ$",
         "units": "degC",
     }
+    ds["Tu"] = dcpy.oceans.turner_angle(ds)
 
     if "neutral_density" not in ds.cf:
         ds["gamma_n"] = dcpy.oceans.neutral_density(ds)
@@ -218,7 +219,7 @@ def add_ancillary_variables(ds):
         ds["eps_chi"].attrs["long_name"] = "$ε_χ$"
         ds["eps_chi"].attrs["units"] = "W/kg"
 
-    ds["Kt"] = (ds.chi / 2 / ds.Tz ** 2).where(Tz_mask)
+    ds["Kt"] = (ds.chi / 2 / ds.Tz**2).where(Tz_mask)
     ds["Kt"].attrs["long_name"] = "$K_T$"
     ds["Kt"].attrs["units"] = "m²/s"
 
@@ -363,7 +364,7 @@ def average_density_bin(group, blocksize, skip_fits=False):
         )
         chidens.Kt_m.attrs.update(dict(long_name="$K_T^m$", units="m²/s"))
 
-        chidens["KρTz2"] = chidens.Krho_m * chidens.dTdz_m ** 2
+        chidens["KρTz2"] = chidens.Krho_m * chidens.dTdz_m**2
         delta["KρTz2"] = chidens.KρTz2 * np.sqrt(
             (delta.Krho_m / chidens.Krho_m) ** 2 + 2 * (delta.hm / chidens.hm) ** 2
         )
@@ -375,7 +376,7 @@ def average_density_bin(group, blocksize, skip_fits=False):
         )
         chidens.KtTzTz.attrs = {"long_name": "$⟨K_T θ_z⟩ ∂_zθ_m$"}
 
-        chidens["residual"] = chidens.chi / 2 - chidens.Krho_m * chidens.dTdz_m ** 2
+        chidens["residual"] = chidens.chi / 2 - chidens.Krho_m * chidens.dTdz_m**2
         delta["residual"] = chidens.residual * np.sqrt(
             (delta.chi / chidens.chi) ** 2 + (delta.KρTz2 / chidens.KρTz2) ** 2
         )
@@ -702,10 +703,11 @@ def read_ctd_chipod_mat_file(chifile, ctdfile=None):
 
         ds["temp"] = ctd.ctd_temperature
         ds["salt"] = ctd.ctd_salinity
-        ds.coords["bottom_depth"] = ctd.btm_depth
+        ds.coords["bottom_depth"] = ctd.btm_depth.isel(pressure=5, drop=True)
         ds["gamma_n"] = dcpy.oceans.neutral_density(ds)
 
         ds = add_ancillary_variables(ds)
+
     return ds
 
 
@@ -717,8 +719,8 @@ def compute_eke(section):
         chunks="auto",
         engine="zarr",
     )
-    aviso["eke"] = (aviso.ugosa ** 2 + aviso.vgosa ** 2) / 2
-    t0, t1 = tuple(pd.Timestamp(t.values) for t in section.time[[0, -1]])
+    aviso["eke"] = (aviso.ugosa**2 + aviso.vgosa**2) / 2
+    t0, t1 = tuple(pd.Timestamp(t) for t in section.time.values.ravel()[[0, -1]])
     months = np.concatenate([np.arange(t0.month, 13), np.arange(1, t1.month + 1)])
 
     eke = xr.Dataset()
@@ -736,5 +738,4 @@ def compute_eke(section):
         .interp(**interp_kwargs)
     )
     eke["clim"] = aviso.eke.mean("time").interp(**interp_kwargs)
-    eke = eke.drop_vars(["latitude", "longitude"])
     return eke
