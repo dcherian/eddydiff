@@ -1,8 +1,9 @@
 import glob
 
 import dcpy
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+
 import xarray as xr
 
 from . import sections

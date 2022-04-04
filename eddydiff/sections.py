@@ -13,7 +13,6 @@ import xarray as xr
 from .eddydiff import intervals_to_bounds
 from .utils import get_hashes
 
-
 criteria = {
     "sea_water_salinity": {
         "standard_name": "sea_water_salinity|sea_water_practical_salinity"

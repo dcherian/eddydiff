@@ -209,7 +209,7 @@ def wrap_gradient(invar):
     )
     grads["dx"] = xr.DataArray(gradients[2], dims=dims, coords=coords) / dlon
 
-    grads["mag"] = np.sqrt(grads.dx ** 2 + grads.dy ** 2 + grads.dz ** 2)
+    grads["mag"] = np.sqrt(grads.dx**2 + grads.dy**2 + grads.dz**2)
 
     return grads
 
@@ -872,7 +872,7 @@ def estimate_Ke(trans, clim):
     Ke["dTmdz"] = clim.dTdz  # .where(clim.dTdz < trans.dTdz, trans.dTdz)
     Ke["dTiso"] = clim.dTiso
     Ke["KT"] = trans.KT
-    Ke["Ke"] = (Ke.chi / 2 - np.abs(Ke.KtTz * Ke.dTmdz)) / Ke.dTiso ** 2
+    Ke["Ke"] = (Ke.chi / 2 - np.abs(Ke.KtTz * Ke.dTmdz)) / Ke.dTiso**2
 
     return Ke
 

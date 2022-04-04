@@ -3,12 +3,12 @@
 import os
 
 import cf_xarray as cfxr
+import distributed
 import numpy as np
 import pandas as pd
 
 import eddydiff as ed
 import xarray as xr
-import distributed
 
 # from distributed.utils_test import client, cluster_fixture, loop
 from eddydiff.natre import read_natre
