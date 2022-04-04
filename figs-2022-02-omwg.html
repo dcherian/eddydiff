@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Dataset processing" href="dataset-processing.html" />
@@ -361,10 +359,26 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.dpi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">140</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.facecolor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.91</span><span class="p">,</span> <span class="mf">0.91</span><span class="p">,</span> <span class="mf">0.91</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.facecolor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.99</span><span class="p">,)</span><span class="o">*</span><span class="mi">3</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;grid.color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.25</span><span class="p">,)</span><span class="o">*</span><span class="mi">3</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.facecolor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;F5F5EE&quot;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.facecolor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.99</span><span class="p">,)</span> <span class="o">*</span> <span class="mi">3</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;grid.color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.25</span><span class="p">,)</span> <span class="o">*</span> <span class="mi">3</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;grid.alpha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;font.sans-serif&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Fira Sans&quot;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;font.size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.edgecolor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;darkgray&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">argo_fine_depth</span><span class="p">[</span><span class="s2">&quot;pressure&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;pressure_bins&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">350</span><span class="p">,</span> <span class="mi">1950</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span>
+<span class="n">argo_fine_depth</span> <span class="o">=</span> <span class="n">argo_fine_depth</span><span class="o">.</span><span class="n">swap_dims</span><span class="p">({</span><span class="s2">&quot;pressure_bins&quot;</span><span class="p">:</span> <span class="s2">&quot;pressure&quot;</span><span class="p">})</span>
+<span class="n">argo_fine_depth</span><span class="p">[</span><span class="s2">&quot;pressure_bins&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">intervals_to_bounds</span><span class="p">(</span>
+    <span class="n">argo_fine_depth</span><span class="o">.</span><span class="n">pressure_bins</span>
+<span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;gamma_n&quot;</span><span class="p">:</span> <span class="s2">&quot;pressure&quot;</span><span class="p">})</span>
+
+<span class="n">argo_fine_depth</span><span class="p">[</span><span class="s2">&quot;pressure&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;bounds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pressure_bins&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -373,10 +387,11 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">micro</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;bounds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pres_err&quot;</span>
 
+
 <span class="k">def</span> <span class="nf">plot_pop_natre_meso_micro</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
     <span class="n">mesomicrocolor</span> <span class="o">=</span> <span class="s2">&quot;darkorchid&quot;</span>
     <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">pop_natre</span><span class="o">.</span><span class="n">DISS</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">mesomicrocolor</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;POP 1/10° meso $→$ micro&quot;</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">mesomicrocolor</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;POP 1/10° DIFF&quot;</span>
     <span class="p">)</span>
 
     <span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">fill_between_bounds</span><span class="p">(</span>
@@ -394,34 +409,71 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="c1">### Mesoscale budget</span>
 <span class="n">pop_natre</span><span class="o">.</span><span class="n">BC</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;POP 1/10° h. stir $⟨u_e^h θ_e⟩.∇_hθ_m$&quot;</span><span class="p">)</span>
 <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pop_natre</span><span class="o">.</span><span class="n">PKC</span><span class="p">))</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;POP 1/10° v. stir $-⟨w_eθ_e⟩.∂_zθ_m$&quot;</span><span class="p">)</span>
-<span class="c1">#(-1 * pop_natre.VMIX).cf.plot(color=&quot;sienna&quot;, ax=ax[0], label=&quot;POP VMIX&quot;)</span>
-<span class="c1">#(-1 * pop_natre.HDIFF).cf.plot(ax=ax[0], label=&quot;POP HDIFF&quot;, marker=&quot;x&quot;, ls=&quot;none&quot;)</span>
+<span class="c1"># (-1 * pop_natre.VMIX).cf.plot(color=&quot;sienna&quot;, ax=ax[0], label=&quot;POP VMIX&quot;)</span>
+<span class="c1"># (-1 * pop_natre.HDIFF).cf.plot(ax=ax[0], label=&quot;POP HDIFF&quot;, marker=&quot;x&quot;, ls=&quot;none&quot;)</span>
 
 
 <span class="c1">### Microscale budget</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">sca</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
 <span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">fill_between_bounds</span><span class="p">(</span>
-    <span class="n">micro</span><span class="p">,</span> <span class="s2">&quot;KρTz2&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;FP2005: $⟨w_t T_t⟩ ∂_zθ_m$&quot;</span>
+    <span class="n">micro</span><span class="p">,</span>
+    <span class="s2">&quot;KρTz2&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;FP2005: $⟨w_t T_t⟩ ∂_zθ_m$&quot;</span><span class="p">,</span>
+    <span class="c1">#stairs_kwargs=dict(lw=1.5),</span>
 <span class="p">)</span>
 <span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">fill_between_bounds</span><span class="p">(</span>
-    <span class="n">micro</span><span class="p">,</span> <span class="s2">&quot;chib2&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C0&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;FP2005: $⟨χ⟩/2$&quot;</span>
+    <span class="n">micro</span><span class="p">,</span>
+    <span class="s2">&quot;chib2&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C0&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;FP2005: $⟨χ⟩/2$&quot;</span><span class="p">,</span>
+    <span class="c1">#stairs_kwargs=dict(lw=1.5),</span>
 <span class="p">)</span>
+
+<span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">fill_between_bounds</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">argo_fine_depth</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">criteria</span><span class="o">=</span><span class="s2">&quot;whalen&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+    <span class="s2">&quot;χ&quot;</span><span class="p">,</span>
+    <span class="n">stairs_kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span>  <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))),</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;tab:green&quot;</span><span class="p">,</span>
+    <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">(),</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pressure&quot;</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$⟨χ⟩^</span><span class="si">{argo}</span><span class="s2">_{Rω=3}/2$&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
 
 <span class="c1">### Parameterizations</span>
 <span class="n">cole_var</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$K_e^</span><span class="si">{cole}</span><span class="s2"> |∇_hT^</span><span class="si">{argo}</span><span class="s2">|²$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 <span class="p">)</span>
-<span class="c1">#groeskamp.eddy_var_0.plot(</span>
+<span class="c1"># groeskamp.eddy_var_0.plot(</span>
 <span class="c1">#    y=&quot;pres&quot;,</span>
 <span class="c1">#    label=&quot;$K_e^{G2020unsupp} |∇_hT^{cole}|²$&quot;,</span>
 <span class="c1">#    color=&quot;limegreen&quot;,</span>
 <span class="c1">#    ls=&quot;-.&quot;,</span>
 <span class="c1">#    ax=ax[2],</span>
-<span class="c1">#)</span>
+<span class="c1"># )</span>
 <span class="n">groeskamp</span><span class="o">.</span><span class="n">eddy_var</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$K_e^</span><span class="si">{G2020}</span><span class="s2"> |∇_hT^</span><span class="si">{argo}</span><span class="s2">|²$&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;limegreen&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 <span class="p">)</span>
+
+<span class="k">for</span> <span class="n">cycle</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">]:</span>
+    <span class="n">pop</span> <span class="o">=</span> <span class="n">pop_1deg_natre</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">cycle</span><span class="o">=</span><span class="n">cycle</span><span class="p">)</span>
+    <span class="n">pop</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">pop</span><span class="o">.</span><span class="n">z_t</span><span class="o">.</span><span class="n">notnull</span><span class="p">(),</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">pop</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">add_bounds</span><span class="p">(</span><span class="s2">&quot;z_t&quot;</span><span class="p">)</span>
+    <span class="n">ybounds</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">z_t_bounds</span>
+    <span class="n">bdim</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">get_bounds_dim_name</span><span class="p">(</span><span class="s2">&quot;z_t&quot;</span><span class="p">)</span>
+    <span class="n">yedges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ybounds</span><span class="o">.</span><span class="n">isel</span><span class="p">({</span><span class="n">bdim</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">ybounds</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">stairs</span><span class="p">(</span>
+        <span class="n">pop</span><span class="o">.</span><span class="n">RediVar</span><span class="p">,</span>
+        <span class="n">edges</span><span class="o">=</span><span class="n">yedges</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span>
+        <span class="n">lw</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;POP 1° cycle=</span><span class="si">{</span><span class="n">cycle</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
 <span class="c1">### Cleanup</span>
 <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">axx</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
@@ -433,7 +485,7 @@ const thebe_selector_output = ".output, .cell_output"
     <span class="n">axx</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;[$°C^2/s$]&quot;</span><span class="p">)</span>
 <span class="c1"># ax[1].set_xlabel(&quot;Variance production or dissipation [°C²/s]&quot;)</span>
 
-<span class="c1">#f.suptitle(&quot;NATRE&quot;)</span>
+<span class="c1"># f.suptitle(&quot;NATRE&quot;)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;(a) Mesoscale budget&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;(b) Microscale budget&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;(c) Parameterizations&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s2">&quot;medium&quot;</span><span class="p">)</span>
@@ -443,19 +495,13 @@ const thebe_selector_output = ".output, .cell_output"
 
 <span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">clean_axes</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
 <span class="n">f</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mf">9.2</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
 <span class="c1"># f.savefig(&quot;../images/natre-meso-micro-param.png&quot;)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/figs-2022-02-omwg_2_0.png" src="_images/figs-2022-02-omwg_2_0.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">v</span>
-</pre></div>
-</div>
+<img alt="_images/figs-2022-02-omwg_3_0.png" src="_images/figs-2022-02-omwg_3_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -681,11 +727,11 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="n">During</span> <span class="n">handling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">above</span> <span class="n">exception</span><span class="p">,</span> <span class="n">another</span> <span class="n">exception</span> <span class="n">occurred</span><span class="p">:</span>
 
 <span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
-<span class="n">Input</span> <span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="n">Input</span> <span class="n">In</span> <span class="p">[</span><span class="mi">15</span><span class="p">],</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
-<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">natre</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">natre</span><span class="o">.</span><span class="n">read_natre</span><span class="p">()</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">lats</span><span class="p">,</span> <span class="n">lons</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">natre</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">a05</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/a05-section.nc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">query</span><span class="p">({</span><span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="s2">&quot;longitude &gt; -35&quot;</span><span class="p">})</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">natre</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">natre</span><span class="o">.</span><span class="n">read_natre</span><span class="p">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">lats</span><span class="p">,</span> <span class="n">lons</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">natre</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">a05</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/a05-section.nc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">query</span><span class="p">({</span><span class="s2">&quot;cast&quot;</span><span class="p">:</span> <span class="s2">&quot;longitude &gt; -35&quot;</span><span class="p">})</span>
 
 <span class="nn">File ~/work/eddydiff/eddydiff/natre.py:120,</span> in <span class="ni">read_natre</span><span class="nt">()</span>
 <span class="g g-Whitespace">    </span><span class="mi">115</span>     <span class="n">natre</span><span class="p">[</span><span class="s2">&quot;gamma_n&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dcpy</span><span class="o">.</span><span class="n">oceans</span><span class="o">.</span><span class="n">neutral_density</span><span class="p">(</span><span class="n">natre</span><span class="p">)</span>

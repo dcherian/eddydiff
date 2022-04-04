@@ -51,8 +51,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -387,6 +385,11 @@ const thebe_selector_output = ".output, .cell_output"
    Computing along latitude and longitude lines
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#buoyancy-reynolds-number">
+   Buoyancy Reynolds Number
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -456,6 +459,11 @@ const thebe_selector_output = ".output, .cell_output"
    Computing along latitude and longitude lines
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#buoyancy-reynolds-number">
+   Buoyancy Reynolds Number
+  </a>
+ </li>
 </ul>
 
                         </nav>
@@ -498,14 +506,14 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>matplotlib : 3.4.3
-cf_xarray  : 0.5.3.dev29+g3660810.d20210729
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>eddydiff   : 0.1
+distributed: 2021.12.0
 dcpy       : 0.1
-numpy      : 1.21.3
+numpy      : 1.22.0
 tqdm       : 4.62.3
-distributed: 2021.10.0
-xarray     : 0.17.1.dev3+g48378c4b1
-eddydiff   : 0.1
+matplotlib : 3.5.1
+xarray     : 0.20.3.dev137+g3f3a197c8
+cf_xarray  : 0.6.4.dev14+g9b4d1e0.d20220121
 </pre></div>
 </div>
 </div>
@@ -521,9 +529,9 @@ eddydiff   : 0.1
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/deepak/miniconda3/envs/dcpy/lib/python3.8/site-packages/distributed/node.py:160: UserWarning: Port 8787 is already in use.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/dcherian/mambaforge/envs/eddydiff/lib/python3.9/site-packages/distributed/node.py:160: UserWarning: Port 8787 is already in use.
 Perhaps you already have a cluster running?
-Hosting the HTTP server on port 44397 instead
+Hosting the HTTP server on port 58610 instead
   warnings.warn(
 </pre></div>
 </div>
@@ -531,7 +539,7 @@ Hosting the HTTP server on port 44397 instead
     <div style="width: 24px; height: 24px; background-color: #e1e1e1; border: 3px solid #9D9D9D; border-radius: 5px; position: absolute;"> </div>
     <div style="margin-left: 48px;">
         <h3 style="margin-bottom: 0px;">Client</h3>
-        <p style="color: #9D9D9D; margin-bottom: 0px;">Client-f3c9e4f8-513b-11ec-affa-0028f8270ea7</p>
+        <p style="color: #9D9D9D; margin-bottom: 0px;">Client-738b10f2-808f-11ec-bf94-acde48001122</p>
         <table style="width: 100%; text-align: left;">
 
         <tr>
@@ -544,7 +552,7 @@ Hosting the HTTP server on port 44397 instead
 
             <tr>
                 <td style="text-align: left;">
-                    <strong>Dashboard: </strong> <a href="http://127.0.0.1:44397/status" target="_blank">http://127.0.0.1:44397/status</a>
+                    <strong>Dashboard: </strong> <a href="http://127.0.0.1:58610/status" target="_blank">http://127.0.0.1:58610/status</a>
                 </td>
                 <td style="text-align: left;"></td>
             </tr>
@@ -560,11 +568,11 @@ Hosting the HTTP server on port 44397 instead
     </div>
     <div style="margin-left: 48px;">
         <h3 style="margin-bottom: 0px; margin-top: 0px;">LocalCluster</h3>
-        <p style="color: #9D9D9D; margin-bottom: 0px;">04249df4</p>
+        <p style="color: #9D9D9D; margin-bottom: 0px;">265c5ea6</p>
         <table style="width: 100%; text-align: left;">
             <tr>
                 <td style="text-align: left;">
-                    <strong>Dashboard:</strong> <a href="http://127.0.0.1:44397/status" target="_blank">http://127.0.0.1:44397/status</a>
+                    <strong>Dashboard:</strong> <a href="http://127.0.0.1:58610/status" target="_blank">http://127.0.0.1:58610/status</a>
                 </td>
                 <td style="text-align: left;">
                     <strong>Workers:</strong> 2
@@ -575,7 +583,7 @@ Hosting the HTTP server on port 44397 instead
                     <strong>Total threads:</strong> 4
                 </td>
                 <td style="text-align: left;">
-                    <strong>Total memory:</strong> 31.09 GiB
+                    <strong>Total memory:</strong> 16.00 GiB
                 </td>
             </tr>
 
@@ -597,11 +605,11 @@ Hosting the HTTP server on port 44397 instead
         <div style="width: 24px; height: 24px; background-color: #FFF7E5; border: 3px solid #FF6132; border-radius: 5px; position: absolute;"> </div>
         <div style="margin-left: 48px;">
             <h3 style="margin-bottom: 0px;">Scheduler</h3>
-            <p style="color: #9D9D9D; margin-bottom: 0px;">Scheduler-709717c7-6aec-4209-a97d-fc7e957a55ac</p>
+            <p style="color: #9D9D9D; margin-bottom: 0px;">Scheduler-853ed704-d165-4f12-8c32-a20ccc9e66c5</p>
             <table style="width: 100%; text-align: left;">
                 <tr>
                     <td style="text-align: left;">
-                        <strong>Comm:</strong> tcp://127.0.0.1:45051
+                        <strong>Comm:</strong> tcp://127.0.0.1:58611
                     </td>
                     <td style="text-align: left;">
                         <strong>Workers:</strong> 2
@@ -609,7 +617,7 @@ Hosting the HTTP server on port 44397 instead
                 </tr>
                 <tr>
                     <td style="text-align: left;">
-                        <strong>Dashboard:</strong> <a href="http://127.0.0.1:44397/status" target="_blank">http://127.0.0.1:44397/status</a>
+                        <strong>Dashboard:</strong> <a href="http://127.0.0.1:58610/status" target="_blank">http://127.0.0.1:58610/status</a>
                     </td>
                     <td style="text-align: left;">
                         <strong>Total threads:</strong> 4
@@ -620,7 +628,7 @@ Hosting the HTTP server on port 44397 instead
                         <strong>Started:</strong> Just now
                     </td>
                     <td style="text-align: left;">
-                        <strong>Total memory:</strong> 31.09 GiB
+                        <strong>Total memory:</strong> 16.00 GiB
                     </td>
                 </tr>
             </table>
@@ -643,7 +651,7 @@ Hosting the HTTP server on port 44397 instead
                 <table style="width: 100%; text-align: left;">
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Comm: </strong> tcp://127.0.0.1:35215
+                            <strong>Comm: </strong> tcp://127.0.0.1:58618
                         </td>
                         <td style="text-align: left;">
                             <strong>Total threads: </strong> 2
@@ -651,21 +659,21 @@ Hosting the HTTP server on port 44397 instead
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:37419/status" target="_blank">http://127.0.0.1:37419/status</a>
+                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:58620/status" target="_blank">http://127.0.0.1:58620/status</a>
                         </td>
                         <td style="text-align: left;">
-                            <strong>Memory: </strong> 15.54 GiB
+                            <strong>Memory: </strong> 8.00 GiB
                         </td>
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Nanny: </strong> tcp://127.0.0.1:46017
+                            <strong>Nanny: </strong> tcp://127.0.0.1:58615
                         </td>
                         <td style="text-align: left;"></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left;">
-                            <strong>Local directory: </strong> /tmp/dask-worker-space/worker-cp54j35u
+                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-91ogs4p6
                         </td>
                     </tr>
 
@@ -688,7 +696,7 @@ Hosting the HTTP server on port 44397 instead
                 <table style="width: 100%; text-align: left;">
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Comm: </strong> tcp://127.0.0.1:32981
+                            <strong>Comm: </strong> tcp://127.0.0.1:58619
                         </td>
                         <td style="text-align: left;">
                             <strong>Total threads: </strong> 2
@@ -696,21 +704,21 @@ Hosting the HTTP server on port 44397 instead
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:33227/status" target="_blank">http://127.0.0.1:33227/status</a>
+                            <strong>Dashboard: </strong> <a href="http://127.0.0.1:58621/status" target="_blank">http://127.0.0.1:58621/status</a>
                         </td>
                         <td style="text-align: left;">
-                            <strong>Memory: </strong> 15.54 GiB
+                            <strong>Memory: </strong> 8.00 GiB
                         </td>
                     </tr>
                     <tr>
                         <td style="text-align: left;">
-                            <strong>Nanny: </strong> tcp://127.0.0.1:44127
+                            <strong>Nanny: </strong> tcp://127.0.0.1:58614
                         </td>
                         <td style="text-align: left;"></td>
                     </tr>
                     <tr>
                         <td colspan="2" style="text-align: left;">
-                            <strong>Local directory: </strong> /tmp/dask-worker-space/worker-qfol5_ls
+                            <strong>Local directory: </strong> /Users/dcherian/work/eddydiff/notebooks/dask-worker-space/worker-r4jxgbmt
                         </td>
                     </tr>
 
@@ -752,6 +760,12 @@ Hosting the HTTP server on port 44397 instead
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">natre</span><span class="o">.</span><span class="n">read_natre</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/dcherian/work/eddydiff/eddydiff/sections.py:174: FutureWarning: Using a non-tuple sequence for multidimensional indexing is deprecated; use `arr[tuple(seq)]` instead of `arr[seq]`. In the future this will be interpreted as an array index, `arr[np.array(seq)]`, which will result either in an error or a different result.
+  return arr[slicer]
 </pre></div>
 </div>
 </div>
@@ -3359,6 +3373,60 @@ Coordinates:
 </div>
 </div>
 </div>
+<div class="section" id="buoyancy-reynolds-number">
+<h2>Buoyancy Reynolds Number<a class="headerlink" href="#buoyancy-reynolds-number" title="Permalink to this headline">¶</a></h2>
+<p>There are a bunch of low values</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre</span><span class="p">[</span><span class="s2">&quot;ν&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dcpy</span><span class="o">.</span><span class="n">oceans</span><span class="o">.</span><span class="n">visc</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">salt</span><span class="p">,</span> <span class="n">natre</span><span class="o">.</span><span class="n">temp</span><span class="p">,</span> <span class="n">natre</span><span class="o">.</span><span class="n">pres</span><span class="p">)</span>
+<span class="n">natre</span><span class="p">[</span><span class="s2">&quot;κ&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dcpy</span><span class="o">.</span><span class="n">oceans</span><span class="o">.</span><span class="n">tdif</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">salt</span><span class="p">,</span> <span class="n">natre</span><span class="o">.</span><span class="n">temp</span><span class="p">,</span> <span class="n">natre</span><span class="o">.</span><span class="n">pres</span><span class="p">)</span>
+<span class="n">natre</span><span class="p">[</span><span class="s2">&quot;Reb&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">natre</span><span class="o">.</span><span class="n">eps</span><span class="o">/</span><span class="n">natre</span><span class="o">.</span><span class="n">ν</span><span class="o">/</span><span class="n">natre</span><span class="o">.</span><span class="n">N2</span>
+<span class="n">natre</span><span class="p">[</span><span class="s2">&quot;Reb&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;long_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;$Re_b$&quot;</span>
+<span class="k">del</span> <span class="n">natre</span><span class="o">.</span><span class="n">Reb</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre</span><span class="p">[</span><span class="s2">&quot;χmol&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">natre</span><span class="o">.</span><span class="n">κ</span> <span class="o">*</span> <span class="n">natre</span><span class="o">.</span><span class="n">Tz</span><span class="o">**</span><span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span><span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">χmol</span> <span class="o">+</span> <span class="n">natre</span><span class="o">.</span><span class="n">chi</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">101</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s2">&quot;step&quot;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">chi</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s2">&quot;step&quot;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/natre-examine_36_0.png" src="_images/natre-examine_36_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">101</span><span class="p">),</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s2">&quot;step&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">Reb</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mf">24.7</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">Reb</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="mf">25.5</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">);</span>
+
+<span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">linex</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">([</span><span class="mi">16</span><span class="p">,</span> <span class="mi">200</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/dcherian/work/python/xarray/xarray/core/computation.py:734: RuntimeWarning: invalid value encountered in log10
+  result_data = func(*input_data)
+/Users/dcherian/work/python/xarray/xarray/core/computation.py:734: RuntimeWarning: invalid value encountered in log10
+  result_data = func(*input_data)
+</pre></div>
+</div>
+<img alt="_images/natre-examine_37_1.png" src="_images/natre-examine_37_1.png" />
+</div>
+</div>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -3370,16 +3438,16 @@ Coordinates:
         },
         codeMirrorConfig: {
             theme: "abcdef",
-            mode: "conda-env-dcpy-py"
+            mode: "conda-env-eddydiff-py"
         },
         kernelOptions: {
-            kernelName: "conda-env-dcpy-py",
+            kernelName: "conda-env-eddydiff-py",
             path: "./."
         },
         predefinedOutput: true
     }
     </script>
-    <script>kernelName = 'conda-env-dcpy-py'</script>
+    <script>kernelName = 'conda-env-eddydiff-py'</script>
 
               </div>
               
