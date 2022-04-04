@@ -387,9 +387,9 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cf_xarray</span> <span class="k">as</span> <span class="nn">cfxr</span>
 <span class="kn">import</span> <span class="nn">dcpy</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="kn">import</span> <span class="nn">eddydiff</span> <span class="k">as</span> <span class="nn">ed</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="n">mpl</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.dpi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">140</span>
 </pre></div>
@@ -419,7 +419,7 @@ const thebe_selector_output = ".output, .cell_output"
     <span class="p">)</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">cole</span><span class="o">.</span><span class="n">pres</span><span class="p">)</span>
     <span class="n">result</span><span class="o">.</span><span class="n">dTiso</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;long_name&quot;</span><span class="p">:</span> <span class="s2">&quot;$|∇T_</span><span class="si">{iso}</span><span class="s2">|$&quot;</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;m²/s&quot;</span><span class="p">}</span>
 
-    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;χe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">Ke</span> <span class="o">*</span> <span class="n">result</span><span class="o">.</span><span class="n">dTiso</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;χe&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">Ke</span> <span class="o">*</span> <span class="n">result</span><span class="o">.</span><span class="n">dTiso</span><span class="o">**</span><span class="mi">2</span>
     <span class="n">result</span><span class="o">.</span><span class="n">χe</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;long_name&quot;</span><span class="p">:</span> <span class="s2">&quot;$K_e^</span><span class="si">{cole}</span><span class="s2"> |∇T_</span><span class="si">{iso}</span><span class="s2">^</span><span class="si">{argo}</span><span class="s2">|²$&quot;</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;°C²/s&quot;</span><span class="p">}</span>
 
     <span class="k">return</span> <span class="n">result</span>

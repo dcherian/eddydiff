@@ -495,18 +495,18 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">import</span> <span class="nn">cf_xarray</span>
 <span class="kn">import</span> <span class="nn">dcpy</span>
 <span class="kn">import</span> <span class="nn">distributed</span>
-<span class="kn">import</span> <span class="nn">hvplot.xarray</span>
 <span class="kn">import</span> <span class="nn">gsw</span>
+<span class="kn">import</span> <span class="nn">hvplot.xarray</span>
 <span class="kn">import</span> <span class="nn">icecream</span> <span class="k">as</span> <span class="nn">ic</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">pump</span>
 <span class="kn">import</span> <span class="nn">xgcm</span>
 
 <span class="kn">import</span> <span class="nn">eddydiff</span> <span class="k">as</span> <span class="nn">ed</span>
-<span class="kn">import</span> <span class="nn">pump</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="n">xr</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span><span class="n">keep_attrs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -517,7 +517,15 @@ const thebe_selector_output = ".output, .cell_output"
 
 <span class="kn">import</span> <span class="nn">dask</span>
 
-<span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">({</span><span class="s2">&quot;distributed.nanny.environ&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;MALLOC_TRIM_THRESHOLD_&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;OMP_NUM_THREADS&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;MKL_NUM_THREADS&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}})</span>
+<span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;distributed.nanny.environ&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;MALLOC_TRIM_THRESHOLD_&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;OMP_NUM_THREADS&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;MKL_NUM_THREADS&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">)</span>
 <span class="n">dask</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;distributed.nanny.environ&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2678,10 +2686,10 @@ xarray     : 0.20.2.dev43+gb40678934
 <h2>Cole et al 2015 method<a class="headerlink" href="#cole-et-al-2015-method" title="Permalink to this headline">¶</a></h2>
 <ol class="simple">
 <li><p>Uses argo dataset 2005-2012 in the paper; provided dataset uses 2005-2015</p></li>
-<li><p>Mean salinity profiles <span class="math notranslate nohighlight">\(\{S\}\)</span> (Figure 1c) are constructed by smoothing the Roemmich and Gilson [2009] monthly mapped salinity field with a 1 year running average, then interpolating in space and time to the location and time of each Argo profile.</p></li>
-<li><p>The salinity gradient for each year of observations is estimated as the average magnitude of the 3° forward and backward spatial differences (e.g., <span class="math notranslate nohighlight">\(∣∇_{x}  \{S\} ∣ =  \frac 12 ∣∇_{x+} \{S\} ∣ + \frac 12 ∣∇_{x-} \{S\} ∣\)</span> ). This is formally equivalent to a 6° centered difference for a planar salinity surface but does not underestimate the salinity gradient for symmetric salinity surfaces (for which a centered difference would result in zero gradient and an ill-conditioned mixing length). The salinity gradient is then averaged over all years. Near coastlines, forward or backward gradients are extrapolated using the nearest neighbor.</p></li>
+<li><p>Mean salinity profiles <span class="math notranslate nohighlight">\({S}\)</span> (Figure 1c) are constructed by smoothing the Roemmich and Gilson [2009] monthly mapped salinity field with a 1 year running average, then interpolating in space and time to the location and time of each Argo profile.</p></li>
+<li><p>The salinity gradient for each year of observations is estimated as the average magnitude of the 3° forward and backward spatial differences (e.g., <span class="math notranslate nohighlight">\(∣∇\_{x}  {S} ∣ =  \\frac 12 ∣∇\_{x+} {S} ∣ + \\frac 12 ∣∇\_{x-} {S} ∣\)</span> ). This is formally equivalent to a 6° centered difference for a planar salinity surface but does not underestimate the salinity gradient for symmetric salinity surfaces (for which a centered difference would result in zero gradient and an ill-conditioned mixing length). The salinity gradient is then averaged over all years. Near coastlines, forward or backward gradients are extrapolated using the nearest neighbor.</p></li>
 </ol>
-<p>Q: <span class="math notranslate nohighlight">\(\{S\}\)</span> is defined as monthly field interpolated to time and location of each Argo profile in (2). Is that what is used in (3)?</p>
+<p>Q: <span class="math notranslate nohighlight">\({S}\)</span> is defined as monthly field interpolated to time and location of each Argo profile in (2). Is that what is used in (3)?</p>
 <p>Notes on reproducing:</p>
 <ol class="simple">
 <li><p>Definitely using Absolute Salinity (units are g/kg) and I can match “mean salinity” decently well.</p></li>
@@ -6017,11 +6025,8 @@ Data variables: (12/13)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loc</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="mi">360</span><span class="o">-</span><span class="mi">28</span><span class="p">,</span> <span class="n">lat</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span>
-<span class="p">(</span>
-    <span class="n">argoclim</span><span class="o">.</span><span class="n">sigma</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">loc</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
-    <span class="o">-</span> <span class="n">cole</span><span class="o">.</span><span class="n">density_mean_depth</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">loc</span><span class="p">)</span>
-<span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">loc</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="mi">360</span> <span class="o">-</span> <span class="mi">28</span><span class="p">,</span> <span class="n">lat</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span>
+<span class="p">(</span><span class="n">argoclim</span><span class="o">.</span><span class="n">sigma</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">loc</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span> <span class="o">-</span> <span class="n">cole</span><span class="o">.</span><span class="n">density_mean_depth</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="o">**</span><span class="n">loc</span><span class="p">))</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -6101,9 +6106,9 @@ Data variables: (12/13)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre_region</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">annual_dens_mean</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">360</span> <span class="o">-</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">360</span><span class="o">-</span><span class="mi">20</span><span class="p">),</span> <span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre_region</span> <span class="o">=</span> <span class="n">annual_dens_mean</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+    <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">360</span> <span class="o">-</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">360</span> <span class="o">-</span> <span class="mi">20</span><span class="p">),</span> <span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -7278,7 +7283,7 @@ Attributes:
 
     <span class="n">my_subset</span><span class="o">.</span><span class="n">Sgrad</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
     <span class="n">cole_subset</span><span class="o">.</span><span class="n">salinity_gradient_sig</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-    
+
     <span class="n">my_subset</span><span class="o">.</span><span class="n">Sgrad</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">)</span>
     <span class="n">cole_subset</span><span class="o">.</span><span class="n">salinity_gradient</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
 
@@ -7290,10 +7295,9 @@ Attributes:
 
     <span class="n">my_subset</span><span class="o">.</span><span class="n">SA</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
     <span class="n">cole_subset</span><span class="o">.</span><span class="n">salinity_mean</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-    
+
     <span class="n">f</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">kwargs</span><span class="p">))</span>
     <span class="p">[</span><span class="n">aa</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">flat</span><span class="p">]</span>
-
 
     <span class="n">f</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 </pre></div>
@@ -7849,20 +7853,20 @@ Attributes:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">lat</span> <span class="o">/</span> <span class="mi">12</span><span class="p">),</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="n">lat</span><span class="p">})</span>
-<span class="n">expected</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">lat</span> <span class="o">/</span> <span class="mi">12</span><span class="p">))</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">lat</span> <span class="o">/</span> <span class="mi">12</span><span class="p">),</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="n">lat</span><span class="p">})</span>
+<span class="n">expected</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">lat</span> <span class="o">/</span> <span class="mi">12</span><span class="p">))</span>
 
-<span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-<span class="n">data</span><span class="o">.</span><span class="n">roll</span><span class="p">({</span><span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
-<span class="n">data</span><span class="o">.</span><span class="n">roll</span><span class="p">({</span><span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">roll</span><span class="p">({</span><span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">roll</span><span class="p">({</span><span class="s2">&quot;lat&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span><span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">dxy</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]:</span>
     <span class="n">gradient_cole</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="n">dxy</span><span class="o">=</span><span class="n">dxy</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">dxy</span><span class="p">))</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="c1">#(actual).plot()</span>
-<span class="c1">#expected.plot()</span>
+<span class="c1"># (actual).plot()</span>
+<span class="c1"># expected.plot()</span>
 </pre></div>
 </div>
 </div>

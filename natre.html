@@ -653,9 +653,10 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
 <span class="kn">import</span> <span class="nn">tqdm</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 <span class="kn">import</span> <span class="nn">xgcm</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 <span class="kn">from</span> <span class="nn">xarray.tests</span> <span class="kn">import</span> <span class="n">raise_if_dask_computes</span>
 
 <span class="o">%</span><span class="k">aimport</span> eddydiff
@@ -1626,7 +1627,7 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
     <span class="s2">&quot;pres&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">cole_var</span> <span class="o">=</span> <span class="p">(</span><span class="n">cole_natre</span><span class="o">.</span><span class="n">diffusivity</span> <span class="o">*</span> <span class="n">argo_dTiso</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
+<span class="n">cole_var</span> <span class="o">=</span> <span class="p">(</span><span class="n">cole_natre</span><span class="o">.</span><span class="n">diffusivity</span> <span class="o">*</span> <span class="n">argo_dTiso</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
 <span class="n">cole_var</span><span class="p">[</span><span class="s2">&quot;pres&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cole_natre</span><span class="p">[</span><span class="s2">&quot;pres&quot;</span><span class="p">]</span>
 <span class="n">cole_var</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;long_name&quot;</span><span class="p">:</span> <span class="s2">&quot;$K_e^</span><span class="si">{cole}</span><span class="s2"> |∇T_</span><span class="si">{iso}</span><span class="s2">^</span><span class="si">{argo}</span><span class="s2">|²$&quot;</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;°C²/s&quot;</span><span class="p">}</span>
 
@@ -1636,8 +1637,8 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
     <span class="o">.</span><span class="n">rename</span><span class="p">({</span><span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="s2">&quot;pres&quot;</span><span class="p">})</span>
 <span class="p">)</span>
 <span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;dTiso&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">argo_dTiso</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">groeskamp</span><span class="o">.</span><span class="n">pres</span><span class="p">)</span>
-<span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;eddy_var_0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;Ke_0&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">groeskamp</span><span class="o">.</span><span class="n">dTiso</span> <span class="o">**</span> <span class="mi">2</span>
-<span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;eddy_var&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;Ke&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">groeskamp</span><span class="o">.</span><span class="n">dTiso</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;eddy_var_0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;Ke_0&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">groeskamp</span><span class="o">.</span><span class="n">dTiso</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;eddy_var&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">groeskamp</span><span class="p">[</span><span class="s2">&quot;Ke&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">groeskamp</span><span class="o">.</span><span class="n">dTiso</span><span class="o">**</span><span class="mi">2</span>
 <span class="n">groeskamp</span> <span class="o">=</span> <span class="n">groeskamp</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -1659,8 +1660,8 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.dpi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">140</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.facecolor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.91</span><span class="p">,</span> <span class="mf">0.91</span><span class="p">,</span> <span class="mf">0.91</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.facecolor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.99</span><span class="p">,)</span><span class="o">*</span><span class="mi">3</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;grid.color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,)</span><span class="o">*</span><span class="mi">3</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;axes.facecolor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.99</span><span class="p">,)</span> <span class="o">*</span> <span class="mi">3</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;grid.color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,)</span> <span class="o">*</span> <span class="mi">3</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;grid.alpha&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.3</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;grid.linewidth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
 
@@ -1687,7 +1688,7 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">pop_natre</span><span class="o">.</span><span class="n">DISS</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">mesomicrocolor</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;POP 1/10°&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;minor&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="n">f</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -1705,7 +1706,7 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 <li><p>One place of disagreement is between 400m and 700m where the POP estimate is really small compared to my difference. <strong>FP2005 also see this using the mooring based Ke estimate</strong>. At these levels their two terms also match a lot closer than mine, so there’s an error somewhere. It seems like my <span class="math notranslate nohighlight">\(⟨χ⟩/2\)</span> is a little bit too high which happened after I switched to the bootstrapping based estimates. I’ve made some improvements</p>
 <ol class="simple">
 <li><p>Sorting the dataset, changes the mean density field used to pick the bins.</p></li>
-<li><p>Calculating <span class="math notranslate nohighlight">\((∂T/∂z)_m\)</span> is a little wonky. I now use a different procedure. In each O(100m) <span class="math notranslate nohighlight">\(γ_n\)</span> bin, I groupby finer-resolution <span class="math notranslate nohighlight">\(γ_n\)</span> bins (21 of them), calculate the mean profile, then fit a straight line.</p></li>
+<li><p>Calculating <span class="math notranslate nohighlight">\((∂T/∂z)\_m\)</span> is a little wonky. I now use a different procedure. In each O(100m) <span class="math notranslate nohighlight">\(γ_n\)</span> bin, I groupby finer-resolution <span class="math notranslate nohighlight">\(γ_n\)</span> bins (21 of them), calculate the mean profile, then fit a straight line.</p></li>
 </ol>
 </li>
 <li><p>Cole/Groeskamp <span class="math notranslate nohighlight">\(K_e\)</span> estimate based variance dissipation compares much better now.</p>
@@ -1719,6 +1720,7 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 <div class="cell tag_hide-input tag_full-width docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">micro</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;bounds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pres_err&quot;</span>
+
 
 <span class="k">def</span> <span class="nf">plot_pop_natre_meso_micro</span><span class="p">(</span><span class="n">ax</span><span class="p">):</span>
     <span class="n">mesomicrocolor</span> <span class="o">=</span> <span class="s2">&quot;darkorchid&quot;</span>
@@ -1822,12 +1824,11 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 <h3>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="spicy-region">
 <h4>Spicy region<a class="headerlink" href="#spicy-region" title="Permalink to this headline">¶</a></h4>
-<p>We can interpret the red mesoscale dissipation term in (b) as the amount of variance transferred to the microscale for eventual dissipation. This peaks in regions of high mean spice between 1000m and 1500m. The balance in spicy regions is that horizontal mesoscale stirring converts MPE → EPE (compensated filaments or T-S variance) that is dissipated by the microscale. The approximate budget is (note vertical stirring gets ignored, and <span class="math notranslate nohighlight">\(u^h\)</span> represents horizontal velocity vector)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a2937d8f-7561-4196-b3b3-cd80b6d704b3">
-<span class="eqno">(3)<a class="headerlink" href="#equation-a2937d8f-7561-4196-b3b3-cd80b6d704b3" title="Permalink to this equation">¶</a></span>\[\begin{align}
-⟨u^h_eT_e⟩ ⋅ ∇_hT_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;\approx 0 \\
+<p>We can interpret the red mesoscale dissipation term in (b) as the amount of variance transferred to the microscale for eventual dissipation. This peaks in regions of high mean spice between 1000m and 1500m. The balance in spicy regions is that horizontal mesoscale stirring converts MPE → EPE (compensated filaments or T-S variance) that is dissipated by the microscale. The approximate budget is (note vertical stirring gets ignored, and <span class="math notranslate nohighlight">\(u^h\)</span> represents horizontal velocity vector)
+\begin{align}
+⟨u^h_eT_e⟩ ⋅ ∇_hT_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;\approx 0 \
 ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;\approx - \frac 12 ⟨χ⟩
-\end{align}\]</div>
+\end{align}</p>
 <ol class="simple">
 <li><p>Yiming sees the first equation as “lateral stirring” balances “mesoscale dissipation”, and</p></li>
 <li><p>FP2005 combine the two equations to conclude that “mesoscale stirring of mean variance” balances “total microscale dissipation”</p></li>
@@ -1835,12 +1836,11 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 </div>
 <div class="section" id="weak-spice">
 <h4>Weak spice<a class="headerlink" href="#weak-spice" title="Permalink to this headline">¶</a></h4>
-<p>In the upper water column that is not spicy, we instead see horizontal stirring MPE→ EPE which is then routed to EKE by “vertical stirring”. Here the scale transformation term is 0 so the budget is</p>
-<div class="amsmath math notranslate nohighlight" id="equation-cb42912c-59f1-4c76-82c3-d4f7d5043ea4">
-<span class="eqno">(4)<a class="headerlink" href="#equation-cb42912c-59f1-4c76-82c3-d4f7d5043ea4" title="Permalink to this equation">¶</a></span>\[\begin{align}
-⟨u_eT_e⟩ ⋅ ∇T_m &amp;\approx 0 \\
+<p>In the upper water column that is not spicy, we instead see horizontal stirring MPE→ EPE which is then routed to EKE by “vertical stirring”. Here the scale transformation term is 0 so the budget is
+\begin{align}
+⟨u_eT_e⟩ ⋅ ∇T_m &amp;\approx 0 \
 ⟨u_tT_t⟩ ⋅ ∇ T_m &amp;\approx - \frac 12 ⟨χ⟩
-\end{align}\]</div>
+\end{align}</p>
 <ol class="simple">
 <li><p>Yiming sees the first equation as “low dissipation” or “lateral stirring balances vertical stirring”;</p></li>
 <li><p>FP2005 sees the second equation as “microscale stirring of the mean” balances “total microscale dissipation”</p></li>
@@ -1895,7 +1895,7 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
     <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mf">1e-11</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">),</span>
     <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">1800</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span>
 <span class="p">)</span>
-<span class="p">(</span><span class="n">micro</span><span class="o">.</span><span class="n">Krho_m</span> <span class="o">*</span> <span class="n">micro</span><span class="o">.</span><span class="n">dTdz_m</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
+<span class="p">(</span><span class="n">micro</span><span class="o">.</span><span class="n">Krho_m</span> <span class="o">*</span> <span class="n">micro</span><span class="o">.</span><span class="n">dTdz_m</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;FP: $Γ ⟨ε⟩/N_m^2  ∂_zθ_m^2$&quot;</span>
 <span class="p">)</span>
 
@@ -1950,34 +1950,30 @@ OMP: Info #271: omp_set_nested routine deprecated, please use omp_set_max_active
 </div>
 <div class="section" id="pop2-1-10-mesoscale-variance-budget">
 <h2>POP2 1/10° mesoscale variance budget<a class="headerlink" href="#pop2-1-10-mesoscale-variance-budget" title="Permalink to this headline">¶</a></h2>
-<p>Yiming is working with the following variance budget equation for the mesoscale after decomposing <span class="math notranslate nohighlight">\(T = \bar{T} + T' + T'' ≡ T_m + T_e + T_t\)</span> (the latter is Ferrari &amp; Polzin notation). The <span class="math notranslate nohighlight">\(T = \tilde{T} + T''\)</span> decomposition is inherent when using cell-averaged equations.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6d42865d-d9d6-45a0-b7de-c8faa7748991">
-<span class="eqno">(5)<a class="headerlink" href="#equation-6d42865d-d9d6-45a0-b7de-c8faa7748991" title="Permalink to this equation">¶</a></span>\[\begin{equation}
-∂_t \overline{T'^2} =  -\overline{u'T'} ⋅ ∇_h\overline{T} - \overline{w'T'}∂_z\overline{T} - \overline{\vec{v} ⋅ ∇ T'^2/2} + \overline{T'∂_z \left[K ∂_zT' \right]} + …
-\end{equation}\]</div>
-<p>Ferrari &amp; Polzin’s equations (4.6, 4.7) for the mesoscale and microscale are (<span class="math notranslate nohighlight">\(u\)</span> here is the full 3D <span class="math notranslate nohighlight">\(u\)</span>):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d3c17d73-59ff-412c-9e5b-3c75d2178af6">
-<span class="eqno">(6)<a class="headerlink" href="#equation-d3c17d73-59ff-412c-9e5b-3c75d2178af6" title="Permalink to this equation">¶</a></span>\[\begin{align}
-⟨u_eT_e⟩ ⋅ ∇T_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;= 0 \\
+<p>Yiming is working with the following variance budget equation for the mesoscale after decomposing <span class="math notranslate nohighlight">\(T = \\bar{T} + T' + T'' ≡ T_m + T_e + T_t\)</span> (the latter is Ferrari &amp; Polzin notation). The <span class="math notranslate nohighlight">\(T = \\tilde{T} + T''\)</span> decomposition is inherent when using cell-averaged equations.</p>
+<p>\begin{equation}
+∂_t \overline{T’^2} =  -\overline{u’T’} ⋅ ∇_h\overline{T} - \overline{w’T’}∂_z\overline{T} - \overline{\vec{v} ⋅ ∇ T’^2/2} + \overline{T’∂_z \left[K ∂_zT’ \right]} + …
+\end{equation}</p>
+<p>Ferrari &amp; Polzin’s equations (4.6, 4.7) for the mesoscale and microscale are (<span class="math notranslate nohighlight">\(u\)</span> here is the full 3D <span class="math notranslate nohighlight">\(u\)</span>):
+\begin{align}
+⟨u_eT_e⟩ ⋅ ∇T_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;= 0 \
 ⟨u_tT_t⟩ ⋅ ∇ T_m + ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;= - \frac 12 ⟨χ⟩
-\end{align}\]</div>
-<p>Note that these equations are specialized for the “interior”.</p>
+\end{align}
+Note that these equations are specialized for the “interior”.</p>
 <p>For the model the averaging scales are:</p>
 <ol class="simple">
 <li><p>~: grid-scale in vertical; single time-step in time i.e. the “microscale” is the “grid-scale”</p></li>
 <li><p>⟨⟩: monthly in time; NATRE domain size in (x,y)</p></li>
 </ol>
-<p>In Yiming’s notation these equations are</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7c2a26d7-affe-4a7b-8041-c7abf7c3a218">
-<span class="eqno">(7)<a class="headerlink" href="#equation-7c2a26d7-affe-4a7b-8041-c7abf7c3a218" title="Permalink to this equation">¶</a></span>\[\begin{align}
-\overline{u'T'}⋅∇\overline{T} + \overline{w'T'}∂_z\overline{T}  - \overline{T'∂_z \left[K ∂_zT' \right]} = 0 \\
-K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
-\end{align}\]</div>
-<p>Now we can identify Yiming’s dissipation term (“VMIX”, ignoring solar heating etc.) as the scale transformation term in FP2005 and then use the microscale budget from FP2005 to write</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f05a6eb9-5cac-49a9-b963-2da1f4614740">
-<span class="eqno">(8)<a class="headerlink" href="#equation-f05a6eb9-5cac-49a9-b963-2da1f4614740" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<p>In Yiming’s notation these equations are
+\begin{align}
+\overline{u’T’}⋅∇\overline{T} + \overline{w’T’}∂_z\overline{T}  - \overline{T’∂_z \left[K ∂_zT’ \right]} = 0 \
+K \left(∂_z(\overline{T} + T’)\right)^2  &amp;= - \frac 12 ⟨χ⟩
+\end{align}</p>
+<p>Now we can identify Yiming’s dissipation term (“VMIX”, ignoring solar heating etc.) as the scale transformation term in FP2005 and then use the microscale budget from FP2005 to write
+\begin{equation}
 ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ = - \frac 12 ⟨χ⟩ - ⟨u_tT_t⟩ ⋅ ∇ T_m
-\end{equation}\]</div>
+\end{equation}</p>
 <p>i.e. Yiming’s “mesoscale dissipation” term is really the difference between</p>
 <ol class="simple">
 <li><p>total microscale dissipation, and</p></li>
@@ -2003,7 +1999,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="section" id="microstructure">
 <h3>Microstructure<a class="headerlink" href="#microstructure" title="Permalink to this headline">¶</a></h3>
 <p>Ferrari &amp; Polzin (2005):</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span> The variance of ε (and χ) are calculated using a bootstrap method (Efron 1982). The number of degrees of freedom in the bootstrap estimate is determined from the number of independent vertical segments in the ensemble. The number of independent vertical segments in the 0.5-m ε (and χ) data was estimated using a vertical-lag correlation analysis (St.Laurent and Schmitt 1999). The profiles are characterized by correlation scales of 5 m in the thermocline (&lt; 800 m) and 10 m at greater depths. A single degree of freedom is represented by the grouping of 0.5-m data within one correlation scale in a single profile. For the ensemble of data in each neutral density class, the number of such groupings gives the total degrees of freedom.
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">The</span> <span class="n">variance</span> <span class="n">of</span> <span class="n">ε</span> <span class="p">(</span><span class="ow">and</span> <span class="n">χ</span><span class="p">)</span> <span class="n">are</span> <span class="n">calculated</span> <span class="n">using</span> <span class="n">a</span> <span class="n">bootstrap</span> <span class="n">method</span> <span class="p">(</span><span class="n">Efron</span> <span class="mi">1982</span><span class="p">)</span><span class="o">.</span> <span class="n">The</span> <span class="n">number</span> <span class="n">of</span> <span class="n">degrees</span> <span class="n">of</span> <span class="n">freedom</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">bootstrap</span> <span class="n">estimate</span> <span class="ow">is</span> <span class="n">determined</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">number</span> <span class="n">of</span> <span class="n">independent</span> <span class="n">vertical</span> <span class="n">segments</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">ensemble</span><span class="o">.</span> <span class="n">The</span> <span class="n">number</span> <span class="n">of</span> <span class="n">independent</span> <span class="n">vertical</span> <span class="n">segments</span> <span class="ow">in</span> <span class="n">the</span> <span class="mf">0.5</span><span class="o">-</span><span class="n">m</span> <span class="n">ε</span> <span class="p">(</span><span class="ow">and</span> <span class="n">χ</span><span class="p">)</span> <span class="n">data</span> <span class="n">was</span> <span class="n">estimated</span> <span class="n">using</span> <span class="n">a</span> <span class="n">vertical</span><span class="o">-</span><span class="n">lag</span> <span class="n">correlation</span> <span class="n">analysis</span> <span class="p">(</span><span class="n">St</span><span class="o">.</span><span class="n">Laurent</span> <span class="ow">and</span> <span class="n">Schmitt</span> <span class="mi">1999</span><span class="p">)</span><span class="o">.</span> <span class="n">The</span> <span class="n">profiles</span> <span class="n">are</span> <span class="n">characterized</span> <span class="n">by</span> <span class="n">correlation</span> <span class="n">scales</span> <span class="n">of</span> <span class="mi">5</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">thermocline</span> <span class="p">(</span><span class="o">&lt;</span> <span class="mi">800</span> <span class="n">m</span><span class="p">)</span> <span class="ow">and</span> <span class="mi">10</span> <span class="n">m</span> <span class="n">at</span> <span class="n">greater</span> <span class="n">depths</span><span class="o">.</span> <span class="n">A</span> <span class="n">single</span> <span class="n">degree</span> <span class="n">of</span> <span class="n">freedom</span> <span class="ow">is</span> <span class="n">represented</span> <span class="n">by</span> <span class="n">the</span> <span class="n">grouping</span> <span class="n">of</span> <span class="mf">0.5</span><span class="o">-</span><span class="n">m</span> <span class="n">data</span> <span class="n">within</span> <span class="n">one</span> <span class="n">correlation</span> <span class="n">scale</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">single</span> <span class="n">profile</span><span class="o">.</span> <span class="n">For</span> <span class="n">the</span> <span class="n">ensemble</span> <span class="n">of</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">each</span> <span class="n">neutral</span> <span class="n">density</span> <span class="n">class</span><span class="p">,</span> <span class="n">the</span> <span class="n">number</span> <span class="n">of</span> <span class="n">such</span> <span class="n">groupings</span> <span class="n">gives</span> <span class="n">the</span> <span class="n">total</span> <span class="n">degrees</span> <span class="n">of</span> <span class="n">freedom</span><span class="o">.</span>
 </pre></div>
 </div>
 <p><img alt="image.png" src="attachment:20277b9e-ff35-4540-b7e4-b7ca2046730e.png" /></p>
@@ -2106,11 +2102,11 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cole_var_sig</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="p">(</span><span class="n">cole_natre</span><span class="o">.</span><span class="n">diffusivity_sig</span> <span class="o">*</span> <span class="n">colegrad</span><span class="o">.</span><span class="n">dTiso</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">cole_natre</span><span class="o">.</span><span class="n">diffusivity_sig</span> <span class="o">*</span> <span class="n">colegrad</span><span class="o">.</span><span class="n">dTiso</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
     <span class="o">.</span><span class="n">assign_coords</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="n">cole_natre</span><span class="o">.</span><span class="n">depth_mean_sig</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">]))</span>
 <span class="p">)</span>
-<span class="n">cole_var_pres</span> <span class="o">=</span> <span class="p">(</span><span class="n">cole_natre</span><span class="o">.</span><span class="n">diffusivity</span> <span class="o">*</span> <span class="n">dTiso_pres</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
+<span class="n">cole_var_pres</span> <span class="o">=</span> <span class="p">(</span><span class="n">cole_natre</span><span class="o">.</span><span class="n">diffusivity</span> <span class="o">*</span> <span class="n">dTiso_pres</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;lat&quot;</span><span class="p">,</span> <span class="s2">&quot;lon&quot;</span><span class="p">])</span>
 
 <span class="n">cole_var_sig</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">)</span>
 <span class="n">cole_var_pres</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -2392,7 +2388,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">chidens</span><span class="o">.</span><span class="n">Krho_m</span> <span class="o">*</span> <span class="n">chidens</span><span class="o">.</span><span class="n">dTdz_m</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">chidens</span><span class="o">.</span><span class="n">Krho_m</span> <span class="o">*</span> <span class="n">chidens</span><span class="o">.</span><span class="n">dTdz_m</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$Γ ⟨ε⟩/N_m^2  ∂_zθ_m^2$&quot;</span>
 <span class="p">)</span>
 
@@ -2400,7 +2396,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;none&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$⟨K_T θ_z⟩ ∂_zθ_m$&quot;</span>
 <span class="p">)</span>
 
-<span class="p">(</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">chidens</span><span class="o">.</span><span class="n">eps_chi</span> <span class="o">/</span> <span class="n">chidens</span><span class="o">.</span><span class="n">N2_m</span> <span class="o">*</span> <span class="n">chidens</span><span class="o">.</span><span class="n">dTdz_m</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
+<span class="p">(</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">chidens</span><span class="o">.</span><span class="n">eps_chi</span> <span class="o">/</span> <span class="n">chidens</span><span class="o">.</span><span class="n">N2_m</span> <span class="o">*</span> <span class="n">chidens</span><span class="o">.</span><span class="n">dTdz_m</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;C1&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$Γ ⟨ε_χ⟩/N_m^2  ∂_zθ_m^2$&quot;</span>
 <span class="p">)</span>
 
@@ -2461,9 +2457,9 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
     <span class="n">dims</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;depth&quot;</span><span class="p">,),</span>
     <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;depth&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">1200</span><span class="p">,</span> <span class="mi">1400</span><span class="p">,</span> <span class="mi">1600</span><span class="p">,</span> <span class="mi">1800</span><span class="p">]},</span>
 <span class="p">)</span>
-<span class="n">fp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;FP2005&quot;</span><span class="p">)</span>
-<span class="n">micro</span><span class="o">.</span><span class="n">gamma_n</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;mine&quot;</span><span class="p">)</span>
-<span class="c1">#plt.plot(np.arange(150, 2001, 100), bins, marker=&#39;^&#39;)</span>
+<span class="n">fp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;FP2005&quot;</span><span class="p">)</span>
+<span class="n">micro</span><span class="o">.</span><span class="n">gamma_n</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;mine&quot;</span><span class="p">)</span>
+<span class="c1"># plt.plot(np.arange(150, 2001, 100), bins, marker=&#39;^&#39;)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">fp</span><span class="o">.</span><span class="n">depth</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 </pre></div>

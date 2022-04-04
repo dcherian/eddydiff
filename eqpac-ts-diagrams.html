@@ -525,13 +525,13 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">pump</span>
 <span class="kn">import</span> <span class="nn">xfilter</span>
 <span class="kn">import</span> <span class="nn">xgcm</span>
 <span class="kn">import</span> <span class="nn">xhistogram</span>
 
 <span class="kn">import</span> <span class="nn">eddydiff</span> <span class="k">as</span> <span class="nn">ed</span>
-<span class="kn">import</span> <span class="nn">pump</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="n">xr</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span><span class="n">keep_attrs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -596,7 +596,7 @@ distributed: 2021.4.0
     <span class="n">num_discard</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">tiwke</span> <span class="o">=</span> <span class="n">xfilter</span><span class="o">.</span><span class="n">lowpass</span><span class="p">(</span>
-    <span class="n">v</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">v</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
     <span class="s2">&quot;time&quot;</span><span class="p">,</span>
     <span class="n">freq</span><span class="o">=</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">20</span><span class="p">,</span>
     <span class="n">cycles_per</span><span class="o">=</span><span class="s2">&quot;D&quot;</span><span class="p">,</span>
@@ -1029,6 +1029,7 @@ Attributes:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">dcpy.util</span> <span class="kn">import</span> <span class="n">block_lengths</span>
+
 <span class="kn">from</span> <span class="nn">xarray.core.missing</span> <span class="kn">import</span> <span class="n">_get_nan_block_lengths</span><span class="p">,</span> <span class="n">get_clean_interp_index</span>
 
 <span class="n">nino34</span> <span class="o">=</span> <span class="n">pump</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">process_nino34</span><span class="p">()</span>
@@ -1597,14 +1598,14 @@ distributed.utils_perf - WARNING - full garbage collections took 10% CPU time re
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_TS</span><span class="p">(</span><span class="n">latitude_string</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Plot a TS diagram per ENSO phase&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Plot a TS diagram per ENSO phase&quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">matplotlib.lines</span> <span class="kn">import</span> <span class="n">Line2D</span>
 
     <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
         <span class="n">hexbin</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">plot_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s2">&quot;mincnt&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&quot;norm&quot;</span><span class="p">:</span> <span class="n">mpl</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">LogNorm</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">)},</span>
     <span class="p">)</span>
-    <span class="c1">#kwargs = dict(kind=&quot;scatter&quot;, plot_kwargs={&quot;alpha&quot;: 0.1})</span>
+    <span class="c1"># kwargs = dict(kind=&quot;scatter&quot;, plot_kwargs={&quot;alpha&quot;: 0.1})</span>
     <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;hist&quot;</span><span class="p">,</span> <span class="n">equalize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;alpha&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">})</span>
 
     <span class="n">ax</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1613,7 +1614,7 @@ distributed.utils_perf - WARNING - full garbage collections took 10% CPU time re
 
     <span class="k">for</span> <span class="n">phase</span><span class="p">,</span> <span class="n">cmap</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="p">[</span>
         <span class="p">[</span><span class="s2">&quot;El-Nino&quot;</span><span class="p">,</span> <span class="n">mpl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Reds</span><span class="p">,</span> <span class="s2">&quot;red&quot;</span><span class="p">],</span>
-        <span class="c1">#[&quot;Neutral&quot;, mpl.cm.Greys, &quot;black&quot;],</span>
+        <span class="c1"># [&quot;Neutral&quot;, mpl.cm.Greys, &quot;black&quot;],</span>
         <span class="p">[</span><span class="s2">&quot;La-Nina&quot;</span><span class="p">,</span> <span class="n">mpl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Blues</span><span class="p">,</span> <span class="s2">&quot;blue&quot;</span><span class="p">],</span>
     <span class="p">]:</span>
         <span class="n">subset</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
@@ -2984,14 +2985,14 @@ Data variables:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">argoclim</span><span class="o">.</span><span class="n">Smean</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
-    <span class="c1">#lon=slice(165, 360 - 80), </span>
+    <span class="c1"># lon=slice(165, 360 - 80),</span>
     <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">210</span><span class="p">,</span> <span class="mi">230</span><span class="p">),</span>
-    <span class="n">pres</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">250</span><span class="p">)</span>
+    <span class="n">pres</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">250</span><span class="p">),</span>
 <span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">levels</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">34.8</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">35.4</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">argoclim</span><span class="o">.</span><span class="n">Smean</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="mi">220</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
-    <span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">pres</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">250</span><span class="p">)</span>
-<span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">levels</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">34.8</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">35.4</span><span class="p">)</span>
+<span class="n">argoclim</span><span class="o">.</span><span class="n">Smean</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">lon</span><span class="o">=</span><span class="mi">220</span><span class="p">)</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">pres</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">250</span><span class="p">))</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span>
+    <span class="n">levels</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">34.8</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">35.4</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>

@@ -425,16 +425,15 @@ const thebe_selector_output = ".output, .cell_output"
 <h1>P06 CTD χpod analysis<a class="headerlink" href="#p06-ctd-pod-analysis" title="Permalink to this headline">¶</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">eddydiff</span> <span class="k">as</span> <span class="nn">ed</span>
-
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-
-<span class="kn">import</span> <span class="nn">dcpy</span>
-<span class="kn">import</span> <span class="nn">seawater</span> <span class="k">as</span> <span class="nn">sw</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dcpy</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">import</span> <span class="nn">seawater</span> <span class="k">as</span> <span class="nn">sw</span>
+
+<span class="kn">import</span> <span class="nn">eddydiff</span> <span class="k">as</span> <span class="nn">ed</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 </pre></div>
 </div>
 </div>
@@ -505,14 +504,14 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">eddydiff</span> <span class="k">as</span> <span class="nn">ed</span>
 
-<span class="n">p06</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s1">&#39;/home/deepak/work/eddydiff/datasets/P06/p06.nc&#39;</span><span class="p">)</span>
+<span class="n">p06</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;/home/deepak/work/eddydiff/datasets/P06/p06.nc&quot;</span><span class="p">)</span>
 <span class="n">bathy</span> <span class="o">=</span> <span class="n">p06</span><span class="o">.</span><span class="n">bathy</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">p06</span> <span class="o">=</span> <span class="n">p06</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">p06</span><span class="p">[</span><span class="s1">&#39;KT&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">3e-3</span><span class="p">)</span>
-<span class="n">p06</span><span class="p">[</span><span class="s1">&#39;bathy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bathy</span>
-<span class="n">p06</span><span class="p">[</span><span class="s1">&#39;KtTz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">p06</span><span class="o">.</span><span class="n">KT</span> <span class="o">*</span> <span class="n">p06</span><span class="o">.</span><span class="n">dTdz</span>
+<span class="n">p06</span> <span class="o">=</span> <span class="n">p06</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">p06</span><span class="p">[</span><span class="s2">&quot;KT&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">3e-3</span><span class="p">)</span>
+<span class="n">p06</span><span class="p">[</span><span class="s2">&quot;bathy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bathy</span>
+<span class="n">p06</span><span class="p">[</span><span class="s2">&quot;KtTz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">p06</span><span class="o">.</span><span class="n">KT</span> <span class="o">*</span> <span class="n">p06</span><span class="o">.</span><span class="n">dTdz</span>
 <span class="n">p06</span>
 
-<span class="n">eccograd</span><span class="p">,</span> <span class="n">argograd</span><span class="p">,</span> <span class="n">cole</span><span class="p">,</span> <span class="n">aber</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">read_all_datasets</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;monthly&#39;</span><span class="p">,</span> <span class="n">transect</span><span class="o">=</span><span class="n">p06</span><span class="p">)</span>
+<span class="n">eccograd</span><span class="p">,</span> <span class="n">argograd</span><span class="p">,</span> <span class="n">cole</span><span class="p">,</span> <span class="n">aber</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">read_all_datasets</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;monthly&quot;</span><span class="p">,</span> <span class="n">transect</span><span class="o">=</span><span class="n">p06</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -527,7 +526,7 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">argograd</span><span class="o">.</span><span class="n">Smean</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;cast&#39;</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">argograd</span><span class="o">.</span><span class="n">Smean</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;cast&quot;</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -549,11 +548,15 @@ const thebe_selector_output = ".output, .cell_output"
 <h2>plots<a class="headerlink" href="#plots" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">p06</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;cast&#39;</span><span class="p">)</span>
-<span class="n">p06</span><span class="o">.</span><span class="n">rho</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;cast&#39;</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                     <span class="n">levels</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">p06</span><span class="o">.</span><span class="n">rho</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="mi">20</span><span class="p">,</span> <span class="n">retbins</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">p06</span><span class="o">.</span><span class="n">cast</span><span class="p">,</span> <span class="mi">6100</span><span class="p">,</span> <span class="o">-</span><span class="n">p06</span><span class="o">.</span><span class="n">bathy</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="o">/</span><span class="mf">1.6</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">p06</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;cast&quot;</span><span class="p">)</span>
+<span class="n">p06</span><span class="o">.</span><span class="n">rho</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span>
+    <span class="n">colors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;cast&quot;</span><span class="p">,</span>
+    <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">levels</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">p06</span><span class="o">.</span><span class="n">rho</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="mi">20</span><span class="p">,</span> <span class="n">retbins</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">p06</span><span class="o">.</span><span class="n">cast</span><span class="p">,</span> <span class="mi">6100</span><span class="p">,</span> <span class="o">-</span><span class="n">p06</span><span class="o">.</span><span class="n">bathy</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span> <span class="o">/</span> <span class="mf">1.6</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -563,11 +566,15 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p06</span><span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;cast&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">mpl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdYlBu</span><span class="p">)</span>
-<span class="n">p06</span><span class="o">.</span><span class="n">rho</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;cast&#39;</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                     <span class="n">levels</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">p06</span><span class="o">.</span><span class="n">rho</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="mi">20</span><span class="p">,</span> <span class="n">retbins</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">p06</span><span class="o">.</span><span class="n">cast</span><span class="p">,</span> <span class="mi">6100</span><span class="p">,</span> <span class="o">-</span><span class="n">p06</span><span class="o">.</span><span class="n">bathy</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="o">/</span><span class="mf">1.6</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p06</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;cast&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">mpl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdYlBu</span><span class="p">)</span>
+<span class="n">p06</span><span class="o">.</span><span class="n">rho</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span>
+    <span class="n">colors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;cast&quot;</span><span class="p">,</span>
+    <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">levels</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">p06</span><span class="o">.</span><span class="n">rho</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="mi">20</span><span class="p">,</span> <span class="n">retbins</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">p06</span><span class="o">.</span><span class="n">cast</span><span class="p">,</span> <span class="mi">6100</span><span class="p">,</span> <span class="o">-</span><span class="n">p06</span><span class="o">.</span><span class="n">bathy</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span> <span class="o">/</span> <span class="mf">1.6</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -596,25 +603,32 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
 
 <span class="c1">### p06[&#39;KT&#39;].attrs[&#39;long_name&#39;] = &#39;$K_T$&#39;</span>
-<span class="n">p06</span><span class="p">[</span><span class="s1">&#39;KT&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;m$^2$/s&#39;</span>
-<span class="n">p06</span><span class="p">[</span><span class="s1">&#39;P&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Pressure&#39;</span>
-<span class="n">p06</span><span class="p">[</span><span class="s1">&#39;P&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;dbar&#39;</span>
-<span class="n">p06</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Longitude&#39;</span>
-<span class="n">p06</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;deg. East&#39;</span>
+<span class="n">p06</span><span class="p">[</span><span class="s2">&quot;KT&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;m$^2$/s&quot;</span>
+<span class="n">p06</span><span class="p">[</span><span class="s2">&quot;P&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;long_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Pressure&quot;</span>
+<span class="n">p06</span><span class="p">[</span><span class="s2">&quot;P&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;dbar&quot;</span>
+<span class="n">p06</span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;long_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Longitude&quot;</span>
+<span class="n">p06</span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;units&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;deg. East&quot;</span>
 
-<span class="n">logKT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">p06</span><span class="p">[</span><span class="s1">&#39;KT&#39;</span><span class="p">])</span>
+<span class="n">logKT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">p06</span><span class="p">[</span><span class="s2">&quot;KT&quot;</span><span class="p">])</span>
 <span class="n">logKT</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">p06</span><span class="o">.</span><span class="n">KT</span><span class="o">.</span><span class="n">attrs</span>
-<span class="n">logKT</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;long_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;log$_</span><span class="si">{10}</span><span class="s1">$ $K_T$&#39;</span>
-<span class="n">logKT</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">mpl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdYlBu_r</span><span class="p">,</span> <span class="n">robust</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="p">(</span><span class="n">p06</span><span class="o">.</span><span class="n">sigma_4</span> <span class="o">-</span> <span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;P&#39;</span><span class="p">,</span> 
-                                  <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                  <span class="n">levels</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">p06</span><span class="o">.</span><span class="n">sigma_4</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">-</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="n">retbins</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">p06</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="mi">6100</span><span class="p">,</span> <span class="o">-</span><span class="n">p06</span><span class="o">.</span><span class="n">bathy</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="o">/</span><span class="mf">2.5</span><span class="p">)</span>
+<span class="n">logKT</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;long_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;log$_</span><span class="si">{10}</span><span class="s2">$ $K_T$&quot;</span>
+<span class="n">logKT</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;lon&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;P&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">mpl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdYlBu_r</span><span class="p">,</span> <span class="n">robust</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="p">(</span><span class="n">p06</span><span class="o">.</span><span class="n">sigma_4</span> <span class="o">-</span> <span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span>
+    <span class="n">colors</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;lon&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;P&quot;</span><span class="p">,</span>
+    <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">levels</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">qcut</span><span class="p">(</span><span class="n">p06</span><span class="o">.</span><span class="n">sigma_4</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="n">retbins</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">p06</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="mi">6100</span><span class="p">,</span> <span class="o">-</span><span class="n">p06</span><span class="o">.</span><span class="n">bathy</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span> <span class="o">/</span> <span class="mf">2.5</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Potential density contours and log $K_T$ for the P06 GOSHIP section&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+    <span class="s2">&quot;Potential density contours and log $K_T$ for the P06 GOSHIP section&quot;</span>
+<span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;../images/p06-kt.png&#39;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;../images/p06-kt.png&quot;</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -628,11 +642,26 @@ const thebe_selector_output = ".output, .cell_output"
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bins</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1024.6</span><span class="p">,</span> 
-        <span class="mf">1025.6</span><span class="p">,</span> <span class="mf">1025.8</span><span class="p">,</span> 
-        <span class="mf">1026.0</span><span class="p">,</span> <span class="mf">1026.25</span><span class="p">,</span> <span class="mf">1026.5</span><span class="p">,</span> <span class="mf">1026.75</span><span class="p">,</span> 
-        <span class="mf">1027.0</span><span class="p">,</span> <span class="mf">1027.1</span><span class="p">,</span> <span class="mf">1027.2</span><span class="p">,</span> <span class="mf">1027.3</span><span class="p">,</span> <span class="mf">1027.4</span><span class="p">,</span> <span class="mf">1027.5</span><span class="p">,</span> <span class="mf">1027.6</span><span class="p">,</span> <span class="mf">1027.7</span><span class="p">,</span> <span class="mf">1027.8</span><span class="p">,</span> <span class="mf">1027.9</span><span class="p">]</span>
-<span class="n">dcpy</span><span class="o">.</span><span class="n">oceans</span><span class="o">.</span><span class="n">TSplot</span><span class="p">(</span><span class="n">p06</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="n">p06</span><span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">],</span> <span class="n">p06</span><span class="o">.</span><span class="n">pres</span><span class="p">,</span> <span class="n">rho_levels</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bins</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="mf">1024.6</span><span class="p">,</span>
+    <span class="mf">1025.6</span><span class="p">,</span>
+    <span class="mf">1025.8</span><span class="p">,</span>
+    <span class="mf">1026.0</span><span class="p">,</span>
+    <span class="mf">1026.25</span><span class="p">,</span>
+    <span class="mf">1026.5</span><span class="p">,</span>
+    <span class="mf">1026.75</span><span class="p">,</span>
+    <span class="mf">1027.0</span><span class="p">,</span>
+    <span class="mf">1027.1</span><span class="p">,</span>
+    <span class="mf">1027.2</span><span class="p">,</span>
+    <span class="mf">1027.3</span><span class="p">,</span>
+    <span class="mf">1027.4</span><span class="p">,</span>
+    <span class="mf">1027.5</span><span class="p">,</span>
+    <span class="mf">1027.6</span><span class="p">,</span>
+    <span class="mf">1027.7</span><span class="p">,</span>
+    <span class="mf">1027.8</span><span class="p">,</span>
+    <span class="mf">1027.9</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">dcpy</span><span class="o">.</span><span class="n">oceans</span><span class="o">.</span><span class="n">TSplot</span><span class="p">(</span><span class="n">p06</span><span class="o">.</span><span class="n">S</span><span class="p">,</span> <span class="n">p06</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">],</span> <span class="n">p06</span><span class="o">.</span><span class="n">pres</span><span class="p">,</span> <span class="n">rho_levels</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -649,14 +678,14 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nbins</span> <span class="o">=</span> <span class="mi">18</span>
 
-<span class="n">p06</span><span class="p">[</span><span class="s1">&#39;rho&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">p06</span><span class="p">[</span><span class="s1">&#39;sigma_0&#39;</span><span class="p">]</span>
-<span class="n">eccograd</span><span class="p">[</span><span class="s1">&#39;ρmean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eccograd</span><span class="p">[</span><span class="s1">&#39;sigma_0&#39;</span><span class="p">]</span>
+<span class="n">p06</span><span class="p">[</span><span class="s2">&quot;rho&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">p06</span><span class="p">[</span><span class="s2">&quot;sigma_0&quot;</span><span class="p">]</span>
+<span class="n">eccograd</span><span class="p">[</span><span class="s2">&quot;ρmean&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eccograd</span><span class="p">[</span><span class="s2">&quot;sigma_0&quot;</span><span class="p">]</span>
 
 
-<span class="n">eccoKe</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">process_transect_1d</span><span class="p">(</span><span class="n">p06</span><span class="p">,</span> <span class="n">eccograd</span><span class="p">,</span> <span class="s1">&#39;ECCO&#39;</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="n">nbins</span><span class="p">)</span>
+<span class="n">eccoKe</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">process_transect_1d</span><span class="p">(</span><span class="n">p06</span><span class="p">,</span> <span class="n">eccograd</span><span class="p">,</span> <span class="s2">&quot;ECCO&quot;</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="n">nbins</span><span class="p">)</span>
 <span class="n">ed</span><span class="o">.</span><span class="n">plot_bar_Ke</span><span class="p">(</span><span class="n">eccoKe</span><span class="p">,</span> <span class="n">Ke_log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">argoKe</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">process_transect_1d</span><span class="p">(</span><span class="n">p06</span><span class="p">,</span> <span class="n">argograd</span><span class="p">,</span> <span class="s1">&#39;ARGO&#39;</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="n">nbins</span><span class="p">)</span>
+<span class="n">argoKe</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">process_transect_1d</span><span class="p">(</span><span class="n">p06</span><span class="p">,</span> <span class="n">argograd</span><span class="p">,</span> <span class="s2">&quot;ARGO&quot;</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="n">nbins</span><span class="p">)</span>
 <span class="n">ed</span><span class="o">.</span><span class="n">plot_bar_Ke</span><span class="p">(</span><span class="n">argoKe</span><span class="p">,</span> <span class="n">Ke_log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -689,10 +718,27 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="n">p06</span><span class="p">[</span><span class="s2">&quot;rho&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">p06</span><span class="p">[</span><span class="s2">&quot;sigma_0&quot;</span><span class="p">]</span>
 <span class="n">eccograd</span><span class="p">[</span><span class="s2">&quot;ρmean&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">eccograd</span><span class="p">[</span><span class="s2">&quot;sigma_0&quot;</span><span class="p">]</span>
 
-<span class="n">bins</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1024.6</span><span class="p">,</span>
-        <span class="mf">1025.6</span><span class="p">,</span> <span class="mf">1025.8</span><span class="p">,</span>
-        <span class="mf">1026.0</span><span class="p">,</span> <span class="mf">1026.15</span><span class="p">,</span> <span class="mf">1026.3</span><span class="p">,</span> <span class="mf">1026.45</span><span class="p">,</span> <span class="mf">1026.6</span><span class="p">,</span> <span class="mf">1026.8</span><span class="p">,</span> 
-        <span class="mf">1027.0</span><span class="p">,</span> <span class="mf">1027.1</span><span class="p">,</span> <span class="mf">1027.2</span><span class="p">,</span> <span class="mf">1027.3</span><span class="p">,</span> <span class="mf">1027.4</span><span class="p">,</span> <span class="mf">1027.5</span><span class="p">,</span> <span class="mf">1027.6</span><span class="p">,</span> <span class="mf">1027.7</span><span class="p">,</span> <span class="mf">1027.8</span><span class="p">,</span> <span class="mf">1027.9</span><span class="p">]</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="mf">1024.6</span><span class="p">,</span>
+    <span class="mf">1025.6</span><span class="p">,</span>
+    <span class="mf">1025.8</span><span class="p">,</span>
+    <span class="mf">1026.0</span><span class="p">,</span>
+    <span class="mf">1026.15</span><span class="p">,</span>
+    <span class="mf">1026.3</span><span class="p">,</span>
+    <span class="mf">1026.45</span><span class="p">,</span>
+    <span class="mf">1026.6</span><span class="p">,</span>
+    <span class="mf">1026.8</span><span class="p">,</span>
+    <span class="mf">1027.0</span><span class="p">,</span>
+    <span class="mf">1027.1</span><span class="p">,</span>
+    <span class="mf">1027.2</span><span class="p">,</span>
+    <span class="mf">1027.3</span><span class="p">,</span>
+    <span class="mf">1027.4</span><span class="p">,</span>
+    <span class="mf">1027.5</span><span class="p">,</span>
+    <span class="mf">1027.6</span><span class="p">,</span>
+    <span class="mf">1027.7</span><span class="p">,</span>
+    <span class="mf">1027.8</span><span class="p">,</span>
+    <span class="mf">1027.9</span><span class="p">,</span>
+<span class="p">]</span>
 <span class="n">trdens</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">bin_to_density_space</span><span class="p">(</span><span class="n">p06</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
 
 <span class="n">eccograd</span><span class="p">[</span><span class="s2">&quot;dist&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">p06</span><span class="o">.</span><span class="n">dist</span>
@@ -853,7 +899,9 @@ biased high since averaged χ will be biased high.</p></li>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">newKe</span><span class="o">.</span><span class="n">Ke</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">newKe</span><span class="o">.</span><span class="n">Ke</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">cast</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">240</span><span class="p">))</span> <span class="c1">#.coarsen(cast=5).mean().plot(x=&quot;cast&quot;, norm=mpl.colors.LogNorm(0.1, 5e3), robust=True)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">newKe</span><span class="o">.</span><span class="n">Ke</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">newKe</span><span class="o">.</span><span class="n">Ke</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span>
+    <span class="n">cast</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">240</span><span class="p">)</span>
+<span class="p">)</span>  <span class="c1"># .coarsen(cast=5).mean().plot(x=&quot;cast&quot;, norm=mpl.colors.LogNorm(0.1, 5e3), robust=True)</span>
 </pre></div>
 </div>
 </div>
@@ -966,9 +1014,12 @@ TypeError: descriptor &#39;_key&#39; for &#39;ExplicitIndexer&#39; objects doesn
 
 <span class="n">Tvec</span> <span class="o">=</span> <span class="n">eccodens</span><span class="o">.</span><span class="n">Tmean</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">rho</span><span class="o">=</span><span class="n">nn</span><span class="p">)</span>
 <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">Tvec</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">eccodens</span><span class="o">.</span><span class="n">dist</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]</span><span class="o">*</span><span class="mi">1000</span><span class="p">,</span> <span class="n">Tvec</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">],</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">eccodens</span><span class="o">.</span><span class="n">dist</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">Tvec</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">],</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">eccodens</span><span class="o">.</span><span class="n">dist</span><span class="o">*</span><span class="mi">1000</span><span class="p">,</span> <span class="n">Tvec</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">+</span> <span class="n">dTiso</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">rho</span><span class="o">=</span><span class="n">nn</span><span class="p">)</span> <span class="o">*</span>  <span class="p">(</span><span class="n">eccodens</span><span class="o">.</span><span class="n">dist</span><span class="o">-</span><span class="n">eccodens</span><span class="o">.</span><span class="n">dist</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">eccodens</span><span class="o">.</span><span class="n">dist</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="n">Tvec</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">+</span> <span class="n">dTiso</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">rho</span><span class="o">=</span><span class="n">nn</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">eccodens</span><span class="o">.</span><span class="n">dist</span> <span class="o">-</span> <span class="n">eccodens</span><span class="o">.</span><span class="n">dist</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -994,7 +1045,7 @@ TypeError: descriptor &#39;_key&#39; for &#39;ExplicitIndexer&#39; objects doesn
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eccograd</span><span class="o">.</span><span class="n">dTiso</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;cast&#39;</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">robust</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eccograd</span><span class="o">.</span><span class="n">dTiso</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;cast&quot;</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">robust</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1012,7 +1063,7 @@ TypeError: descriptor &#39;_key&#39; for &#39;ExplicitIndexer&#39; objects doesn
 <span class="n">clim</span> <span class="o">=</span> <span class="n">clim</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 
 <span class="n">trmean</span><span class="p">,</span> <span class="n">ρbins</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">average_transect_1d</span><span class="p">(</span><span class="n">p06</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-    
+
 <span class="n">climrho</span> <span class="o">=</span> <span class="n">clim</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">clim</span><span class="o">.</span><span class="n">ρmean</span><span class="p">,</span> <span class="n">ρbins</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -1020,7 +1071,7 @@ TypeError: descriptor &#39;_key&#39; for &#39;ExplicitIndexer&#39; objects doesn
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cole</span><span class="o">.</span><span class="n">diffusivity</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="n">mpl</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">LogNorm</span><span class="p">(),</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;cast&#39;</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cole</span><span class="o">.</span><span class="n">diffusivity</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">norm</span><span class="o">=</span><span class="n">mpl</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">LogNorm</span><span class="p">(),</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;cast&quot;</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1037,7 +1088,7 @@ TypeError: descriptor &#39;_key&#39; for &#39;ExplicitIndexer&#39; objects doesn
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cole</span><span class="o">.</span><span class="n">diffusivity</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s1">&#39;cast&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cole</span><span class="o">.</span><span class="n">diffusivity</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="s2">&quot;cast&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -1894,7 +1945,11 @@ Forget, G., J.-M. Campin, P. Heimbach, C. N. Hill, R. M. Ponte, and C. Wunsch, 2
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kecco</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/ecco/interp_Kgm_ECCOv4.nc&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">eddydiff</span><span class="o">.</span><span class="n">format_ecco2</span><span class="p">)</span><span class="o">.</span><span class="n">Kgm_ECCOv4</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kecco</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/ecco/interp_Kgm_ECCOv4.nc&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">ed</span><span class="o">.</span><span class="n">eddydiff</span><span class="o">.</span><span class="n">format_ecco2</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">Kgm_ECCOv4</span>
+<span class="p">)</span>
 <span class="n">kecco</span>
 </pre></div>
 </div>
@@ -2467,12 +2522,12 @@ Attributes:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">newKe</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">Dataset</span><span class="p">()</span>
-<span class="n">newKe</span><span class="p">[</span><span class="s2">&quot;KT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trdens</span><span class="o">.</span><span class="n">KT</span> <span class="c1">#.mean(dim=&quot;cast&quot;)</span>
-<span class="n">newKe</span><span class="p">[</span><span class="s2">&quot;chi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trdens</span><span class="o">.</span><span class="n">chi</span><span class="c1"># .mean(dim=&quot;cast&quot;)</span>
-<span class="n">newKe</span><span class="p">[</span><span class="s2">&quot;KtTz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trdens</span><span class="o">.</span><span class="n">KtTz</span><span class="c1">#.mean(dim=&quot;cast&quot;)</span>
+<span class="n">newKe</span><span class="p">[</span><span class="s2">&quot;KT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trdens</span><span class="o">.</span><span class="n">KT</span>  <span class="c1"># .mean(dim=&quot;cast&quot;)</span>
+<span class="n">newKe</span><span class="p">[</span><span class="s2">&quot;chi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trdens</span><span class="o">.</span><span class="n">chi</span>  <span class="c1"># .mean(dim=&quot;cast&quot;)</span>
+<span class="n">newKe</span><span class="p">[</span><span class="s2">&quot;KtTz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trdens</span><span class="o">.</span><span class="n">KtTz</span>  <span class="c1"># .mean(dim=&quot;cast&quot;)</span>
 <span class="n">newKe</span><span class="p">[</span><span class="s2">&quot;dTiso&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">eccodens</span><span class="o">.</span><span class="n">dTiso</span><span class="p">)</span>
 <span class="n">newKe</span><span class="p">[</span><span class="s2">&quot;dTmdz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">eccodens</span><span class="o">.</span><span class="n">dTdia</span><span class="p">)</span>
-<span class="n">newKe</span><span class="p">[</span><span class="s2">&quot;dTdz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trdens</span><span class="o">.</span><span class="n">dTdz</span> <span class="c1">#.mean(dim=&quot;cast&quot;)</span>
+<span class="n">newKe</span><span class="p">[</span><span class="s2">&quot;dTdz&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trdens</span><span class="o">.</span><span class="n">dTdz</span>  <span class="c1"># .mean(dim=&quot;cast&quot;)</span>
 <span class="n">newKe</span><span class="o">.</span><span class="n">coords</span><span class="p">[</span><span class="s2">&quot;pres&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trdens</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">&quot;cast&quot;</span><span class="p">)</span>
 <span class="c1"># newKe = newKe.sel(cast=slice(242)).coarsen(cast=60).mean()</span>
 <span class="c1"># newKe = newKe.mean(&quot;cast&quot;)</span>
@@ -2515,7 +2570,7 @@ Attributes:
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fullmean</span><span class="o">.</span><span class="n">Ke</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">hue</span><span class="o">=</span><span class="s2">&quot;cast&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;pres&#39;</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fullmean</span><span class="o">.</span><span class="n">Ke</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">hue</span><span class="o">=</span><span class="s2">&quot;cast&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
 <span class="n">newKe</span><span class="o">.</span><span class="n">Ke</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">newKe</span><span class="o">.</span><span class="n">Ke</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hue</span><span class="o">=</span><span class="s2">&quot;cast&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2540,7 +2595,7 @@ Attributes:
         <span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span> <span class="n">add_colorbar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">liney</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">360</span><span class="o">-</span><span class="mi">140</span><span class="p">,</span> <span class="mi">360</span><span class="o">-</span><span class="mi">110</span><span class="p">,</span> <span class="mi">360</span><span class="o">-</span><span class="mi">125</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">360</span> <span class="o">-</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">360</span> <span class="o">-</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">360</span> <span class="o">-</span> <span class="mi">125</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">hdl</span>
 
 
@@ -2592,7 +2647,9 @@ Attributes:
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">argograd</span><span class="o">.</span><span class="n">dTiso</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">280</span><span class="p">))</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">robust</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">argograd</span><span class="o">.</span><span class="n">dTiso</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">lon</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">280</span><span class="p">))</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span>
+    <span class="n">pres</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">robust</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

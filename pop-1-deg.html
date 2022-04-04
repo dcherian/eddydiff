@@ -455,14 +455,16 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">import</span> <span class="nn">cf_xarray.units</span>
 <span class="kn">import</span> <span class="nn">dask.array</span>
 <span class="kn">import</span> <span class="nn">dcpy</span>
+
 <span class="c1"># import intake</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">pint_xarray</span>
 <span class="kn">import</span> <span class="nn">pop_tools</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 <span class="kn">import</span> <span class="nn">xgcm</span>
+
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="n">xr</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span><span class="n">keep_attrs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -665,6 +667,7 @@ cf_xarray  : 0.7.1.dev12+g5ed9838
     <span class="n">chunks</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span> <span class="s2">&quot;nlon&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">&quot;nlat&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span>
 <span class="p">)</span>
 
+
 <span class="k">def</span> <span class="nf">preprocess_pop_dataset</span><span class="p">(</span><span class="n">ds</span><span class="p">):</span>
     <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">drop_vars</span><span class="p">([</span><span class="s2">&quot;lat_aux_grid&quot;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
     <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">time</span> <span class="o">-</span> <span class="n">xr</span><span class="o">.</span><span class="n">coding</span><span class="o">.</span><span class="n">cftime_offsets</span><span class="o">.</span><span class="n">MonthBegin</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -672,6 +675,7 @@ cf_xarray  : 0.7.1.dev12+g5ed9838
     <span class="n">ds</span><span class="p">[</span><span class="s2">&quot;σ&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;long_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;$σ_2$&quot;</span>
     <span class="n">ds</span><span class="o">.</span><span class="n">σ</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;grid_loc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">TEMP</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;grid_loc&quot;</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">ds</span>
+
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">preprocess_pop_dataset</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
 <span class="n">ds</span>
@@ -3555,9 +3559,13 @@ Attributes:
 
 <span class="c1"># assign nice coordinates</span>
 <span class="n">reshaped</span><span class="p">[</span><span class="s2">&quot;cycle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
-<span class="n">year</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">reshaped</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">cycle</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">data</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">61</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">year</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mod</span><span class="p">(</span><span class="n">reshaped</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">isel</span><span class="p">(</span><span class="n">cycle</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">data</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">61</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
 <span class="n">month</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">13</span><span class="p">)]</span> <span class="o">*</span> <span class="mi">61</span><span class="p">)</span>
-<span class="n">reshaped</span><span class="p">[</span><span class="s2">&quot;yearmonth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;yearmonth&quot;</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">((</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">),</span> <span class="n">names</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">)),</span> <span class="p">{</span><span class="s2">&quot;axis&quot;</span><span class="p">:</span> <span class="s2">&quot;T&quot;</span><span class="p">})</span>
+<span class="n">reshaped</span><span class="p">[</span><span class="s2">&quot;yearmonth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;yearmonth&quot;</span><span class="p">,</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_arrays</span><span class="p">((</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">),</span> <span class="n">names</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">)),</span>
+    <span class="p">{</span><span class="s2">&quot;axis&quot;</span><span class="p">:</span> <span class="s2">&quot;T&quot;</span><span class="p">},</span>
+<span class="p">)</span>
 
 <span class="c1"># select out years 42-61</span>
 <span class="n">reshaped</span> <span class="o">=</span> <span class="n">reshaped</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">yearmonth</span><span class="o">=</span><span class="n">reshaped</span><span class="o">.</span><span class="n">year</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="mi">62</span><span class="p">)))</span>
@@ -8696,7 +8704,7 @@ Attributes:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">meanrho</span> <span class="o">=</span> <span class="n">xds</span><span class="o">.</span><span class="n">σ</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="s2">&quot;X&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
-<span class="n">meanrho</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hue</span><span class="o">=</span><span class="s2">&quot;cycle&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">meanrho</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hue</span><span class="o">=</span><span class="s2">&quot;cycle&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8714,7 +8722,7 @@ Attributes:
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">meanrho</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;cycle&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">meanrho</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;cycle&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8732,7 +8740,7 @@ Attributes:
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xds</span><span class="o">.</span><span class="n">z_t</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="s2">&quot;z_t&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ms</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xds</span><span class="o">.</span><span class="n">z_t</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="s2">&quot;z_t&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ms</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -8767,8 +8775,9 @@ Attributes:
     <span class="n">interped</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">attrs</span>
     <span class="k">return</span> <span class="n">interped</span>
 
+
 <span class="k">def</span> <span class="nf">regrid_to_density</span><span class="p">(</span><span class="n">xds</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">varnames</span><span class="p">):</span>
-    
+
     <span class="n">newz</span> <span class="o">=</span> <span class="n">xds</span><span class="o">.</span><span class="n">TEMP</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span>
         <span class="n">data</span><span class="o">=</span><span class="n">dask</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span>
             <span class="n">xds</span><span class="o">.</span><span class="n">z_t</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="p">:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span>
@@ -8779,7 +8788,7 @@ Attributes:
     <span class="n">newz</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;z&quot;</span>
     <span class="n">newz</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">xds</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">newz</span>
-    
+
     <span class="n">regridded</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">xds</span><span class="o">.</span><span class="n">pint</span><span class="o">.</span><span class="n">dequantify</span><span class="p">()</span>
         <span class="o">.</span><span class="n">set_coords</span><span class="p">(</span><span class="s2">&quot;σ&quot;</span><span class="p">)[[</span><span class="s2">&quot;z&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">varnames</span><span class="p">]]</span>
@@ -8796,11 +8805,11 @@ Attributes:
                 <span class="k">pass</span>
     <span class="n">regridded</span><span class="o">.</span><span class="n">z_t</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;axis&quot;</span><span class="p">:</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;positive&quot;</span><span class="p">:</span> <span class="s2">&quot;down&quot;</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">:</span> <span class="s2">&quot;centimeters&quot;</span><span class="p">}</span>
     <span class="n">regridded</span> <span class="o">=</span> <span class="n">regridded</span><span class="o">.</span><span class="n">pint</span><span class="o">.</span><span class="n">quantify</span><span class="p">()</span>
-    
-    <span class="c1">#regridded[&quot;sigma_bounds&quot;] = (</span>
+
+    <span class="c1"># regridded[&quot;sigma_bounds&quot;] = (</span>
     <span class="c1">#    (&quot;bounds&quot;, &quot;σ&quot;), np.stack([bins[:-1], bins[1:]]), regridded.σ.attrs.copy()</span>
-    <span class="c1">#)</span>
-    <span class="c1">#regridded.σ.attrs[&quot;bounds&quot;] = &quot;sigma_bounds&quot;</span>
+    <span class="c1"># )</span>
+    <span class="c1"># regridded.σ.attrs[&quot;bounds&quot;] = &quot;sigma_bounds&quot;</span>
     <span class="k">return</span> <span class="n">regridded</span>
 
 
@@ -9787,11 +9796,10 @@ Attributes:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span>
-    <span class="n">regridded</span>
-    <span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="s2">&quot;yearmonth&quot;</span><span class="p">)</span>
+    <span class="n">regridded</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="s2">&quot;yearmonth&quot;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">pint</span><span class="o">.</span><span class="n">dequantify</span><span class="p">()</span>
     <span class="o">.</span><span class="n">load</span><span class="p">()</span>
-    <span class="c1">#.pipe(cfxr.encode_multi_index_as_compress)</span>
+    <span class="c1"># .pipe(cfxr.encode_multi_index_as_compress)</span>
     <span class="o">.</span><span class="n">to_zarr</span><span class="p">(</span><span class="s2">&quot;../datasets/pop-1deg-redi-var-natre-0042-0061.zarr&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 </pre></div>
@@ -9810,8 +9818,8 @@ Attributes:
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">regridded</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/pop-1deg-redi-var-natre-0042-0061.zarr&quot;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;zarr&quot;</span><span class="p">)</span>
-    <span class="c1">#.pipe(cfxr.decode_compress_to_multi_index)</span>
-    <span class="c1">#.cf.guess_coord_axis()</span>
+    <span class="c1"># .pipe(cfxr.decode_compress_to_multi_index)</span>
+    <span class="c1"># .cf.guess_coord_axis()</span>
     <span class="o">.</span><span class="n">pint</span><span class="o">.</span><span class="n">quantify</span><span class="p">()</span>
 <span class="p">)</span>
 <span class="n">regridded</span>
@@ -10285,7 +10293,7 @@ Attributes:
 <h2>NATRE region<a class="headerlink" href="#natre-region" title="Permalink to this headline">¶</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre</span> <span class="o">=</span> <span class="n">regridded</span> <span class="c1">#.cf.isel(X=slice(7, 17), Y=slice(265, 276))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre</span> <span class="o">=</span> <span class="n">regridded</span>  <span class="c1"># .cf.isel(X=slice(7, 17), Y=slice(265, 276))</span>
 <span class="n">natre</span>
 </pre></div>
 </div>
@@ -11178,9 +11186,12 @@ Attributes:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">dcpy</span>
+
 <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;bmh&quot;</span><span class="p">)</span>
 <span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">profile</span><span class="o">.</span><span class="n">KAPPA_ISOP</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;cycle&quot;</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+<span class="n">profile</span><span class="o">.</span><span class="n">KAPPA_ISOP</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;cycle&quot;</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span>
+<span class="p">)</span>
 <span class="n">profile</span><span class="o">.</span><span class="n">delT2</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;cycle&quot;</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span>
 <span class="p">)</span>
@@ -11188,7 +11199,7 @@ Attributes:
     <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;cycle&quot;</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span>
 <span class="p">)</span>
 <span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">clean_axes</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
-<span class="n">f</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">f</span><span class="o">.</span><span class="n">set_size_inches</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -11209,8 +11220,10 @@ Attributes:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">climdir</span> <span class="o">=</span> <span class="s2">&quot;/glade/scratch/bryan/g.e20.G.TL319_t13.control.001_hfreq/ocn/proc/tavg&quot;</span>
-<span class="n">clim_</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">climdir</span><span class="si">}</span><span class="s2">/g.e20.G.TL319_t13.control.001_hfreq.pop.h.0042_0061.nc&quot;</span><span class="p">,</span>
-                      <span class="n">chunks</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;nlat&quot;</span><span class="p">:</span> <span class="mi">1200</span><span class="p">,</span> <span class="s2">&quot;nlon&quot;</span><span class="p">:</span> <span class="mi">800</span><span class="p">})</span>
+<span class="n">clim_</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">climdir</span><span class="si">}</span><span class="s2">/g.e20.G.TL319_t13.control.001_hfreq.pop.h.0042_0061.nc&quot;</span><span class="p">,</span>
+    <span class="n">chunks</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;nlat&quot;</span><span class="p">:</span> <span class="mi">1200</span><span class="p">,</span> <span class="s2">&quot;nlon&quot;</span><span class="p">:</span> <span class="mi">800</span><span class="p">},</span>
+<span class="p">)</span>
 <span class="n">clim_</span> <span class="o">=</span> <span class="n">preprocess_pop_dataset</span><span class="p">(</span><span class="n">clim_</span><span class="p">)</span>
 <span class="n">clim_</span>
 </pre></div>
@@ -21195,9 +21208,7 @@ none
 <span class="p">}</span>
 
 <span class="n">grid</span><span class="p">,</span> <span class="n">xclim</span> <span class="o">=</span> <span class="n">pop_tools</span><span class="o">.</span><span class="n">to_xgcm_grid_dataset</span><span class="p">(</span>
-    <span class="n">clim_</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;QFLUX&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">pint</span><span class="o">.</span><span class="n">quantify</span><span class="p">(),</span>
-    <span class="n">periodic</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">),</span>
-    <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span>
+    <span class="n">clim_</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;QFLUX&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">pint</span><span class="o">.</span><span class="n">quantify</span><span class="p">(),</span> <span class="n">periodic</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">),</span> <span class="n">metrics</span><span class="o">=</span><span class="n">metrics</span>
 <span class="p">)</span>
 <span class="n">xclim</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">xclim</span><span class="o">.</span><span class="n">cf</span><span class="p">[[</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">load</span><span class="p">())</span>
 <span class="n">xclim</span>
@@ -30832,7 +30843,9 @@ none
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">regridded_clim</span> <span class="o">=</span> <span class="n">regrid_to_density</span><span class="p">(</span><span class="n">xclim</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">cycle</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">bins</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;TEMP&quot;</span><span class="p">,</span> <span class="s2">&quot;SALT&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">regridded_clim</span> <span class="o">=</span> <span class="n">regrid_to_density</span><span class="p">(</span>
+    <span class="n">xclim</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">cycle</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">bins</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;TEMP&quot;</span><span class="p">,</span> <span class="s2">&quot;SALT&quot;</span><span class="p">]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
 <span class="n">regridded_clim</span>
 </pre></div>
 </div>
@@ -32308,7 +32321,8 @@ none
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cluster</span><span class="o">.</span><span class="n">close</span><span class="p">();</span> <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cluster</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>

@@ -507,11 +507,11 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">pump</span>
 <span class="kn">import</span> <span class="nn">xgcm</span>
 
 <span class="kn">import</span> <span class="nn">eddydiff</span> <span class="k">as</span> <span class="nn">ed</span>
-<span class="kn">import</span> <span class="nn">pump</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="n">xr</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span><span class="n">keep_attrs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -17044,8 +17044,7 @@ Attributes:
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">mpl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">magma_r</span><span class="p">)</span>
 <span class="n">taos</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">robust</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">yincrease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 <span class="p">(</span>
-    <span class="n">chisub</span>
-    <span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>
+    <span class="n">chisub</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">mean</span><span class="p">()</span>
     <span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;depth&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;T_original&quot;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.05</span>
@@ -17103,7 +17102,7 @@ Attributes:
     <span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
 <span class="p">)</span>
 <span class="n">argo</span><span class="p">[</span><span class="s2">&quot;pden&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">jmd95</span><span class="o">.</span><span class="n">dens</span><span class="p">(</span>
-    <span class="n">argo</span><span class="o">.</span><span class="n">Smean</span><span class="p">,</span> <span class="n">argo</span><span class="o">.</span><span class="n">Tmean</span><span class="p">,</span> <span class="mi">0</span> <span class="c1">#ecco.pres.broadcast_like(ecco.Smean)</span>
+    <span class="n">argo</span><span class="o">.</span><span class="n">Smean</span><span class="p">,</span> <span class="n">argo</span><span class="o">.</span><span class="n">Tmean</span><span class="p">,</span> <span class="mi">0</span>  <span class="c1"># ecco.pres.broadcast_like(ecco.Smean)</span>
 <span class="p">)</span>
 <span class="n">argo</span>
 </pre></div>
@@ -18733,7 +18732,7 @@ Data variables: (12/16)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fg</span> <span class="o">=</span> <span class="p">(</span><span class="n">chidens</span><span class="p">[</span><span class="s2">&quot;chi&quot;</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="s2">&quot;pden&quot;</span><span class="p">,</span> <span class="n">col_wrap</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fg</span> <span class="o">=</span> <span class="p">(</span><span class="n">chidens</span><span class="p">[</span><span class="s2">&quot;chi&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="s2">&quot;pden&quot;</span><span class="p">,</span> <span class="n">col_wrap</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">fg</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">chidens</span><span class="o">.</span><span class="n">KtTz</span>
 <span class="n">fg</span><span class="o">.</span><span class="n">map_dataarray_line</span><span class="p">(</span><span class="n">xr</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
@@ -18748,7 +18747,7 @@ Data variables: (12/16)
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">chidens</span><span class="p">[</span><span class="s2">&quot;chi&quot;</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">hue</span><span class="o">=</span><span class="s2">&quot;pden&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">chidens</span><span class="p">[</span><span class="s2">&quot;chi&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">hue</span><span class="o">=</span><span class="s2">&quot;pden&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="p">(</span><span class="n">chidens</span><span class="p">[</span><span class="s2">&quot;KtTz&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">isoT</span><span class="p">[</span><span class="s2">&quot;dTdz&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">hue</span><span class="o">=</span><span class="s2">&quot;pden&quot;</span><span class="p">)</span>
 </pre></div>
@@ -19546,10 +19545,10 @@ Attributes:
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chi2</span><span class="o">.</span><span class="n">dTdz</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chi2</span><span class="o">.</span><span class="n">dTdz</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 <span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">linex</span><span class="p">(</span><span class="mf">0.04</span><span class="p">)</span>
-<span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">linex</span><span class="p">(</span><span class="n">chi2</span><span class="o">.</span><span class="n">dTdz</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
-<span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">linex</span><span class="p">(</span><span class="n">chi2</span><span class="o">.</span><span class="n">dTdz</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">linex</span><span class="p">(</span><span class="n">chi2</span><span class="o">.</span><span class="n">dTdz</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">linex</span><span class="p">(</span><span class="n">chi2</span><span class="o">.</span><span class="n">dTdz</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -19574,10 +19573,12 @@ Attributes:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">meanTz</span> <span class="o">=</span> <span class="mf">0.04</span>
-<span class="n">chi2</span> <span class="o">=</span> <span class="n">chisub</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">chisub</span><span class="o">.</span><span class="n">KT</span> <span class="o">&lt;</span> <span class="mf">1e-3</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">chisub</span><span class="o">.</span><span class="n">dTdz</span> <span class="o">&gt;</span> <span class="mf">1e-2</span><span class="p">)</span> <span class="c1">#.resample(time=&quot;D&quot;).mean()</span>
+<span class="n">chi2</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">chisub</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">chisub</span><span class="o">.</span><span class="n">KT</span> <span class="o">&lt;</span> <span class="mf">1e-3</span><span class="p">)</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">chisub</span><span class="o">.</span><span class="n">dTdz</span> <span class="o">&gt;</span> <span class="mf">1e-2</span><span class="p">)</span>
+<span class="p">)</span>  <span class="c1"># .resample(time=&quot;D&quot;).mean()</span>
 <span class="c1"># chi2 = chi2.resample(time=&quot;D&quot;).mean()</span>
 
-<span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">((</span><span class="n">chi2</span><span class="o">.</span><span class="n">KtTz</span> <span class="o">*</span> <span class="n">meanTz</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">chi2</span><span class="o">.</span><span class="n">chi</span><span class="o">/</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+<span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">((</span><span class="n">chi2</span><span class="o">.</span><span class="n">KtTz</span> <span class="o">*</span> <span class="n">meanTz</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">chi2</span><span class="o">.</span><span class="n">chi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
 <span class="c1"># np.log10((chi2.KtTz * meanTz) / (chi2.chi)).plot.hist(bins=200, density=True);</span>
 </pre></div>
 </div>

@@ -392,7 +392,7 @@ const thebe_selector_output = ".output, .cell_output"
     <a class="reference internal nav-link" href="#uncertainties-in-estimating-e-argo-y-2">
      Uncertainties in estimating
      <span class="math notranslate nohighlight">
-      \(Κ_e^{argo} |⟨θ⟩_y|²\)
+      \(Κ_e^{argo} |⟨θ⟩\_y|²\)
      </span>
     </a>
    </li>
@@ -505,7 +505,7 @@ const thebe_selector_output = ".output, .cell_output"
     <a class="reference internal nav-link" href="#uncertainties-in-estimating-e-argo-y-2">
      Uncertainties in estimating
      <span class="math notranslate nohighlight">
-      \(Κ_e^{argo} |⟨θ⟩_y|²\)
+      \(Κ_e^{argo} |⟨θ⟩\_y|²\)
      </span>
     </a>
    </li>
@@ -557,9 +557,6 @@ const thebe_selector_output = ".output, .cell_output"
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cf_xarray</span>
 <span class="kn">import</span> <span class="nn">dcpy</span>
-<span class="kn">import</span> <span class="nn">eddydiff</span>
-<span class="kn">import</span> <span class="nn">xgcm</span>
-
 <span class="kn">import</span> <span class="nn">distributed</span>
 <span class="kn">import</span> <span class="nn">hvplot.xarray</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
@@ -567,12 +564,14 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">pump</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+<span class="kn">import</span> <span class="nn">xgcm</span>
 <span class="kn">from</span> <span class="nn">dcpy.oceans</span> <span class="kn">import</span> <span class="n">read_osu_microstructure_mat</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">from</span> <span class="nn">scipy.io</span> <span class="kn">import</span> <span class="n">loadmat</span>
 
+<span class="kn">import</span> <span class="nn">eddydiff</span>
 <span class="kn">import</span> <span class="nn">eddydiff</span> <span class="k">as</span> <span class="nn">ed</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="n">xr</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span><span class="n">keep_attrs</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -6312,7 +6311,7 @@ Data variables: (12/15)
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cham_dens</span><span class="o">.</span><span class="n">num_obs</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">)</span>
 <span class="n">chipod_dens</span><span class="o">.</span><span class="n">num_obs</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s2">&quot;iop&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
-<span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">linex</span><span class="p">([</span><span class="n">cham_dens</span><span class="o">.</span><span class="n">num_obs</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="n">chipod_dens</span><span class="o">.</span><span class="n">num_obs</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">dcpy</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">linex</span><span class="p">([</span><span class="n">cham_dens</span><span class="o">.</span><span class="n">num_obs</span><span class="o">.</span><span class="n">median</span><span class="p">()</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="n">chipod_dens</span><span class="o">.</span><span class="n">num_obs</span><span class="o">.</span><span class="n">median</span><span class="p">()</span> <span class="o">/</span> <span class="mi">3</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -7731,7 +7730,7 @@ Data variables:
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">chipod_dens</span><span class="o">.</span><span class="n">chi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s2">&quot;gamma_n&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">chipod_dens</span><span class="o">.</span><span class="n">chi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s2">&quot;gamma_n&quot;</span><span class="p">)</span>
 <span class="p">(</span><span class="n">chipod_dens</span><span class="o">.</span><span class="n">KtTz</span> <span class="o">*</span> <span class="n">eccoT</span><span class="o">.</span><span class="n">dTdz</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s2">&quot;gamma_n&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -7768,9 +7767,9 @@ Data variables:
 </div>
 </div>
 </div>
-<p>This plot shows local variance dissipation <span class="math notranslate nohighlight">\(⟨χ⟩/2\)</span> (chipod), local variance production <span class="math notranslate nohighlight">\(⟨K_Tθ_z⟩⟨θ⟩_z\)</span> (chipod+climatology), and estimate of variance produced by eddy stirring using the Cole et al (2015) argo estimate <span class="math notranslate nohighlight">\(K_e |⟨θ⟩_y|²\)</span> (cole + climatology).</p>
+<p>This plot shows local variance dissipation <span class="math notranslate nohighlight">\(⟨χ⟩/2\)</span> (chipod), local variance production <span class="math notranslate nohighlight">\(⟨K_Tθ_z⟩⟨θ⟩\_z\)</span> (chipod+climatology), and estimate of variance produced by eddy stirring using the Cole et al (2015) argo estimate <span class="math notranslate nohighlight">\(K_e |⟨θ⟩\_y|²\)</span> (cole + climatology).</p>
 <p>The story seems to be consistent in that eddy stirring variance production is small.</p>
-<p>Here I have used <span class="math notranslate nohighlight">\(⟨θ⟩_y\)</span> at the equator from 1D spline fits to the mean field along isopycnals. Technically we would want a gradient between 1S and 5N (approx.). BUT it looks like the gradient is larger at the equator generally, so this might be an overestimate even.</p>
+<p>Here I have used <span class="math notranslate nohighlight">\(⟨θ⟩\_y\)</span> at the equator from 1D spline fits to the mean field along isopycnals. Technically we would want a gradient between 1S and 5N (approx.). BUT it looks like the gradient is larger at the equator generally, so this might be an overestimate even.</p>
 <p>I could redo the Cole estimate using argo points between 1°S and 5°N and combine with appropriate gradient (using their methodology) to get a better value possibly.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -7786,7 +7785,7 @@ Data variables:
 <span class="p">(</span><span class="n">chipod_dens</span><span class="o">.</span><span class="n">KtTz</span> <span class="o">*</span> <span class="n">argoT</span><span class="o">.</span><span class="n">dTdz</span><span class="p">)</span><span class="o">.</span><span class="n">cf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">y</span><span class="o">=</span><span class="s2">&quot;gamma_n&quot;</span><span class="p">,</span> <span class="n">xscale</span><span class="o">=</span><span class="s2">&quot;log&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$⟨K_T θ_z⟩ ⟨θ⟩_z^</span><span class="si">{argo}</span><span class="s2">$&quot;</span>
 <span class="p">)</span>
-<span class="p">(</span><span class="n">cole_diff</span> <span class="o">*</span> <span class="n">cole_gradT</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+<span class="p">(</span><span class="n">cole_diff</span> <span class="o">*</span> <span class="n">cole_gradT</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">y</span><span class="o">=</span><span class="s2">&quot;gamma_n&quot;</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
     <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;dashed&quot;</span><span class="p">,</span>
@@ -7795,7 +7794,7 @@ Data variables:
     <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mf">25.75</span><span class="p">,</span> <span class="mi">23</span><span class="p">),</span>
     <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mf">1e-10</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
 <span class="p">)</span>
-<span class="p">(</span><span class="n">cole_diff</span> <span class="o">*</span> <span class="n">argoT</span><span class="o">.</span><span class="n">dTdy</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+<span class="p">(</span><span class="n">cole_diff</span> <span class="o">*</span> <span class="n">argoT</span><span class="o">.</span><span class="n">dTdy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">y</span><span class="o">=</span><span class="s2">&quot;gamma_n&quot;</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
     <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">,</span>
@@ -7804,7 +7803,7 @@ Data variables:
     <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mf">25.75</span><span class="p">,</span> <span class="mi">23</span><span class="p">),</span>
     <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mf">1e-10</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
 <span class="p">)</span>
-<span class="p">(</span><span class="n">cole_diff</span> <span class="o">*</span> <span class="n">eccoT</span><span class="o">.</span><span class="n">dTdy</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+<span class="p">(</span><span class="n">cole_diff</span> <span class="o">*</span> <span class="n">eccoT</span><span class="o">.</span><span class="n">dTdy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">y</span><span class="o">=</span><span class="s2">&quot;gamma_n&quot;</span><span class="p">,</span>
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">,</span>
     <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;-.&quot;</span><span class="p">,</span>
@@ -7828,7 +7827,7 @@ Data variables:
 </div>
 </div>
 <div class="section" id="uncertainties-in-estimating-e-argo-y-2">
-<h3>Uncertainties in estimating <span class="math notranslate nohighlight">\(Κ_e^{argo} |⟨θ⟩_y|²\)</span><a class="headerlink" href="#uncertainties-in-estimating-e-argo-y-2" title="Permalink to this headline">¶</a></h3>
+<h3>Uncertainties in estimating <span class="math notranslate nohighlight">\(Κ_e^{argo} |⟨θ⟩\_y|²\)</span><a class="headerlink" href="#uncertainties-in-estimating-e-argo-y-2" title="Permalink to this headline">¶</a></h3>
 <p>Using the spline gradient at 0 seems like a large value. I think we would want to estimate gradient between 1S and 5N. So the variance production estimate looks like an overestimate</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -7857,10 +7856,10 @@ Data variables:
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">17</span><span class="o">*</span><span class="mi">5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">17</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">17</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">17</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <span class="n">result</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
-<span class="n">out</span><span class="p">[(</span><span class="n">garr</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">garr</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="n">result</span>
+<span class="n">out</span><span class="p">[(</span><span class="n">garr</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">garr</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])]</span> <span class="o">=</span> <span class="n">result</span>
 <span class="n">out</span>
 </pre></div>
 </div>
@@ -7912,12 +7911,14 @@ Data variables:
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">chunk_reduce</span><span class="p">(</span><span class="n">eop</span><span class="o">.</span><span class="n">chi</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">group_idx</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,))</span>
-<span class="c1">#result[&quot;groups&quot;] = np.array(actual_groups)#[mask]</span>
-<span class="c1">#result[&quot;mean&quot;] = result[&quot;mean&quot;]#[mask]</span>
+<span class="c1"># result[&quot;groups&quot;] = np.array(actual_groups)#[mask]</span>
+<span class="c1"># result[&quot;mean&quot;] = result[&quot;mean&quot;]#[mask]</span>
 
 <span class="n">mask</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tup</span> <span class="k">for</span> <span class="n">tup</span> <span class="ow">in</span> <span class="n">tuple_groups</span><span class="o">.</span><span class="n">flat</span><span class="p">]</span>
 <span class="n">midx</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">MultiIndex</span><span class="o">.</span><span class="n">from_tuples</span><span class="p">(</span><span class="n">actual_groups</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;gamma_n_bins&quot;</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">])[</span><span class="n">mask</span><span class="p">]</span>
-<span class="n">mean_chi</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">&quot;mean&quot;</span><span class="p">][</span><span class="n">mask</span><span class="p">],</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;dim&quot;</span><span class="p">:</span> <span class="n">midx</span><span class="p">})</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
+<span class="n">mean_chi</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;mean&quot;</span><span class="p">][</span><span class="n">mask</span><span class="p">],</span> <span class="n">dims</span><span class="o">=</span><span class="s2">&quot;dim&quot;</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;dim&quot;</span><span class="p">:</span> <span class="n">midx</span><span class="p">}</span>
+<span class="p">)</span><span class="o">.</span><span class="n">unstack</span><span class="p">()</span>
 <span class="n">mean_chi</span>
 </pre></div>
 </div>
@@ -8471,7 +8472,7 @@ Attributes:
         <span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">sigma</span><span class="o">=</span><span class="n">sigma_levels</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;nearest&quot;</span><span class="p">)</span>
         <span class="o">.</span><span class="n">plot</span><span class="p">(</span>
             <span class="n">robust</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="c1">#cbar_kwargs={&quot;orientation&quot;: &quot;horizontal&quot;},</span>
+            <span class="c1"># cbar_kwargs={&quot;orientation&quot;: &quot;horizontal&quot;},</span>
             <span class="n">col</span><span class="o">=</span><span class="s2">&quot;sigma&quot;</span><span class="p">,</span>
             <span class="n">col_wrap</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="n">aspect</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span>
@@ -8497,7 +8498,7 @@ Attributes:
 <h3>Profiles at (0, 140W)<a class="headerlink" href="#profiles-at-0-140w" title="Permalink to this headline">¶</a></h3>
 <p>These look OK.</p>
 <ol class="simple">
-<li><p>there is an order of magnitude larger <span class="math notranslate nohighlight">\(\sqrt{S'S'}\)</span> between 40m and 150m than 250m-400m.</p></li>
+<li><p>there is an order of magnitude larger <span class="math notranslate nohighlight">\(\\sqrt{S'S'}\)</span> between 40m and 150m than 250m-400m.</p></li>
 <li><p>That matches a larger |∇S| in the same depth range</p></li>
 </ol>
 <p>Next step: is the longitudinal gradient bigger than meridional gradient</p>
