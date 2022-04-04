@@ -620,7 +620,7 @@ def plot_bar_Ke(Ke, dTdz_log=True, Ke_log=True, cole=None):
         )
     )
 
-    ((Ke.KtTz * 1025 * 4200)).plot.barh(
+    (Ke.KtTz * 1025 * 4200).plot.barh(
         x="rho", ax=ax[0, 2], title="$ρ c_p ⟨K_T T_z⟩ = ⟨J_q⟩$"
     )
 
@@ -717,7 +717,7 @@ def read_cole(resolution="1deg"):
         "salinity_gradient": "$|∇S|$",
         "mixing_length": "$λ$",
         "salinity_mean": "$S$",
-        "salinity_std": "$\sqrt{S'S'}$",  # noqa
+        "salinity_std": r"$\sqrt{S'S'}$",  # noqa
         "diffusivity": "$κ$",
     }
 
@@ -804,9 +804,7 @@ def convert_mat_to_netcdf():
             elif transect[var].ndim == 1:
                 transect[var].values[mask1d] = np.nan
 
-        transect.to_netcdf(
-            "../datasets/bob-ctd-chipod/transect_{0:d}.nc".format(idx + 1)
-        )
+        transect.to_netcdf(f"../datasets/bob-ctd-chipod/transect_{idx + 1:d}.nc")
 
 
 def average_transect_1d(transect, nbins=10):
