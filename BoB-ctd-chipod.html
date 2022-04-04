@@ -37,22 +37,24 @@
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/togglebutton.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.d59cb220de22ca1c485ebbdc042f0030.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script async="async" src="https://unpkg.com/thebe@0.5.1/lib/index.js"></script>
-    <script>
-        const thebe_selector = ".thebe"
-        const thebe_selector_input = "pre"
-        const thebe_selector_output = ".output"
-    </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="P06 CTD χpod analysis" href="P06.html" />
@@ -576,8 +578,8 @@
   <div class="tex2jax_ignore mathjax_ignore section" id="bob-asiri-2013-ctd-pod">
 <h1>BoB ASIRI 2013 CTD χpod<a class="headerlink" href="#bob-asiri-2013-ctd-pod" title="Permalink to this headline">¶</a></h1>
 <p>This notebook will attempt to infer eddy diffusivity <span class="math notranslate nohighlight">\(K_e\)</span> from the basin-wide transect of <span class="math notranslate nohighlight">\(χ, K_T\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-4273ff4b-e81f-41ea-ad14-05ef1126394c">
-<span class="eqno">(1)<a class="headerlink" href="#equation-4273ff4b-e81f-41ea-ad14-05ef1126394c" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-ee524c40-a8ec-4428-aa34-c36d3c281a99">
+<span class="eqno">(1)<a class="headerlink" href="#equation-ee524c40-a8ec-4428-aa34-c36d3c281a99" title="Permalink to this equation">¶</a></span>\[\begin{equation}
     K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z \widetilde{θ}⟩ \; ∂_z θ_m}{|∇θ_m|²}
 \end{equation}\]</div>
 <div class="cell docutils container">
@@ -741,8 +743,8 @@
 </div>
 <div class="section" id="using-climatological-gradients">
 <h2>Using climatological gradients<a class="headerlink" href="#using-climatological-gradients" title="Permalink to this headline">¶</a></h2>
-<div class="amsmath math notranslate nohighlight" id="equation-71ca53d7-3039-45fb-a44c-d5007296f7f3">
-<span class="eqno">(2)<a class="headerlink" href="#equation-71ca53d7-3039-45fb-a44c-d5007296f7f3" title="Permalink to this equation">¶</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-71baf6ab-6ae4-40b0-991d-7efe8352658f">
+<span class="eqno">(2)<a class="headerlink" href="#equation-71baf6ab-6ae4-40b0-991d-7efe8352658f" title="Permalink to this equation">¶</a></span>\[\begin{equation}
     K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z \widetilde{θ}⟩ \; ∂_z θ_m}{|∇θ_m|²}
 \end{equation}\]</div>
 <div class="cell docutils container">
