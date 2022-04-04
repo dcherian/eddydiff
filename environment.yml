@@ -90,3 +90,6 @@ dependencies:
   - pip:
     - icecream
     - jupyter-book
+    - mixsea
+    - xfilter
+    - dcpy
