@@ -16,7 +16,6 @@ parts:
   chapters:
   - file: pop-1-deg
   - file: pop-var-budget
-  - file: ssh
 - caption: "Variance budgets"
   chapters:
   - file: natre
