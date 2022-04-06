@@ -87,6 +87,7 @@ dependencies:
   - arch-py
   - netcdf-fortran  # pygamma
   - clang  # pygamma
+  - pop-tools
 ###  pip stuff
   - pip:
     - icecream
