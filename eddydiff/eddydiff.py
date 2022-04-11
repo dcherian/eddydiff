@@ -1336,3 +1336,25 @@ def gradient_cole(da, dim, dxy=3):
     grad = 1 / 2 / Δd * (diff_(da, dxy) + diff_(da, -dxy))
     grad.attrs["description"] = f"gradient calculated over {2*dxy} points"
     return grad
+
+
+def plane(coords, dTdx, dTdy, c, d):
+    """Fitting function passed to DataArray.curvefit"""
+    lon, lat = coords
+    x = (lon - lon.mean()) * np.cos(np.pi / 180 * lat.mean()) * 110e3
+    y = (lat - lat.mean()) * 110e3
+    # import IPython; IPython.core.debugger.set_trace()
+    return dTdx * x + dTdy * y + c + d * x * y
+
+
+def plane_fit_gradient(da, coords=None, debug=False, **kwargs):
+    coeffs = da.cf.curvefit(
+        ("longitude", "latitude"),
+        plane,
+        p0={"dTdx": 1e-6, "dTdy": 1e-6, "c": 20, "d": 1},
+        **kwargs,
+    ).curvefit_coefficients
+    delT2 = (coeffs.sel(param=["dTdx", "dTdy"]) ** 2).sum("param")
+    if debug:
+        delT2.plot()
+    return delT2
