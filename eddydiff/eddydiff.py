@@ -693,6 +693,7 @@ def read_cole(resolution="1deg"):
         .rename(
             {"latitude": "lat", "longitude": "lon", "density": "sigma", "depth": "pres"}
         )
+        .set_index({"lon": "lon", "lat": "lat", "sigma": "sigma"})
         .set_coords(
             [
                 "lat",
@@ -705,8 +706,8 @@ def read_cole(resolution="1deg"):
                 "maximum_mixing_length",
             ]
         )
+        .squeeze("scalar")
     )
-
     cole = cole.cf.guess_coord_axis()
     cole["sigma"] = cole.sigma.data
     cole["pres"] = cole.pres.data
