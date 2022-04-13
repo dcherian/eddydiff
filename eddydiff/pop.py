@@ -92,7 +92,7 @@ def regrid_to_density(xds, grid, bins, varnames):
     #   ("bounds", "σ"), np.stack([bins[:-1], bins[1:]]), regridded.σ.attrs.copy()
     # )
     # regridded.σ.attrs["bounds"] = "sigma_bounds"
-    regridded.σ.attrs["axis"] = "Z"
+    regridded.σ.attrs.update({"axis": "Z", "positive": "down"})
 
     return regridded
 

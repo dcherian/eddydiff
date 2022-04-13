@@ -1348,13 +1348,18 @@ def plane(coords, dTdx, dTdy, c, d):
 
 
 def plane_fit_gradient(da, coords=None, debug=False, **kwargs):
-    coeffs = da.cf.curvefit(
-        ("longitude", "latitude"),
-        plane,
-        p0={"dTdx": 1e-6, "dTdy": 1e-6, "c": 20, "d": 1},
-        **kwargs,
-    ).curvefit_coefficients
+    counts = da.cf.count(["X", "Y"])
+    coeffs = (
+        da.where(counts > 5)
+        .cf.curvefit(
+            ("longitude", "latitude"),
+            plane,
+            p0={"dTdx": 1e-6, "dTdy": 1e-6, "c": 20, "d": 1},
+            **kwargs,
+        )
+        .curvefit_coefficients
+    )
     delT2 = (coeffs.sel(param=["dTdx", "dTdy"]) ** 2).sum("param")
     if debug:
-        delT2.plot()
+        delT2.cf.plot.line(y="Z")
     return delT2
