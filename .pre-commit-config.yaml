@@ -33,11 +33,6 @@ repos:
         - id: nbqa-pyupgrade
           args: [--py37-plus]
         - id: nbqa-isort
-        - id: nbqa
-          entry: nbqa mdformat
-          name: nbqa-mdformat
-          alias: nbqa-mdformat
-          additional_dependencies: [mdformat==0.7.14]
 
   - repo: https://github.com/asottile/pyupgrade
     rev: v2.31.1
