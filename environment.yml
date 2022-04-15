@@ -88,6 +88,8 @@ dependencies:
   - netcdf-fortran  # pygamma
   - clang  # pygamma
   - pop-tools
+  - cfchecker
+  - compliance-checker
 ###  pip stuff
   - pip:
     - icecream
@@ -95,3 +97,4 @@ dependencies:
     - mixsea
     - xfilter
     - dcpy
+    - gsw_xarray
