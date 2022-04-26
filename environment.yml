@@ -2,6 +2,7 @@ name: eddydiff
 channels:
   - conda-forge
   - pyviz
+  - nodefaults
 dependencies:
 ### misc python
   - mamba
@@ -90,8 +91,12 @@ dependencies:
   - pop-tools
   - cfchecker
   - compliance-checker
+### for ecco
+  - geos
+  - pathlib
 ###  pip stuff
   - pip:
+    - ecco_v4_py
     - icecream
     - jupyter-book
     - mixsea
