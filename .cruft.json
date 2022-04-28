@@ -1,15 +1,16 @@
 {
   "template": "/Users/dcherian/work/eddydiff/../python/cookies/analysis_project",
-  "commit": "c0876d48923d9dd9116b5ce6758f4177582c32b9",
+  "commit": "ad6bea8e46975867da08efdbb073cc2fa8ddff45",
   "context": {
     "cookiecutter": {
       "project_name": "eddydiff",
-      "project_title": "Eddy Diffusivity",
+      "project_title": "Eddy Diffusivity Analysis",
       "_copy_without_render": [
         "*.github"
       ],
       "_template": "/Users/dcherian/work/eddydiff/../python/cookies/analysis_project"
     }
   },
-  "directory": null
+  "directory": null,
+  "checkout": null
 }
