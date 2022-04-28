@@ -6,7 +6,7 @@ logo: logo.png
 repository:
   url                       : https://github.com/dcherian/eddydiff  # The URL to your book's repository
   path_to_book              : "notebooks/"  # A path to your book's folder, relative to the repository root.
-  branch                    : master  # Which branch of the repository should be used when creating links
+  branch                    : main  # Which branch of the repository should be used when creating links
 
 html:
   use_repository_button: true
