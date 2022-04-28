@@ -118,5 +118,9 @@ auto
 .auctex-auto
 frag-master.tex
 
+cruise-reports/
 datasets/
+documents/
+images/
+presentations/
 proposal/
