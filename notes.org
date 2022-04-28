@@ -163,7 +163,6 @@ Things to try:
 |   124 |  327 |                                           |
 |   150 |  321 | bad after apr 21, 2009                    |
 
-
 * Annual Reports
 
 ** 2020
@@ -241,3 +240,171 @@ Our main goal for the next 2-3 months is to:
   - generate a high-quality estimate of mean property gradients along isopycnal surfaces fom a number of products.
   - Our primary goal for the fall is a publication summarizing eddy diffusivity estimates from all sections.
 Simultaneously we will be refining our estimation procedure to handle moored data with a goal of publishing eddy diffusivity time series in Summer 2021.
+
+* ECCO
+** Gael's email
+** running ecco
+- cd build;  ../../../tools/genmake2 -mods=../code -optfile=../linux_amd64_ifort+mpi_yellowstone -mpi
+** ECCO configuration
+** GM/Redi notes
+For ECCO:
+- implicitDiffusion = true
+- GM_AdvForm = TRUE, GM_InMomAsStress = FALSE, GM_AdvSeparate=False
+- Kgm ≠ Kredi
+- config file:
+    viscAr=0.5E-4,
+    #
+     viscAh=1.E0,
+     viscAhGrid=2.E-2,
+    # viscAh=2.0e4,
+    #
+     diffKhT=1.E1,
+     diffKrT=1.E-5,
+     diffKhS=1.E1,
+     diffKrS=1.E-5,
+    #
+    ### diffKrBL79surf=0.1E-4,
+    ### diffKrBL79deep=1.0E-4,
+     bottomDragQuadratic = 0.001,
+    #when using ggl90
+     ivdc_kappa=10.,
+     implicitDiffusion=.TRUE.,
+     implicitViscosity=.TRUE.,
+- stdout:
+    (PID.TID 0000.0001) GM_AdvForm =     /* if FALSE => use SkewFlux Form */
+    (PID.TID 0000.0001)                   T
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_InMomAsStress = /* if TRUE => apply as Eddy Stress */
+    (PID.TID 0000.0001)                   F
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_AdvSeparate = /* Calc Bolus & Euler Adv. separately */
+    (PID.TID 0000.0001)                   F
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_ExtraDiag =   /* Tensor Extra Diag (line 1&2) non 0 */
+    (PID.TID 0000.0001)                   T
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_isopycK =    /* Background Isopyc. Diffusivity [m^2/s] */
+    (PID.TID 0000.0001)                 1.000000000000000E+03
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_skewflx*K =  /* Background GM_SkewFlx Diffusivity [m^2/s] */
+    (PID.TID 0000.0001)                 0.000000000000000E+00
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_advec*K =    /* Backg. GM-Advec(=Bolus) Diffusivity [m^2/s]*/
+    (PID.TID 0000.0001)                 1.000000000000000E+03
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_Kmin_horiz = /* Minimum Horizontal Diffusivity [m^2/s] */
+    (PID.TID 0000.0001)                 1.000000000000000E+02
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_Visbeck_alpha = /* Visbeck alpha coeff. [-] */
+    (PID.TID 0000.0001)                 0.000000000000000E+00
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_Small_Number =  /* epsilon used in slope calc */
+    (PID.TID 0000.0001)                 9.999999999999999E-21
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_slopeSqCutoff = /* Slope^2 cut-off value */
+    (PID.TID 0000.0001)                 1.000000000000000E+08
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_taper_scheme =  /* Type of Tapering/Clipping scheme */
+    (PID.TID 0000.0001)               'stableGmAdjTap                          '
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_maxSlope =  /* Maximum Slope (Tapering/Clipping) */
+    (PID.TID 0000.0001)                 4.000000000000000E-03
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_facTrL2dz = /* Minimum Trans.Layer Thick. (factor of dz) */
+    (PID.TID 0000.0001)                 1.000000000000000E+00
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_facTrL2ML = /* Max.Trans.Layer Thick. (factor of MxL Depth)*/
+    (PID.TID 0000.0001)                 5.000000000000000E+00
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_maxTransLay = /* Maximum Transition Layer Thickness [m] */
+    (PID.TID 0000.0001)                 5.000000000000000E+02
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_UseBVP = /* if TRUE => use bvp a la Ferrari et al. (2010) */
+    (PID.TID 0000.0001)                   F
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_BVP_ModeNumber = /* Vertical mode number for BVP wave speed */
+    (PID.TID 0000.0001)                       1
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_BVP_cMin = /* Minimum wave speed for BVP [m/s] */
+    (PID.TID 0000.0001)                 1.000000000000000E-01
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) GM_useSubMeso = /* if TRUE => use Sub-Meso param. (B.Fox-Kemper) */
+    (PID.TID 0000.0001)                   F
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) subMeso_Ceff = /* efficiency coeff. of Mixed-Layer Eddies [-] */
+    (PID.TID 0000.0001)                 7.000000000000001E-02
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) subMeso_invTau = /* inverse of Sub-Meso mixing time-scale [/s] */
+    (PID.TID 0000.0001)                 2.000000000000000E-06
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) subMeso_LfMin = /* minimum length-scale "Lf" [m] */
+    (PID.TID 0000.0001)                 1.000000000000000E+03
+    (PID.TID 0000.0001)     ;
+    (PID.TID 0000.0001) subMeso_Lmax = /* maximum grid-scale length [m] */
+    (PID.TID 0000.0001)                 1.100000000000000E+05
+    (PID.TID 0000.0001)     ;
+
+SO!
+- GM vertical diffusion is in DFrI_TH; it's added to KappaRx from vertical mixing
+- Kwz, Kwy terms are in DFrE_TH
+- Lateral terms are lumped in with diffKh, diffK4 contributions in dFxE_TH, dFyE_TH
+
+- http://mailman.mitgcm.org/pipermail/mitgcm-support/2013-November/008616.html
+  #+begin_quote
+The isopycnal diffusion (Redi part) contribution is put into the diffusive flux, splitted into the 3 directions and, if using implicitDiffusion=.TRUE., with a distinction between explicit vertical flux (which contains the contribution Kwx d.T/dx + Kwy d/T/dy) and the implicit vertical flux (which contains the contribution Kwz d.T/dz).
+For instance, for temperature (but it's available for any tracer):
+   112 |DFrE_TH | 15 |       |WM      LR|degC.m^3/s      |Vertical Diffusive Flux of Pot.Temperature (Explicit part)
+   113 |DFxE_TH | 15 |   114 |UU      MR|degC.m^3/s      |Zonal      Diffusive Flux of Pot.Temperature
+   114 |DFyE_TH | 15 |   113 |VV      MR|degC.m^3/s      |Meridional Diffusive Flux of Pot.Temperature
+   115 |DFrI_TH | 15 |       |WM      LR|degC.m^3/s      |Vertical Diffusive Flux of Pot.Temperature (Implicit part)
+And if using the Skew-Flux form, the GM part (which double Kwx & Kwy and cancel Kuz and Kvz if K_GM = K_iso ) will also fall into these diffusive flux diagnostics.
+
+With the advective form of GM ( GM_AdvForm=.TRUE.), and assuming the default GM_AdvSeparate=.FALSE. is used, the eulerian mean and the bolus transport are combined together to form the residual mean which is used to advect all tracers. And in this case, the GM contribution to the tracer tendency is part of the advective flux diagnostics, e.g. for temperature:
+   109 |ADVr_TH | 15 |       |WM      LR|degC.m^3/s      |Vertical   Advective Flux of Pot.Temperature
+   110 |ADVx_TH | 15 |   111 |UU      MR|degC.m^3/s      |Zonal      Advective Flux of Pot.Temperature
+   111 |ADVy_TH | 15 |   110 |VV      MR|degC.m^3/s      |Meridional Advective Flux of Pot.Temperature
+Note that these diagnostics match exactly what the model computes since they come directly out of the model advection subroutines. But no distinction is made between the advective flux due to the eulerian mean and the one due to the bolus transport (hard to define anyway when the advection scheme is non-linear regarding the velocity).
+
+For this reason, but only available for temperature (sorry), there is an approximate estimation of the Bolus transport of temperature (consistent with a centered in time and space advection scheme, like tempAdvScheme=2) which is diagnose (in pkg/gmredi/gmredi_xtransport.F & pkg/gmredi/gmredi_ytransport.F) and available with the advective form:
+   209 |GM_ubT  | 15 |   210 |UUr     MR|degC.m^3/s      |Zonal Mass-Weight Bolus Transp of Pot Temp
+   210 |GM_vbT  | 15 |   209 |VVr     MR|degC.m^3/s      |Meridional Mass-Weight Bolus Transp of Pot Temp
+
+An other alternative, since all Redi (+GM if skewFlux form) matrix coefficient are available
+as diagnostics:
+   197 |GM_Kux  | 15 |   198 |UU P    MR|m^2/s           |K_11 element (U.point, X.dir) of GM-Redi tensor
+   198 |GM_Kvy  | 15 |   197 |VV P    MR|m^2/s           |K_22 element (V.point, Y.dir) of GM-Redi tensor
+   199 |GM_Kuz  | 15 |   200 |UU      MR|m^2/s           |K_13 element (U.point, Z.dir) of GM-Redi tensor
+   200 |GM_Kvz  | 15 |   199 |VV      MR|m^2/s           |K_23 element (V.point, Z.dir) of GM-Redi tensor
+   201 |GM_Kwx  | 15 |   202 |UM      LR|m^2/s           |K_31 element (W.point, X.dir) of GM-Redi tensor
+   202 |GM_Kwy  | 15 |   201 |VM      LR|m^2/s           |K_32 element (W.point, Y.dir) of GM-Redi tensor
+   203 |GM_Kwz  | 15 |       |WM P    LR|m^2/s           |K_33 element (W.point, Z.dir) of GM-Redi tensor
+would be to calculate (offline) an approximate evaluation (neglecting time correlation between tracer gradient and Redi-GM matrix coeff) of gmredi flux, base on the time-mean tracer gradient and the time-mean GM-Redi coefficient.
+
+Note that, but again for temperature only, some gmredi flux are available as diagnostics:
+   206 |GM_KuzTz| 15 |   207 |UU      MR|degC.m^3/s      |Redi Off-diagonal Temperature flux: X component
+   207 |GM_KvzTz| 15 |   206 |VV      MR|degC.m^3/s      |Redi Off-diagonal Temperature flux: Y component
+   208 |GM_KwzTz| 15 |       |WM      LR|degC.m^3/s      |Redi main-diagonal vertical Temperature flux
+  #+end_quote
+- http://mailman.mitgcm.org/pipermail/mitgcm-support/2017-January/010825.html
+  #+begin_quote
+For any tracer, when using pkg/gmredi, it adds to vertical fluxes
+two diffusive components that are proportional to horizontal tracer gradient
+(Kwx & Kwy components of the GM-Redi tensor) and these components are always
+evaluated explicitly (i.e., forward in time) since an implicit implementation
+would be far too complicated and expensive.
+These terms (Kwx & Kwy) are due to the Redi tensor but are increased by some GM
+contributions when using the Skew-flux form (GM_AdvForm = .FALSE., i.e, the default).
+
+The vertical flux 3rd component from GM-Redi is due to Kwz tensor component
+and is easy to process implicitly (vertical flux function of vertical gradient)
+like any vertical diffusivity contribution; this is the case when implicitDiffusion=.TRUE.
+
+In term of diagnostics, with useGMRedi=TRUE,
+1) the first 2 components (from Kwx & Kwy) are accounted for in diagnostics "DFrE_???";
+2) the 3rd component (from Kwz) is either
+    added to "DFrE_???" when using implicitDiffusion=.False. (i.e., the default)
+  or
+   accounted for in diagnostics "DFrI_???" when using implicitDiffusion=.True.
+istent with tracer time-stepping ( forward / backward
+time-stepping = explicit / implicit ).
+  #+end_quote

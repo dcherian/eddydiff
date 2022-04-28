@@ -93,7 +93,8 @@ dependencies:
   - compliance-checker
 ### for ecco
   - geos
-  - pathlib
+  - pyresample
+  - setuptools
 ###  pip stuff
   - pip:
     - ecco_v4_py
