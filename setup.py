@@ -7,7 +7,7 @@ setup(
     url="http://github.com/dcherian/eddydiff",
     author="Deepak Cherian",
     author_email="deepak@cherian.net",
-    license="GPL3",
+    license="MIT",
     packages=["eddydiff"],
     zip_safe=False,
 )

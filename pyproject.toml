@@ -1,2 +1,5 @@
 [tool.nbqa.md]
 mdformat = true
+
+[tool.cruft]
+skip = ["*/__init__.py", "tests", "_toc.yml", "environment.yml", "*.org"]
