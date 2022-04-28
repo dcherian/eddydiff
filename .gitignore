@@ -113,11 +113,15 @@ auto
 *.nc
 *.mat
 *.zarr
+*.png
+*.pdf
+*.sync-conflict*
 
 .DS_Store
 .auctex-auto
 frag-master.tex
 
+backup/
 cruise-reports/
 datasets/
 documents/
