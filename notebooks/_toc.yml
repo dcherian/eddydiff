@@ -10,6 +10,7 @@ parts:
   - file: BoB-ctd-chipod
   - file: P06
   - file: sections-variance-estimate
+  - file: ctd-χ-bob
   - file: ctd-χ-A05
   - file: bootstrap-ctd-chipod-estimates
 - caption: "Model Processing"
