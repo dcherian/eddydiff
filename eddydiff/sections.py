@@ -192,6 +192,9 @@ def add_ancillary_variables(ds):
     ds["N2"].attrs["long_name"] = "$N²$"
     ds["N2"].attrs["units"] = "s-2"
 
+    ds["τ0"] = gsw.spiciness0(ds.SA, ds.CT)
+    ds.τ0.attrs = {"standard_name": "spiciness", "long_name": "$τ_0$"}
+
     ds["τ1"] = gsw.spiciness1(ds.SA, ds.CT)
     ds.τ1.attrs = {"standard_name": "spiciness", "long_name": "$τ_1$"}
 
