@@ -784,3 +784,22 @@ def diapycnal_spiciness_curvature(section):
 
     dsc["pressure"] = dsc.pressure.fillna(0)
     return dsc
+
+
+def reformat_ctd_chipod_nc(ds):
+    ds = ds.copy(deep=True).set_coords(["CTD_chipod"])
+
+    ds["direction"] = ("direction", ["up", "dn"])
+
+    # fmt: off
+    for var in ["T", "S", "SN", "dThdz", "pts2bin", "N2", "chi",
+                "eps", "KT", "chiGE", "epsGE", "KTGE", "GEflag", "sn_avail"]:
+        # fmt: on
+        with xr.set_options(keep_attrs=True):
+            ds[var] = xr.concat([ds[f"{var}_up"], ds[f"{var}_dn"]], dim="direction")
+        ds = ds.drop_vars([f"{var}_up", f"{var}_dn"])
+
+    ds["SN"] = ds.SN.astype(int)
+    ds["sn_avail"] = ds.sn_avail.astype(int)
+    ds["sn_avail"] = ds.sn_avail.where(ds.sn_avail > 0, 0)
+    return ds
