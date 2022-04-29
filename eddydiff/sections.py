@@ -188,7 +188,6 @@ def add_ancillary_variables(ds):
         ds["N2"] = xr.DataArray(
             (take_(N2, slice(-1), zaxis) + take_(N2, slice(1, None), zaxis)) / 2,
             dims=ds.SA.dims,
-            coords={pres.name: (pres.dims, pres.data[1:-1], pres.attrs)},
         )
     ds["N2"].attrs["long_name"] = "$N²$"
     ds["N2"].attrs["units"] = "s-2"
