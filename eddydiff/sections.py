@@ -1,6 +1,7 @@
 import os
 
 import cf_xarray as cfxr  # noqa
+import dask
 import dcpy
 import gsw
 import matplotlib.pyplot as plt
@@ -803,3 +804,34 @@ def reformat_ctd_chipod_nc(ds):
     ds["sn_avail"] = ds.sn_avail.astype(int)
     ds["sn_avail"] = ds.sn_avail.where(ds.sn_avail > 0, 0)
     return ds
+
+
+def _process_finescale_single_cast(cast, **kwargs):
+    import cf_xarray as cfxr
+    import dcpy.finestructure
+
+    with cfxr.set_options(warn_on_missing_variables=False):
+        result = dcpy.finestructure.process_profile(cast, **kwargs)
+
+    result = result.expand_dims("station").reset_coords(
+        [v for v in result.coords if "mode" in v or "mld" in v]
+    )
+    return result
+
+
+def process_finescale_estimate(section, **kwargs):
+    profilevar = section.cf.cf_roles["profile_id"]
+    assert len(profilevar) == 1
+    profilevar = profilevar[0]
+
+    tasks = [
+        dask.delayed(_process_finescale_single_cast)(
+            section.isel({profilevar: idx}), **kwargs
+        )
+        for idx in range(section.sizes[profilevar])
+    ]
+    (computed,) = dask.compute(tasks)
+
+    sectionturb = xr.concat(computed, dim=profilevar)
+    sectionturb[profilevar] = section[profilevar]
+    return sectionturb
