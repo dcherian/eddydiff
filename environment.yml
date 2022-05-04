@@ -104,3 +104,4 @@ dependencies:
     - xfilter
     - dcpy
     - gsw_xarray
+    - git+https://github.com/TomNicholas/datatree.git
