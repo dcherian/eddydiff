@@ -392,7 +392,7 @@ def average_density_bin(group, blocksize, skip_fits=False):
             + (delta.hm / chidens.hm) ** 2
         )
 
-        chidens["Kt_m"] = 1 / 2 * chidens.chi / chidens.dTdz_m
+        chidens["Kt_m"] = 0.5 * chidens.chi / chidens.dTdz_m**2
         delta["Kt_m"] = chidens.Kt_m * np.sqrt(
             (delta.chi / chidens.chi) ** 2 + (delta.hm / chidens.hm) ** 2
         )
