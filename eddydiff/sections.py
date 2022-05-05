@@ -282,7 +282,9 @@ def average_density_bin(group, blocksize, skip_fits=False):
 
     # flatten for bootstrap
     flattened = (
-        profiles[["chi", "eps", "KtTz"]].reset_coords(drop=True).stack(flat=[...])
+        profiles[["chi", "eps", "KtTz"]]
+        .reset_coords(drop=True)
+        .stack(flat=[...], create_index=False)
     )
 
     ci = xr.apply_ufunc(
@@ -302,14 +304,17 @@ def average_density_bin(group, blocksize, skip_fits=False):
     hm = pres.max(Z) - pres.min(Z)
     hm = hm.where(hm > 1)
 
+    profilevar = group.cf.cf_roles["profile_id"][0]
+
     ci["hm"] = xr.apply_ufunc(
         compute_mean_ci,
         hm,
-        input_core_dims=[["cast"]],
-        exclude_dims={"cast"},
+        input_core_dims=[[profilevar]],
+        exclude_dims={profilevar},
         output_core_dims=[["bound"]],
         dask_gufunc_kwargs=dict(output_sizes={"bound": 3}),
         dask="parallelized",
+        output_dtypes=[float],
     )
     ci["hm"].attrs = {
         "long_name": "$h_m$",
@@ -329,12 +334,19 @@ def average_density_bin(group, blocksize, skip_fits=False):
 
     if not skip_fits:
         # reference to mean pressure of obs in this bin
-        pref = group[Z].mean().data
-        group["theta"] = dcpy.eos.ptmp(group.salt, group.temp, group[Z], pr=pref)
-        chidens["theta"] = group.theta.mean()
-        chidens["salt"] = group.salt.mean()
+        # TODO: switch to conservative_temperature
+        pref = profiles[Z].mean().data
+        profiles["theta"] = dcpy.eos.ptmp(
+            profiles.cf["sea_water_salinity"],
+            profiles.cf["sea_water_temperature"],
+            profiles[Z],
+            pr=pref,
+        )
+        chidens["theta"] = profiles.theta.mean()
+        profiles["gamma_n_"] = profiles.gamma_n
+        # chidens["salt"] = profiles.salt.mean()
 
-        chidens["dTdz_m"] = -1 * fit1D(group, var="theta", dim=Z)
+        chidens["dTdz_m"] = -1 * fit1D(profiles, var="theta", dim=Z)
         chidens.dTdz_m.attrs.update(
             dict(
                 name="$∂_z θ_m$",
@@ -343,7 +355,7 @@ def average_density_bin(group, blocksize, skip_fits=False):
             )
         )
 
-        chidens["N2_m"] = 9.81 / 1030 * fit1D(group, var="gamma_n", dim=Z)
+        chidens["N2_m"] = 9.81 / 1030 * fit1D(profiles, var="gamma_n_", dim=Z)
         chidens.N2_m.attrs.update(
             dict(
                 name="$∂_zb_m$",
@@ -409,7 +421,7 @@ def average_density_bin(group, blocksize, skip_fits=False):
 def lazy_map(grouped, func, *args, **kwargs):
     return grouped.map(
         lambda g: func(
-            g.chunk().assign(gamma_n=g.gamma_n),
+            g.chunk().assign_coords(gamma_n=g.gamma_n),
             *args,
             **kwargs,
         )
@@ -461,11 +473,15 @@ def bin_average_vertical(ds, stdname, bins, blocksize, skip_fits=False):
     hash_string = " |  ".join(f"{k}: {v}" for k, v in hashes.items())
     chidens.attrs["commit"] = hash_string
 
+    # stations used
+    profilevar = ds.cf.cf_roles["profile_id"][0]
+    chidens = chidens.assign_coords({profilevar: ds[profilevar]})
+
     return chidens
 
 
-def fit1D(group, var, dim="depth", debug=False):
-    ds = group.unstack()
+def fit1D(ds, var, dim="depth", debug=False):
+    # ds = group.unstack()
     # Some weirdness about binning by dim in grouped variable
     if dim in ds.dims:
         ds = ds.rename({dim: f"{dim}_"})
@@ -474,7 +490,7 @@ def fit1D(group, var, dim="depth", debug=False):
     mean = (
         ds[[var, "gamma_n", dim]]
         .groupby_bins("gamma_n", bins2)
-        .mean()
+        .mean(method="map-reduce")
         .swap_dims({"gamma_n_bins": dim})
     )
     fit = mean[var].polyfit(dim, deg=1)
