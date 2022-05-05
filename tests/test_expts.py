@@ -42,7 +42,7 @@ def test_natre():
         env={"OMP_NUM_THREADS": 1, "NUMBA_NUM_THREADS": 1, "MKL_NUM_THREADS": 1},
     ) as client:
 
-        natre = read_natre().load(client=client)
+        natre = read_natre(load=True)
         bins = ed.sections.choose_bins(
             natre.gamma_n, depth_range=np.arange(150, 2001, 100)
         )

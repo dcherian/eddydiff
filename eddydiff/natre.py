@@ -98,10 +98,13 @@ def combine_natre_files():
     return ds
 
 
-def read_natre():
-    natre = xr.open_dataset(
-        "../datasets/natre_large_scale.nc", chunks={"latitude": 5, "longitude": 5}
-    )
+def read_natre(load=False):
+    if load:
+        natre = xr.load_dataset("../datasets/natre_large_scale.nc")
+    else:
+        natre = xr.open_dataset(
+            "../datasets/natre_large_scale.nc", chunks={"latitude": 5, "longitude": 5}
+        )
     # natre = natre.where(natre.chi.notnull() & natre.eps.notnull())
     # natre = combine_natre_files()
     natre = natre.set_coords(["time", "pres"])
