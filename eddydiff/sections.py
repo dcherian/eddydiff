@@ -287,6 +287,16 @@ def compute_bootstrapped_mean_ci(array, blocksize):
     )
 
 
+def add_error(field, fields, delta, *terms):
+    from functools import reduce
+    from operator import add
+
+    delta[field] = (
+        fields[field]
+        * np.sqrt(reduce(add, ((delta[var] / fields[var]) ** 2 for var in terms)))
+    ).reset_coords(drop=True)
+
+
 def average_density_bin(group, blocksize, skip_fits=False):
     # groupby_bins ends up stacking the pressure coordinate
     # which deletes attrs so we can't use cf-xarray here
@@ -349,7 +359,7 @@ def average_density_bin(group, blocksize, skip_fits=False):
 
     unit = xr.DataArray([-1, 1], dims="bound", coords={"bound": ["lower", "upper"]})
 
-    Γ = 0.2
+    chidens["Γ"] = 0.2
     delta["Γ"] = 0.04
 
     if not skip_fits:
@@ -374,6 +384,7 @@ def average_density_bin(group, blocksize, skip_fits=False):
                 description="vertical gradient of potential temperature θ with respect to depth",
             )
         )
+        add_error("dTdz_m", chidens, delta, "hm")
 
         chidens["N2_m"] = 9.81 / 1030 * fit1D(profiles, var="gamma_n_", dim=Z)
         chidens.N2_m.attrs.update(
@@ -383,37 +394,26 @@ def average_density_bin(group, blocksize, skip_fits=False):
                 description="vertical gradient of neutral density γ_n with respect to depth",
             )
         )
+        add_error("N2_m", chidens, delta, "hm")
 
-        chidens["Krho_m"] = Γ * chidens.eps / chidens.N2_m
+        chidens["Krho_m"] = chidens.Γ * chidens.eps / chidens.N2_m
+        add_error("Krho_m", chidens, delta, "Γ", "eps", "N2_m")
         chidens.Krho_m.attrs.update(dict(long_name="$K_ρ^m$", units="m²/s"))
-        delta["Krho_m"] = chidens.Krho_m * np.sqrt(
-            (delta.Γ / Γ) ** 2
-            + (delta.eps / chidens.eps) ** 2
-            + (delta.hm / chidens.hm) ** 2
-        )
 
         chidens["Kt_m"] = 0.5 * chidens.chi / chidens.dTdz_m**2
-        delta["Kt_m"] = chidens.Kt_m * np.sqrt(
-            (delta.chi / chidens.chi) ** 2 + 2 * (delta.hm / chidens.hm) ** 2
-        )
+        add_error("Kt_m", chidens, delta, "chi", "hm", "hm")
         chidens.Kt_m.attrs.update(dict(long_name="$K_T^m$", units="m²/s"))
 
         chidens["KρTz2"] = chidens.Krho_m * chidens.dTdz_m**2
-        delta["KρTz2"] = chidens.KρTz2 * np.sqrt(
-            (delta.Krho_m / chidens.Krho_m) ** 2 + 2 * (delta.hm / chidens.hm) ** 2
-        )
+        add_error("KρTz2", chidens, delta, "Krho_m", "dTdz_m", "dTdz_m")
         chidens.KρTz2.attrs = {"long_name": "$K_ρ ∂_zθ_m^2$"}
 
         chidens["KtTzTz"] = chidens.KtTz * chidens.dTdz_m
-        delta["KtTzTz"] = chidens.KtTzTz * np.sqrt(
-            (delta.KtTz / chidens.KtTz) ** 2 + (delta.hm / chidens.hm) ** 2
-        )
+        add_error("KtTzTz", chidens, delta, "KtTz", "dTdz_m")
         chidens.KtTzTz.attrs = {"long_name": "$⟨K_T θ_z⟩ ∂_zθ_m$"}
 
         chidens["residual"] = chidens.chi / 2 - chidens.Krho_m * chidens.dTdz_m**2
-        delta["residual"] = chidens.residual * np.sqrt(
-            (delta.chi / chidens.chi) ** 2 + (delta.KρTz2 / chidens.KρTz2) ** 2
-        )
+        add_error("residual", chidens, delta, "chi", "Krho_m", "dTdz_m", "dTdz_m")
 
     for var in ["Krho_m", "Kt_m", "KρTz2", "KtTzTz", "residual"]:
         bounds[var] = chidens[var] + unit * delta[var]
