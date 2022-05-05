@@ -109,6 +109,7 @@ def read_natre():
     natre = natre.cf.guess_coord_axis()
     natre.chi.attrs["long_name"] = "$χ$"
     natre.eps.attrs["long_name"] = "$ε$"
+    del natre["depth"].attrs["axis"]
     natre["depth"].attrs.update(units="m", positive="down")
     natre["pres"].attrs.update(positive="down")
 
@@ -118,7 +119,7 @@ def read_natre():
         natre, natre.gamma_n.drop("depth").interpolate_na("pres"), core_dim="pres"
     )
 
-    natre = sections.add_ancillary_variables(natre)
+    sections.add_ancillary_variables(natre)
     natre = natre.where(natre.chi > 1e-14)
 
     # messes up cf-xarray
