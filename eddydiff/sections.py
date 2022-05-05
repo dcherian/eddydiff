@@ -4,6 +4,7 @@ import cf_xarray as cfxr  # noqa
 import dask
 import datatree
 import dcpy
+import flox.xarray
 import gsw
 import matplotlib.pyplot as plt
 import numpy as np
@@ -302,7 +303,7 @@ def average_density_bin(group, blocksize, skip_fits=False):
     # which deletes attrs so we can't use cf-xarray here
     # Z = "sea_water_pressure"
 
-    profiles = group.unstack().drop_vars("time")
+    profiles = group.unstack()
     if "pres" in profiles.dims:
         Z = "pres"
     elif "pressure" in profiles.dims:
@@ -365,18 +366,20 @@ def average_density_bin(group, blocksize, skip_fits=False):
     if not skip_fits:
         # reference to mean pressure of obs in this bin
         # TODO: switch to conservative_temperature
-        pref = profiles[Z].mean().data
-        profiles["theta"] = dcpy.eos.ptmp(
+        S, T, P = (
             profiles.cf["sea_water_salinity"],
             profiles.cf["sea_water_temperature"],
             profiles[Z],
-            pr=pref,
         )
-        chidens["theta"] = profiles.theta.mean()
-        profiles["gamma_n_"] = profiles.gamma_n
-        chidens["salt"] = profiles.cf["sea_water_salinity"].mean()
+        pref = P.mean().data
+        profiles["theta"] = dcpy.eos.ptmp(S, T, P, pr=pref)
 
-        chidens["dTdz_m"] = -1 * fit1D(profiles, var="theta", dim=Z)
+        chidens["theta"] = T.mean()
+        chidens["salt"] = S.mean()
+        profiles["gamma_n_"] = profiles.gamma_n
+
+        slopes = -1 * fit1D(profiles, var=["theta", "gamma_n_"], dim=Z)
+        chidens["dTdz_m"] = slopes["theta_polyfit_coefficients"]
         chidens.dTdz_m.attrs.update(
             dict(
                 name="$∂_z θ_m$",
@@ -386,7 +389,7 @@ def average_density_bin(group, blocksize, skip_fits=False):
         )
         add_error("dTdz_m", chidens, delta, "hm")
 
-        chidens["N2_m"] = 9.81 / 1030 * fit1D(profiles, var="gamma_n_", dim=Z)
+        chidens["N2_m"] = -9.81 / 1030 * slopes["gamma_n__polyfit_coefficients"]
         chidens.N2_m.attrs.update(
             dict(
                 name="$∂_zb_m$",
@@ -451,7 +454,15 @@ def lazy_map(grouped, func, *args, **kwargs):
 def bin_average_vertical(ds, stdname, bins, blocksize, skip_fits=False):
     """Bin averages in the vertical."""
 
-    grouped = ds.reset_coords().cf.groupby_bins(stdname, bins=bins)
+    needed_vars = [
+        "chi",
+        "eps",
+        "KtTz",
+        "gamma_n",
+        "sea_water_salinity",
+        "sea_water_temperature",
+    ]
+    grouped = ds.reset_coords().cf[needed_vars].cf.groupby_bins(stdname, bins=bins)
     chidens = lazy_map(
         grouped, average_density_bin, blocksize=blocksize, skip_fits=skip_fits
     )
@@ -501,24 +512,31 @@ def bin_average_vertical(ds, stdname, bins, blocksize, skip_fits=False):
 
 
 def fit1D(ds, var, dim="depth", debug=False):
+    if isinstance(var, str):
+        var = [var]
     # ds = group.unstack()
     # Some weirdness about binning by dim in grouped variable
     if dim in ds.dims:
         ds = ds.rename({dim: f"{dim}_"})
         ds[dim] = ds[f"{dim}_"].broadcast_like(ds[var])
     bins2 = np.linspace(ds.gamma_n.min().data, ds.gamma_n.max().data, 11)
-    mean = (
-        ds[[var, "gamma_n", dim]]
-        .groupby_bins("gamma_n", bins2)
-        .mean(method="map-reduce")
-        .swap_dims({"gamma_n_bins": dim})
-    )
+    mean = flox.xarray.xarray_reduce(
+        ds[var + ["gamma_n", dim]],
+        "gamma_n",
+        func="mean",
+        expected_groups=bins2,
+        isbin=True,
+        method="map-reduce",
+        engine="numpy",
+    ).swap_dims({"gamma_n_bins": dim})
     fit = mean[var].polyfit(dim, deg=1)
-    slope = fit.polyfit_coefficients.sel(degree=1).data
+    slope = fit.sel(degree=1, drop=True)
     if debug:
+        if len(var) > 1:
+            raise NotImplementedError
         recon = xr.polyval(mean[dim], fit)
         plt.figure()
-        mean[var].cf.plot(marker=".")
+        mean[var[0]].cf.plot(marker=".")
         recon.polyfit_coefficients.cf.plot(marker="x")
 
     return slope
