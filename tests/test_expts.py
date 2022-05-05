@@ -48,7 +48,11 @@ def test_natre():
         )
         with raise_if_dask_computes():
             actual = ed.sections.bin_average_vertical(
-                natre.cf.stack({"cast": ("latitude", "longitude")}).drop("cast"),
+                natre.cf.stack(
+                    {"cast": ("latitude", "longitude")}, create_index=False
+                ).assign_coords(
+                    cast=("cast", np.arange(100), {"cf_role": "profile_id"})
+                ),
                 "neutral_density",
                 bins,
                 blocksize=20,
