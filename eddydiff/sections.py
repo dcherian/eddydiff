@@ -2,6 +2,7 @@ import os
 
 import cf_xarray as cfxr  # noqa
 import dask
+import datatree
 import dcpy
 import gsw
 import matplotlib.pyplot as plt
@@ -119,14 +120,12 @@ def to_netcdf(infile, outfile, transect_name):
     ctd.to_netcdf(outfile)
 
 
-def add_ancillary_variables(ds):
-    """Adds ancillary variables."""
-
+def add_ctd_ancillary_variables(ctd):
     with cfxr.set_options(custom_criteria=criteria):
         salt, temp, pres = (
-            ds.cf["sea_water_salinity"],
-            ds.cf["sea_water_temperature"],
-            ds.cf["sea_water_pressure"],
+            ctd.cf["sea_water_salinity"],
+            ctd.cf["sea_water_temperature"],
+            ctd.cf["sea_water_pressure"],
         )
 
     # if "theta" not in ds:
@@ -142,72 +141,80 @@ def add_ancillary_variables(ds):
     #    ds["pden"] = dcpy.eos.pden(salt, temp, pres, pr=pref)
     # ds["pden"].attrs.update(long_name="$ρ$")
 
-    ds["SA"] = gsw.SA_from_SP(
+    ctd["SA"] = gsw.SA_from_SP(
         salt,
         pres,
-        ds.cf["longitude"],
-        ds.cf["latitude"],
+        ctd.cf["longitude"],
+        ctd.cf["latitude"],
     )
-    ds.SA.attrs["standard_name"] = "sea_water_absolute_salinity"
-    ds.SA.attrs["long_name"] = "$S_A$"
-    ds.SA.attrs["units"] = "g/kg"
+    ctd.SA.attrs["standard_name"] = "sea_water_absolute_salinity"
+    ctd.SA.attrs["long_name"] = "$S_A$"
+    ctd.SA.attrs["units"] = "g/kg"
 
-    ds["CT"] = gsw.CT_from_t(salt, temp, pres)
-    ds.CT.attrs = {
+    ctd["CT"] = gsw.CT_from_t(salt, temp, pres)
+    ctd.CT.attrs = {
         "standard_name": "sea_water_conservative_temperature",
         "long_name": "$Θ$",
         "units": "degC",
     }
-    ds["Tu"] = dcpy.oceans.turner_angle(ds)
+    ctd["Tu"] = dcpy.oceans.turner_angle(ctd)
 
-    if "neutral_density" not in ds.cf:
-        ds["gamma_n"] = dcpy.oceans.neutral_density(ds)
+    if "neutral_density" not in ctd.cf:
+        ctd["gamma_n"] = dcpy.oceans.neutral_density(ctd)
 
-    if "dTdz" in ds:
-        ds = ds.rename_vars({"dTdz": "Tz_orig"})
+    if "dTdz" in ctd:
+        ctd = ctd.rename_vars({"dTdz": "Tz_orig"})
 
     Z = "sea_water_pressure"
-    if "Tz" not in ds:
-        ds["Tz"] = -1 * ds.CT.cf.interpolate_na(Z).cf.differentiate(Z)
-    ds["Tz"].attrs["long_name"] = "$θ_z$"
-    ds["Tz"].attrs["units"] = "degC/m"
+    if "Tz" not in ctd:
+        ctd["Tz"] = -1 * ctd.CT.cf.interpolate_na(Z).cf.differentiate(Z)
+    ctd["Tz"].attrs["long_name"] = "$θ_z$"
+    ctd["Tz"].attrs["units"] = "degC/m"
 
     def take_(arr, slicer, axis):
         idxr = [slice(None)] * arr.ndim
         idxr[axis] = slicer
         return arr[tuple(idxr)]
 
-    if "N2" not in ds:
-        zaxis = ds.SA.cf.get_axis_num("Z")
+    if "N2" not in ctd:
+        zaxis = ctd.SA.cf.get_axis_num("Z")
+        Zname = ctd.cf.axes["Z"][0]
         N2, pmid = gsw.Nsquared(
-            ds.SA,
-            ds.CT,
-            pres.broadcast_like(ds.SA),
-            ds.cf["latitude"].broadcast_like(ds.SA),
+            ctd.SA,
+            ctd.CT,
+            pres.broadcast_like(ctd.SA),
+            ctd.cf["latitude"].broadcast_like(ctd.SA),
             axis=zaxis,
         )
-        ds["N2"] = xr.DataArray(
+        ctd["N2"] = xr.DataArray(
             (take_(N2, slice(-1), zaxis) + take_(N2, slice(1, None), zaxis)) / 2,
-            dims=ds.SA.dims,
+            dims=ctd.SA.dims,
+            coords={Zname: ctd[Zname].isel({Zname: slice(1, -1)})},
         )
-    ds["N2"].attrs["long_name"] = "$N²$"
-    ds["N2"].attrs["units"] = "s-2"
+    ctd["N2"].attrs["long_name"] = "$N²$"
+    ctd["N2"].attrs["units"] = "s-2"
 
-    ds["τ0"] = gsw.spiciness0(ds.SA, ds.CT)
-    ds.τ0.attrs = {"standard_name": "spiciness", "long_name": "$τ_0$"}
+    ctd["τ0"] = gsw.spiciness0(ctd.SA, ctd.CT)
+    ctd.τ0.attrs = {"standard_name": "spiciness", "long_name": "$τ_0$"}
 
-    ds["τ1"] = gsw.spiciness1(ds.SA, ds.CT)
-    ds.τ1.attrs = {"standard_name": "spiciness", "long_name": "$τ_1$"}
+    ctd["τ1"] = gsw.spiciness1(ctd.SA, ctd.CT)
+    ctd.τ1.attrs = {"standard_name": "spiciness", "long_name": "$τ_1$"}
 
+
+def add_turbulence_ancillary_variables(ds):
     Tz_mask = np.abs(ds.Tz) > 1e-3
     N2_mask = (ds.N2) > 1e-6
 
     ds["chi_masked"] = ds.chi.where(Tz_mask)
 
+    ds["chib2"] = ds.chi_masked / 2
+    ds["chib2"].attrs["long_name"] = "$χ/2$"
+
     if "eps" in ds:
-        ds["Krho"] = (0.2 * ds.eps / ds.N2).where(N2_mask)
-        ds["Krho"].attrs["long_name"] = "$K_ρ$"
-        ds["Krho"].attrs["units"] = "m²/s"
+        if "Krho" not in ds:
+            ds["Krho"] = (0.2 * ds.eps / ds.N2).where(N2_mask)
+            ds["Krho"].attrs["long_name"] = "$K_ρ$"
+            ds["Krho"].attrs["units"] = "m²/s"
 
         ds["KrhoTz"] = ds.Krho * ds.Tz.where(Tz_mask)
         ds["KrhoTz"].attrs["long_name"] = "$K_ρ θ_z$"
@@ -228,7 +235,20 @@ def add_ancillary_variables(ds):
     ds["KtTz"] = ds.Kt * ds.Tz
     ds["KtTz"].attrs["long_name"] = "$K_t θ_z$"
 
-    return ds
+
+def add_ancillary_variables(ds):
+    """Adds ancillary variables."""
+
+    if isinstance(ds, datatree.DataTree):
+        add_ctd_ancillary_variables(ds["ctd"].ds)
+        add_ctd_ancillary_variables(ds["chipod"].ds)
+        add_turbulence_ancillary_variables(ds["finescale"].ds)
+        ctdchi = ds["chipod"].ds
+    else:
+        add_ctd_ancillary_variables(ds)
+        ctdchi = ds
+
+    add_turbulence_ancillary_variables(ctdchi)
 
 
 def compute_mean_ci(data, dof=None, alpha=0.05):
