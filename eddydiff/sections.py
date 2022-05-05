@@ -364,7 +364,7 @@ def average_density_bin(group, blocksize, skip_fits=False):
         )
         chidens["theta"] = profiles.theta.mean()
         profiles["gamma_n_"] = profiles.gamma_n
-        # chidens["salt"] = profiles.salt.mean()
+        chidens["salt"] = profiles.cf["sea_water_salinity"].mean()
 
         chidens["dTdz_m"] = -1 * fit1D(profiles, var="theta", dim=Z)
         chidens.dTdz_m.attrs.update(
@@ -394,7 +394,7 @@ def average_density_bin(group, blocksize, skip_fits=False):
 
         chidens["Kt_m"] = 0.5 * chidens.chi / chidens.dTdz_m**2
         delta["Kt_m"] = chidens.Kt_m * np.sqrt(
-            (delta.chi / chidens.chi) ** 2 + (delta.hm / chidens.hm) ** 2
+            (delta.chi / chidens.chi) ** 2 + 2 * (delta.hm / chidens.hm) ** 2
         )
         chidens.Kt_m.attrs.update(dict(long_name="$K_T^m$", units="m²/s"))
 
