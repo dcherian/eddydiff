@@ -870,3 +870,101 @@ def process_finescale_estimate(section, **kwargs):
     sectionturb = xr.concat(computed, dim=profilevar)
     sectionturb[profilevar] = section[profilevar]
     return sectionturb
+
+
+def calc_mean_dp(group):
+    pres = group.unstack()["pressure"]
+    dp = (pres.max("pres") - pres.min("pres")).rename("dp")
+    return dp.mean("cast")
+
+
+def estimate_microscale_stirring(density_bin, dz=5, debug=False):
+    """
+    Estimates \bar{w'θ'} = (\bar{χ}/2) / (\bar{dT/dz}) in temperature space.
+
+    1. Sorts all profiles by temperature along pressure.
+    2. Estimates a characteristic mean dTdz; then spaces bins at approximately dz m apart.
+    3. Chooses temperature bins:
+        a. first and last bin edge are the 1st and 99th percentile.
+        b. spacing dT ~ dTdz * dz
+    4. Estimates δpressure, mean(χ)
+
+    Parameters
+    ----------
+    density_bin: xr.Dataset
+        One neutral density bin of data
+    dz: number
+        Nominal bin spacing in depth
+    """
+    needed_vars = ["chi", "temp"] + (["KtTz"] if debug else [])
+
+    profiles = density_bin.unstack()[needed_vars]
+
+    # 1. sort by temperature
+    sortT = dcpy.oceans.thorpesort(
+        profiles, by="temp", core_dim="pres", ascending=False
+    )
+    sortT["pressure"] = sortT.pres.broadcast_like(sortT.temp).where(
+        sortT.temp.notnull()
+    )
+    if debug:
+        sortT["KtTz"] = np.abs(sortT["KtTz"])
+        sortT["Tz"] = -1 * sortT.temp.differentiate("pres")
+
+    # 2. Find a characteristic dTdz, used to space temperature bins
+    Tmean = sortT.temp.mean("cast").where(sortT.temp.count("cast") > 20)
+    Pmean = sortT.pres.where(sortT.temp.notnull()).mean("cast")
+    Tmean.coords["pres"] = Pmean
+    linear_fit = Tmean.polyfit("pres", deg=1).polyfit_coefficients
+    fit = xr.polyval(Tmean.pres, linear_fit)
+    dTdzmean = linear_fit.sel(degree=1).data
+
+    if debug:
+        sortT.temp.plot(hue="cast", lw=1, add_legend=False)
+        sortT.temp.mean("cast").where(sortT.temp.count("cast") > 20).plot(
+            color="k", lw=2
+        )
+        profiles.temp.mean("cast").where(profiles.temp.count("cast") > 20).plot(
+            color="r", lw=2
+        )
+        plt.plot(Pmean, Tmean, color="b")
+        fit.plot(color="cyan", marker=".")
+
+    Tlims = sortT.temp.quantile(q=[0.05, 0.95])
+    Tbins = np.arange(Tlims[0].data, Tlims[1].data, np.abs(dTdzmean) * dz)
+
+    # 4. groupby-mean in Tbins
+
+    # IMPORTANT: if "temp" is in coords prior to sorting, then it doesn't get sorted!
+    sortT = sortT.set_coords("temp")
+    grouped = sortT.groupby_bins("temp", bins=Tbins)
+    count = sortT["chi"].groupby_bins("temp", bins=Tbins).count()
+    mean = grouped.mean().where(count > 20)
+    mean["dp"] = (
+        sortT[["pressure", "temp"]].groupby_bins("temp", bins=Tbins).map(calc_mean_dp)
+    )
+    mean["dT"] = mean.temp_bins.copy(
+        data=[b.right - b.left for b in mean.temp_bins.data]
+    )
+    mean["dTdz"] = mean.dT / mean.dp
+    mean["wT"] = mean.chi / 2 / mean.dTdz
+    mean.wT.attrs = {
+        "long_name": "$w'θ'$",
+        "description": "calculated as mean(χ/2) * mean(δP) / δT",
+        "units": "degC m/s",
+    }
+
+    if debug:
+        f, ax = plt.subplots(2, 1)
+        plt.sca(ax[0])
+        mean.dTdz.plot()
+        mean.Tz.plot(color="k")
+        dcpy.plots.liney(np.abs(dTdzmean))
+
+        plt.sca(ax[1])
+        (mean.wT).plot(yscale="log")
+        (mean.KtTz).plot(color="k")
+        dcpy.plots.liney(mean.wT.mean(), color="r")
+        dcpy.plots.liney(sortT.KtTz.mean(), color="k")
+
+    return mean.wT
