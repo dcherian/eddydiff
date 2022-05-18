@@ -11,6 +11,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from arch.bootstrap import IIDBootstrap, MovingBlockBootstrap
 from flox.xarray import xarray_reduce
 
 import xarray as xr
@@ -298,8 +299,11 @@ def compute_mean_ci(data, dof=None, alpha=0.05):
     return np.concatenate([lower, mean, upper])
 
 
-def compute_bootstrapped_mean_ci(array, blocksize):
-    from arch.bootstrap import MovingBlockBootstrap
+def compute_bootstrapped_var(array, corrscales, dp):
+    np.mean(IIDBootstrap(array[~np.isnan(array)]).apply(np.std))
+
+
+def compute_bootstrapped_mean_ci(array, blocksize, clean=False):
     from numpy.random import RandomState
 
     rs = RandomState(1234)
@@ -401,6 +405,23 @@ def average_density_bin(group, dp, blocksize, skip_fits=False):
         "units": "m",
     }
 
+    # w'T' estimated in temperature space
+    # wT = estimate_microscale_stirring(profiles)
+    # ci["wT"] = xr.apply_ufunc(
+    #     compute_mean_ci,
+    #     wT,
+    #     exclude_dims=set(wT.dims),
+    #     input_core_dims=[wT.dims],
+    #     # exclude_dims=set(wT.dims),
+    #     output_core_dims=[["bound"]],
+    #     dask_gufunc_kwargs=dict(output_sizes={"bound": 3}),
+    #     dask="parallelized",
+    #     output_dtypes=[float],
+    #     keep_attrs=True,
+    # )
+    ci["wT"] = xr.full_like(ci.hm, fill_value=np.nan)
+
+    # derived quantities with error
     chidens = ci.sel(bound="center")
     bounds = ci.sel(bound=["lower", "upper"])
     delta = bounds.diff("bound").squeeze()
@@ -463,6 +484,10 @@ def average_density_bin(group, dp, blocksize, skip_fits=False):
         add_error("KtTzTz", chidens, delta, "KtTz", "dTdz_m")
         chidens.KtTzTz.attrs = {"long_name": "$⟨K_T θ_z⟩ ∂_zθ_m$"}
 
+        chidens["wTTz"] = chidens.wT * chidens.dTdz_m
+        add_error("wTTz", chidens, delta, "wT", "dTdz_m")
+        chidens.wTTz.attrs = {"long_name": "$⟨w'θ'⟩ ∂_zθ_m$"}
+
         chidens["residual"] = chidens.chi / 2 - chidens.Krho_m * chidens.dTdz_m**2
         add_error("residual", chidens, delta, "chi", "Krho_m", "dTdz_m", "dTdz_m")
 
@@ -498,6 +523,7 @@ def bin_average_vertical(ds, stdname, bins, blocksize, skip_fits=False):
         "gamma_n",
         "sea_water_salinity",
         "sea_water_temperature",
+        "sea_water_conservative_temperature",
     ]
     dp = ds.cf["Z"].diff("Z").median().data
     with cfxr.set_options(custom_criteria=criteria):
