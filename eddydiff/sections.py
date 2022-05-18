@@ -1110,7 +1110,7 @@ def estimate_microscale_stirring_depth_space(ds, filter_len, segment_len, debug=
         "units": "degrees_Celsius",
         "description": f"Butterworth filter, second order, {nfilter} points over {filter_len} dbar",
     }
-    ds["Tzfilt"] = ds.Ttilde.cf.differentiate(Zname, positive_upward=True)
+    ds["Tzfilt"] = ds.Tfilt.cf.differentiate(Zname, positive_upward=True)
     ds["Tzfilt"].attrs = {
         "long_name": r"$\widetilde{T_z}$",
         "units": "degrees_Celsius / m",
