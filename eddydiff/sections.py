@@ -424,7 +424,10 @@ def average_density_bin(group, dp, blocksize, skip_fits=False):
     # derived quantities with error
     chidens = ci.sel(bound="center")
     bounds = ci.sel(bound=["lower", "upper"])
-    delta = bounds.diff("bound").squeeze()
+    # Dividing by 2 is important here.
+    # Because delta should the standard error BUT
+    # diff("bound") is 2x standard error
+    delta = bounds.diff("bound").squeeze() / 2
 
     unit = xr.DataArray([-1, 1], dims="bound", coords={"bound": ["lower", "upper"]})
 
