@@ -94,6 +94,8 @@ def combine_natre_files():
         preprocess=preprocess_natre,
         parallel=True,
     )
+    ds = ds.cf.guess_coord_axis()
+    ds["gamma_n"] = dcpy.oceans.neutral_density(ds)
     ds.load().to_netcdf("../datasets/natre_large_scale.nc")
     return ds
 
@@ -109,15 +111,14 @@ def read_natre(load=False):
     # natre = combine_natre_files()
     natre = natre.set_coords(["time", "pres"])
 
-    natre = natre.cf.guess_coord_axis()
     natre.chi.attrs["long_name"] = "$χ$"
     natre.eps.attrs["long_name"] = "$ε$"
     del natre["depth"].attrs["axis"]
     natre["depth"].attrs.update(units="m", positive="down")
     natre["pres"].attrs.update(positive="down")
 
-    if "neutral_density" not in natre.cf:
-        natre["gamma_n"] = dcpy.oceans.neutral_density(natre)
+    assert "neutral_density" in natre.cf
+
     natre = dcpy.oceans.thorpesort(
         natre, natre.gamma_n.drop("depth").interpolate_na("pres"), core_dim="pres"
     )
