@@ -443,36 +443,28 @@ def average_density_bin(group, dp, blocksize, skip_fits=False):
     delta["Γ"] = 0.04
 
     if not skip_fits:
-        # reference to mean pressure of obs in this bin
-        # TODO: switch to conservative_temperature
-        with cfxr.set_options(custom_criteria=criteria):
-            S, T, P = (
-                profiles.cf["sea_water_salinity"],
-                profiles.cf["sea_water_temperature"],
-                profiles[Z],
-            )
-        pref = P.mean().data
-        profiles["theta"] = dcpy.eos.ptmp(S, T, P, pr=pref)
+        chidens["CT"] = profiles.cf["sea_water_conservative_temperature"].mean()
+        chidens["gamma_n_"] = profiles.gamma_n.mean()
 
-        chidens["theta"] = T.mean()
-        chidens["salt"] = S.mean()
         profiles["gamma_n_"] = profiles.gamma_n
+        slopes = -1 * fit1D(profiles, var=["CT", "gamma_n_"], dim=Z)
 
-        slopes = -1 * fit1D(profiles, var=["theta", "gamma_n_"], dim=Z)
-        chidens["dTdz_m"] = slopes["theta_polyfit_coefficients"]
+        chidens["dTdz_m"] = slopes["CT_polyfit_coefficients"]
         chidens.dTdz_m.attrs.update(
             dict(
-                name="$∂_z θ_m$",
+                long_name="$∂_z θ_m$",
                 units="°C/m",
                 description="vertical gradient of potential temperature θ with respect to depth",
             )
         )
         add_error("dTdz_m", chidens, delta, "hm")
 
-        chidens["N2_m"] = -9.81 / 1030 * slopes["gamma_n__polyfit_coefficients"]
+        chidens["N2_m"] = (
+            -9.81 / chidens.gamma_n_ * slopes["gamma_n__polyfit_coefficients"]
+        )
         chidens.N2_m.attrs.update(
             dict(
-                name="$∂_zb_m$",
+                long_name="$∂_zb_m$",
                 units="s$^{-2}$",
                 description="vertical gradient of neutral density γ_n with respect to depth",
             )
@@ -532,8 +524,8 @@ def bin_average_vertical(ds, stdname, bins, blocksize, skip_fits=False):
         "eps",
         "KtTz",
         "gamma_n",
-        "sea_water_salinity",
-        "sea_water_temperature",
+        # "sea_water_salinity",
+        # "sea_water_temperature",
         "sea_water_conservative_temperature",
     ]
     dp = ds.cf["Z"].diff("Z").median().data
