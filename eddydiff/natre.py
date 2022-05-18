@@ -100,7 +100,7 @@ def combine_natre_files():
     return ds
 
 
-def read_natre(load=False):
+def read_natre(load=False, stack=False):
     if load:
         natre = xr.load_dataset("../datasets/natre_large_scale.nc")
     else:
@@ -133,7 +133,17 @@ def read_natre(load=False):
     # messes up pint
     del natre.salt.attrs["units"]
 
-    return natre.sel(pres=slice(2000))
+    natre = natre.sel(pres=slice(2000))
+
+    natre = natre.update(
+        sections.estimate_microscale_stirring_depth_space(
+            natre, filter_len=20, segment_len=6
+        )
+    )
+    if stack:
+        natre = natre.cf.stack({"cast": ("latitude", "longitude")})
+        natre.cast.attrs = {"cf_role": "profile_id"}
+    return natre
 
 
 def compare_chi_distributions(a05_grouped, natre_grouped):
