@@ -1051,3 +1051,82 @@ def estimate_interleaving(section, Zscale=10):
     λ = (1 - λ0) / (1 + λ0)
     λ.attrs["long_name"] = "$\\frac{(1 - |N_S^2/N_T^2|)}{(1 + |N_S^2/N_T^2|)}$"
     λ.cf.plot(x="cast", y=Zname, cmap=mpl.cm.plasma, vmin=-4, vmax=4)
+
+
+def estimate_microscale_stirring_depth_space(ds, filter_len, segment_len, debug=False):
+    """
+    Estimates $χ/2/T_z$ using sorting over segment_len long segments.
+
+    Sign of the sorted gradient is set by sign of T_z calculated using central differences
+    after filtering T over filter_len with a forward-backward first order butterworth filter
+
+    Output is reindexed back to input grid.
+
+    Parameters
+    ----------
+    ds: Dataset
+        Gets updated in place.
+    filter_len: Number, units: dbar or m
+        Filter length
+    segment_dp: Number, units: dbar or m
+        Length of segment over which to estimate gradient
+    """
+    import xfilter
+
+    Zname = ds.cf.axes["Z"][0]
+    dp = ds[Zname].diff(Zname).median().item()
+    nfilter = int(filter_len // dp)
+    ncoarse = int(segment_len // dp) + 1
+    pcoarse = f"pres_{segment_len}"
+
+    ds["Tfilt"] = xfilter.lowpass(
+        ds.CT.interpolate_na(Zname), coord=Zname, freq=1 / nfilter, order=1
+    )
+    ds["Tfilt"].attrs = {
+        "long_name": r"$\widetilde{T}$",
+        "units": "degrees_Celsius",
+        "description": f"Butterworth filter, second order, {nfilter} points over {filter_len} dbar",
+    }
+    ds["Tzfilt"] = ds.Ttilde.cf.differentiate(Zname, positive_upward=True)
+    ds["Tzfilt"].attrs = {
+        "long_name": r"$\widetilde{T_z}$",
+        "units": "degrees_Celsius / m",
+        "description": f"Butterworth filter, second order, {nfilter} points over {filter_len} dbar",
+    }
+
+    coarse = (
+        ds[["CT", "gamma_n", "Tzfilt"]]
+        .interpolate_na("pres")
+        .update(ds[["chi"]])
+        .coarsen(pres=ncoarse, boundary="trim")
+        .construct({"pres": (pcoarse, "window")})
+        .reset_coords("pres")
+    )
+    # 1. Sort by CT, to get a stable gradient
+    Tsort = dcpy.oceans.thorpesort(
+        coarse.CT, by=coarse.CT, ascending=False, core_dim="window"
+    )
+    assert (Tsort.diff("window") > 0).sum().astype(int).item() == 0
+    Tsort["window"] = -1 * np.arange(0, ncoarse * dp, dp)
+
+    if debug:
+        Tsort.count("window").plot(bins=np.arange(-0.25, 10.6, 0.5), yscale="log")
+
+    clean = xr.Dataset()
+    clean["Tz~"] = (
+        # assert min number of points to get a "nice" gradient
+        Tsort.where(Tsort.count("window") > ncoarse // 3)
+        .polyfit(dim="window", deg=1)
+        .polyfit_coefficients.sel(degree=1, drop=True)
+    )
+
+    # 2. Choose sign from Tztilde, i.e. CT filtered over filter_len
+    clean["Tz~"] *= np.sign(coarse.Tzfilt.median("window"))
+
+    clean[pcoarse] = coarse.pres.mean("window")
+    clean["chi~"] = coarse.chi.mean("window")
+    clean["Kt~"] = clean["chi~"] / 2 / clean["Tz~"] ** 2
+    clean["KtTz~"] = clean["chi~"] / 2 / clean["Tz~"]  # .where(dTdz > 1e-2)
+    clean = clean.reindex({pcoarse: ds[Zname].data}).rename({pcoarse: Zname})
+
+    return clean
