@@ -353,6 +353,8 @@ def average_density_bin(group, dp, blocksize, skip_fits=False):
     # Z = "sea_water_pressure"
 
     profiles = group.unstack()
+    profilevar = group.cf.cf_roles["profile_id"][0]
+
     if "pres" in profiles.dims:
         Z = "pres"
     elif "pressure" in profiles.dims:
@@ -382,12 +384,11 @@ def average_density_bin(group, dp, blocksize, skip_fits=False):
         output_dtypes=[float],
     ).assign_coords(bound=["lower", "center", "upper"])
 
-    pres = profiles[Z].where(profiles.chi.notnull())
+    # Mean h_m: separation between γ surfaces
+    pres = profiles[Z].where(profiles.gamma_n.notnull())
     hm = pres.max(Z) - pres.min(Z)
-    hm = hm.where(hm > 1)
-
-    profilevar = group.cf.cf_roles["profile_id"][0]
-
+    assert np.all(hm >= 0)
+    hm = hm.where(hm > 5)
     ci["hm"] = xr.apply_ufunc(
         compute_mean_ci,
         hm,
