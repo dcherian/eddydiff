@@ -7,6 +7,7 @@ import datatree
 import dcpy
 import flox.xarray
 import gsw
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -996,3 +997,37 @@ def estimate_microscale_stirring(density_bin, dz=5, debug=False):
         dcpy.plots.liney(sortT.KtTz.mean(), color="k")
 
     return mean.wT
+
+
+def estimate_interleaving(section, Zscale=10):
+    nz = int(Zscale // section.SA.cf["Z"].cf.diff("Z").median().values)
+    Zname = section.SA.cf["Z"].name
+    smoothed = (
+        section[["CT", "SA"]]
+        .cf.rolling(Z=nz, center=True, min_periods=1)
+        .mean()
+        .cf.coarsen(Z=nz, boundary="trim")
+        .mean()
+    )
+
+    smoothed["NT2"] = (
+        -9.81
+        * gsw.alpha(smoothed.SA, smoothed.CT, smoothed[Zname])
+        * smoothed.CT.cf.interpolate_na("Z").cf.differentiate("Z")
+    )
+    smoothed["NS2"] = (
+        9.81
+        * gsw.beta(smoothed.SA, smoothed.CT, smoothed[Zname])
+        * smoothed.SA.cf.interpolate_na("Z").cf.differentiate("Z")
+    )
+
+    N2, pmid = gsw.Nsquared(
+        smoothed.SA, smoothed.CT, smoothed.cf["Z"].broadcast_like(smoothed.CT), axis=0
+    )
+    smoothed["N2"] = (("pmid", "cast"), N2)
+    smoothed["pmid"] = pmid[:, 0]
+
+    λ0 = smoothed.NS2 / smoothed.NT2
+    λ = (1 - λ0) / (1 + λ0)
+    λ.attrs["long_name"] = "$\\frac{(1 - |N_S^2/N_T^2|)}{(1 + |N_S^2/N_T^2|)}$"
+    λ.cf.plot(x="cast", y=Zname, cmap=mpl.cm.plasma, vmin=-4, vmax=4)
