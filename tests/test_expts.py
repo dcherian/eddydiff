@@ -37,8 +37,8 @@ def test_natre():
     os.chdir("./notebooks/")
 
     with distributed.Client(
-        n_workers=2,
-        threads_per_worker=3,
+        n_workers=1,
+        threads_per_worker=4,
         env={"OMP_NUM_THREADS": 1, "NUMBA_NUM_THREADS": 1, "MKL_NUM_THREADS": 1},
     ) as client:
 
@@ -58,6 +58,7 @@ def test_natre():
                 blocksize=20,
             )
         actual.load(client=client)
+        actual.to_netcdf("../tests/estimates/natre-test-run.nc")
         actual.attrs.pop("commit", None)
 
         expected = xr.load_dataset("../tests/estimates/natre.nc")

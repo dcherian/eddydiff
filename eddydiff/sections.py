@@ -327,7 +327,23 @@ def add_error(field, fields, delta, *terms):
     ).reset_coords(drop=True)
 
 
-def average_density_bin(group, blocksize, skip_fits=False):
+def get_dof(da, dp, corrscales):
+    dof = 0
+    for region, scale in corrscales:
+        dof += (
+            (
+                da.sel(pres=region)
+                .coarsen(pres=int(scale // dp), boundary="trim")
+                .count()
+                > 1
+            )
+            .sum()
+            .data
+        )
+    return dof
+
+
+def average_density_bin(group, dp, blocksize, skip_fits=False):
     # groupby_bins ends up stacking the pressure coordinate
     # which deletes attrs so we can't use cf-xarray here
     # Z = "sea_water_pressure"
@@ -340,16 +356,18 @@ def average_density_bin(group, blocksize, skip_fits=False):
     else:
         raise ValueError("Don't know what the pressure dimension is.")
 
+    # Mean χ, ε
     # flatten for bootstrap
     flattened = (
         profiles[["chi", "eps", "KtTz"]]
         .reset_coords(drop=True)
         .stack(flat=[...], create_index=False)
+        .chunk({"flat": -1})
     )
 
     ci = xr.apply_ufunc(
         compute_bootstrapped_mean_ci,
-        flattened.chunk({"flat": -1}),
+        flattened,
         input_core_dims=[["flat"]],
         exclude_dims={"flat"},
         # TODO: configure this
@@ -375,13 +393,13 @@ def average_density_bin(group, blocksize, skip_fits=False):
         dask_gufunc_kwargs=dict(output_sizes={"bound": 3}),
         dask="parallelized",
         output_dtypes=[float],
+        keep_attrs=True,
     )
     ci["hm"].attrs = {
         "long_name": "$h_m$",
         "description": "separation between γ_n surfaces",
         "units": "m",
     }
-    # ci["hm"] = ("bound", compute_mean_ci(hm.data, hm.count("latlon")))
 
     chidens = ci.sel(bound="center")
     bounds = ci.sel(bound=["lower", "upper"])
@@ -395,11 +413,12 @@ def average_density_bin(group, blocksize, skip_fits=False):
     if not skip_fits:
         # reference to mean pressure of obs in this bin
         # TODO: switch to conservative_temperature
-        S, T, P = (
-            profiles.cf["sea_water_salinity"],
-            profiles.cf["sea_water_temperature"],
-            profiles[Z],
-        )
+        with cfxr.set_options(custom_criteria=criteria):
+            S, T, P = (
+                profiles.cf["sea_water_salinity"],
+                profiles.cf["sea_water_temperature"],
+                profiles[Z],
+            )
         pref = P.mean().data
         profiles["theta"] = dcpy.eos.ptmp(S, T, P, pr=pref)
 
@@ -470,16 +489,6 @@ def average_density_bin(group, blocksize, skip_fits=False):
     return chidens
 
 
-def lazy_map(grouped, func, *args, **kwargs):
-    return grouped.map(
-        lambda g: func(
-            g.chunk().assign_coords(gamma_n=g.gamma_n),
-            *args,
-            **kwargs,
-        )
-    )
-
-
 def bin_average_vertical(ds, stdname, bins, blocksize, skip_fits=False):
     """Bin averages in the vertical."""
 
@@ -491,9 +500,16 @@ def bin_average_vertical(ds, stdname, bins, blocksize, skip_fits=False):
         "sea_water_salinity",
         "sea_water_temperature",
     ]
-    grouped = ds.reset_coords().cf[needed_vars].cf.groupby_bins(stdname, bins=bins)
-    chidens = lazy_map(
-        grouped, average_density_bin, blocksize=blocksize, skip_fits=skip_fits
+    dp = ds.cf["Z"].diff("Z").median().data
+    with cfxr.set_options(custom_criteria=criteria):
+        grouped = ds.reset_coords().cf[needed_vars].cf.groupby_bins(stdname, bins=bins)
+    # return grouped
+    chidens = grouped.map(
+        average_density_bin,
+        blocksize=blocksize,
+        dp=dp,
+        # corrscales=corrscales,
+        skip_fits=skip_fits,
     )
 
     # for var in set(chidens.variables) & set(ds.variables):
@@ -558,7 +574,7 @@ def fit1D(ds, var, dim="depth", debug=False):
         method="map-reduce",
         engine="numpy",
     ).swap_dims({"gamma_n_bins": dim})
-    fit = mean[var].polyfit(dim, deg=1)
+    fit = mean[var].dropna(dim).polyfit(dim, deg=1)
     slope = fit.sel(degree=1, drop=True)
     if debug:
         if len(var) > 1:
@@ -697,11 +713,13 @@ def plot_var_prod_diss(chidens, prefix="", ax=None, **kwargs):
     plt.gcf().set_size_inches((4, 5))
 
 
-def choose_bins(gamma, depth_range, decimals=2):
+def choose_bins(gamma, depth_range, decimals=2, sort=False):
     Z = gamma.reset_coords(drop=True).cf.axes["Z"]
     mean_over = set(gamma.dims) - set(Z)
     bins = gamma.mean(mean_over).cf.interp(Z=depth_range)
     bins[Z[0]].attrs["axis"] = "Z"
+    if sort:
+        bins = bins.copy(data=np.sort(bins.data))
     return np.round(bins.cf.dropna("Z").data, decimals)
 
 
@@ -909,6 +927,8 @@ def calc_mean_dp(group):
 
 def estimate_microscale_stirring(density_bin, dz=5, debug=False):
     """
+    ERROR: This does not account for sign.
+
     Estimates \bar{w'θ'} = (\bar{χ}/2) / (\bar{dT/dz}) in temperature space.
 
     1. Sorts all profiles by temperature along pressure.
