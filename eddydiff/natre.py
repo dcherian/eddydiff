@@ -132,7 +132,7 @@ def read_natre(load=False):
     # messes up pint
     del natre.salt.attrs["units"]
 
-    return natre
+    return natre.sel(pres=slice(2000))
 
 
 def compare_chi_distributions(a05_grouped, natre_grouped):
