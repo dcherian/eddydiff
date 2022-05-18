@@ -1,3 +1,4 @@
+import glob
 import os
 
 import cf_xarray as cfxr  # noqa
@@ -21,6 +22,33 @@ criteria = {
         "standard_name": "sea_water_salinity|sea_water_practical_salinity"
     }
 }
+
+database = {
+    "A05_2015": {
+        "section": "A05",
+        "expocode": "74EQ20151206",
+        "station_bin_edges": [0, 28, 60, 82, 105, 130, 145],
+    }
+}
+
+
+def get_filenames(section_id):
+    data = database[section_id]
+    section = data["section"]
+    expocode = data["expocode"]
+    rootdir = os.path.expanduser(f"~/work/eddydiff/datasets/goship/{section}")
+    section = database[section_id]["section"]
+    expocode = database[section_id]["expocode"]
+
+    prefix = f"{section}_{expocode}_"
+
+    files = {
+        "ctd": glob.glob(f"{rootdir}/{prefix}ctd.nc")[0],
+        "ctdchi": f"{rootdir}/{prefix}chipod.nc",
+        "finescale": f"{rootdir}/{prefix}finescale.nc",
+        "merged": f"{rootdir}/{prefix}merged.nc",
+    }
+    return files
 
 
 def to_netcdf(infile, outfile, transect_name):
