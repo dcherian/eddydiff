@@ -446,7 +446,7 @@ def average_density_bin(group, blocksize, skip_fits=False):
         chidens["residual"] = chidens.chi / 2 - chidens.Krho_m * chidens.dTdz_m**2
         add_error("residual", chidens, delta, "chi", "Krho_m", "dTdz_m", "dTdz_m")
 
-    for var in ["Krho_m", "Kt_m", "KρTz2", "KtTzTz", "residual"]:
+    for var in delta:
         bounds[var] = chidens[var] + unit * delta[var]
 
     # Keep these as data_vars otherwise triggers compute at combine-stage
