@@ -466,8 +466,7 @@ def average_density_bin(group, dp, blocksize, skip_fits=False):
         chidens["residual"] = chidens.chi / 2 - chidens.Krho_m * chidens.dTdz_m**2
         add_error("residual", chidens, delta, "chi", "Krho_m", "dTdz_m", "dTdz_m")
 
-    for var in delta:
-        bounds[var] = chidens[var] + unit * delta[var]
+    bounds = chidens + unit * delta
 
     # Keep these as data_vars otherwise triggers compute at combine-stage
     delta["pres"] = chidens.hm / 2
@@ -524,7 +523,6 @@ def bin_average_vertical(ds, stdname, bins, blocksize, skip_fits=False):
 
     chidens["pres"].attrs.update({"positive": "down", "bounds": "pres_err"})
 
-    chidens.coords["num_obs"] = ds.chi.groupby_bins(ds.cf[stdname], bins=bins).count()
     chidens.eps.attrs.update(long_name="$⟨ε⟩$")
     chidens.chi.attrs.update(long_name="$⟨χ⟩$")
     chidens.KtTz.attrs.update(long_name="$⟨K_T θ_z⟩$")
@@ -534,7 +532,7 @@ def bin_average_vertical(ds, stdname, bins, blocksize, skip_fits=False):
     chidens["chib2_err"] = chidens.chi_err / 2
     chidens.chib2.attrs.update({"bounds": "chib2_err", "long_name": "$⟨χ⟩/2$"})
 
-    chidens = chidens.cf.guess_coord_axis()
+    # chidens = chidens.cf.guess_coord_axis()
     # iso_slope = grouped.apply(fit2D)
     # chidens["dTiso"] = np.hypot(iso_slope.x, iso_slope.y)
 
