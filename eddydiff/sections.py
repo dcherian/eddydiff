@@ -945,56 +945,52 @@ def estimate_microscale_stirring(density_bin, dz=5, debug=False):
     dz: number
         Nominal bin spacing in depth
     """
-    needed_vars = ["chi", "temp"] + (["KtTz"] if debug else [])
+    needed_vars = ["chi", "CT"] + (["KtTz"] if debug else [])
 
-    profiles = density_bin.unstack()[needed_vars]
+    profiles = density_bin[needed_vars]
+
+    core_dim = profiles.cf.axes["Z"][0]
+    profile_id = profiles.cf.cf_roles["profile_id"][0]
 
     # 1. sort by temperature
     sortT = dcpy.oceans.thorpesort(
-        profiles, by="temp", core_dim="pres", ascending=False
+        profiles, by="CT", core_dim=core_dim, ascending=False
     )
-    sortT["pressure"] = sortT.pres.broadcast_like(sortT.temp).where(
-        sortT.temp.notnull()
-    )
+    pnew = f"{core_dim}_broadcast"
+    sortT[pnew] = sortT[core_dim].broadcast_like(sortT.CT).where(sortT.CT.notnull())
     if debug:
         sortT["KtTz"] = np.abs(sortT["KtTz"])
-        sortT["Tz"] = -1 * sortT.temp.differentiate("pres")
+        sortT["Tz"] = -1 * sortT.CT.differentiate(core_dim)
 
     # 2. Find a characteristic dTdz, used to space temperature bins
-    Tmean = sortT.temp.mean("cast").where(sortT.temp.count("cast") > 20)
-    Pmean = sortT.pres.where(sortT.temp.notnull()).mean("cast")
-    Tmean.coords["pres"] = Pmean
-    linear_fit = Tmean.polyfit("pres", deg=1).polyfit_coefficients
-    fit = xr.polyval(Tmean.pres, linear_fit)
+    Tmean = sortT.CT.mean(profile_id).where(sortT.CT.count(profile_id) > 20)
+    Pmean = sortT[core_dim].where(sortT.CT.notnull()).mean(profile_id)
+    Tmean.coords[core_dim] = Pmean
+    linear_fit = Tmean.polyfit(core_dim, deg=1).polyfit_coefficients
+    fit = xr.polyval(Tmean[core_dim], linear_fit)
     dTdzmean = linear_fit.sel(degree=1).data
 
     if debug:
-        sortT.temp.plot(hue="cast", lw=1, add_legend=False)
-        sortT.temp.mean("cast").where(sortT.temp.count("cast") > 20).plot(
+        sortT.CT.plot(hue=profile_id, lw=1, add_legend=False)
+        sortT.CT.mean(profile_id).where(sortT.CT.count(profile_id) > 20).plot(
             color="k", lw=2
         )
-        profiles.temp.mean("cast").where(profiles.temp.count("cast") > 20).plot(
+        profiles.CT.mean(profile_id).where(profiles.CT.count(profile_id) > 20).plot(
             color="r", lw=2
         )
         plt.plot(Pmean, Tmean, color="b")
         fit.plot(color="cyan", marker=".")
 
-    Tlims = sortT.temp.quantile(q=[0.05, 0.95])
+    Tlims = sortT.CT.quantile(q=[0.05, 0.95])
     Tbins = np.arange(Tlims[0].data, Tlims[1].data, np.abs(dTdzmean) * dz)
 
     # 4. groupby-mean in Tbins
-
-    # IMPORTANT: if "temp" is in coords prior to sorting, then it doesn't get sorted!
-    sortT = sortT.set_coords("temp")
-    grouped = sortT.groupby_bins("temp", bins=Tbins)
-    count = sortT["chi"].groupby_bins("temp", bins=Tbins).count()
+    sortT = sortT.set_coords("CT")
+    grouped = sortT.groupby_bins("CT", bins=Tbins)
+    count = sortT["chi"].groupby_bins("CT", bins=Tbins).count()
     mean = grouped.mean().where(count > 20)
-    mean["dp"] = (
-        sortT[["pressure", "temp"]].groupby_bins("temp", bins=Tbins).map(calc_mean_dp)
-    )
-    mean["dT"] = mean.temp_bins.copy(
-        data=[b.right - b.left for b in mean.temp_bins.data]
-    )
+    mean["dp"] = sortT[[pnew, "CT"]].groupby_bins("CT", bins=Tbins).map(calc_mean_dp)
+    mean["dT"] = mean.CT_bins.copy(data=[b.right - b.left for b in mean.CT_bins.data])
     mean["dTdz"] = mean.dT / mean.dp
     mean["wT"] = mean.chi / 2 / mean.dTdz
     mean.wT.attrs = {
