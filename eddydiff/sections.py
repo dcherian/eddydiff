@@ -312,6 +312,13 @@ def compute_bootstrapped_mean_ci(array, blocksize, clean=False):
     assert array.ndim == 1
     array = array[~np.isnan(array)]
 
+    if clean:
+        # filter out some real outliers
+        absarray = np.abs(array)
+        thresh = np.mean(absarray) + 50 * np.std(absarray)
+        array = np.where(np.abs(array) < thresh, array, np.nan)
+        array = array[~np.isnan(array)]
+
     return np.insert(
         MovingBlockBootstrap(blocksize, array, seed=rs)
         .conf_int(func=np.mean, method="bca")
@@ -377,7 +384,7 @@ def average_density_bin(group, dp, blocksize, skip_fits=False):
         input_core_dims=[["flat"]],
         exclude_dims={"flat"},
         # TODO: configure this
-        kwargs={"blocksize": blocksize},
+        kwargs={"blocksize": blocksize, "clean": True},
         output_core_dims=[["bound"]],
         dask_gufunc_kwargs=dict(output_sizes={"bound": 3}),
         dask="parallelized",
