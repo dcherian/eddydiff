@@ -303,7 +303,7 @@ def compute_bootstrapped_var(array, corrscales, dp):
     np.mean(IIDBootstrap(array[~np.isnan(array)]).apply(np.std))
 
 
-def compute_bootstrapped_mean_ci(array, blocksize, clean=False):
+def compute_bootstrapped_mean_ci(array, blocksize, clean=False, debug=False):
     from numpy.random import RandomState
 
     rs = RandomState(1234)
@@ -312,12 +312,21 @@ def compute_bootstrapped_mean_ci(array, blocksize, clean=False):
     assert array.ndim == 1
     array = array[~np.isnan(array)]
 
+    if debug:
+        plt.figure()
+        plt.plot(array, "x")
+
     if clean:
         # filter out some real outliers
         absarray = np.abs(array)
         thresh = np.mean(absarray) + 50 * np.std(absarray)
         array = np.where(np.abs(array) < thresh, array, np.nan)
         array = array[~np.isnan(array)]
+
+    if debug:
+        plt.plot(array, "x")
+        plt.axhline(thresh)
+        plt.axhline(-thresh)
 
     return np.insert(
         MovingBlockBootstrap(blocksize, array, seed=rs)
@@ -460,7 +469,7 @@ def average_density_bin(group, dp, blocksize, skip_fits=False):
         add_error("dTdz_m", chidens, delta, "hm")
 
         chidens["N2_m"] = (
-            -9.81 / chidens.gamma_n_ * slopes["gamma_n__polyfit_coefficients"]
+            -9.81 / (1000 + chidens.gamma_n_) * slopes["gamma_n__polyfit_coefficients"]
         )
         chidens.N2_m.attrs.update(
             dict(
@@ -516,7 +525,9 @@ def average_density_bin(group, dp, blocksize, skip_fits=False):
     return chidens
 
 
-def bin_average_vertical(ds, stdname, bins, blocksize, skip_fits=False):
+def bin_average_vertical(
+    ds, stdname, bins, blocksize, return_group=False, skip_fits=False
+):
     """Bin averages in the vertical."""
 
     needed_vars = [
@@ -531,7 +542,8 @@ def bin_average_vertical(ds, stdname, bins, blocksize, skip_fits=False):
     dp = ds.cf["Z"].diff("Z").median().data
     with cfxr.set_options(custom_criteria=criteria):
         grouped = ds.reset_coords().cf[needed_vars].cf.groupby_bins(stdname, bins=bins)
-    # return grouped
+    if return_group:
+        return grouped
     chidens = grouped.map(
         average_density_bin,
         blocksize=blocksize,
@@ -946,10 +958,10 @@ def process_finescale_estimate(section, **kwargs):
     return sectionturb
 
 
-def calc_mean_dp(group):
-    pres = group.unstack()["pressure"]
-    dp = (pres.max("pres") - pres.min("pres")).rename("dp")
-    return dp.mean("cast")
+def calc_mean_dp(group, core_dim, name):
+    pres = group.unstack()[name]
+    dp = (pres.max(core_dim) - pres.min(core_dim)).rename("dp")
+    return dp.where(dp > 0).mean()
 
 
 def estimate_microscale_stirring(density_bin, dz=5, debug=False):
@@ -972,7 +984,7 @@ def estimate_microscale_stirring(density_bin, dz=5, debug=False):
     dz: number
         Nominal bin spacing in depth
     """
-    needed_vars = ["chi", "CT"] + (["KtTz"] if debug else [])
+    needed_vars = ["chi", "CT", "gamma_n"] + (["KtTz"] if debug else [])
 
     profiles = density_bin[needed_vars]
 
@@ -1016,7 +1028,11 @@ def estimate_microscale_stirring(density_bin, dz=5, debug=False):
     grouped = sortT.groupby_bins("CT", bins=Tbins)
     count = sortT["chi"].groupby_bins("CT", bins=Tbins).count()
     mean = grouped.mean().where(count > 20)
-    mean["dp"] = sortT[[pnew, "CT"]].groupby_bins("CT", bins=Tbins).map(calc_mean_dp)
+    mean["dp"] = (
+        sortT[[pnew, "CT"]]
+        .groupby_bins("CT", bins=Tbins)
+        .map(calc_mean_dp, name=pnew, core_dim=core_dim)
+    )
     mean["dT"] = mean.CT_bins.copy(data=[b.right - b.left for b in mean.CT_bins.data])
     mean["dTdz"] = mean.dT / mean.dp
     mean["wT"] = mean.chi / 2 / mean.dTdz
