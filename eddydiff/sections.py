@@ -9,6 +9,7 @@ import flox.xarray
 import gsw
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import numba
 import numpy as np
 import pandas as pd
 from arch.bootstrap import IIDBootstrap, MovingBlockBootstrap
@@ -381,7 +382,7 @@ def average_density_bin(group, dp, blocksize, skip_fits=False):
     # Mean χ, ε
     # flatten for bootstrap
     flattened = (
-        profiles[["chi", "eps", "KtTz"]]
+        profiles[["chi", "eps", "KtTz", "KtTz~"]]
         .reset_coords(drop=True)
         .stack(flat=[...], create_index=False)
         .chunk({"flat": -1})
@@ -496,6 +497,10 @@ def average_density_bin(group, dp, blocksize, skip_fits=False):
         add_error("KtTzTz", chidens, delta, "KtTz", "dTdz_m")
         chidens.KtTzTz.attrs = {"long_name": "$⟨K_T θ_z⟩ ∂_zθ_m$"}
 
+        chidens["KtTz~Tz"] = chidens["KtTz~"] * chidens.dTdz_m
+        add_error("KtTz~Tz", chidens, delta, "KtTz~", "dTdz_m")
+        chidens["KtTz~Tz"].attrs = {"long_name": "$⟨K_T θ_z⟩ ∂_zθ_m$"}
+
         chidens["wTTz"] = chidens.wT * chidens.dTdz_m
         add_error("wTTz", chidens, delta, "wT", "dTdz_m")
         chidens.wTTz.attrs = {"long_name": "$⟨w'θ'⟩ ∂_zθ_m$"}
@@ -534,6 +539,7 @@ def bin_average_vertical(
         "chi",
         "eps",
         "KtTz",
+        "KtTz~",
         "gamma_n",
         # "sea_water_salinity",
         # "sea_water_temperature",
@@ -732,7 +738,8 @@ def fit2D(group, debug=False):
         .mean()
         .to_array()
     )
-    slope = slope.squeeze().drop_vars("variable")  # .expand_dims(pden_bins=[label])
+    # .expand_dims(pden_bins=[label])
+    slope = slope.squeeze().drop_vars("variable")
     return slope
 
 
@@ -1092,6 +1099,22 @@ def estimate_interleaving(section, Zscale=10):
     λ.cf.plot(x="cast", y=Zname, cmap=mpl.cm.plasma, vmin=-4, vmax=4)
 
 
+def mode(obj, dim):
+    import scipy as sp
+
+    def wrapper(data, **kwargs):
+        return sp.stats.mode(data, **kwargs).mode.data.squeeze()
+
+    result = xr.apply_ufunc(
+        wrapper,
+        obj,
+        input_core_dims=[[dim]],
+        kwargs={"axis": -1, "nan_policy": "omit"},
+    )
+    result = result.where(np.abs(result) > 1e-6)
+    return result
+
+
 def estimate_microscale_stirring_depth_space(ds, filter_len, segment_len, debug=False):
     """
     Estimates $χ/2/T_z$ using sorting over segment_len long segments.
@@ -1112,15 +1135,17 @@ def estimate_microscale_stirring_depth_space(ds, filter_len, segment_len, debug=
     """
     import xfilter
 
+    ds = ds.copy(deep=True)
+
     Zname = ds.cf.axes["Z"][0]
     dp = ds[Zname].diff(Zname).median().item()
     nfilter = int(filter_len // dp)
     ncoarse = int(segment_len // dp) + 1
+    print(ncoarse, nfilter)
     pcoarse = f"pres_{segment_len}"
 
-    ds["Tfilt"] = xfilter.lowpass(
-        ds.CT.interpolate_na(Zname), coord=Zname, freq=1 / nfilter, order=1
-    )
+    CTinterp = ds.CT.interpolate_na(Zname)
+    ds["Tfilt"] = xfilter.lowpass(CTinterp, coord=Zname, freq=1 / nfilter, order=1)
     ds["Tfilt"].attrs = {
         "long_name": r"$\widetilde{T}$",
         "units": "degrees_Celsius",
@@ -1133,39 +1158,147 @@ def estimate_microscale_stirring_depth_space(ds, filter_len, segment_len, debug=
         "description": f"Butterworth filter, second order, {nfilter} points over {filter_len} dbar",
     }
 
-    coarse = (
-        ds[["CT", "gamma_n", "Tzfilt"]]
-        .interpolate_na("pres")
-        .update(ds[["chi"]])
-        .coarsen(pres=ncoarse, boundary="trim")
-        .construct({"pres": (pcoarse, "window")})
-        .reset_coords("pres")
+    # return ds.Tzfilt
+    Tzsign = xr.apply_ufunc(
+        get_gradient_sign,
+        ds[Zname],
+        CTinterp,
+        ds.Tzfilt,
+        5,
+        ncoarse,
+        input_core_dims=[[Zname]] * 3 + [[], []],
+        output_core_dims=[[Zname]],
     )
+
+    to_coarsen = ds[["gamma_n"]].interpolate_na(Zname)
+    to_coarsen["CT"] = CTinterp
+    to_coarsen["chi"] = ds.chi
+    to_coarsen["Tzsign"] = Tzsign
+    # to_coarsen["Tzfilt"] = ds.Tzfilt
+
+    # return to_coarsen
+
+    coarse = (
+        to_coarsen.coarsen({Zname: ncoarse}, boundary="trim")
+        .construct({Zname: (pcoarse, "window")})
+        .reset_coords(Zname)
+    )
+
     # 1. Sort by CT, to get a stable gradient
     Tsort = dcpy.oceans.thorpesort(
         coarse.CT, by=coarse.CT, ascending=False, core_dim="window"
     )
+
+    # Assign "pressure" values for fitting
     assert (Tsort.diff("window") > 0).sum().astype(int).item() == 0
     Tsort["window"] = -1 * np.arange(0, ncoarse * dp, dp)
 
     if debug:
-        Tsort.count("window").plot(bins=np.arange(-0.25, 10.6, 0.5), yscale="log")
+        Tsort.count("window").plot.hist(
+            bins=np.arange(-dp / 2, segment_len + dp, dp), yscale="log"
+        )
 
     clean = xr.Dataset()
     clean["Tz~"] = (
         # assert min number of points to get a "nice" gradient
-        Tsort.where(Tsort.count("window") > ncoarse // 3)
+        Tsort.where(Tsort.count("window") > 3)
         .polyfit(dim="window", deg=1)
         .polyfit_coefficients.sel(degree=1, drop=True)
     )
 
     # 2. Choose sign from Tztilde, i.e. CT filtered over filter_len
-    clean["Tz~"] *= np.sign(coarse.Tzfilt.median("window"))
+    # Tzsign = mode(np.sign(coarse.Tzfilt), "window")
+    # Tzsign = np.sign(coarse.Tzfilt.median("window"))
+    # Tzsign = xr.where((coarse.Tzfilt < 0).any("window"), -1, 1)
+    Tzsign = coarse.Tzsign.isel(window=0, drop=True)
+    # print((Tzsign > 0).sum().data, " values < 0")
+    clean["Tz~"] *= Tzsign
+    # clean["Tz~"] = clean["Tz~"].where(np.abs(clean["Tz~"]) > 3e-4)
+    print((clean["Tz~"] == 0).sum().data, " values == 0")
 
-    clean[pcoarse] = coarse.pres.mean("window")
     clean["chi~"] = coarse.chi.mean("window")
     clean["Kt~"] = clean["chi~"] / 2 / clean["Tz~"] ** 2
-    clean["KtTz~"] = clean["chi~"] / 2 / clean["Tz~"]  # .where(dTdz > 1e-2)
+    clean["KtTz~"] = clean["chi~"] / 2 / clean["Tz~"]
+    # clean["KtTz~"] = clean["KtTz~"].where(np.abs(clean["KtTz~"]) < 1e-5)
+
+    # mean need not always work for the reindex step.
+    clean[pcoarse] = coarse[Zname].min("window")
     clean = clean.reindex({pcoarse: ds[Zname].data}).rename({pcoarse: Zname})
 
+    N = Tsort.sizes["window"] * Tsort.sizes[pcoarse]
+    # Need to flip "window" based on Tz_sign
+    clean["T~"] = Tsort.stack(
+        {Zname: (pcoarse, "window")}, create_index=False
+    ).assign_coords({Zname: ds[Zname][:N]})
+    del clean["T~"].attrs["standard_name"]
+
+    print(clean["Tz~"].count().item())
+
+    if debug:
+        plt.figure()
+        np.log10(np.abs(clean["KtTz~"].where(clean["KtTz~"] > 0))).plot.hist(
+            bins=101, density=True, histtype="step", lw=2
+        )
+        np.log10(np.abs(clean["KtTz~"].where(clean["KtTz~"] < 0))).plot.hist(
+            bins=101, density=True, histtype="step", lw=2
+        )
+
+        np.log10(np.abs(clean["Tz~"].where(clean["Tz~"] > 0))).plot.hist(
+            bins=101, density=True, histtype="step", color="C0"
+        )
+        np.log10(np.abs(clean["Tz~"].where(clean["Tz~"] < 0))).plot.hist(
+            bins=101, density=True, histtype="step", color="C1"
+        )
+
     return clean
+
+
+@numba.njit()
+def _clean_numba(idx, P, ΔP, window):
+    newidx = [idx[0]]
+    for left, right in zip(idx[:-1], idx[1:]):
+        Pl, Pr = P[left], P[right]
+        # print(np.abs(Pr - Pl))
+        if np.abs(Pr - Pl) > ΔP:
+            if ((right - left) % window) < window // 2:
+                right += 1
+            newidx.append(right)
+
+    if newidx[-1] != idx[-1]:
+        # Last index was dropped
+        # instead to preserve all data;
+        # we drop the previous one and re-add the last one
+        newidx.pop()
+        newidx.append(idx[-1])
+    # print(idx, newidx)
+    return newidx
+
+
+@numba.guvectorize(
+    "(float64[:], float64[:], float64[:], float64, float64, float64[:])",
+    "(m), (m), (m), (), () -> (m)",
+    nopython=True,
+)
+def get_gradient_sign(P, CT, Tzfilt, ΔP, window, out):
+    out[:] = np.nan
+
+    naninds = np.nonzero(~np.isnan(CT))[0]
+    i0 = naninds[0]
+    i1 = naninds[-1]
+
+    (idx,) = np.nonzero(np.abs(np.diff(np.sign(Tzfilt[i0:i1]))) > 0)
+
+    if len(idx) == 0:
+        out[i0:i1] = 1
+    else:
+        idx = np.concatenate((np.array([0]), idx, np.array([i1 - i0])))
+
+        idx = _clean_numba(idx, P[i0:i1], ΔP=ΔP, window=window)
+        idx = _clean_numba(idx, CT[i0:i1], 1e-4 * ΔP, window=1e10)
+        idx = np.array(idx) + i0
+        numel = np.diff(idx)
+        # print(idx)
+
+        signs = np.sign(np.repeat(CT[idx[:-1]], numel) - np.repeat(CT[idx[1:]], numel))
+        # print(CT[idx])
+        out[i0:i1] = signs
