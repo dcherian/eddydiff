@@ -91,3 +91,33 @@ def plot_cole_profile(**sel_kwargs):
     dcpy.plots.clean_axes(ax)
     [axx.set_title("") for axx in ax]
     f.suptitle(sel_kwargs)
+
+
+def debug_section_estimate(avg, finescale=None):
+
+    f, ax = plt.subplots(1, 5, sharey=True)
+    dcpy.plots.fill_between_bounds(avg, "dTdz_m", y="pres", ax=ax[0])
+    dcpy.plots.fill_between_bounds(avg, "N2_m", y="pres", ax=ax[0].twiny(), color="C1")
+
+    dcpy.plots.fill_between_bounds(avg, "hm", y="pres", ax=ax[1])
+    ax[1].set_xlim([0.9 * avg.hm.min().item(), 1.1 * avg.hm.max().item()])
+
+    dcpy.plots.fill_between_bounds(avg, "chi", y="pres", ax=ax[2])
+    dcpy.plots.fill_between_bounds(avg, "eps", y="pres", ax=ax[2])
+    ax[2].set_xscale("log")
+
+    dcpy.plots.fill_between_bounds(avg, "Krho_m", y="pres", ax=ax[3])
+    dcpy.plots.fill_between_bounds(avg, "Kt_m", y="pres", ax=ax[3])
+    ax[3].set_xscale("log")
+
+    dcpy.plots.fill_between_bounds(avg, "chib2", y="pres", ax=ax[4])
+    # dcpy.plots.fill_between_bounds(avg, "KtTzTz", y="pres", ax=ax[4])
+    dcpy.plots.fill_between_bounds(avg, "KtTz~Tz", y="pres", ax=ax[4])
+    if finescale is not None:
+        finescale.plot.line(hue="criteria", y="pressure", ax=ax[4], _labels=False)
+    dcpy.plots.fill_between_bounds(avg, "KρTz2", y="pres", color="k", ax=ax[4])
+    ax[4].set_xlim([1e-10, 5 * avg.chib2.max().item()])
+    ax[4].set_xscale("log")
+
+    [axx.legend(loc="lower right") for axx in ax]
+    plt.gcf().set_size_inches((14, 4))
