@@ -401,6 +401,8 @@ def average_density_bin(group, dp, blocksize, skip_fits=False):
         output_dtypes=[float],
     ).assign_coords(bound=["lower", "center", "upper"])
 
+    ci["chib2"] = ci["chi"] / 2
+
     # Mean h_m: separation between γ surfaces
     pres = profiles[Z].where(profiles.gamma_n.notnull())
     hm = pres.max(Z) - pres.min(Z)
@@ -505,8 +507,11 @@ def average_density_bin(group, dp, blocksize, skip_fits=False):
         add_error("wTTz", chidens, delta, "wT", "dTdz_m")
         chidens.wTTz.attrs = {"long_name": "$⟨w'θ'⟩ ∂_zθ_m$"}
 
-        chidens["residual"] = chidens.chi / 2 - chidens.Krho_m * chidens.dTdz_m**2
-        add_error("residual", chidens, delta, "chi", "Krho_m", "dTdz_m", "dTdz_m")
+        chidens["residual"] = chidens.chi / 2 - chidens.KρTz2
+        add_error("residual", chidens, delta, "chib2", "KρTz2")
+
+        chidens["residual_chi"] = chidens.chi / 2 - chidens["KtTz~Tz"]
+        add_error("residual_chi", chidens, delta, "chib2", "KtTz~Tz")
 
     bounds = chidens + unit * delta
 
@@ -572,12 +577,9 @@ def bin_average_vertical(
 
     chidens.eps.attrs.update(long_name="$⟨ε⟩$")
     chidens.chi.attrs.update(long_name="$⟨χ⟩$")
+    chidens.chib2.attrs.update({"long_name": "$⟨χ⟩/2$"})
     chidens.KtTz.attrs.update(long_name="$⟨K_T θ_z⟩$")
     chidens.num_obs.attrs = {"long_name": "count(χ) in bins"}
-
-    chidens["chib2"] = chidens.chi / 2
-    chidens["chib2_err"] = chidens.chi_err / 2
-    chidens.chib2.attrs.update({"bounds": "chib2_err", "long_name": "$⟨χ⟩/2$"})
 
     # chidens = chidens.cf.guess_coord_axis()
     # iso_slope = grouped.apply(fit2D)
