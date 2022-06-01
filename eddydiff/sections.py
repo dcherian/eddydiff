@@ -234,12 +234,12 @@ def add_ctd_ancillary_variables(ctd):
 
 
 def add_turbulence_ancillary_variables(ds):
-    Tz_mask = np.abs(ds.Tz) > 1e-3
-    N2_mask = (ds.N2) > 1e-6
+    Tz_mask = np.abs(ds.Tz) > 3e-4
+    N2_mask = (ds.N2) > 1e-7
 
-    ds["chi_masked"] = ds.chi.where(Tz_mask)
+    # ds["chi_masked"] = ds.chi.where(Tz_mask)
 
-    ds["chib2"] = ds.chi_masked / 2
+    ds["chib2"] = ds.chi / 2
     ds["chib2"].attrs["long_name"] = "$χ/2$"
 
     if "eps" in ds:
