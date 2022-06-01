@@ -1221,13 +1221,13 @@ def estimate_microscale_stirring_depth_space(ds, filter_len, segment_len, debug=
     Tzsign = coarse.Tzsign.isel(window=0, drop=True)
     # print((Tzsign > 0).sum().data, " values < 0")
     clean["Tz~"] *= Tzsign
-    # clean["Tz~"] = clean["Tz~"].where(np.abs(clean["Tz~"]) > 3e-4)
+    clean["Tz~"] = clean["Tz~"].where(np.abs(clean["Tz~"]) > 1e-4)
     print((clean["Tz~"] == 0).sum().data, " values == 0")
 
     clean["chi~"] = coarse.chi.where(coarse.chi.count("window") > 3).mean("window")
     clean["Kt~"] = clean["chi~"] / 2 / clean["Tz~"] ** 2
     clean["KtTz~"] = clean["chi~"] / 2 / clean["Tz~"]
-    # clean["KtTz~"] = clean["KtTz~"].where(np.abs(clean["KtTz~"]) < 1e-5)
+    clean["KtTz~"] = clean["KtTz~"].where(np.abs(clean["KtTz~"]) < 2e-5)
 
     # mean of "pressure" along window might be aligned for the reindex step.
     clean[pcoarse] = coarse[Zname].min("window")
