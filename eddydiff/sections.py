@@ -1137,6 +1137,8 @@ def estimate_microscale_stirring_depth_space(ds, filter_len, segment_len, debug=
 
     ds = ds.copy(deep=True)
 
+    debug_profile = ds.chi.ndim == 1 and debug
+
     Zname = ds.cf.axes["Z"][0]
     dp = ds[Zname].diff(Zname).median().item()
     nfilter = int(filter_len // dp)
@@ -1193,7 +1195,7 @@ def estimate_microscale_stirring_depth_space(ds, filter_len, segment_len, debug=
     assert (Tsort.diff("window") > 0).sum().astype(int).item() == 0
     Tsort["window"] = -1 * np.arange(0, ncoarse * dp, dp)
 
-    if debug:
+    if debug and not debug_profile:
         Tsort.count("window").plot.hist(
             bins=np.arange(-dp / 2, segment_len + dp, dp), yscale="log"
         )
@@ -1210,31 +1212,59 @@ def estimate_microscale_stirring_depth_space(ds, filter_len, segment_len, debug=
     # Tzsign = mode(np.sign(coarse.Tzfilt), "window")
     # Tzsign = np.sign(coarse.Tzfilt.median("window"))
     # Tzsign = xr.where((coarse.Tzfilt < 0).any("window"), -1, 1)
+    # 2.a Applying sign of first element in window. This could be improved
     Tzsign = coarse.Tzsign.isel(window=0, drop=True)
     # print((Tzsign > 0).sum().data, " values < 0")
     clean["Tz~"] *= Tzsign
     # clean["Tz~"] = clean["Tz~"].where(np.abs(clean["Tz~"]) > 3e-4)
     print((clean["Tz~"] == 0).sum().data, " values == 0")
 
-    clean["chi~"] = coarse.chi.mean("window")
+    clean["chi~"] = coarse.chi.where(coarse.chi.count("window") > 3).mean("window")
     clean["Kt~"] = clean["chi~"] / 2 / clean["Tz~"] ** 2
     clean["KtTz~"] = clean["chi~"] / 2 / clean["Tz~"]
     # clean["KtTz~"] = clean["KtTz~"].where(np.abs(clean["KtTz~"]) < 1e-5)
 
-    # mean need not always work for the reindex step.
+    # mean of "pressure" along window might be aligned for the reindex step.
     clean[pcoarse] = coarse[Zname].min("window")
     clean = clean.reindex({pcoarse: ds[Zname].data}).rename({pcoarse: Zname})
 
-    N = Tsort.sizes["window"] * Tsort.sizes[pcoarse]
+    # N = Tsort.sizes["window"] * Tsort.sizes[pcoarse]
     # Need to flip "window" based on Tz_sign
-    clean["T~"] = Tsort.stack(
-        {Zname: (pcoarse, "window")}, create_index=False
-    ).assign_coords({Zname: ds[Zname][:N]})
-    del clean["T~"].attrs["standard_name"]
+    # flipping_idx = Tsort.window.copy(data=np.arange(Tsort.sizes["window"])) * Tzsign.fillna(0)
+    # clean["T~"] = Tsort[flipping_idx.astype(int)].stack(
+    #    {Zname: (pcoarse, "window")}, create_index=False
+    # ).assign_coords({Zname: ds[Zname][:N]})
+    # del clean["T~"].attrs["standard_name"]
 
     print(clean["Tz~"].count().item())
 
-    if debug:
+    if debug_profile:
+        filled = clean.cf.ffill("Z")
+        f, ax = plt.subplots(4, 1, sharex=True, constrained_layout=True)
+        ds.CT.plot(ax=ax[0])
+        ds.Tfilt.plot(ax=ax[0])
+
+        filled["Tz~"].plot(ax=ax[1])
+        (ds.Tzfilt).plot(ax=ax[1])
+
+        (ds.chi).plot(yscale="log", ylim=(1e-12, None), ax=ax[2])
+        (filled["chi~"]).plot(yscale="log", ylim=(1e-12, None), ax=ax[2])
+
+        ax2 = ax[2].twinx()
+        filled["Tz~"].plot(ax=ax2, color="k")
+        # (dTdz.where(np.abs(dTdz) < 2e-4)).plot(color="b", marker="o", ls="none", ax=ax2)
+        dcpy.plots.set_axes_color(ax2, "k")
+
+        (filled["KtTz~"]).plot(ax=ax[3], yscale="symlog")
+        (ds.chi / ds.Tzfilt).plot(ax=ax[3], ylim=(-5e-5, 5e-5))
+        # (1025 * 4000 * -chi / dTdz.where(np.abs(dTdz) < 2e-4)).plot(
+        #    color="b", marker="o", ls="none", ax=ax[3]
+        # )
+
+        dcpy.plots.clean_axes(np.atleast_2d(ax).T)
+        f.set_size_inches((10, 7))
+
+    elif debug:
         plt.figure()
         np.log10(np.abs(clean["KtTz~"].where(clean["KtTz~"] > 0))).plot.hist(
             bins=101, density=True, histtype="step", lw=2
