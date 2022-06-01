@@ -455,6 +455,9 @@ def average_density_bin(group, dp, blocksize, skip_fits=False):
     delta["Γ"] = 0.04
 
     if not skip_fits:
+        with cfxr.set_options(custom_criteria=criteria):
+            chidens["salt"] = profiles.cf["sea_water_salinity"].mean()
+
         chidens["CT"] = profiles.cf["sea_water_conservative_temperature"].mean()
         chidens["gamma_n_"] = profiles.gamma_n.mean()
 
@@ -546,7 +549,7 @@ def bin_average_vertical(
         "KtTz",
         "KtTz~",
         "gamma_n",
-        # "sea_water_salinity",
+        "sea_water_salinity",
         # "sea_water_temperature",
         "sea_water_conservative_temperature",
     ]
