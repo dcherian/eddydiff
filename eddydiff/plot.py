@@ -116,7 +116,7 @@ def debug_section_estimate(avg, finescale=None):
     if finescale is not None:
         finescale.plot.line(hue="criteria", y="pressure", ax=ax[4], _labels=False)
     dcpy.plots.fill_between_bounds(avg, "KρTz2", y="pres", color="k", ax=ax[4])
-    ax[4].set_xlim([1e-10, 5 * avg.chib2.max().item()])
+    ax[4].set_xlim([1e-10, 2 * avg.chib2.max().item()])
     ax[4].set_xscale("log")
 
     [axx.legend(loc="lower right") for axx in ax]
