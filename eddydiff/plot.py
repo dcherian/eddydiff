@@ -93,7 +93,7 @@ def plot_cole_profile(**sel_kwargs):
     f.suptitle(sel_kwargs)
 
 
-def debug_section_estimate(avg, finescale=None):
+def debug_section_estimate(avg, finescale=None, KρTz2=False):
 
     f, ax = plt.subplots(1, 5, sharey=True)
     dcpy.plots.fill_between_bounds(avg, "dTdz_m", y="pres", ax=ax[0])
@@ -115,7 +115,8 @@ def debug_section_estimate(avg, finescale=None):
     dcpy.plots.fill_between_bounds(avg, "KtTz~Tz", y="pres", ax=ax[4])
     if finescale is not None:
         finescale.plot.line(hue="criteria", y="pressure", ax=ax[4], _labels=False)
-    dcpy.plots.fill_between_bounds(avg, "KρTz2", y="pres", color="k", ax=ax[4])
+    if KρTz2:
+        dcpy.plots.fill_between_bounds(avg, "KρTz2", y="pres", color="k", ax=ax[4])
     ax[4].set_xlim([1e-10, 2 * avg.chib2.max().item()])
     ax[4].set_xscale("log")
 
