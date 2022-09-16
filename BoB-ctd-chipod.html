@@ -50,8 +50,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -237,6 +235,11 @@ const thebe_selector_output = ".output, .cell_output"
  </span>
 </p>
 <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="chi-eps.html">
+   χ-ε relations
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="compare-Ke-estimates.html">
    Compare different
@@ -675,8 +678,8 @@ title="Print to PDF"
   <section class="tex2jax_ignore mathjax_ignore" id="bob-asiri-2013-ctd-pod">
 <h1>BoB ASIRI 2013 CTD χpod<a class="headerlink" href="#bob-asiri-2013-ctd-pod" title="Permalink to this headline">#</a></h1>
 <p>This notebook will attempt to infer eddy diffusivity <span class="math notranslate nohighlight">\(K_e\)</span> from the basin-wide transect of <span class="math notranslate nohighlight">\(χ, K_T\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-74179c12-87a6-4185-ba31-559d4265c89a">
-<span class="eqno">(1)<a class="headerlink" href="#equation-74179c12-87a6-4185-ba31-559d4265c89a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-d5b5a4a6-dd66-4877-b114-3e9c2a847c19">
+<span class="eqno">(1)<a class="headerlink" href="#equation-d5b5a4a6-dd66-4877-b114-3e9c2a847c19" title="Permalink to this equation">#</a></span>\[\begin{equation}
 K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z\widetilde{θ}⟩ \; ∂_zθ_m}{|∇θ_m|²}
 \end{equation}\]</div>
 <div class="cell docutils container">

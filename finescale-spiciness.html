@@ -50,8 +50,6 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -235,6 +233,11 @@ const thebe_selector_output = ".output, .cell_output"
  </span>
 </p>
 <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="chi-eps.html">
+   χ-ε relations
+  </a>
+ </li>
  <li class="toctree-l1">
   <a class="reference internal" href="compare-Ke-estimates.html">
    Compare different
@@ -6000,13 +6003,13 @@ Attributes: (12/14)
 <li><p>Some spatial gradient in the top 500m is showing up as high spiciness but it’s not the signal I want</p></li>
 </ol>
 <p>I think this ties in to the last bit of Ferrari &amp; Polzin (2005), their equation (6.7)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-e17aeff8-01f9-486c-ad97-9d11a1e788a2">
-<span class="eqno">()<a class="headerlink" href="#equation-e17aeff8-01f9-486c-ad97-9d11a1e788a2" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-1396f5fc-b236-477d-81d4-e85c16423af4">
+<span class="eqno">()<a class="headerlink" href="#equation-1396f5fc-b236-477d-81d4-e85c16423af4" title="Permalink to this equation">#</a></span>\[\begin{equation}
     K_ρ (∂_zθ_m)^2 +  K_e |∇_nθ_m|^2 = \frac12 ⟨χ⟩
 \end{equation}\]</div>
 <p>Taking the ratio of production terms</p>
-<div class="amsmath math notranslate nohighlight" id="equation-102f6b1a-a7d9-48d8-9907-1796bb45e474">
-<span class="eqno">()<a class="headerlink" href="#equation-102f6b1a-a7d9-48d8-9907-1796bb45e474" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3490e58f-c152-421e-a194-911e32517736">
+<span class="eqno">()<a class="headerlink" href="#equation-3490e58f-c152-421e-a194-911e32517736" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \frac{K_ρ (∂_z θ_m)^2}{K_e |∇_n θ_m|^2} = \frac{K_ρ/K_e}{|∇_n θ_m|^2 / (∂_z θ_m)^2}
 \end{equation}\]</div>
 <p>Where the denominator is large relative to numerator we expect mesoscale stirring to dominate.</p>
