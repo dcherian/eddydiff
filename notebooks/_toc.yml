@@ -32,6 +32,7 @@ parts:
   - file: iw-fine-devel
 - caption: Ancillary analysis
   chapters:
+  - file: chi-eps
   - file: compare-Ke-estimates
   - file: calc-gradients
   - file: equix-vs-tao
