@@ -7,6 +7,7 @@ import datatree
 import dcpy
 import flox.xarray
 import gsw
+import gsw_xarray
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numba
@@ -189,7 +190,40 @@ def add_ctd_ancillary_variables(ctd):
         "long_name": "$Θ$",
         "units": "degC",
     }
-    ctd["Tu"] = dcpy.oceans.turner_angle(ctd)
+
+    dp = pres.diff(pres.name).median()
+    window = int(10 // dp)
+
+    Tu, Rρ, pmid = xr.apply_ufunc(
+        gsw_xarray.Turner_Rsubrho,
+        ctd.SA.rolling({pres.name: window}, center=True).mean(),
+        ctd.CT.rolling({pres.name: window}, center=True).mean(),
+        pres,
+        input_core_dims=[[pres.name]] * 3,
+        output_core_dims=[[pres.name]] * 3,
+        exclude_dims={pres.name},
+        kwargs=dict(axis=-1),
+        dask="parallelized",
+    )
+    out = xr.Dataset({"Tu": Tu, "Rρ": Rρ})
+    out.Tu.attrs = {
+        "long_name": "$Tu$",
+        "standard_name": "turner_angle",
+        "units": "degrees",
+    }
+    out.Rρ.attrs = {
+        "long_name": "$R_ρ$",
+        "standard_name": "density_ratio",
+        "units": "1",
+    }
+    # out is at cell-centers, average to faces and fix coordinate
+    ctd = ctd.update(
+        out.rolling(pres=3, center=True)
+        .mean()
+        .isel(pres=slice(1, None))
+        .assign(pres=ctd.pres[1:-1])
+    )
+    # ctd["Tu"] = dcpy.oceans.turner_angle(ctd)
 
     if "neutral_density" not in ctd.cf:
         ctd["gamma_n"] = dcpy.oceans.neutral_density(ctd)
