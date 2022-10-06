@@ -442,6 +442,26 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#motivation">
    Motivation
   </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#from-buoyancy-flux">
+   From buoyancy flux
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#to">
+     To
+     <span class="math notranslate nohighlight">
+      \(χ_ρ\)
+     </span>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gregg-1987-energetics">
+   Gregg (1987) &amp; energetics
+  </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#what-is">
@@ -497,6 +517,26 @@ title="Print to PDF"
   <a class="reference internal nav-link" href="#motivation">
    Motivation
   </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#from-buoyancy-flux">
+   From buoyancy flux
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#to">
+     To
+     <span class="math notranslate nohighlight">
+      \(χ_ρ\)
+     </span>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#gregg-1987-energetics">
+   Gregg (1987) &amp; energetics
+  </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#what-is">
@@ -548,47 +588,93 @@ title="Print to PDF"
 <li><p>We have some observations of <span class="math notranslate nohighlight">\(K_T \sim O(1)  K_S\)</span> (Nash &amp; Moum, 2002)</p></li>
 <li><p><span class="math notranslate nohighlight">\(ρ = f(T, S)\)</span> and T, S anomalies can compensate each other, i.e. you can have <span class="math notranslate nohighlight">\(T\)</span> anomalies that are passive and not connected to the energy budget, so one might suspect that it’s possible to get a larger <span class="math notranslate nohighlight">\(χ_T\)</span> for the same <span class="math notranslate nohighlight">\(ε\)</span> when T-S compensation is present vs absent</p></li>
 </ol>
+</section>
+<section id="from-buoyancy-flux">
+<h2>From buoyancy flux<a class="headerlink" href="#from-buoyancy-flux" title="Permalink to this headline">#</a></h2>
+<p>Start with buoyancy flux <span class="math notranslate nohighlight">\(J_b\)</span> which we assume to be <span class="math notranslate nohighlight">\(Γε\)</span> later</p>
+<div class="amsmath math notranslate nohighlight" id="equation-6f0a123b-e483-4d3e-a377-e1f4f574578d">
+<span class="eqno">(11)<a class="headerlink" href="#equation-6f0a123b-e483-4d3e-a377-e1f4f574578d" title="Permalink to this equation">#</a></span>\[\begin{align}
+J_b &amp;= -\overline{w'b'} \\
+    &amp;= \frac{g}{ρ_0} \overline{w'ρ'} \\
+    &amp;= \frac{g}{ρ_0} \overline{-w'ρ_0αT' + w'ρ_0βS'} \\
+    &amp;= g (-α \overline{w'T'} + β \overline{w'S'}) \\
+    &amp;= g (-α K_T T_z + βK_S S_z)
+\end{align}\]</div>
+<p>If <span class="math notranslate nohighlight">\(K_T = K_S\)</span> (e.g. Nash &amp; Moum)</p>
+<div class="amsmath math notranslate nohighlight" id="equation-7b4765fa-ec06-46d8-b77e-03538da30e92">
+<span class="eqno">(12)<a class="headerlink" href="#equation-7b4765fa-ec06-46d8-b77e-03538da30e92" title="Permalink to this equation">#</a></span>\[\begin{align}
+J_b &amp;= g (-α K_T T_z + βK_S S_z) \\
+    &amp;= K_T g(-αT_z + βS_z) \\
+    &amp;= K_T N^2
+\end{align}\]</div>
+<p>So <span class="math notranslate nohighlight">\(K_T = K_ρ\)</span> if <span class="math notranslate nohighlight">\(K_ρ\)</span> is defined so that <span class="math notranslate nohighlight">\(J_b = K_ρN^2\)</span></p>
+<section id="to">
+<h3>To <span class="math notranslate nohighlight">\(χ_ρ\)</span><a class="headerlink" href="#to" title="Permalink to this headline">#</a></h3>
+<p>Gregg (1987)’s starting point is an expression for <span class="math notranslate nohighlight">\(χ_{pe}\)</span></p>
+<div class="amsmath math notranslate nohighlight" id="equation-6f7bdd36-35cd-425d-8a00-dab41797ab3a">
+<span class="eqno">(13)<a class="headerlink" href="#equation-6f7bdd36-35cd-425d-8a00-dab41797ab3a" title="Permalink to this equation">#</a></span>\[\begin{align}
+χ_{pe} &amp;= \left(\frac{g}{ρN}\right)^2 χ_ρ \\
+       &amp;= \left(\frac{gα}{N}\right)^2 χ_T + \left(\frac{gβ}{N}\right)^2 χ_S \qquad\qquad \text{assumption!}
+\end{align}\]</div>
+<p>You can’t write <span class="math notranslate nohighlight">\(χ_ρ\)</span> using molecular gradients and diffusivity but we can make progress if we assume that <span class="math notranslate nohighlight">\(χ_ρ = 2 K_ρ ρ_z^2\)</span>, analogous to <span class="math notranslate nohighlight">\(χ_T\)</span> Let’s try to derive this starting from <span class="math notranslate nohighlight">\(J_ρ\)</span>.</p>
+<div class="amsmath math notranslate nohighlight" id="equation-aa44f03d-ed7d-4629-b850-cdf5b25c6ea5">
+<span class="eqno">(14)<a class="headerlink" href="#equation-aa44f03d-ed7d-4629-b850-cdf5b25c6ea5" title="Permalink to this equation">#</a></span>\[\begin{align}
+χ_ρ &amp;= -2J_ρ ρ_z \\
+    &amp;= 2ρ_0 (-α K_T T_z + βK_S S_z) ρ_z \\
+    &amp;= 2ρ_0 (-α K_T T_z + βK_S S_z) ρ_0 (-α T_z + β S_z) \\
+    &amp;= 2ρ_0^2 (α^2 K_T T_z^2 + β^2 K_S S_z^2 - αβ K_T T_z S_z - αβ K_S S_z T_z) \\
+    &amp;= ρ_0^2 \left[α^2 χ_T + β^2 χ_S - 2αβ (K_T + K_S) T_z S_z \right]
+\end{align}\]</div>
+<p>So <span class="math notranslate nohighlight">\(χ_{pe}\)</span> is</p>
+<div class="amsmath math notranslate nohighlight" id="equation-50608e8c-660b-4e3b-9bad-68f3edf32023">
+<span class="eqno">(15)<a class="headerlink" href="#equation-50608e8c-660b-4e3b-9bad-68f3edf32023" title="Permalink to this equation">#</a></span>\[\begin{align}
+χ_{pe} &amp;= \left(\frac{g}{ρ_0N}\right)^2 χ_ρ \\
+       &amp;= \left(\frac{gα}{N}\right)^2 χ_T + \left(\frac{gβ}{N}\right)^2 χ_S  - 2\frac{g^2}{N^2} αβ (K_T + K_S) T_z S_z
+\end{align}\]</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="gregg-1987-energetics">
+<h2>Gregg (1987) &amp; energetics<a class="headerlink" href="#gregg-1987-energetics" title="Permalink to this headline">#</a></h2>
 <p>An alternative way to formulate the <span class="math notranslate nohighlight">\(χ\)</span>-<span class="math notranslate nohighlight">\(ε\)</span> relation is to use energetics (connected to point 2) as in Gregg (1987); Seim &amp; Gregg (1994); Alford &amp; Pinkel (2000). Gergg (1987)’ equation (56) is the evolution equation for <span class="math notranslate nohighlight">\(ρ'\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-5f81b2a7-8a48-46e6-b434-ca99298e281e">
-<span class="eqno">(11)<a class="headerlink" href="#equation-5f81b2a7-8a48-46e6-b434-ca99298e281e" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3c9e3d29-d253-4a40-913c-c888829238da">
+<span class="eqno">(16)<a class="headerlink" href="#equation-3c9e3d29-d253-4a40-913c-c888829238da" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \frac{d\overline{ρ'^2}}{dt} + 2 \overline{ρ'u'} \frac{∂\overline{ρ}}{∂z} = - χ_ρ
 \end{equation}\]</div>
 <p>Then form an equation for perturbation potential energy <span class="math notranslate nohighlight">\(η\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-2f60e97c-0854-4a07-a0df-de8187a8cdb9">
-<span class="eqno">(12)<a class="headerlink" href="#equation-2f60e97c-0854-4a07-a0df-de8187a8cdb9" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-e69b7f0b-45c2-4ab4-b45f-5497ea6a74e6">
+<span class="eqno">(17)<a class="headerlink" href="#equation-e69b7f0b-45c2-4ab4-b45f-5497ea6a74e6" title="Permalink to this equation">#</a></span>\[\begin{align}
 η &amp;≡ \frac 12 \left( \frac{g}{ρN} \right)^2 \overline{ρ'^2} \\
 \frac{dη}{dt} &amp;= -J_b - \frac 12 χ_{pe}
 \end{align}\]</div>
 <p>This shows the connection between <span class="math notranslate nohighlight">\(ε\)</span> (<span class="math notranslate nohighlight">\(J_b\)</span>) and <span class="math notranslate nohighlight">\(χ_{pe}\)</span> (tied to <span class="math notranslate nohighlight">\(χ_ρ\)</span> which should be related to <span class="math notranslate nohighlight">\(χ_T\)</span> and <span class="math notranslate nohighlight">\(χ_S\)</span>).</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2d840da4-dbc3-493e-8890-3dbb240f0d88">
-<span class="eqno">(13)<a class="headerlink" href="#equation-2d840da4-dbc3-493e-8890-3dbb240f0d88" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-12abb02c-a949-49a1-aec5-497a7f74d435">
+<span class="eqno">(18)<a class="headerlink" href="#equation-12abb02c-a949-49a1-aec5-497a7f74d435" title="Permalink to this equation">#</a></span>\[\begin{align}
 χ_{pe} &amp;= \left(\frac{g}{ρN}\right)^2 χ_ρ
 \end{align}\]</div>
-<hr class="docutils" />
 <section id="what-is">
 <h3>What is <span class="math notranslate nohighlight">\(χ_ρ\)</span><a class="headerlink" href="#what-is" title="Permalink to this headline">#</a></h3>
 <p>Now <span class="math notranslate nohighlight">\(χ_T\)</span> and <span class="math notranslate nohighlight">\(χ_S\)</span> are “easy” to define (assuming isotropy):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d9d1d622-304a-4e8b-970f-5f843770d69d">
-<span class="eqno">(14)<a class="headerlink" href="#equation-d9d1d622-304a-4e8b-970f-5f843770d69d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-bb1bfb3c-206a-40b8-a8a1-ff2ea93d0dc0">
+<span class="eqno">(19)<a class="headerlink" href="#equation-bb1bfb3c-206a-40b8-a8a1-ff2ea93d0dc0" title="Permalink to this equation">#</a></span>\[\begin{equation}
 χ_T = 6 D_T \overline{\left(\frac{∂T'}{∂z}\right)^2} \qquad χ_S = 6 D_S \overline{\left(\frac{∂S'}{∂z}\right)^2}
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(D_S, D_T\)</span> are molecular diffusivities for <span class="math notranslate nohighlight">\(S\)</span>, <span class="math notranslate nohighlight">\(T\)</span>.</p>
 <p>We cannot simply write <span class="math notranslate nohighlight">\(χ_ρ = 6 \ D_ρ (∂ρ'/∂z)^2\)</span>: What is the “molecular diffusivity” of density? Instead <span class="math notranslate nohighlight">\(χ_ρ\)</span> must be the positive-definite dissipation term in the evolution equation of <span class="math notranslate nohighlight">\(\overline{ρ'^2}\)</span> derived from those for <span class="math notranslate nohighlight">\(\overline{T'^2}\)</span> and <span class="math notranslate nohighlight">\(\overline{S'^2}\)</span></p>
 </section>
-<hr class="docutils" />
 <section id="approach-of-gregg-1987">
 <h3>Approach of Gregg (1987)<a class="headerlink" href="#approach-of-gregg-1987" title="Permalink to this headline">#</a></h3>
 <p>Gregg (1987) writes</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b39448c9-1dbc-4524-8ef7-b1ba78fbcbe7">
-<span class="eqno">(15)<a class="headerlink" href="#equation-b39448c9-1dbc-4524-8ef7-b1ba78fbcbe7" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-1132ed2b-8e60-471b-bb89-80854c329ff5">
+<span class="eqno">(20)<a class="headerlink" href="#equation-1132ed2b-8e60-471b-bb89-80854c329ff5" title="Permalink to this equation">#</a></span>\[\begin{align}
 χ_{pe} &amp;= \left(\frac{g}{ρN}\right)^2 χ_ρ \\
        &amp;= \left(\frac{gα}{N}\right)^2 χ_T + \left(\frac{gβ}{N}\right)^2 χ_S \qquad\qquad \text{assumption!} \\
        &amp;= \left(\frac{gα}{N}\right)^2 \left( 1 + \frac{1}{R_ρ^2} \right) χ_T; \qquad R_ρ = \frac{αT_z}{βS_z}  \; \text{ and } χ_S \approx \left( \frac{dS}{dT}\right)^2χ_T
 \end{align}\]</div>
 <p>This must assume that <span class="math notranslate nohighlight">\(T'\)</span> and <span class="math notranslate nohighlight">\(S'\)</span> are uncorrelated. As Nash &amp; Moum (1999) show, microconductivity observations (which is a different function of <span class="math notranslate nohighlight">\(T, S\)</span>) can have a very different spectral shape depending on the coherence between <span class="math notranslate nohighlight">\(T'\)</span>, <span class="math notranslate nohighlight">\(S'\)</span> (see below)</p>
 <p>Assuming equililbrium energetics <span class="math notranslate nohighlight">\(χ_{pe} = 2Γε\)</span> (Alford &amp; Pinkel, 2000) yields a <span class="math notranslate nohighlight">\(ε-χ_T\)</span> relationship, that we can then write as a <span class="math notranslate nohighlight">\(K_T -K_ρ\)</span> relationship</p>
-<div class="amsmath math notranslate nohighlight" id="equation-29708649-224b-4802-a90b-e039feebd1ba">
-<span class="eqno">(16)<a class="headerlink" href="#equation-29708649-224b-4802-a90b-e039feebd1ba" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-364ed159-d3e7-4ef0-89bc-1ebaf66a428a">
+<span class="eqno">(21)<a class="headerlink" href="#equation-364ed159-d3e7-4ef0-89bc-1ebaf66a428a" title="Permalink to this equation">#</a></span>\[\begin{align}
     2Γε &amp;= \left(\frac{gα}{N}\right)^2 \left( 1 + \frac{1}{R_ρ^2} \right) χ_T \\
     \frac{Γε}{N^2} &amp;= \left(\frac{gα}{N}\right)^2 \left( 1 + \frac{1}{R_ρ^2} \right) \frac{χ_T/2}{T_z^2} \frac{T_z^2}{N^2}\\
     K_ρ &amp;= \left(\frac{gαT_z}{N^2}\right)^2 \left( 1 + \frac{1}{R_ρ^2} \right) K_T \\
@@ -596,37 +682,29 @@ title="Print to PDF"
     K_ρ &amp;= \frac{1 + R_ρ^2}{(1 - R_ρ)^2} K_T \qquad\text{ or } K_ρ = \frac{(βS_z)^2 + (αT_z)^2}{(βS_z - αT_z)^2} K_T
 \end{align}\]</div>
 <p>after using</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9a397389-1704-49f7-b537-e755d39e8224">
-<span class="eqno">(17)<a class="headerlink" href="#equation-9a397389-1704-49f7-b537-e755d39e8224" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-34400b56-5fd4-42d4-916b-c79cc79156b6">
+<span class="eqno">(22)<a class="headerlink" href="#equation-34400b56-5fd4-42d4-916b-c79cc79156b6" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \frac{N^2}{T_z} = gα \left(1 - \frac{βS_z}{αT_z} \right) = gα\left( 1 - \frac{1}{R_ρ} \right)
 \end{equation}\]</div>
 <p>For <span class="math notranslate nohighlight">\(ε\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-4c983913-8303-4f60-b665-2e3dbe5ac303">
-<span class="eqno">(18)<a class="headerlink" href="#equation-4c983913-8303-4f60-b665-2e3dbe5ac303" title="Permalink to this equation">#</a></span>\[\begin{equation}
-ε = \frac{1 + R_ρ^2}{(1 - R_ρ)^2} \frac{N^2χ_T}{2ΓT_z^2} = \frac{1 + R_ρ^2}{(1 - R_ρ)^2} \left(1 - \frac{1}{R_ρ} \right) \frac{gαχ_T}{2ΓT_z} 
-\end{equation}\]</div>
+<div class="amsmath math notranslate nohighlight" id="equation-53fcac5a-775b-4a44-a4c7-aa9ed1e8d74e">
+<span class="eqno">(23)<a class="headerlink" href="#equation-53fcac5a-775b-4a44-a4c7-aa9ed1e8d74e" title="Permalink to this equation">#</a></span>\[\begin{align}
+ε &amp;= \frac{1 + R_ρ^2}{(1 - R_ρ)^2} \frac{N^2χ_T}{2ΓT_z^2} \\
+  &amp;= \frac{1 + R_ρ^2}{(1 - R_ρ)^2} \left(1 - \frac{1}{R_ρ} \right) \frac{gαχ_T}{2ΓT_z} \\
+  &amp;= \frac{1 + R_ρ^2}{(R_ρ - 1) R_ρ} \frac{gαχ_T}{2ΓT_z} 
+\end{align}\]</div>
 <p>Some properties:</p>
 <ol class="simple">
-<li><p>This blows up at <span class="math notranslate nohighlight">\(R_ρ=1 ⇒ αT_z = βS_z\)</span> because then <span class="math notranslate nohighlight">\(N^2 = gαT_z - gβS_z = 0\)</span>, so the gradients perfectly cancel each other. The <span class="math notranslate nohighlight">\(ε\)</span> equation is undefined (0/0) but I think it’s saying <span class="math notranslate nohighlight">\(χ_T\)</span> does not tell us anything about <span class="math notranslate nohighlight">\(ε\)</span> since <span class="math notranslate nohighlight">\(T\)</span> is totally disconnected from the energetics. <strong>This is the inverse of what I expected</strong>.</p></li>
+<li><p>This blows up at <span class="math notranslate nohighlight">\(R_ρ=1 ⇒ αT_z = βS_z\)</span> because then <span class="math notranslate nohighlight">\(N^2 = gαT_z - gβS_z = 0\)</span>, so the gradients perfectly cancel each other. The <span class="math notranslate nohighlight">\(ε\)</span> equation is undefined (0/0) but I think it’s saying <span class="math notranslate nohighlight">\(χ_T\)</span> does not tell us anything about <span class="math notranslate nohighlight">\(ε\)</span> since <span class="math notranslate nohighlight">\(T\)</span> is totally disconnected from the energetics. <strong>This is the inverse of what I expected</strong>. But we do filter out small N2 anyway</p></li>
+<li><p>When <span class="math notranslate nohighlight">\(0 &lt; R_ρ &lt; 1\)</span> , <span class="math notranslate nohighlight">\(ε &lt; 0\)</span> but <span class="math notranslate nohighlight">\(N^2 &lt; 0\)</span> so it gets filtered out.</p></li>
 <li><p>If <span class="math notranslate nohighlight">\(S_z = 0\)</span>, then <span class="math notranslate nohighlight">\(K_T=K_ρ\)</span></p></li>
 </ol>
 <p><strong>What is <span class="math notranslate nohighlight">\(R_ρ\)</span> for NATRE?</strong> [right] Here’s the average of <span class="math notranslate nohighlight">\(R_ρ\)</span> along P surfaces across all profiles.</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">holoviews</span> <span class="k">as</span> <span class="nn">hv</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">datatree</span> <span class="kn">import</span> <span class="n">DataTree</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">holoviews</span> <span class="k">as</span> <span class="nn">h</span>
 
 <span class="n">hv</span><span class="o">.</span><span class="n">extension</span><span class="p">(</span><span class="s2">&quot;bokeh&quot;</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">hvplot.xarray</span>
-
-<span class="kn">import</span> <span class="nn">eddydiff</span> <span class="k">as</span> <span class="nn">ed</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.dpi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">120</span>
-
-<span class="n">natre</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">natre</span><span class="o">.</span><span class="n">read_natre</span><span class="p">(</span><span class="n">load</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2590,51 +2668,156 @@ roTBs2RqAAAAAElFTkSuQmCC'
 
 
 </div>
-</div><div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/dcherian/mambaforge/envs/eddydiff/lib/python3.9/site-packages/statsmodels/compat/pandas.py:65: FutureWarning: pandas.Int64Index is deprecated and will be removed from pandas in a future version. Use pandas.Index with the appropriate dtype instead.
-  from pandas import Int64Index as NumericIndex
+</div></div>
+</div>
+<div class="cell tag_hide-input docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hvplot.xarray</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">datatree</span> <span class="kn">import</span> <span class="n">DataTree</span>
+
+<span class="kn">import</span> <span class="nn">eddydiff</span> <span class="k">as</span> <span class="nn">ed</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.dpi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">120</span>
+
+<span class="n">natre</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">natre</span><span class="o">.</span><span class="n">read_natre</span><span class="p">(</span><span class="n">load</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13 40
+0  values == 0
+28090
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/dcherian/mambaforge/envs/eddydiff/lib/python3.9/site-packages/numba/np/ufunc/gufunc.py:151: RuntimeWarning: invalid value encountered in get_gradient_sign
   return self.ufunc(*args, **kwargs)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0  values == 0
-28090
-</pre></div>
 </div>
 </div>
-</div>
+<ul class="simple">
+<li><p>[ ] put KT/Kρ for NATRE with curve evaluated for NATRE mean Rρ</p></li>
+</ul>
+<p>It seems like this will reduce the magnitude of the ε bump by boosting vaues above/below the bump, and reducing the bump</p>
 <div class="cell tag_hide-input docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Rρ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
-<span class="n">fxn_K</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">Rρ</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">Rρ</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
-<span class="n">fxn_ε</span> <span class="o">=</span> <span class="n">fxn_K</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">Rρ</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Rρ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">fxn_K</span><span class="p">(</span><span class="n">Rρ</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">Rρ</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">Rρ</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+
+<span class="n">fxn_K_ideal</span> <span class="o">=</span> <span class="n">fxn_K</span><span class="p">(</span><span class="n">Rρ</span><span class="p">)</span>
+<span class="n">fxn_ε</span> <span class="o">=</span> <span class="n">fxn_K_ideal</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">Rρ</span><span class="p">)</span>
 
 <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">line_width</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
 
 <span class="n">curve</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">Rρ</span><span class="p">,</span> <span class="n">fxn_K</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;K_ρ/K_T&quot;</span><span class="p">)</span>
+    <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">Rρ</span><span class="p">,</span> <span class="n">fxn_K_ideal</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;K_ρ/K_T&quot;</span><span class="p">)</span>
     <span class="o">*</span> <span class="n">hv</span><span class="o">.</span><span class="n">Curve</span><span class="p">((</span><span class="n">Rρ</span><span class="p">,</span> <span class="n">fxn_ε</span><span class="p">),</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ε/χ&quot;</span><span class="p">)</span>
     <span class="o">*</span> <span class="p">(</span><span class="n">hv</span><span class="o">.</span><span class="n">VLine</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">*</span> <span class="n">hv</span><span class="o">.</span><span class="n">HLine</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
 <span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">show_grid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Rρ&quot;</span><span class="p">)</span>
 
 <span class="n">natre_Rρ_mean</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">natre</span><span class="o">.</span><span class="n">Rρ</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-    <span class="o">.</span><span class="n">coarsen</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">boundary</span><span class="o">=</span><span class="s2">&quot;trim&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">Rρ</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">coarsen</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">boundary</span><span class="o">=</span><span class="s2">&quot;trim&quot;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">Rρ</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">)</span>
     <span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">])</span>
     <span class="o">.</span><span class="n">reset_coords</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">hvplot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;NATRE&quot;</span><span class="p">)</span>
-<span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">show_grid</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">hv</span><span class="o">.</span><span class="n">HLine</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">*</span> <span class="n">hv</span><span class="o">.</span><span class="n">HLine</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+<span class="p">)</span>
+<span class="n">natre_Rρ_mean_plot</span> <span class="o">=</span> <span class="p">(</span><span class="n">natre_Rρ_mean</span><span class="o">.</span><span class="n">hvplot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;NATRE&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">show_grid</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span>
+    <span class="n">hv</span><span class="o">.</span><span class="n">HLine</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">*</span> <span class="n">hv</span><span class="o">.</span><span class="n">HLine</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="p">)</span>
 
-<span class="n">curve</span> <span class="o">+</span> <span class="n">natre_Rρ_mean</span>
+<span class="n">curve</span> <span class="o">+</span> <span class="n">natre_Rρ_mean_plot</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div id='2302'>
+
+
+
+
+
+  <div class="bk-root" id="e6efc52d-399e-458e-acab-42ac3bb6b4c8" data-root-id="2302"></div>
+</div>
+<script type="application/javascript">(function(root) {
+  function embed_document(root) {
+    var docs_json = {"8255c417-732c-42d1-9e5f-a9910c39a6ca":{"defs":[{"extends":null,"module":null,"name":"ReactiveHTML1","overrides":[],"properties":[]},{"extends":null,"module":null,"name":"FlexBox1","overrides":[],"properties":[{"default":"flex-start","kind":null,"name":"align_content"},{"default":"flex-start","kind":null,"name":"align_items"},{"default":"row","kind":null,"name":"flex_direction"},{"default":"wrap","kind":null,"name":"flex_wrap"},{"default":"flex-start","kind":null,"name":"justify_content"}]},{"extends":null,"module":null,"name":"TemplateActions1","overrides":[],"properties":[{"default":0,"kind":null,"name":"open_modal"},{"default":0,"kind":null,"name":"close_modal"}]},{"extends":null,"module":null,"name":"MaterialTemplateActions1","overrides":[],"properties":[{"default":0,"kind":null,"name":"open_modal"},{"default":0,"kind":null,"name":"close_modal"}]}],"roots":{"references":[{"attributes":{"line_alpha":0.2,"line_color":"#30a2da","line_width":2,"x":{"field":"pres"},"y":{"field":"R\u03c1"}},"id":"2522","type":"Line"},{"attributes":{"bottom_units":"screen","coordinates":null,"fill_alpha":0.5,"fill_color":"lightgrey","group":null,"left_units":"screen","level":"overlay","line_alpha":1.0,"line_color":"black","line_dash":[4,4],"line_width":2,"right_units":"screen","syncable":false,"top_units":"screen"},"id":"2328","type":"BoxAnnotation"},{"attributes":{},"id":"2497","type":"PanTool"},{"attributes":{"coordinates":null,"group":null,"level":"glyph","line_color":"#000000","line_width":0.75,"location":1},"id":"2391","type":"Span"},{"attributes":{},"id":"2493","type":"BasicTicker"},{"attributes":{"bottom_units":"screen","coordinates":null,"fill_alpha":0.5,"fill_color":"lightgrey","group":null,"left_units":"screen","level":"overlay","line_alpha":1.0,"line_color":"black","line_dash":[4,4],"line_width":2,"right_units":"screen","syncable":false,"top_units":"screen"},"id":"2501","type":"BoxAnnotation"},{"attributes":{},"id":"2532","type":"UnionRenderers"},{"attributes":{},"id":"2484","type":"LinearScale"},{"attributes":{},"id":"2518","type":"Selection"},{"attributes":{"children":[{"id":"2303"},{"id":"2641"},{"id":"2840"}],"margin":[0,0,0,0],"name":"Row04641","tags":["embedded"]},"id":"2302","type":"Row"},{"attributes":{"label":{"value":"K_\u03c1/K_T"},"renderers":[{"id":"2349"}]},"id":"2362","type":"LegendItem"},{"attributes":{"data":{"x":{"__ndarray__":"AAAAAAAACMCamZmZmZkHwDQzMzMzMwfAzszMzMzMBsBoZmZmZmYGwAIAAAAAAAbAnJmZmZmZBcA2MzMzMzMFwNDMzMzMzATAamZmZmZmBMAEAAAAAAAEwJ6ZmZmZmQPAODMzMzMzA8DSzMzMzMwCwGxmZmZmZgLABgAAAAAAAsCgmZmZmZkBwDozMzMzMwHA1MzMzMzMAMBuZmZmZmYAwAgAAAAAAADARDMzMzMz/794ZmZmZmb+v6yZmZmZmf2/4MzMzMzM/L8UAAAAAAD8v0gzMzMzM/u/fGZmZmZm+r+wmZmZmZn5v+TMzMzMzPi/GAAAAAAA+L9MMzMzMzP3v4BmZmZmZva/tJmZmZmZ9b/ozMzMzMz0vxwAAAAAAPS/UDMzMzMz87+EZmZmZmbyv7iZmZmZmfG/7MzMzMzM8L8gAAAAAADwv6hmZmZmZu6/EM3MzMzM7L94MzMzMzPrv+CZmZmZmem/SAAAAAAA6L+wZmZmZmbmvxjNzMzMzOS/gDMzMzMz47/omZmZmZnhv1AAAAAAAOC/cM3MzMzM3L9AmpmZmZnZvxBnZmZmZta/4DMzMzMz07+wAAAAAADQvwCbmZmZmcm/oDQzMzMzw7+AnJmZmZm5v4CfmZmZmam/AAAAAAAACL2Ak5mZmZmpP4CWmZmZmbk/oDEzMzMzwz8AmJmZmZnJP2D+/////88/YDIzMzMz0z+QZWZmZmbWP8CYmZmZmdk/8MvMzMzM3D8g///////fPyiZmZmZmeE/wDIzMzMz4z9YzMzMzMzkP/BlZmZmZuY/iP//////5z8gmZmZmZnpP7gyMzMzM+s/UMzMzMzM7D/oZWZmZmbuP4D//////+8/jMzMzMzM8D9YmZmZmZnxPyRmZmZmZvI/8DIzMzMz8z+8///////zP4jMzMzMzPQ/VJmZmZmZ9T8gZmZmZmb2P+wyMzMzM/c/uP//////9z+EzMzMzMz4P1CZmZmZmfk/HGZmZmZm+j/oMjMzMzP7P7T///////s/gMzMzMzM/D9MmZmZmZn9PxhmZmZmZv4/5DIzMzMz/z+w////////Pz5mZmZmZgBApMzMzMzMAEAKMzMzMzMBQHCZmZmZmQFA1v//////AUA8ZmZmZmYCQKLMzMzMzAJACDMzMzMzA0BumZmZmZkDQNT//////wNAOmZmZmZmBECgzMzMzMwEQAYzMzMzMwVAbJmZmZmZBUDS//////8FQDhmZmZmZgZAnszMzMzMBkAEMzMzMzMHQGqZmZmZmQdA","dtype":"float64","order":"little","shape":[120]},"y":{"__ndarray__":"AAAAAAAA5D/D9FFyPebjP68BVhEpzOM/TOicHsOx4z+nzS4ODJfjPyeeFY0EfOM/nQWyiK1g4z8r5/Q2CEXjPz3dmh8WKeM/o3OLJtkM4z+9nIKXU/DiP21yMDOI0+I/i8UBPnq24j8aesuQLZniP/lim6ume+I/pnT7yupd4j8CAAAAAEDiP6eDh0vtIeI/o+UivboD4j+EBTCWceXhP3Qcx3Ecx+E/3fo1cseo4T/esON0gIrhPwyQnE1XbOE/VvByCl5O4T8FN5ZBqTDhPy4kwWpQE+E/EKgsRm724D+5SFBTIdrgP8f1J1qMvuA/p3A9Ctej4D8Wr1azLorgPx/HcRzHceA/PNKqftta4D9V9tOqr0XgP9at+WGRMuA/O83X6tkh4D/1RH7w7xPgPwTcLblJCeA//Qj1x28C4D8AAAAAAADgP9wTKmaxAuA/i1GFpFgL4D/xP7p87RrgP8+t+WGRMuA/DrycgpdT4D/Cu6ydjn/gP52yCBtNuOA/8v//////4D+6vzCJPVnhP1ocx3Ecx+E/RvhQRlFN4j+YnIKXU/DiPwaHF4WNteM/UTZ8/pij5D9/9Shcj8LlP3RxHMdxHOc/XqzribO96D+V7kdO87XqP6s+qyH2GO0/QP//////7z+VvdS02cXxP/WTgadb8/M/fxz/4MKk9j8P///////5P1riOI7jOP4/qwleTsHLAUBZvxnXIkEFQBIbx3EcxwlASkq8HznND0Cw/v////8TQBqvSBl4uhlAmP7/////IEAdv8speDknQBE3juM4jjBAuPz/////OECp/P///39EQBmK4ziOI1NAxPj///+fZkD08P///8eHQID//////79FOBAAAABIikBoCAAAAKBrQA4+juM4zllAggQAAACATkBkAgAAAIBEQBaR4ziO4z1AX5lT8HIKN0BLAQAAAIAyQM92a35YpC5AaAEAAAAAKkCtQqkw8X4mQE8dx3EcxyNAuDUVog2fIUAYdApeTsEfQDGP4ziO4xxA0QAAAACAGkDWmhKLA3wYQDGCp1vzwxZAhD0aowpJFUB4AAAAAAAUQCNccpMS4BJAzSyDUmHiEUDNauSocwERQNvjOI7jOBBAl9ejcD0KD0D5lzwYcMYNQINdT06JoQxAUhW8nIKXC0D4WPUK/KQKQM0cx3EcxwlA7MSerHj7CEBOAAAAAEAIQFnAD33skgdACgI+erbyBkDYU/ByCl4GQCOIRcrA0wVA+KQnDNdSBUASYgZfatoEQLqL8+myaQRA","dtype":"float64","order":"little","shape":[120]}},"selected":{"id":"2344"},"selection_policy":{"id":"2358"}},"id":"2343","type":"ColumnDataSource"},{"attributes":{"end":3.917085193076662,"reset_end":3.917085193076662,"reset_start":-1.882297892616995,"start":-1.882297892616995,"tags":[[["R\u03c1","R\u03c1",null]]]},"id":"2477","type":"Range1d"},{"attributes":{"label":{"value":"\u03b5/\u03c7"},"renderers":[{"id":"2370"}]},"id":"2384","type":"LegendItem"},{"attributes":{"coordinates":null,"data_source":{"id":"2364"},"glyph":{"id":"2367"},"group":null,"hover_glyph":null,"muted_glyph":{"id":"2369"},"nonselection_glyph":{"id":"2368"},"selection_glyph":{"id":"2385"},"view":{"id":"2371"}},"id":"2370","type":"GlyphRenderer"},{"attributes":{"axis_label":"R\u03c1","coordinates":null,"formatter":{"id":"2336"},"group":null,"major_label_policy":{"id":"2337"},"ticker":{"id":"2316"}},"id":"2315","type":"LinearAxis"},{"attributes":{"source":{"id":"2517"}},"id":"2524","type":"CDSView"},{"attributes":{"line_color":"#fc4f30","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"2367","type":"Line"},{"attributes":{"coordinates":null,"group":null,"text":"NATRE","text_color":"black","text_font_size":"12pt"},"id":"2480","type":"Title"},{"attributes":{"line_color":"#30a2da","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"2363","type":"Line"},{"attributes":{"margin":[5,5,5,5],"name":"HSpacer04646","sizing_mode":"stretch_width"},"id":"2840","type":"Spacer"},{"attributes":{},"id":"2496","type":"SaveTool"},{"attributes":{"coordinates":null,"data_source":{"id":"2343"},"glyph":{"id":"2346"},"group":null,"hover_glyph":null,"muted_glyph":{"id":"2348"},"nonselection_glyph":{"id":"2347"},"selection_glyph":{"id":"2363"},"view":{"id":"2350"}},"id":"2349","type":"GlyphRenderer"},{"attributes":{"axis_label":"y","coordinates":null,"formatter":{"id":"2339"},"group":null,"major_label_policy":{"id":"2340"},"ticker":{"id":"2320"}},"id":"2319","type":"LinearAxis"},{"attributes":{},"id":"2500","type":"ResetTool"},{"attributes":{},"id":"2320","type":"BasicTicker"},{"attributes":{"tools":[{"id":"2323"},{"id":"2324"},{"id":"2325"},{"id":"2326"},{"id":"2327"}]},"id":"2329","type":"Toolbar"},{"attributes":{"axis":{"id":"2319"},"coordinates":null,"dimension":1,"group":null,"ticker":{"id":"2320"}},"id":"2322","type":"Grid"},{"attributes":{"axis":{"id":"2315"},"coordinates":null,"group":null,"ticker":{"id":"2316"}},"id":"2318","type":"Grid"},{"attributes":{"line_color":"#30a2da","line_width":2,"x":{"field":"pres"},"y":{"field":"R\u03c1"}},"id":"2520","type":"Line"},{"attributes":{"coordinates":null,"dimension":"height","group":null,"level":"glyph","line_color":"#000000","line_width":0.75,"location":1},"id":"2388","type":"Span"},{"attributes":{"axis_label":"R\u03c1","coordinates":null,"formatter":{"id":"2513"},"group":null,"major_label_policy":{"id":"2514"},"ticker":{"id":"2493"}},"id":"2492","type":"LinearAxis"},{"attributes":{"coordinates":null,"group":null,"text_color":"black","text_font_size":"12pt"},"id":"2307","type":"Title"},{"attributes":{"axis":{"id":"2492"},"coordinates":null,"dimension":1,"group":null,"ticker":{"id":"2493"}},"id":"2495","type":"Grid"},{"attributes":{"children":[{"id":"2640"},{"id":"2638"}]},"id":"2641","type":"Column"},{"attributes":{"end":2.949999999999979,"reset_end":2.949999999999979,"reset_start":-3.0,"start":-3.0,"tags":[[["x","x",null]]]},"id":"2304","type":"Range1d"},{"attributes":{},"id":"2316","type":"BasicTicker"},{"attributes":{"below":[{"id":"2315"}],"center":[{"id":"2318"},{"id":"2322"},{"id":"2361"}],"height":300,"left":[{"id":"2319"}],"margin":null,"min_border_bottom":10,"min_border_left":10,"min_border_right":10,"min_border_top":10,"renderers":[{"id":"2349"},{"id":"2370"},{"id":"2388"},{"id":"2391"}],"sizing_mode":"fixed","title":{"id":"2307"},"toolbar":{"id":"2329"},"toolbar_location":null,"width":300,"x_range":{"id":"2304"},"x_scale":{"id":"2311"},"y_range":{"id":"2305"},"y_scale":{"id":"2313"}},"id":"2306","subtype":"Figure","type":"Plot"},{"attributes":{},"id":"2313","type":"LinearScale"},{"attributes":{"below":[{"id":"2488"}],"center":[{"id":"2491"},{"id":"2495"},{"id":"2535"}],"height":300,"left":[{"id":"2492"}],"margin":null,"min_border_bottom":10,"min_border_left":10,"min_border_right":10,"min_border_top":10,"renderers":[{"id":"2523"},{"id":"2540"},{"id":"2543"}],"sizing_mode":"fixed","title":{"id":"2480"},"toolbar":{"id":"2502"},"toolbar_location":null,"width":700,"x_range":{"id":"2476"},"x_scale":{"id":"2484"},"y_range":{"id":"2477"},"y_scale":{"id":"2486"}},"id":"2479","subtype":"Figure","type":"Plot"},{"attributes":{"line_alpha":0.2,"line_color":"#fc4f30","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"2369","type":"Line"},{"attributes":{},"id":"2311","type":"LinearScale"},{"attributes":{},"id":"2336","type":"BasicTickFormatter"},{"attributes":{"data":{"R\u03c1":{"__ndarray__":"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","dtype":"float64","order":"little","shape":[350]},"pres":{"__ndarray__":"AAAAAACIb0AAAAAAABRwQAAAAAAAZHBAAAAAAAC0cEAAAAAAAARxQAAAAAAAVHFAAAAAAACkcUAAAAAAAPRxQAAAAAAARHJAAAAAAACUckAAAAAAAORyQAAAAAAANHNAAAAAAACEc0AAAAAAANRzQAAAAAAAJHRAAAAAAAB0dEAAAAAAAMR0QAAAAAAAFHVAAAAAAABkdUAAAAAAALR1QAAAAAAABHZAAAAAAABUdkAAAAAAAKR2QAAAAAAA9HZAAAAAAABEd0AAAAAAAJR3QAAAAAAA5HdAAAAAAAA0eEAAAAAAAIR4QAAAAAAA1HhAAAAAAAAkeUAAAAAAAHR5QAAAAAAAxHlAAAAAAAAUekAAAAAAAGR6QAAAAAAAtHpAAAAAAAAEe0AAAAAAAFR7QAAAAAAApHtAAAAAAAD0e0AAAAAAAER8QAAAAAAAlHxAAAAAAADkfEAAAAAAADR9QAAAAAAAhH1AAAAAAADUfUAAAAAAACR+QAAAAAAAdH5AAAAAAADEfkAAAAAAABR/QAAAAAAAZH9AAAAAAAC0f0AAAAAAAAKAQAAAAAAAKoBAAAAAAABSgEAAAAAAAHqAQAAAAAAAooBAAAAAAADKgEAAAAAAAPKAQAAAAAAAGoFAAAAAAABCgUAAAAAAAGqBQAAAAAAAkoFAAAAAAAC6gUAAAAAAAOKBQAAAAAAACoJAAAAAAAAygkAAAAAAAFqCQAAAAAAAgoJAAAAAAACqgkAAAAAAANKCQAAAAAAA+oJAAAAAAAAig0AAAAAAAEqDQAAAAAAAcoNAAAAAAACag0AAAAAAAMKDQAAAAAAA6oNAAAAAAAAShEAAAAAAADqEQAAAAAAAYoRAAAAAAACKhEAAAAAAALKEQAAAAAAA2oRAAAAAAAAChUAAAAAAACqFQAAAAAAAUoVAAAAAAAB6hUAAAAAAAKKFQAAAAAAAyoVAAAAAAADyhUAAAAAAABqGQAAAAAAAQoZAAAAAAABqhkAAAAAAAJKGQAAAAAAAuoZAAAAAAADihkAAAAAAAAqHQAAAAAAAModAAAAAAABah0AAAAAAAIKHQAAAAAAAqodAAAAAAADSh0AAAAAAAPqHQAAAAAAAIohAAAAAAABKiEAAAAAAAHKIQAAAAAAAmohAAAAAAADCiEAAAAAAAOqIQAAAAAAAEolAAAAAAAA6iUAAAAAAAGKJQAAAAAAAiolAAAAAAACyiUAAAAAAANqJQAAAAAAAAopAAAAAAAAqikAAAAAAAFKKQAAAAAAAeopAAAAAAACiikAAAAAAAMqKQAAAAAAA8opAAAAAAAAai0AAAAAAAEKLQAAAAAAAaotAAAAAAACSi0AAAAAAALqLQAAAAAAA4otAAAAAAAAKjEAAAAAAADKMQAAAAAAAWoxAAAAAAACCjEAAAAAAAKqMQAAAAAAA0oxAAAAAAAD6jEAAAAAAACKNQAAAAAAASo1AAAAAAAByjUAAAAAAAJqNQAAAAAAAwo1AAAAAAADqjUAAAAAAABKOQAAAAAAAOo5AAAAAAABijkAAAAAAAIqOQAAAAAAAso5AAAAAAADajkAAAAAAAAKPQAAAAAAAKo9AAAAAAABSj0AAAAAAAHqPQAAAAAAAoo9AAAAAAADKj0AAAAAAAPKPQAAAAAAADZBAAAAAAAAhkEAAAAAAADWQQAAAAAAASZBAAAAAAABdkEAAAAAAAHGQQAAAAAAAhZBAAAAAAACZkEAAAAAAAK2QQAAAAAAAwZBAAAAAAADVkEAAAAAAAOmQQAAAAAAA/ZBAAAAAAAARkUAAAAAAACWRQAAAAAAAOZFAAAAAAABNkUAAAAAAAGGRQAAAAAAAdZFAAAAAAACJkUAAAAAAAJ2RQAAAAAAAsZFAAAAAAADFkUAAAAAAANmRQAAAAAAA7ZFAAAAAAAABkkAAAAAAABWSQAAAAAAAKZJAAAAAAAA9kkAAAAAAAFGSQAAAAAAAZZJAAAAAAAB5kkAAAAAAAI2SQAAAAAAAoZJAAAAAAAC1kkAAAAAAAMmSQAAAAAAA3ZJAAAAAAADxkkAAAAAAAAWTQAAAAAAAGZNAAAAAAAAtk0AAAAAAAEGTQAAAAAAAVZNAAAAAAABpk0AAAAAAAH2TQAAAAAAAkZNAAAAAAAClk0AAAAAAALmTQAAAAAAAzZNAAAAAAADhk0AAAAAAAPWTQAAAAAAACZRAAAAAAAAdlEAAAAAAADGUQAAAAAAARZRAAAAAAABZlEAAAAAAAG2UQAAAAAAAgZRAAAAAAACVlEAAAAAAAKmUQAAAAAAAvZRAAAAAAADRlEAAAAAAAOWUQAAAAAAA+ZRAAAAAAAANlUAAAAAAACGVQAAAAAAANZVAAAAAAABJlUAAAAAAAF2VQAAAAAAAcZVAAAAAAACFlUAAAAAAAJmVQAAAAAAArZVAAAAAAADBlUAAAAAAANWVQAAAAAAA6ZVAAAAAAAD9lUAAAAAAABGWQAAAAAAAJZZAAAAAAAA5lkAAAAAAAE2WQAAAAAAAYZZAAAAAAAB1lkAAAAAAAImWQAAAAAAAnZZAAAAAAACxlkAAAAAAAMWWQAAAAAAA2ZZAAAAAAADtlkAAAAAAAAGXQAAAAAAAFZdAAAAAAAApl0AAAAAAAD2XQAAAAAAAUZdAAAAAAABll0AAAAAAAHmXQAAAAAAAjZdAAAAAAAChl0AAAAAAALWXQAAAAAAAyZdAAAAAAADdl0AAAAAAAPGXQAAAAAAABZhAAAAAAAAZmEAAAAAAAC2YQAAAAAAAQZhAAAAAAABVmEAAAAAAAGmYQAAAAAAAfZhAAAAAAACRmEAAAAAAAKWYQAAAAAAAuZhAAAAAAADNmEAAAAAAAOGYQAAAAAAA9ZhAAAAAAAAJmUAAAAAAAB2ZQAAAAAAAMZlAAAAAAABFmUAAAAAAAFmZQAAAAAAAbZlAAAAAAACBmUAAAAAAAJWZQAAAAAAAqZlAAAAAAAC9mUAAAAAAANGZQAAAAAAA5ZlAAAAAAAD5mUAAAAAAAA2aQAAAAAAAIZpAAAAAAAA1mkAAAAAAAEmaQAAAAAAAXZpAAAAAAABxmkAAAAAAAIWaQAAAAAAAmZpAAAAAAACtmkAAAAAAAMGaQAAAAAAA1ZpAAAAAAADpmkAAAAAAAP2aQAAAAAAAEZtAAAAAAAAlm0AAAAAAADmbQAAAAAAATZtAAAAAAABhm0AAAAAAAHWbQAAAAAAAiZtAAAAAAACdm0AAAAAAALGbQAAAAAAAxZtAAAAAAADZm0AAAAAAAO2bQAAAAAAAAZxAAAAAAAAVnEAAAAAAACmcQAAAAAAAPZxAAAAAAABRnEAAAAAAAGWcQAAAAAAAeZxAAAAAAACNnEAAAAAAAKGcQAAAAAAAtZxAAAAAAADJnEAAAAAAAN2cQAAAAAAA8ZxAAAAAAAAFnUAAAAAAABmdQAAAAAAALZ1AAAAAAABBnUAAAAAAAFWdQAAAAAAAaZ1AAAAAAAB9nUAAAAAAAJGdQAAAAAAApZ1AAAAAAAC5nUAAAAAAAM2dQAAAAAAA4Z1AAAAAAAD1nUAAAAAAAAmeQAAAAAAAHZ5AAAAAAAAxnkAAAAAAAEWeQAAAAAAAWZ5AAAAAAABtnkAAAAAAAIGeQAAAAAAAlZ5AAAAAAACpnkAAAAAAAL2eQAAAAAAA0Z5AAAAAAADlnkAAAAAAAPmeQAAAAAAADZ9AAAAAAAAhn0AAAAAAADWfQA==","dtype":"float64","order":"little","shape":[350]}},"selected":{"id":"2518"},"selection_policy":{"id":"2532"}},"id":"2517","type":"ColumnDataSource"},{"attributes":{},"id":"2489","type":"BasicTicker"},{"attributes":{"line_alpha":0.1,"line_color":"#30a2da","line_width":2,"x":{"field":"pres"},"y":{"field":"R\u03c1"}},"id":"2521","type":"Line"},{"attributes":{"source":{"id":"2364"}},"id":"2371","type":"CDSView"},{"attributes":{},"id":"2327","type":"ResetTool"},{"attributes":{},"id":"2323","type":"SaveTool"},{"attributes":{"end":1997.25,"reset_end":1997.25,"reset_start":252.25,"start":252.25,"tags":[[["pres","pres",null]]]},"id":"2476","type":"Range1d"},{"attributes":{},"id":"2486","type":"LinearScale"},{"attributes":{"axis_label":"pres","coordinates":null,"formatter":{"id":"2510"},"group":null,"major_label_policy":{"id":"2511"},"ticker":{"id":"2489"}},"id":"2488","type":"LinearAxis"},{"attributes":{"source":{"id":"2343"}},"id":"2350","type":"CDSView"},{"attributes":{},"id":"2365","type":"Selection"},{"attributes":{"line_color":"#30a2da","line_width":2,"x":{"field":"pres"},"y":{"field":"R\u03c1"}},"id":"2537","type":"Line"},{"attributes":{"line_color":"#30a2da","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"2346","type":"Line"},{"attributes":{"line_alpha":0.1,"line_color":"#30a2da","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"2347","type":"Line"},{"attributes":{},"id":"2358","type":"UnionRenderers"},{"attributes":{"overlay":{"id":"2501"}},"id":"2499","type":"BoxZoomTool"},{"attributes":{"line_color":"#fc4f30","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"2385","type":"Line"},{"attributes":{"coordinates":null,"group":null,"level":"glyph","line_color":"#000000","line_width":0.75,"location":-2},"id":"2543","type":"Span"},{"attributes":{"axis":{"id":"2488"},"coordinates":null,"group":null,"ticker":{"id":"2489"}},"id":"2491","type":"Grid"},{"attributes":{},"id":"2337","type":"AllLabels"},{"attributes":{},"id":"2510","type":"BasicTickFormatter"},{"attributes":{},"id":"2511","type":"AllLabels"},{"attributes":{"line_alpha":0.1,"line_color":"#fc4f30","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"2368","type":"Line"},{"attributes":{},"id":"2498","type":"WheelZoomTool"},{"attributes":{"data":{"x":{"__ndarray__":"AAAAAAAACMCamZmZmZkHwDQzMzMzMwfAzszMzMzMBsBoZmZmZmYGwAIAAAAAAAbAnJmZmZmZBcA2MzMzMzMFwNDMzMzMzATAamZmZmZmBMAEAAAAAAAEwJ6ZmZmZmQPAODMzMzMzA8DSzMzMzMwCwGxmZmZmZgLABgAAAAAAAsCgmZmZmZkBwDozMzMzMwHA1MzMzMzMAMBuZmZmZmYAwAgAAAAAAADARDMzMzMz/794ZmZmZmb+v6yZmZmZmf2/4MzMzMzM/L8UAAAAAAD8v0gzMzMzM/u/fGZmZmZm+r+wmZmZmZn5v+TMzMzMzPi/GAAAAAAA+L9MMzMzMzP3v4BmZmZmZva/tJmZmZmZ9b/ozMzMzMz0vxwAAAAAAPS/UDMzMzMz87+EZmZmZmbyv7iZmZmZmfG/7MzMzMzM8L8gAAAAAADwv6hmZmZmZu6/EM3MzMzM7L94MzMzMzPrv+CZmZmZmem/SAAAAAAA6L+wZmZmZmbmvxjNzMzMzOS/gDMzMzMz47/omZmZmZnhv1AAAAAAAOC/cM3MzMzM3L9AmpmZmZnZvxBnZmZmZta/4DMzMzMz07+wAAAAAADQvwCbmZmZmcm/oDQzMzMzw7+AnJmZmZm5v4CfmZmZmam/AAAAAAAACL2Ak5mZmZmpP4CWmZmZmbk/oDEzMzMzwz8AmJmZmZnJP2D+/////88/YDIzMzMz0z+QZWZmZmbWP8CYmZmZmdk/8MvMzMzM3D8g///////fPyiZmZmZmeE/wDIzMzMz4z9YzMzMzMzkP/BlZmZmZuY/iP//////5z8gmZmZmZnpP7gyMzMzM+s/UMzMzMzM7D/oZWZmZmbuP4D//////+8/jMzMzMzM8D9YmZmZmZnxPyRmZmZmZvI/8DIzMzMz8z+8///////zP4jMzMzMzPQ/VJmZmZmZ9T8gZmZmZmb2P+wyMzMzM/c/uP//////9z+EzMzMzMz4P1CZmZmZmfk/HGZmZmZm+j/oMjMzMzP7P7T///////s/gMzMzMzM/D9MmZmZmZn9PxhmZmZmZv4/5DIzMzMz/z+w////////Pz5mZmZmZgBApMzMzMzMAEAKMzMzMzMBQHCZmZmZmQFA1v//////AUA8ZmZmZmYCQKLMzMzMzAJACDMzMzMzA0BumZmZmZkDQNT//////wNAOmZmZmZmBECgzMzMzMwEQAYzMzMzMwVAbJmZmZmZBUDS//////8FQDhmZmZmZgZAnszMzMzMBkAEMzMzMzMHQGqZmZmZmQdA","dtype":"float64","order":"little","shape":[120]},"y":{"__ndarray__":"qqqqqqqq6j8BGH/eGaXqP66GR0zNn+o/UDVWMs2a6j9iqYilIpbqP5J6HanXkeo/4KiLSfeN6j/tEsq6jYrqP3qoh3qoh+o/pUvqdlaF6j86qIM6qIPqPxpySR6wguo/g4KCgoKC6j+Vd8UPNoPqP3lhWQHkhOo/fKiHeqiH6j+LLrrooovqP6TenHT2kOo/KV/qhMqX6j/TfhVWS6DqP6qqqqqqquo/wJUWmSC36j/98oN87MXqP3Wtxw9W1+o/uK7ruq7r6j9JDewdUwPrP4xXyeWsHus/bjxX/DQ+6z8kdmIndmLrP4h7OTEQjOs/tru7u7u76z/tU2boTvLrPwPDMAzDMOw/y6aRtjt47D8QoE9pD8rsP2/SJ33SJ+0/g0022WST7T85onFdAw/uP2J1+jJene4/TMj2qrVB7z/g///////vP9YGfKWNbvA/4Q7iO4jv8D/2vdklt4bxP23jOI7jOPI/mjAMwzAM8z+zmgjkmgj0Pzf2T6KwOPU/X6qqqqqq9j8RyCGHHHL4Py6qqqqqqvo/xR0tKpF8/T+4SJIkSZIAQICvVsBaAQNA6ORbvuVbBkDvMTMzMzMLQE1UVVVVVRFAUi7XDsy1F0AictFFF10iQO9cGIZhGDNAFVVVVVVV1UJspryG8ho1wHnJcRzHcSbAEQsKCgoKIMAXAQAAAAAawEyrqqqqqhbAjgzDMAzDFMD2e7zHe7wTwF9VVVVVVRPArrydITFvE8DI//////8TwFozJObtDBXAH6qqqqqqFsBizwIt0AIZwO6EYRiGYRzAyKmqqqqqIMCQ/v///38kwGECBQUFBSvAwm4cx3EcNMA6Iq+hvAZEwID//////9/CtR6GYRgGREBFYHTRRRc0QOnOtQNz7SpA81ZVVVVVJEBwZ2ZmZmYgQOT6lm/5lhtAYD86+ejkF0AdkyRJkiQVQMr5mnrnBBNA3lVVVVVVEUDPuN9+++0PQGerqqqqqg1AoSUKi1PEC0COuSYCuSYKQKwMwzAMwwhATzmO4ziOB0ADjpTny38GQGnZTWQ3kQVAIszKkVK9BEBGAAAAAAAEQCmQzJDtVQNA0vHq9GW8AkAnbGtVLjECQOPJJptssgFAF5Q+6ZM+AUDfB2WeVdQAQDrDta+VcgBAq2EYhmEYAEAfaSKF0Yn/Py/v7u7u7v4/mk4MBONe/j/BndiJndj9P9/9zycwW/0/NXSQV8nl/D/x3jE1sHf8PzFBEARBEPw/G7usRequ+z8Dx4xHKlP7P4NqlBKN/Po/","dtype":"float64","order":"little","shape":[120]}},"selected":{"id":"2365"},"selection_policy":{"id":"2381"}},"id":"2364","type":"ColumnDataSource"},{"attributes":{},"id":"2344","type":"Selection"},{"attributes":{"coordinates":null,"group":null,"level":"glyph","line_color":"#000000","line_width":0.75,"location":0},"id":"2540","type":"Span"},{"attributes":{"coordinates":null,"data_source":{"id":"2517"},"glyph":{"id":"2520"},"group":null,"hover_glyph":null,"muted_glyph":{"id":"2522"},"nonselection_glyph":{"id":"2521"},"selection_glyph":{"id":"2537"},"view":{"id":"2524"}},"id":"2523","type":"GlyphRenderer"},{"attributes":{},"id":"2340","type":"AllLabels"},{"attributes":{"click_policy":"mute","coordinates":null,"group":null,"items":[{"id":"2362"},{"id":"2384"}]},"id":"2361","type":"Legend"},{"attributes":{"callback":null,"renderers":[{"id":"2523"}],"tags":["hv_created"],"tooltips":[["pres","@{pres}"],["R\u03c1","@{R\u03c1}"]]},"id":"2478","type":"HoverTool"},{"attributes":{},"id":"2381","type":"UnionRenderers"},{"attributes":{"margin":[5,5,5,5],"name":"HSpacer04645","sizing_mode":"stretch_width"},"id":"2303","type":"Spacer"},{"attributes":{"overlay":{"id":"2328"}},"id":"2326","type":"BoxZoomTool"},{"attributes":{"tools":[{"id":"2478"},{"id":"2496"},{"id":"2497"},{"id":"2498"},{"id":"2499"},{"id":"2500"}]},"id":"2502","type":"Toolbar"},{"attributes":{},"id":"2513","type":"BasicTickFormatter"},{"attributes":{},"id":"2514","type":"AllLabels"},{"attributes":{"toolbar":{"id":"2639"},"toolbar_location":"above"},"id":"2640","type":"ToolbarBox"},{"attributes":{},"id":"2339","type":"BasicTickFormatter"},{"attributes":{"end":10,"reset_end":10,"reset_start":0,"tags":[[["y","y",null]]]},"id":"2305","type":"Range1d"},{"attributes":{"children":[[{"id":"2306"},0,0],[{"id":"2479"},0,1]]},"id":"2638","type":"GridBox"},{"attributes":{"coordinates":null,"group":null,"items":[]},"id":"2535","type":"Legend"},{"attributes":{"line_alpha":0.2,"line_color":"#30a2da","line_width":2,"x":{"field":"x"},"y":{"field":"y"}},"id":"2348","type":"Line"},{"attributes":{"toolbars":[{"id":"2329"},{"id":"2502"}],"tools":[{"id":"2323"},{"id":"2324"},{"id":"2325"},{"id":"2326"},{"id":"2327"},{"id":"2478"},{"id":"2496"},{"id":"2497"},{"id":"2498"},{"id":"2499"},{"id":"2500"}]},"id":"2639","type":"ProxyToolbar"},{"attributes":{},"id":"2325","type":"WheelZoomTool"},{"attributes":{},"id":"2324","type":"PanTool"}],"root_ids":["2302"]},"title":"Bokeh Application","version":"2.4.2"}};
+    var render_items = [{"docid":"8255c417-732c-42d1-9e5f-a9910c39a6ca","root_ids":["2302"],"roots":{"2302":"e6efc52d-399e-458e-acab-42ac3bb6b4c8"}}];
+    root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+  }
+  if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+        clearInterval(timer);
+        embed_document(root);
+      } else if (document.readyState == "complete") {
+        attempts++;
+        if (attempts > 200) {
+          clearInterval(timer);
+          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        }
+      }
+    }, 25, root)
+  }
+})(window);</script></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span>
+    <span class="n">fxn_K</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">Rρ</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="kc">None</span><span class="p">)))</span>
+    <span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">Rρ</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">coarsen</span><span class="p">(</span><span class="n">pres</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">boundary</span><span class="o">=</span><span class="s2">&quot;trim&quot;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="s2">&quot;latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;longitude&quot;</span><span class="p">])</span>
+    <span class="o">.</span><span class="n">reset_coords</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">hvplot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;ε_new/ε_old&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">opts</span><span class="p">(</span><span class="n">logy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_grid</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div id='3562'>
+
+
+
+
+
+  <div class="bk-root" id="a35310ee-69db-4c96-8231-e67be262c8ed" data-root-id="3562"></div>
+</div>
+<script type="application/javascript">(function(root) {
+  function embed_document(root) {
+    var docs_json = {"fa78206b-02c7-449c-9a00-5f5e895b5c38":{"defs":[{"extends":null,"module":null,"name":"ReactiveHTML1","overrides":[],"properties":[]},{"extends":null,"module":null,"name":"FlexBox1","overrides":[],"properties":[{"default":"flex-start","kind":null,"name":"align_content"},{"default":"flex-start","kind":null,"name":"align_items"},{"default":"row","kind":null,"name":"flex_direction"},{"default":"wrap","kind":null,"name":"flex_wrap"},{"default":"flex-start","kind":null,"name":"justify_content"}]},{"extends":null,"module":null,"name":"TemplateActions1","overrides":[],"properties":[{"default":0,"kind":null,"name":"open_modal"},{"default":0,"kind":null,"name":"close_modal"}]},{"extends":null,"module":null,"name":"MaterialTemplateActions1","overrides":[],"properties":[{"default":0,"kind":null,"name":"open_modal"},{"default":0,"kind":null,"name":"close_modal"}]}],"roots":{"references":[{"attributes":{},"id":"3607","type":"BasicTickFormatter"},{"attributes":{"margin":[5,5,5,5],"name":"HSpacer07123","sizing_mode":"stretch_width"},"id":"3634","type":"Spacer"},{"attributes":{"data":{"R\u03c1":{"__ndarray__":"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","dtype":"float64","order":"little","shape":[350]},"pres":{"__ndarray__":"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","dtype":"float64","order":"little","shape":[350]}},"selected":{"id":"3598"},"selection_policy":{"id":"3621"}},"id":"3597","type":"ColumnDataSource"},{"attributes":{"num_minor_ticks":10},"id":"3581","type":"LogTicker"},{"attributes":{},"id":"3611","type":"AllLabels"},{"attributes":{},"id":"3588","type":"ResetTool"},{"attributes":{"line_alpha":0.1,"line_color":"#30a2da","line_width":2,"x":{"field":"pres"},"y":{"field":"R\u03c1"}},"id":"3601","type":"Line"},{"attributes":{"line_color":"#30a2da","line_width":2,"x":{"field":"pres"},"y":{"field":"R\u03c1"}},"id":"3600","type":"Line"},{"attributes":{},"id":"3586","type":"WheelZoomTool"},{"attributes":{"axis":{"id":"3580"},"coordinates":null,"dimension":1,"group":null,"ticker":{"id":"3581"}},"id":"3583","type":"Grid"},{"attributes":{"line_color":"#30a2da","line_width":2,"x":{"field":"pres"},"y":{"field":"R\u03c1"}},"id":"3605","type":"Line"},{"attributes":{"coordinates":null,"data_source":{"id":"3597"},"glyph":{"id":"3600"},"group":null,"hover_glyph":null,"muted_glyph":{"id":"3602"},"nonselection_glyph":{"id":"3601"},"selection_glyph":{"id":"3605"},"view":{"id":"3604"}},"id":"3603","type":"GlyphRenderer"},{"attributes":{},"id":"3621","type":"UnionRenderers"},{"attributes":{},"id":"3598","type":"Selection"},{"attributes":{"end":1997.25,"reset_end":1997.25,"reset_start":252.25,"start":252.25,"tags":[[["pres","pres",null]]]},"id":"3564","type":"Range1d"},{"attributes":{"margin":[5,5,5,5],"name":"HSpacer07122","sizing_mode":"stretch_width"},"id":"3563","type":"Spacer"},{"attributes":{"tools":[{"id":"3566"},{"id":"3584"},{"id":"3585"},{"id":"3586"},{"id":"3587"},{"id":"3588"}]},"id":"3590","type":"Toolbar"},{"attributes":{"source":{"id":"3597"}},"id":"3604","type":"CDSView"},{"attributes":{"end":951.6744576656253,"reset_end":951.6744576656253,"reset_start":0.6277476045478052,"start":0.6277476045478052,"tags":[[["R\u03c1","R\u03c1",null]]]},"id":"3565","type":"Range1d"},{"attributes":{"axis":{"id":"3576"},"coordinates":null,"group":null,"ticker":{"id":"3577"}},"id":"3579","type":"Grid"},{"attributes":{},"id":"3572","type":"LinearScale"},{"attributes":{"callback":null,"renderers":[{"id":"3603"}],"tags":["hv_created"],"tooltips":[["pres","@{pres}"],["R\u03c1","@{R\u03c1}"]]},"id":"3566","type":"HoverTool"},{"attributes":{"axis_label":"pres","coordinates":null,"formatter":{"id":"3607"},"group":null,"major_label_policy":{"id":"3608"},"ticker":{"id":"3577"}},"id":"3576","type":"LinearAxis"},{"attributes":{},"id":"3584","type":"SaveTool"},{"attributes":{"coordinates":null,"group":null,"text":"\u03b5_new/\u03b5_old","text_color":"black","text_font_size":"12pt"},"id":"3568","type":"Title"},{"attributes":{"overlay":{"id":"3589"}},"id":"3587","type":"BoxZoomTool"},{"attributes":{"children":[{"id":"3563"},{"id":"3567"},{"id":"3634"}],"margin":[0,0,0,0],"name":"Row07118","tags":["embedded"]},"id":"3562","type":"Row"},{"attributes":{},"id":"3577","type":"BasicTicker"},{"attributes":{"bottom_units":"screen","coordinates":null,"fill_alpha":0.5,"fill_color":"lightgrey","group":null,"left_units":"screen","level":"overlay","line_alpha":1.0,"line_color":"black","line_dash":[4,4],"line_width":2,"right_units":"screen","syncable":false,"top_units":"screen"},"id":"3589","type":"BoxAnnotation"},{"attributes":{},"id":"3574","type":"LogScale"},{"attributes":{"line_alpha":0.2,"line_color":"#30a2da","line_width":2,"x":{"field":"pres"},"y":{"field":"R\u03c1"}},"id":"3602","type":"Line"},{"attributes":{},"id":"3585","type":"PanTool"},{"attributes":{"axis_label":"","coordinates":null,"formatter":{"id":"3610"},"group":null,"major_label_policy":{"id":"3611"},"ticker":{"id":"3581"}},"id":"3580","type":"LogAxis"},{"attributes":{},"id":"3608","type":"AllLabels"},{"attributes":{"below":[{"id":"3576"}],"center":[{"id":"3579"},{"id":"3583"}],"height":300,"left":[{"id":"3580"}],"margin":[5,5,5,5],"min_border_bottom":10,"min_border_left":10,"min_border_right":10,"min_border_top":10,"renderers":[{"id":"3603"}],"sizing_mode":"fixed","title":{"id":"3568"},"toolbar":{"id":"3590"},"width":700,"x_range":{"id":"3564"},"x_scale":{"id":"3572"},"y_range":{"id":"3565"},"y_scale":{"id":"3574"}},"id":"3567","subtype":"Figure","type":"Plot"},{"attributes":{"ticker":null},"id":"3610","type":"LogTickFormatter"}],"root_ids":["3562"]},"title":"Bokeh Application","version":"2.4.2"}};
+    var render_items = [{"docid":"fa78206b-02c7-449c-9a00-5f5e895b5c38","root_ids":["3562"],"roots":{"3562":"a35310ee-69db-4c96-8231-e67be262c8ed"}}];
+    root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+  }
+  if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+        clearInterval(timer);
+        embed_document(root);
+      } else if (document.readyState == "complete") {
+        attempts++;
+        if (attempts > 200) {
+          clearInterval(timer);
+          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        }
+      }
+    }, 25, root)
+  }
+})(window);</script></div></div>
 </div>
 </section>
 <section id="deriving">
@@ -2644,15 +2827,15 @@ roTBs2RqAAAAAElFTkSuQmCC'
 <section id="what-is-the-spectra-of-z">
 <h3>What is the spectra of <span class="math notranslate nohighlight">\(ρ'_z\)</span><a class="headerlink" href="#what-is-the-spectra-of-z" title="Permalink to this headline">#</a></h3>
 <p>Following Nash &amp; Moum (1999)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-4f5aa240-291c-4a35-b7cb-e061b9ac57cf">
-<span class="eqno">(19)<a class="headerlink" href="#equation-4f5aa240-291c-4a35-b7cb-e061b9ac57cf" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-be086811-ffaa-49d5-8486-b309190c432e">
+<span class="eqno">(24)<a class="headerlink" href="#equation-be086811-ffaa-49d5-8486-b309190c432e" title="Permalink to this equation">#</a></span>\[\begin{align}
 ρ_z &amp;= - ρ_0 α T_z+ ρ_0 β S_z \\
 ψ_{ρz} &amp;= (ρ_0 α)^2 ψ_{Tz} - 2 ρ_0^2 αβψ_{TzSz} + (ρ_0 β)^2 ψ_{Sz}
 \end{align}\]</div>
 <p>and
 cospectrum can be expressed using coherence <span class="math notranslate nohighlight">\(γ_{TzSz}(k)\)</span> and phase <span class="math notranslate nohighlight">\(φ(k)\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-b63c3674-4663-4c74-b2ba-c50d35817cfd">
-<span class="eqno">(20)<a class="headerlink" href="#equation-b63c3674-4663-4c74-b2ba-c50d35817cfd" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-1c9c519c-557a-429f-8367-180cb295e56b">
+<span class="eqno">(25)<a class="headerlink" href="#equation-1c9c519c-557a-429f-8367-180cb295e56b" title="Permalink to this equation">#</a></span>\[\begin{equation}
 ψ_{TzSz} = γ_{TzSz}(k) e^{iφ(k)} [ψ_{Tz}ψ_{Sz}]^{1/2}
 \end{equation}\]</div>
 <p>In general if <span class="math notranslate nohighlight">\(T_z\)</span> and <span class="math notranslate nohighlight">\(S_z\)</span> are correlated then the cross-term is not negligible. Here we test this idea assuming perfect coherence amplitude, and either in-phase or 180° out-of-phase.</p>
@@ -2760,7 +2943,7 @@ cospectrum can be expressed using coherence <span class="math notranslate nohigh
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/chi-eps_7_0.png" src="_images/chi-eps_7_0.png" />
+<img alt="_images/chi-eps_10_0.png" src="_images/chi-eps_10_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2774,7 +2957,7 @@ cospectrum can be expressed using coherence <span class="math notranslate nohigh
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/chi-eps_8_0.png" src="_images/chi-eps_8_0.png" />
+<img alt="_images/chi-eps_11_0.png" src="_images/chi-eps_11_0.png" />
 </div>
 </div>
 <p>We recover <span class="math notranslate nohighlight">\(χ_T, χ_S\)</span>. Interestingly, <code class="docutils literal notranslate"><span class="pre">χpe</span></code> and <code class="docutils literal notranslate"><span class="pre">χpe_neg</span></code> are not that different (20%) so perhaps this isn’t too bad an assumption?</p>
