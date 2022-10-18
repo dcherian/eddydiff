@@ -37,7 +37,11 @@ database = {
 
 
 def get_filenames(section_id):
-    data = database[section_id]
+    try:
+        data = database[section_id]
+    except KeyError as e:
+        raise KeyError(f"I only know about f{database.keys()!r}") from e
+
     section = data["section"]
     expocode = data["expocode"]
     rootdir = os.path.expanduser(f"~/work/eddydiff/datasets/goship/{section}")
