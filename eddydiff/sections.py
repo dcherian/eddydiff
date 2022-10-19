@@ -1,5 +1,6 @@
 import glob
 import os
+from functools import partial
 
 import cf_xarray as cfxr  # noqa
 import dask
@@ -13,6 +14,7 @@ import matplotlib.pyplot as plt
 import numba
 import numpy as np
 import pandas as pd
+import xfilter
 from arch.bootstrap import IIDBootstrap, MovingBlockBootstrap
 from flox.xarray import xarray_reduce
 
@@ -195,13 +197,18 @@ def add_ctd_ancillary_variables(ctd):
         "units": "degC",
     }
 
-    dp = pres.diff(pres.name).median()
-    window = int(10 // dp)
+    Z = "sea_water_pressure"
+    # Match Aurelie
+    lowpass = partial(
+        xfilter.lowpass, coord=ctd.cf.standard_names[Z][0], freq=1 / 100, num_discard=0
+    )
+    ctd["Tfilt"] = lowpass(ctd.CT)
+    ctd["Sfilt"] = lowpass(ctd.SA)
 
     Tu, Rρ, pmid = xr.apply_ufunc(
         gsw_xarray.Turner_Rsubrho,
-        ctd.SA.rolling({pres.name: window}, center=True).mean(),
-        ctd.CT.rolling({pres.name: window}, center=True).mean(),
+        ctd.SA,
+        ctd.CT,
         pres,
         input_core_dims=[[pres.name]] * 3,
         output_core_dims=[[pres.name]] * 3,
@@ -209,7 +216,7 @@ def add_ctd_ancillary_variables(ctd):
         kwargs=dict(axis=-1),
         dask="parallelized",
     )
-    out = xr.Dataset({"Tu": Tu, "Rρ": Rρ})
+    out = lowpass(xr.Dataset({"Tu": Tu, "Rρ": Rρ}))
     out.Tu.attrs = {
         "long_name": "$Tu$",
         "standard_name": "turner_angle",
@@ -222,10 +229,10 @@ def add_ctd_ancillary_variables(ctd):
     }
     # out is at cell-centers, average to faces and fix coordinate
     ctd = ctd.update(
-        out.rolling(pres=3, center=True)
+        out.rolling({pres.name: 3}, center=True)
         .mean()
-        .isel(pres=slice(1, None))
-        .assign(pres=ctd.pres[1:-1])
+        .isel({pres.name: slice(1, None)})
+        .assign({pres.name: pres[1:-1]})
     )
     # ctd["Tu"] = dcpy.oceans.turner_angle(ctd)
 
@@ -235,9 +242,10 @@ def add_ctd_ancillary_variables(ctd):
     if "dTdz" in ctd:
         ctd = ctd.rename_vars({"dTdz": "Tz_orig"})
 
-    Z = "sea_water_pressure"
     if "Tz" not in ctd:
-        ctd["Tz"] = -1 * ctd.CT.cf.interpolate_na(Z).cf.differentiate(Z)
+        ctd["Tz"] = lowpass(
+            ctd.CT.interpolate_na(Z).cf.differentiate(Z, positive_upward=True)
+        )
     ctd["Tz"].attrs["long_name"] = "$θ_z$"
     ctd["Tz"].attrs["units"] = "degC/m"
 
@@ -249,12 +257,14 @@ def add_ctd_ancillary_variables(ctd):
     if "N2" not in ctd:
         zaxis = ctd.SA.cf.get_axis_num("Z")
         Zname = ctd.cf.axes["Z"][0]
-        N2, pmid = gsw.Nsquared(
-            ctd.SA,
-            ctd.CT,
-            pres.broadcast_like(ctd.SA),
-            ctd.cf["latitude"].broadcast_like(ctd.SA),
-            axis=zaxis,
+        N2, pmid = lowpass(
+            gsw.Nsquared(
+                ctd.SA,
+                ctd.CT,
+                pres.broadcast_like(ctd.SA),
+                ctd.cf["latitude"].broadcast_like(ctd.SA),
+                axis=zaxis,
+            )
         )
         ctd["N2"] = xr.DataArray(
             (take_(N2, slice(-1), zaxis) + take_(N2, slice(1, None), zaxis)) / 2,
@@ -264,10 +274,10 @@ def add_ctd_ancillary_variables(ctd):
     ctd["N2"].attrs["long_name"] = "$N²$"
     ctd["N2"].attrs["units"] = "s-2"
 
-    ctd["τ0"] = gsw.spiciness0(ctd.SA, ctd.CT)
+    ctd["τ0"] = lowpass(gsw.spiciness0(ctd.SA, ctd.CT))
     ctd.τ0.attrs = {"standard_name": "spiciness", "long_name": "$τ_0$"}
 
-    ctd["τ1"] = gsw.spiciness1(ctd.SA, ctd.CT)
+    ctd["τ1"] = lowpass(gsw.spiciness1(ctd.SA, ctd.CT))
     ctd.τ1.attrs = {"standard_name": "spiciness", "long_name": "$τ_1$"}
 
 
