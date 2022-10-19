@@ -315,6 +315,18 @@ def add_turbulence_ancillary_variables(ds):
     ds["KtTz"] = ds.Kt * ds.Tz
     ds["KtTz"].attrs["long_name"] = "$K_t θ_z$"
 
+    ds["Gamma"] = (ds.chi * ds.N2 / 2 / ds.eps / ds.Tz**2).where(N2_mask & Tz_mask)
+    ds.Gamma.attrs["long_name"] = "$Γ$"
+
+    ds["ν"] = dcpy.oceans.visc(
+        ds.cf["sea_water_salinity"],
+        ds.cf["sea_water_temperature"],
+        ds.cf["sea_water_pressure"],
+    )
+    ds["Reb"] = ds.eps / ds.N2 / ds.ν
+    ds.Reb.attrs["long_name"] = "$ε/νN^2$"
+    del ds.Reb.attrs["units"]
+
 
 def add_ancillary_variables(ds):
     """Adds ancillary variables."""
