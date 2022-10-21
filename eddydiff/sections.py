@@ -327,6 +327,10 @@ def add_turbulence_ancillary_variables(ds):
         ds.cf["sea_water_temperature"],
         ds.cf["sea_water_pressure"],
     )
+    ds.ν.attrs["long_name"] = "$ν$"
+    ds.ν.attrs["standard_name"] = "sea_water_viscosity"
+    ds.ν.attrs["units"] = "Pa s"
+
     ds["Reb"] = ds.eps / ds.N2 / ds.ν
     ds.Reb.attrs["long_name"] = "$ε/νN^2$"
     del ds.Reb.attrs["units"]
