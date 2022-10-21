@@ -27,7 +27,7 @@ jobs:
     - name: Set up conda environment
       uses: mamba-org/provision-with-micromamba@v13
       with:
-        environment-file: ci/environment.yml
+        environment-file: notebooks/environment.yml
         environment-name: book
         cache-env: true
 
