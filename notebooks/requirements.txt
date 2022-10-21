@@ -1,5 +1,1 @@
 jupyter-book
-matplotlib
-numpy
-cf_xarray
-xarray
