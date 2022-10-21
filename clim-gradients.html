@@ -50,6 +50,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -2799,8 +2801,8 @@ hvplot     : 0.7.3
 <li><p>Mean salinity profiles <span class="math notranslate nohighlight">\({S}\)</span> (Figure 1c) are constructed by smoothing the Roemmich and Gilson [2009] monthly mapped salinity field with a 1 year running average, then interpolating in space and time to the location and time of each Argo profile.</p></li>
 <li><p>The salinity gradient for each year of observations is estimated as the average magnitude of the 3° forward and backward spatial differences:</p></li>
 </ol>
-<div class="amsmath math notranslate nohighlight" id="equation-c64328f2-a188-45d9-ab9f-826c6b1a5293">
-<span class="eqno">()<a class="headerlink" href="#equation-c64328f2-a188-45d9-ab9f-826c6b1a5293" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-fbfa56b4-32a7-459f-a636-2078d03ab121">
+<span class="eqno">()<a class="headerlink" href="#equation-fbfa56b4-32a7-459f-a636-2078d03ab121" title="Permalink to this equation">#</a></span>\[\begin{equation}
 ∣ ∇_{x}  {S}∣ =  \frac 12 ∣ ∇_{x+} {S} ∣ + \frac 12 ∣ ∇_{x-} {S} ∣
 \end{equation}\]</div>
 <p>This is formally equivalent to a 6° centered difference for a planar salinity surface but does not underestimate the salinity gradient for symmetric salinity surfaces (for which a centered difference would result in zero gradient and an ill-conditioned mixing length). The salinity gradient is then averaged over all years. Near coastlines, forward or backward gradients are extrapolated using the nearest neighbor.</p>

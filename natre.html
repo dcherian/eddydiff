@@ -50,6 +50,8 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -6182,27 +6184,27 @@ none
 <section id="interpretation">
 <h3>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">#</a></h3>
 <p>Define</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ddb5f387-b1ab-4f64-a776-42b807b36097">
-<span class="eqno">(2)<a class="headerlink" href="#equation-ddb5f387-b1ab-4f64-a776-42b807b36097" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-2dfb5ba2-9c1e-45d8-9d14-37038874163d">
+<span class="eqno">(2)<a class="headerlink" href="#equation-2dfb5ba2-9c1e-45d8-9d14-37038874163d" title="Permalink to this equation">#</a></span>\[\begin{equation}
     ⟨T⟩ = T_m; \; \widetilde{T} = T_m + T_e
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-3c36b61e-28f3-4979-9c44-344e3a128141">
-<span class="eqno">(3)<a class="headerlink" href="#equation-3c36b61e-28f3-4979-9c44-344e3a128141" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3c6b3ef3-89a3-4b8d-a530-5f855296195c">
+<span class="eqno">(3)<a class="headerlink" href="#equation-3c6b3ef3-89a3-4b8d-a530-5f855296195c" title="Permalink to this equation">#</a></span>\[\begin{align}
 ⟨u^h_eT_e⟩ ⋅ ∇^hT_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;\approx 0 \\
 \widetilde{u_tT_t} ⋅ ∇ (T_m  + T_e) &amp;\approx - \frac 12 \widetilde{χ} \\
 ⟨\widetilde{u_tT_t}⟩ ⋅ ∇ T_m  + ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;\approx - \frac 12 ⟨χ⟩ \\
 ⟨\widetilde{u_tT_t}⟩ ⋅ ∇ T_m  + ⟨u^h_eT_e⟩ ⋅ ∇^hT_m  &amp;\approx - \frac 12 ⟨χ⟩
 \end{align}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-581202a2-eb89-486f-b2f9-1f423432dafe">
-<span class="eqno">(4)<a class="headerlink" href="#equation-581202a2-eb89-486f-b2f9-1f423432dafe" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-2d6d0bd3-d2e0-4fa1-b0c1-9a5d80d5f935">
+<span class="eqno">(4)<a class="headerlink" href="#equation-2d6d0bd3-d2e0-4fa1-b0c1-9a5d80d5f935" title="Permalink to this equation">#</a></span>\[\begin{align}
 ⟨\widetilde{u_tT_t}⟩ &amp;\approx ⟨w_t T_t⟩ \approx ⟨w_tb_t⟩ = \frac {Γ ⟨ε⟩}{N_m^2} \\
 ⟨\widetilde{u_tT_t}⟩ &amp;\approx ⟨\widetilde{w_t T_t}⟩ \approx -\frac 12 \left\langle\frac{χ}{∂_z\widetilde T}\right\rangle
 \end{align}\]</div>
 <section id="spicy-region">
 <h4>Spicy region<a class="headerlink" href="#spicy-region" title="Permalink to this headline">#</a></h4>
 <p>We can interpret the red mesoscale dissipation term in (b) as the amount of variance transferred to the microscale for eventual dissipation. This peaks in regions of high mean spice between 1000m and 1500m. The balance in spicy regions is that horizontal mesoscale stirring converts MPE → EPE (compensated filaments or T-S variance) that is dissipated by the microscale. The approximate budget is (note vertical stirring gets ignored, and <span class="math notranslate nohighlight">\(u^h\)</span> represents horizontal velocity vector)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-ca0db617-f0c1-48a2-a3ab-b3df458b80a9">
-<span class="eqno">(5)<a class="headerlink" href="#equation-ca0db617-f0c1-48a2-a3ab-b3df458b80a9" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-8666e1ed-c7ad-428b-a186-5410fe0180e2">
+<span class="eqno">(5)<a class="headerlink" href="#equation-8666e1ed-c7ad-428b-a186-5410fe0180e2" title="Permalink to this equation">#</a></span>\[\begin{align}
 ⟨u^h_eT_e⟩ ⋅ ∇_hT_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;\approx 0 \\
 ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;\approx - \frac 12 ⟨χ⟩
 \end{align}\]</div>
@@ -6214,8 +6216,8 @@ none
 <section id="weak-spice">
 <h4>Weak spice<a class="headerlink" href="#weak-spice" title="Permalink to this headline">#</a></h4>
 <p>In the upper water column that is not spicy, we instead see horizontal stirring MPE→ EPE which is then routed to EKE by “vertical stirring”. Here the scale transformation term is 0 so the budget is</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8f135fe5-0998-42a8-9922-a5f6bef1b1b3">
-<span class="eqno">(6)<a class="headerlink" href="#equation-8f135fe5-0998-42a8-9922-a5f6bef1b1b3" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-01de726b-57fc-41bc-bcc2-fec211c7ecb6">
+<span class="eqno">(6)<a class="headerlink" href="#equation-01de726b-57fc-41bc-bcc2-fec211c7ecb6" title="Permalink to this equation">#</a></span>\[\begin{align}
 ⟨u_eT_e⟩ ⋅ ∇T_m &amp;\approx 0 \\
 ⟨u_tT_t⟩ ⋅ ∇ T_m &amp;\approx - \frac 12 ⟨χ⟩
 \end{align}\]</div>
@@ -6317,13 +6319,13 @@ none
 <section id="pop2-1-10-mesoscale-variance-budget">
 <h2>POP2 1/10° mesoscale variance budget<a class="headerlink" href="#pop2-1-10-mesoscale-variance-budget" title="Permalink to this headline">#</a></h2>
 <p>Yiming is working with the following variance budget equation for the mesoscale after decomposing <span class="math notranslate nohighlight">\(T = \bar{T} + T' + T'' ≡ T_m + T_e + T_t\)</span> (the latter is Ferrari &amp; Polzin notation). The <span class="math notranslate nohighlight">\(T = \tilde{T} + T''\)</span> decomposition is inherent when using cell-averaged equations.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f9478067-e91f-4264-8b9b-d747afad6e6d">
-<span class="eqno">(7)<a class="headerlink" href="#equation-f9478067-e91f-4264-8b9b-d747afad6e6d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-d55de4f7-bc2c-4aa7-a752-e302f4dd0c02">
+<span class="eqno">(7)<a class="headerlink" href="#equation-d55de4f7-bc2c-4aa7-a752-e302f4dd0c02" title="Permalink to this equation">#</a></span>\[\begin{equation}
 ∂_t \overline{T'^2} =  -\overline{u'T'} ⋅ ∇_h\overline{T} - \overline{w'T'}∂_z\overline{T} - \overline{\vec{v} ⋅ ∇ T'^2/2} + \overline{T'∂_z \left[K ∂_zT'\right]} + …
 \end{equation}\]</div>
 <p>Ferrari &amp; Polzin’s equations (4.6, 4.7) for the mesoscale and microscale are (<span class="math notranslate nohighlight">\(u\)</span> here is the full 3D <span class="math notranslate nohighlight">\(u\)</span>):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b668b571-3b3a-4c43-9580-32adb5a22bbf">
-<span class="eqno">(8)<a class="headerlink" href="#equation-b668b571-3b3a-4c43-9580-32adb5a22bbf" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3c642022-20d5-4d50-b2d2-586599637375">
+<span class="eqno">(8)<a class="headerlink" href="#equation-3c642022-20d5-4d50-b2d2-586599637375" title="Permalink to this equation">#</a></span>\[\begin{align}
 ⟨u_eT_e⟩ ⋅ ∇T_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;= 0 \
 ⟨u_tT_t⟩ ⋅ ∇ T_m + ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;= - \frac 12 ⟨χ⟩
 \end{align}\]</div>
@@ -6334,14 +6336,14 @@ none
 <li><p>⟨⟩: monthly in time; NATRE domain size in (x,y)</p></li>
 </ol>
 <p>In Yiming’s notation these equations are</p>
-<div class="amsmath math notranslate nohighlight" id="equation-943fe725-f18d-4ab6-9f9a-3fd732783c00">
-<span class="eqno">(9)<a class="headerlink" href="#equation-943fe725-f18d-4ab6-9f9a-3fd732783c00" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-752c7ecd-e1b9-4c15-8186-3dd7fe818f59">
+<span class="eqno">(9)<a class="headerlink" href="#equation-752c7ecd-e1b9-4c15-8186-3dd7fe818f59" title="Permalink to this equation">#</a></span>\[\begin{align}
 \overline{u'T'}⋅∇\overline{T} + \overline{w'T'}∂_z\overline{T}  - \overline{T'∂_z \left[K ∂_zT' \right]} - \overline{T'A_h ∇^4 T'} = 0 \
 K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 \end{align}\]</div>
 <p>Now we can identify Yiming’s dissipation term (“VMIX” + “HDIFF”, ignoring solar heating etc.) as the scale transformation term in FP2005 and then use the microscale budget from FP2005 to write</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b080b3fa-3082-418e-8de9-9c78c290ab1d">
-<span class="eqno">(10)<a class="headerlink" href="#equation-b080b3fa-3082-418e-8de9-9c78c290ab1d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-ed44c3b3-c16a-4b12-853f-aaf30e275fed">
+<span class="eqno">(10)<a class="headerlink" href="#equation-ed44c3b3-c16a-4b12-853f-aaf30e275fed" title="Permalink to this equation">#</a></span>\[\begin{equation}
 ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ = - \frac 12 ⟨χ⟩ - ⟨u_tT_t⟩ ⋅ ∇ T_m
 \end{equation}\]</div>
 <p>i.e. Yiming’s “mesoscale dissipation” term is really the difference between</p>
