@@ -24,7 +24,7 @@ parts:
   chapters:
   - file: natre-examine
   - file: natre-finescale
-  - file: natre-vs-ctd-chipod
+  - file: natre-vs-ctd-χpod
 - caption: "Finestructure analysis"
   chapters:
   - file: iw-fine-argo
