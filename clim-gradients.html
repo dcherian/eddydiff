@@ -2806,8 +2806,8 @@ hvplot     : 0.7.3
 <li><p>Mean salinity profiles <span class="math notranslate nohighlight">\({S}\)</span> (Figure 1c) are constructed by smoothing the Roemmich and Gilson [2009] monthly mapped salinity field with a 1 year running average, then interpolating in space and time to the location and time of each Argo profile.</p></li>
 <li><p>The salinity gradient for each year of observations is estimated as the average magnitude of the 3° forward and backward spatial differences:</p></li>
 </ol>
-<div class="amsmath math notranslate nohighlight" id="equation-89bd7909-4f6d-4a04-aad1-453c09454492">
-<span class="eqno">()<a class="headerlink" href="#equation-89bd7909-4f6d-4a04-aad1-453c09454492" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-70ca61b3-7f5f-4b42-95bf-89a4629cf09e">
+<span class="eqno">()<a class="headerlink" href="#equation-70ca61b3-7f5f-4b42-95bf-89a4629cf09e" title="Permalink to this equation">#</a></span>\[\begin{equation}
 ∣ ∇_{x}  {S}∣ =  \frac 12 ∣ ∇_{x+} {S} ∣ + \frac 12 ∣ ∇_{x-} {S} ∣
 \end{equation}\]</div>
 <p>This is formally equivalent to a 6° centered difference for a planar salinity surface but does not underestimate the salinity gradient for symmetric salinity surfaces (for which a centered difference would result in zero gradient and an ill-conditioned mixing length). The salinity gradient is then averaged over all years. Near coastlines, forward or backward gradients are extrapolated using the nearest neighbor.</p>
