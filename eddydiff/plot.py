@@ -162,28 +162,38 @@ def plot_Tu_relationships(data, title=None):
     # f, ax = plt.subplots(2, 2, constrained_layout=True)
     f, ax = plt.subplot_mosaic(
         [
-            ["eps-profile", "Tu-count", "eps-dist"],
-            ["eps-profile", "Tu-count", "Tu-section"],
+            ["eps-profile", "Tu-count", "eps-dist", "eps-dist"],
+            ["eps-profile", "Tu-count", "Tu-section", "eps-section"],
         ],
         constrained_layout=True,
-        gridspec_kw=dict(width_ratios=[2, 1, 3]),
+        gridspec_kw=dict(width_ratios=[2, 1, 2, 2]),
     )
 
-    data.Tu.cf.plot(
-        y="Z", x="profile_id", ax=ax["Tu-section"], levels=[-90, -45, 45, 72, 90]
+    kwargs = dict(
+        y="Z",
+        x="profile_id",
+        cbar_kwargs={"orientation": "horizontal"},
+    )
+    data.Tu.cf.plot(ax=ax["Tu-section"], levels=Tu_bins, **kwargs)
+    data.eps.cf.coarsen(Z=20, boundary="trim").mean().cf.plot(
+        ax=ax["eps-section"],
+        norm=mpl.colors.LogNorm(5e-10, 1e-7),
+        **kwargs,
+        cmap=mpl.cm.turbo,
     )
 
     gb = data.eps.groupby_bins(data.Tu, bins=Tu_bins)
     gb.count().plot.step(label="count", ax=ax["eps-dist"])
     ax["eps-dist"].set_ylabel("N obs")
     ax["eps-dist"].tick_params(axis="y", labelcolor="r")
+    ax["eps-dist"].set_xticks(Tu_bins)
 
     ax2 = ax["eps-dist"].twinx()
     gb.mean().plot.step(label="mean", ax=ax2, yscale="log", color="k")
     ax2.set_ylabel("Mean ε")
 
     N = int(20 // np.median(np.diff(data.Tu.cf["Z"].data)))
-    for left, right in [(72, 90), (50, 72), (-45, 45), (-90, -45)]:
+    for left, right in [(72, 90), (50, 72), (0, 45), (-45, 0), (-90, -45)]:
         (
             data.eps.where((data.Tu > left) & (data.Tu < right))
             .cf.mean("profile_id")
