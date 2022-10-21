@@ -93,6 +93,38 @@ def plot_cole_profile(**sel_kwargs):
     f.suptitle(sel_kwargs)
 
 
+def compare_section_estimates(averages, finescale=None, KρTz2=False):
+
+    f, ax = plt.subplots(1, 4, sharey=True)
+
+    for avg in averages:
+        project = avg.attrs.get("title", None)
+        for var, axx in zip(["dTdz_m", "N2_m", "chi", "eps"], ax):
+            dcpy.plots.fill_between_bounds(
+                avg, var, y="pres", ax=axx, label=project, title=True
+            )
+
+    ax[2].set_xscale("log")
+    ax[3].set_xscale("log")
+
+    # dcpy.plots.fill_between_bounds(avg, "Krho_m", y="pres", ax=ax[3])
+    # dcpy.plots.fill_between_bounds(avg, "Kt_m", y="pres", ax=ax[3])
+    # ax[3].set_xscale("log")
+
+    # dcpy.plots.fill_between_bounds(avg, "chib2", y="pres", ax=ax[4])
+    # # dcpy.plots.fill_between_bounds(avg, "KtTzTz", y="pres", ax=ax[4])
+    # dcpy.plots.fill_between_bounds(avg, "KtTz~Tz", y="pres", ax=ax[4])
+    # if finescale is not None:
+    #     finescale.plot.line(hue="criteria", y="pressure", ax=ax[4], _labels=False)
+    # if KρTz2:
+    #     dcpy.plots.fill_between_bounds(avg, "KρTz2", y="pres", color="k", ax=ax[4])
+    # ax[4].set_xlim([1e-10, 2 * avg.chib2.max().item()])
+    # ax[4].set_xscale("log")
+
+    [axx.legend(loc="lower right") for axx in ax]
+    plt.gcf().set_size_inches((14, 4))
+
+
 def debug_section_estimate(avg, finescale=None, KρTz2=False):
 
     f, ax = plt.subplots(1, 5, sharey=True)
@@ -122,3 +154,63 @@ def debug_section_estimate(avg, finescale=None, KρTz2=False):
 
     [axx.legend(loc="lower right") for axx in ax]
     plt.gcf().set_size_inches((14, 4))
+
+
+def plot_Tu_relationships(data, title=None):
+    Tu_bins = [-90, -51, -45, 0, 45, 72, 90]
+
+    # f, ax = plt.subplots(2, 2, constrained_layout=True)
+    f, ax = plt.subplot_mosaic(
+        [
+            ["eps-profile", "Tu-count", "eps-dist"],
+            ["eps-profile", "Tu-count", "Tu-section"],
+        ],
+        constrained_layout=True,
+        gridspec_kw=dict(width_ratios=[2, 1, 3]),
+    )
+
+    data.Tu.cf.plot(
+        y="Z", x="profile_id", ax=ax["Tu-section"], levels=[-90, -45, 45, 72, 90]
+    )
+
+    gb = data.eps.groupby_bins(data.Tu, bins=Tu_bins)
+    gb.count().plot.step(label="count", ax=ax["eps-dist"])
+    ax["eps-dist"].set_ylabel("N obs")
+    ax["eps-dist"].tick_params(axis="y", labelcolor="r")
+
+    ax2 = ax["eps-dist"].twinx()
+    gb.mean().plot.step(label="mean", ax=ax2, yscale="log", color="k")
+    ax2.set_ylabel("Mean ε")
+
+    N = int(20 // np.median(np.diff(data.Tu.cf["Z"].data)))
+    for left, right in [(72, 90), (50, 72), (-45, 45), (-90, -45)]:
+        (
+            data.eps.where((data.Tu > left) & (data.Tu < right))
+            .cf.mean("profile_id")
+            .cf.coarsen(Z=N, boundary="trim")
+            .mean()
+            .cf.plot(ax=ax["eps-profile"], xscale="log", label=f"{left} < Tu < {right}")
+        )
+        (
+            data.eps.where((data.Tu > left) & (data.Tu < right))
+            .cf.coarsen(Z=N, boundary="trim")
+            .count()
+            .cf.sum("profile_id")
+            .cf.plot(ax=ax["Tu-count"], label=f"{left} < Tu < {right}")
+        )
+
+    ax["Tu-count"].set_xlabel("N obs")
+    ax["Tu-count"].set_ylabel("")
+    ax["Tu-count"].tick_params(axis="y", labelleft=False)
+    ax["eps-profile"].set_xlabel("Mean ε")
+
+    ax["Tu-count"].legend(bbox_to_anchor=(1, 1))
+    # hl.set_in_layout(False)
+    ax2.legend()
+    ax["eps-dist"].legend()
+
+    [axx.set_title("") for axx in ax.values()]
+    ax2.set_title("")
+    if title is not None:
+        f.suptitle(title)
+    f.set_size_inches((10, 5))

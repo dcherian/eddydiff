@@ -200,15 +200,20 @@ def add_ctd_ancillary_variables(ctd):
     Z = "sea_water_pressure"
     # Match Aurelie
     lowpass = partial(
-        xfilter.lowpass, coord=ctd.cf.standard_names[Z][0], freq=1 / 100, num_discard=0
+        xfilter.lowpass, coord=ctd.cf.standard_names[Z][0], freq=1 / 150, num_discard=0
     )
+
+    lowpass_5m = partial(
+        xfilter.lowpass, coord=ctd.cf.standard_names[Z][0], freq=1 / 50, num_discard=0
+    )
+
     ctd["Tfilt"] = lowpass(ctd.CT)
     ctd["Sfilt"] = lowpass(ctd.SA)
 
     Tu, Rρ, pmid = xr.apply_ufunc(
         gsw_xarray.Turner_Rsubrho,
-        ctd.SA,
-        ctd.CT,
+        lowpass_5m(ctd.SA),
+        lowpass_5m(ctd.CT),
         pres,
         input_core_dims=[[pres.name]] * 3,
         output_core_dims=[[pres.name]] * 3,
@@ -216,7 +221,7 @@ def add_ctd_ancillary_variables(ctd):
         kwargs=dict(axis=-1),
         dask="parallelized",
     )
-    out = lowpass(xr.Dataset({"Tu": Tu, "Rρ": Rρ}))
+    out = xr.Dataset({"Tu": Tu, "Rρ": Rρ})  # .map(lowpass)
     out.Tu.attrs = {
         "long_name": "$Tu$",
         "standard_name": "turner_angle",
@@ -242,10 +247,9 @@ def add_ctd_ancillary_variables(ctd):
     if "dTdz" in ctd:
         ctd = ctd.rename_vars({"dTdz": "Tz_orig"})
 
-    if "Tz" not in ctd:
-        ctd["Tz"] = lowpass(
-            ctd.CT.interpolate_na(Z).cf.differentiate(Z, positive_upward=True)
-        )
+    ctd["Tz"] = lowpass(
+        ctd.CT.cf.interpolate_na(Z).cf.differentiate(Z, positive_upward=True)
+    )
     ctd["Tz"].attrs["long_name"] = "$θ_z$"
     ctd["Tz"].attrs["units"] = "degC/m"
 
@@ -257,19 +261,19 @@ def add_ctd_ancillary_variables(ctd):
     if "N2" not in ctd:
         zaxis = ctd.SA.cf.get_axis_num("Z")
         Zname = ctd.cf.axes["Z"][0]
-        N2, pmid = lowpass(
-            gsw.Nsquared(
-                ctd.SA,
-                ctd.CT,
-                pres.broadcast_like(ctd.SA),
-                ctd.cf["latitude"].broadcast_like(ctd.SA),
-                axis=zaxis,
-            )
+        N2, pmid = gsw.Nsquared(
+            ctd.SA,
+            ctd.CT,
+            pres.broadcast_like(ctd.SA),
+            ctd.cf["latitude"].broadcast_like(ctd.SA),
+            axis=zaxis,
         )
-        ctd["N2"] = xr.DataArray(
-            (take_(N2, slice(-1), zaxis) + take_(N2, slice(1, None), zaxis)) / 2,
-            dims=ctd.SA.dims,
-            coords={Zname: ctd[Zname].isel({Zname: slice(1, -1)})},
+        ctd["N2"] = lowpass(
+            xr.DataArray(
+                (take_(N2, slice(-1), zaxis) + take_(N2, slice(1, None), zaxis)) / 2,
+                dims=ctd.SA.dims,
+                coords={Zname: ctd[Zname].isel({Zname: slice(1, -1)})},
+            )
         )
     ctd["N2"].attrs["long_name"] = "$N²$"
     ctd["N2"].attrs["units"] = "s-2"
