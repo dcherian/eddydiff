@@ -100,7 +100,7 @@ def combine_natre_files():
     return ds
 
 
-def read_natre(load=False, stack=False):
+def read_natre(load=False, stack=False, sort=True):
     if load:
         natre = xr.load_dataset("../datasets/natre_large_scale.nc")
     else:
@@ -119,9 +119,10 @@ def read_natre(load=False, stack=False):
 
     assert "neutral_density" in natre.cf
 
-    natre = dcpy.oceans.thorpesort(
-        natre, natre.gamma_n.drop("depth").interpolate_na("pres"), core_dim="pres"
-    )
+    if sort:
+        natre = dcpy.oceans.thorpesort(
+            natre, natre.gamma_n.drop("depth").interpolate_na("pres"), core_dim="pres"
+        )
 
     sections.add_ancillary_variables(natre)
     natre = natre.where(natre.chi > 1e-14)
@@ -140,6 +141,7 @@ def read_natre(load=False, stack=False):
             natre, filter_len=20, segment_len=6
         )
     )
+
     if stack:
         natre = natre.cf.stack({"cast": ("latitude", "longitude")})
         natre.cast.attrs = {"cf_role": "profile_id"}
