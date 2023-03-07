@@ -14,6 +14,7 @@ dependencies:
   - snakeviz
   - tqdm
   - watermark
+  - rich
   - gitpython
 ### linters
   - black
@@ -50,8 +51,10 @@ dependencies:
   - ipdb
   - ipython
   - jupyter
+  - jupyter-book
   - jupyterlab
   - jupyterlab_code_formatter
+  - jupyterlab-myst
   - jupyter-server-proxy
   - nbconvert
   - nbdime
@@ -101,7 +104,6 @@ dependencies:
   - pip:
     - ecco_v4_py
     - icecream
-    - jupyter-book
     - mixsea
     - xfilter
     - dcpy
