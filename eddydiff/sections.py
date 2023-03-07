@@ -4,7 +4,6 @@ from functools import partial
 
 import cf_xarray as cfxr  # noqa
 import dask
-import datatree
 import dcpy
 import flox.xarray
 import gsw
@@ -16,6 +15,7 @@ import numpy as np
 import pandas as pd
 import xfilter
 from arch.bootstrap import IIDBootstrap, MovingBlockBootstrap
+from datatree import DataTree
 from flox.xarray import xarray_reduce
 
 import xarray as xr
@@ -247,7 +247,7 @@ def add_ctd_ancillary_variables(ctd):
     if "dTdz" in ctd:
         ctd = ctd.rename_vars({"dTdz": "Tz_orig"})
 
-    ctd["Tz"] = lowpass(
+    ctd["Tz"] = lowpass_5m(
         ctd.CT.cf.interpolate_na(Z).cf.differentiate(Z, positive_upward=True)
     )
     ctd["Tz"].attrs["long_name"] = "$θ_z$"
@@ -283,6 +283,8 @@ def add_ctd_ancillary_variables(ctd):
 
     ctd["τ1"] = lowpass(gsw.spiciness1(ctd.SA, ctd.CT))
     ctd.τ1.attrs = {"standard_name": "spiciness", "long_name": "$τ_1$"}
+
+    return ctd
 
 
 def add_turbulence_ancillary_variables(ds):
@@ -322,33 +324,39 @@ def add_turbulence_ancillary_variables(ds):
     ds["Gamma"] = (ds.chi * ds.N2 / 2 / ds.eps / ds.Tz**2).where(N2_mask & Tz_mask)
     ds.Gamma.attrs["long_name"] = "$Γ$"
 
-    ds["ν"] = dcpy.oceans.visc(
-        ds.cf["sea_water_salinity"],
-        ds.cf["sea_water_temperature"],
-        ds.cf["sea_water_pressure"],
-    )
-    ds.ν.attrs["long_name"] = "$ν$"
-    ds.ν.attrs["standard_name"] = "sea_water_viscosity"
-    ds.ν.attrs["units"] = "Pa s"
+    if "sea_water_salinity" in ds.cf:
+        ds["ν"] = dcpy.oceans.visc(
+            ds.cf["sea_water_salinity"],
+            ds.cf["sea_water_temperature"],
+            ds.cf["sea_water_pressure"],
+        )
+        ds.ν.attrs["long_name"] = "$ν$"
+        ds.ν.attrs["standard_name"] = "sea_water_viscosity"
+        ds.ν.attrs["units"] = "Pa s"
 
-    ds["Reb"] = ds.eps / ds.N2 / ds.ν
-    ds.Reb.attrs["long_name"] = "$ε/νN^2$"
-    del ds.Reb.attrs["units"]
+        ds["Reb"] = ds.eps / ds.N2 / ds.ν
+        ds.Reb.attrs["long_name"] = "$ε/νN^2$"
+        del ds.Reb.attrs["units"]
+
+    return ds
 
 
 def add_ancillary_variables(ds):
     """Adds ancillary variables."""
 
-    if isinstance(ds, datatree.DataTree):
-        add_ctd_ancillary_variables(ds["ctd"].ds)
-        add_ctd_ancillary_variables(ds["chipod"].ds)
-        add_turbulence_ancillary_variables(ds["finescale"].ds)
-        ctdchi = ds["chipod"].ds
-    else:
-        add_ctd_ancillary_variables(ds)
-        ctdchi = ds
-
-    add_turbulence_ancillary_variables(ctdchi)
+    with xr.set_options(keep_attrs=True):
+        if isinstance(ds, DataTree):
+            ds["ctd"] = DataTree(add_ctd_ancillary_variables(ds["ctd"].ds.copy()))
+            ds["chipod"] = DataTree(add_ctd_ancillary_variables(ds["chipod"].ds.copy()))
+            ds["finescale"] = DataTree(
+                add_turbulence_ancillary_variables(ds["finescale"].ds.copy())
+            )
+            ds["chipod"] = DataTree(
+                add_turbulence_ancillary_variables(ds["chipod"].ds.copy())
+            )
+        else:
+            add_ctd_ancillary_variables(ds)
+            add_turbulence_ancillary_variables(ds)
 
 
 def compute_mean_ci(data, dof=None, alpha=0.05):
