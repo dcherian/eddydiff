@@ -853,11 +853,13 @@ def choose_bins(gamma, depth_range, decimals=2, sort=False):
 def read_ctd_chipod_mat_file(chifile, ctdfile=None):
     from scipy.io import loadmat
 
-    mat = loadmat(chifile)
+    m = loadmat(chifile)
+    mat_dict = {k: m["XPsum"][k][0, 0] for k in m["XPsum"].dtype.names}
+    tree = dcpy.oceans.mat_to_tree(
+        mat_dict, coords=["cast", "P_f", "P_c"], verbose=True
+    )
+
     ds = xr.Dataset()
-
-    print("Found variables: ", mat["XPsum"][0, 0].dtype.names)
-
     varnames = [
         "eps_f",
         "chi_f",
@@ -870,11 +872,14 @@ def read_ctd_chipod_mat_file(chifile, ctdfile=None):
         "lat",
         "datenum",
     ]
+
+    renamer = {name: name.split("_")[0] for name in varnames}
+
     attrs = {
-        "eps_f": {"long_name": "$ε$", "units": "W/kg"},
-        "chi_f": {"long_name": "$χ$", "units": "C^2/s"},
-        "KT_f": {"long_name": "$K_T$", "units": "m^2/s"},
-        "P_f": {
+        "eps": {"long_name": "$ε$", "units": "W/kg"},
+        "chi": {"long_name": "$χ$", "units": "C^2/s"},
+        "KT": {"long_name": "$K_T$", "units": "m^2/s"},
+        "P": {
             "standard_name": "sea_water_pressure",
             "units": "dbar",
             "axis": "Z",
@@ -884,31 +889,28 @@ def read_ctd_chipod_mat_file(chifile, ctdfile=None):
         "lat": {"standard_name": "latitude"},
     }
 
-    for var in varnames:
-        data = mat["XPsum"][0, 0][var].squeeze()
-        if data.ndim == 2:
-            if var == "SN":
-                dims = ("cast", "sensor")
-            else:
-                dims = ("P", "cast")
-        elif var not in ("cast", "SN", "sn_avail", "lat", "lon", "datenum"):
-            dims = ("P",)
-        else:
-            dims = ("cast",)
-        ds[var.split("_")[0]] = (dims, data, attrs.get(var, {}))
-    ds = ds.rename({"sn": "num_sensors", "SN": "avail_sensors"}).set_coords(
-        ["lat", "lon", "datenum", "num_sensors", "avail_sensors"]
-    )
-    # TODO
+    def process_node(node):
+        node = (
+            node[tuple(var for var in varnames if var in node)]
+            # .rename({"sn": "num_sensors", "SN": "avail_sensors"})
+            .rename(renamer).set_coords(
+                ["lat", "lon", "datenum", "num_sensors", "avail_sensors"]
+            )
+        )
+        for var, new_attrs in attrs:
+            node[var].attrs.update(new_attrs)
+        for var in ["chi", "eps", "KT"]:
+            node[var] = node[var].where(ds[var] > 0)
+
+        node = DataTree(node.ds.cf.guess_coord_axis())
+        node["P"] = node["P"].astype(float)
+        node["cast"] = ("cast", np.arange(2, 145), {"cf_role": "profile_id"})
+        node = node.rename({"P": "pressure"})
+        return node
+
+    tree = tree.map_over_subtree(process_node)
+
     # ds["time"] = dcpy.util.mdatenum2dt64(ds.datenum)
-    ds = ds.cf.guess_coord_axis()
-    ds["P"] = ds.P.astype(float)
-    ds["cast"] = ("cast", np.arange(2, 145), {"cf_role": "profile_id"})
-    ds = ds.rename({"P": "pressure"})
-
-    for var in ["chi", "eps", "KT"]:
-        ds[var] = ds[var].where(ds[var] > 0)
-
     if ctdfile is not None:
         # drop gappy lat, lon from Aurelie
         # We can use the CTD data instead
