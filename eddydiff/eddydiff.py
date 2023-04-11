@@ -1352,7 +1352,7 @@ def plane_fit_gradient(da, coords=None, debug=False, **kwargs):
     coeffs = (
         da.where(counts > 5)
         .cf.curvefit(
-            ("longitude", "latitude"),
+            ["longitude", "latitude"],
             plane,
             p0={"dTdx": 1e-6, "dTdy": 1e-6, "c": 20, "d": 1},
             **kwargs,
