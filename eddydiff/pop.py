@@ -1,3 +1,5 @@
+import glob
+
 import cf_xarray  # noqa
 import numpy as np
 import pop_tools
@@ -15,6 +17,28 @@ metrics = {
     # ("Z",): ["DZU", "DZT"],  # Z distances
     ("X", "Y"): ["UAREA", "TAREA"],
 }
+
+
+def read_1deg():
+    path = "/glade/campaign/collections/cmip/CMIP6/timeseries-cmip6/g.e21.GOMIPECOIAF_JRA.TL319_g17.CMIP6-omip2.001/ocn/proc/tseries/month_1"
+    paths = []
+    for substring in [".TEMP.", "KAPPA_ISOP", ".SALT.", "SSH"]:
+        paths += glob.glob(f"{path}/*{substring}*.nc")
+
+    pop1_ = xr.open_mfdataset(
+        paths,
+        compat="override",
+        data_vars="minimal",
+        coords="minimal",
+        chunks={"time": 200, "nlon": 50, "nlat": 50},
+    )
+
+    pop1 = (
+        preprocess_pop_dataset(pop1_)
+        .assign_coords(cycle=("time", np.repeat(np.arange(6), 12 * 61)))
+        .set_xindex("cycle")
+    )
+    return pop1
 
 
 def subset_1deg_to_natre(ds):
@@ -110,7 +134,7 @@ def estimate_redi_terms(xds, grid, bins):
     dTdx = grid.derivative(regridded.TEMP, axis="X")
     regridded["delT2"] = (
         grid.interp(dTdx, axis="X") ** 2 + grid.interp(dTdy, axis="Y") ** 2
-    )
+    ).cf.chunk({"X": -1, "Y": -1})
     regridded["delT2"].attrs = {"long_name": "$|∇T|^2$"}
 
     if "KAPPA_ISOP" in xds:

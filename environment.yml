@@ -18,8 +18,7 @@ dependencies:
   - gitpython
 ### linters
   - black
-  - flake8
-  - isort
+  - ruff
   - pre-commit
   - mypy
 ### matplotlib
@@ -43,7 +42,6 @@ dependencies:
   - cachey
   - dask
   - dask-jobqueue
-  - dask_labextension
   - distributed
   - ncar-jobqueue
   - python-graphviz
@@ -83,10 +81,10 @@ dependencies:
 ### oceanography
   - gsw
   - seawater
-  - gsw_xarray
+  - gsw-xarray
 ### scientific python
   - numpy
-  - pandas!=1.1.0
+  - pandas<2
   - scipy
   - seaborn
 ### project specific
@@ -105,5 +103,5 @@ dependencies:
     - ecco_v4_py
     - icecream
     - mixsea
-    - xfilter
+#    - xfilter
     - dcpy
