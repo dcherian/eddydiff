@@ -1,35 +1,45 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html >
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>NATRE micro vs finescale &#8212; Eddy Diffusivity</title>
-    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
-    
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -37,12 +47,12 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -50,538 +60,323 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'natre-finescale';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="NATRE vs CTD-χpod" href="natre-vs-ctd-%CF%87pod.html" />
     <link rel="prev" title="NATRE microstructure dataset" href="natre-examine.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay overlay-navbar" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<!-- Checkboxes to toggle the in-page toc -->
-<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
-<label class="overlay overlay-pagetoc" for="__page-toc">
-    <div class="visually-hidden">Toggle in-page Table of Contents</div>
-</label>
-<!-- Headers at the top -->
-<div class="announcement header-item noprint"></div>
-<div class="header header-item noprint"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-    <div class="container-fluid" id="banner"></div>
-
-    
-
-    <div class="container-xl">
-      <div class="row">
-          
-<!-- Sidebar -->
-<div class="bd-sidebar noprint" id="site-navigation">
-    <div class="bd-sidebar__content">
-        <div class="bd-sidebar__top"><div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="index.html">
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="_static/logo.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Eddy Diffusivity</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Moored χpod analysis
- </span>
-</p>
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Moored χpod analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="tao.html">
-   TAO (0, 140) χpod
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="equix.html">
-   EQUIX
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="tao.html">TAO (0, 140) χpod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="equix.html">EQUIX</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  CTD χpod analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">CTD χpod analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="BoB-ctd-chipod.html">
-   BoB ASIRI 2013 CTD χpod
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="P06.html">
-   P06 CTD χpod analysis
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="sections-variance-estimate.html">
-   Eddy variance generation along GO-SHIP lines
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ctd-%CF%87-bob.html">
-   ASIRI13 CTD χpod
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ctd-%CF%87-A05.html">
-   CTD χpod A05 section
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="bootstrap-ctd-chipod-estimates.html">
-   Bootstrapped outlier detection for CTD-χpod
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="BoB-ctd-chipod.html">BoB ASIRI 2013 CTD χpod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="P06.html">P06 CTD χpod analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sections-variance-estimate.html">Eddy variance generation along GO-SHIP lines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ctd-%CF%87-bob.html">ASIRI13 CTD χpod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ctd-%CF%87-A05.html">CTD χpod A05 section</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bootstrap-ctd-chipod-estimates.html">Bootstrapped outlier detection for CTD-χpod</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Model Processing
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Model Processing</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pop-1-deg.html">
-   POP 1°: Redi term
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pop-var-budget.html">
-   Yiming’s POP variance budget
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="pop-1-deg.html">POP 1°: Redi term</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pop-var-budget.html">Yiming’s POP variance budget</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Variance budgets
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Variance budgets</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="natre.html">
-   NATRE region variance budget
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="natre.html">NATRE region variance budget</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  NATRE region analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NATRE region analysis</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="natre-examine.html">
-   NATRE microstructure dataset
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   NATRE micro vs finescale
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="natre-vs-ctd-%CF%87pod.html">
-   NATRE vs CTD-χpod
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="natre-examine.html">NATRE microstructure dataset</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">NATRE micro vs finescale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natre-vs-ctd-%CF%87pod.html">NATRE vs CTD-χpod</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Finestructure analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Finestructure analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="iw-fine-argo.html">
-   Argo finescale estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="iw-fine-estimates.html">
-   Existing finestructure estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="iw-fine-devel.html">
-   Finescale Mixing Parametrizations: Development
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="iw-fine-argo.html">Argo finescale estimates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iw-fine-estimates.html">Existing finestructure estimates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iw-fine-devel.html">Finescale Mixing Parametrizations: Development</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Ancillary analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Ancillary analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="chi-eps.html">
-   χ-ε relations
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="compare-Ke-estimates.html">
-   Compare different
-   <span class="math notranslate nohighlight">
-    \(K_e\)
-   </span>
-   estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="equix-vs-tao.html">
-   χpods: EQUIX vs TAO
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="eqpac-ts-diagrams.html">
-   T-S diagrams from TAO &amp; Argo at (0, 145W→135W)
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="dataset-processing.html">
-   Dataset processing
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="chi-eps.html">χ-ε relations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compare-Ke-estimates.html">Compare different <span class="math notranslate nohighlight">\(K_e\)</span> estimates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="equix-vs-tao.html">χpods: EQUIX vs TAO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eqpac-ts-diagrams.html">T-S diagrams from TAO &amp; Argo at (0, 145W→135W)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset-processing.html">Dataset processing</a></li>
 </ul>
 
     </div>
 </nav></div>
-        <div class="bd-sidebar__bottom">
-             <!-- To handle the deprecated key -->
-            
-            <div class="navbar_extra_footer">
-            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-            </div>
-            
-        </div>
     </div>
-    <div id="rtd-footer-container"></div>
-</div>
-
-
-          
-
-
-          
-<!-- A tiny helper pixel to detect if we've scrolled -->
-<div class="sbt-scroll-pixel-helper"></div>
-<!-- Main content -->
-<div class="col py-0 content-container">
-    
-    <div class="header-article row sticky-top noprint">
-        
-
-
-
-<div class="col py-1 d-flex header-article-main">
-    <div class="header-article__left">
-        
-        <label for="__navigation"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="right"
-title="Toggle navigation"
->
   
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-bars"></i>
-  </span>
-
-</label>
-
-        
-    </div>
-    <div class="header-article__right">
-<div class="menu-dropdown menu-dropdown-launch-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Launch interactive content">
-      <i class="fas fa-rocket"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://mybinder.org/v2/gh/dcherian/eddydiff/main?urlpath=tree/notebooks/natre-finescale.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Binder"
->
   
-
-<span class="headerbtn__icon-container">
-  
-    <img src="_static/images/logo_binder.svg">
-  </span>
-<span class="headerbtn__text-container">Binder</span>
-</a>
-
-      </li>
-      
-    </ul>
+  <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
-</div>
+  
+  <div id="rtd-footer-container"></div>
 
-<button onclick="toggleFullScreen()"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="bottom"
-title="Fullscreen mode"
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/dcherian/eddydiff" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
-  <i class="fas fa-expand"></i>
-  </span>
-
-</button>
-<a href="https://github.com/dcherian/eddydiff"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="bottom"
-title="Source repository"
->
-  
-
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fab fa-github"></i>
   </span>
 
 </a>
 
-<div class="menu-dropdown menu-dropdown-download-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Download this page">
-      <i class="fas fa-download"></i>
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="_sources/natre-finescale.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Download source file"
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/natre-finescale.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="headerbtn__text-container">.ipynb</span>
+<span class="btn__text-container">.ipynb</span>
 </a>
-
-      </li>
+</li>
+      
+      
+      
       
       <li>
-        
-<button onclick="printPdf(this)"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="left"
-title="Print to PDF"
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-file-pdf"></i>
   </span>
-<span class="headerbtn__text-container">.pdf</span>
+<span class="btn__text-container">.pdf</span>
 </button>
-
-      </li>
+</li>
       
-    </ul>
-  </div>
+  </ul>
 </div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
   </span>
 
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
 </label>
-
+</div></div>
+      
     </div>
+  
 </div>
-
-<!-- Table of contents -->
-<div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#get-datasets">
-   Get datasets
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#finescale-vs-microscale">
-   Finescale vs microscale
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#studying-n2-vs-t-z-s-z">
-   Studying N² vs
-   <span class="math notranslate nohighlight">
-    \(T_z, S_z\)
-   </span>
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#studying-k-t-vs-k">
-   Studying
-   <span class="math notranslate nohighlight">
-    \(K_T\)
-   </span>
-   vs
-   <span class="math notranslate nohighlight">
-    \(K_ρ\)
-   </span>
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#old-stuff">
-   Old stuff
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#t-s">
-     T-S
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#extract-argo-profiles-used-for-finescale-estimates">
-   Extract Argo profiles used for finescale estimates
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#finescale-estimate-with-natre-data">
-   Finescale estimate with NATRE data
-  </a>
- </li>
-</ul>
-
-    </nav>
 </div>
-    </div>
-    <div class="article row">
-        <div class="col pl-md-3 pl-lg-5 content-container">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>NATRE micro vs finescale</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#get-datasets">
-   Get datasets
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#finescale-vs-microscale">
-   Finescale vs microscale
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#studying-n2-vs-t-z-s-z">
-   Studying N² vs
-   <span class="math notranslate nohighlight">
-    \(T_z, S_z\)
-   </span>
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#studying-k-t-vs-k">
-   Studying
-   <span class="math notranslate nohighlight">
-    \(K_T\)
-   </span>
-   vs
-   <span class="math notranslate nohighlight">
-    \(K_ρ\)
-   </span>
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#old-stuff">
-   Old stuff
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#t-s">
-     T-S
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#extract-argo-profiles-used-for-finescale-estimates">
-   Extract Argo profiles used for finescale estimates
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#finescale-estimate-with-natre-data">
-   Finescale estimate with NATRE data
-  </a>
- </li>
-</ul>
+              
+              
 
-                        </nav>
-                    </div>
-                </div>
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>NATRE micro vs finescale</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
             </div>
-            <main id="main-content" role="main">
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-datasets">Get datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finescale-vs-microscale">Finescale vs microscale</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#studying-n2-vs-t-z-s-z">Studying N² vs <span class="math notranslate nohighlight">\(T_z, S_z\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#studying-k-t-vs-k">Studying <span class="math notranslate nohighlight">\(K_T\)</span> vs <span class="math notranslate nohighlight">\(K_ρ\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#old-stuff">Old stuff</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#t-s">T-S</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-argo-profiles-used-for-finescale-estimates">Extract Argo profiles used for finescale estimates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finescale-estimate-with-natre-data">Finescale estimate with NATRE data</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
                 
-              <div>
-                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <section class="tex2jax_ignore mathjax_ignore" id="natre-micro-vs-finescale">
 <h1>NATRE micro vs finescale<a class="headerlink" href="#natre-micro-vs-finescale" title="Permalink to this headline">#</a></h1>
 <p>Here I compare the NATRE microstructure estimates with my Argo finestructure estimates. Key questions:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>How well do the two agree?</p>
 <ul class="simple">
 <li><p>they don’t! The argo average χ seems to miss any eddy contribution; it agrees really well with the “mean stirring” estimate of Ferrari &amp; Polzin.</p></li>
@@ -640,12 +435,17 @@ distributed: 2021.7.2
 <section id="get-datasets">
 <h2>Get datasets<a class="headerlink" href="#get-datasets" title="Permalink to this headline">#</a></h2>
 <p>There are 3</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>NATRE microstructure</p></li>
 <li><p>NATRE finescale</p></li>
 <li><p>Argo finescale</p></li>
 </ol>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">natre</span><span class="o">.</span><span class="n">read_natre</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
 <span class="n">bins</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">sections</span><span class="o">.</span><span class="n">choose_bins</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">gamma_n</span><span class="p">,</span> <span class="n">depth_range</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">2001</span><span class="p">,</span> <span class="mi">100</span><span class="p">))</span>
@@ -655,8 +455,14 @@ distributed: 2021.7.2
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre_micro_depth</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">natre</span><span class="o">.</span><span class="n">groupby_bins</span><span class="p">(</span><span class="s2">&quot;pres&quot;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">2050</span><span class="p">,</span> <span class="mi">200</span><span class="p">))</span>
@@ -671,8 +477,14 @@ distributed: 2021.7.2
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre_fine</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/natre-finescale.nc&quot;</span><span class="p">)</span>
 <span class="n">natre_fine_depth</span> <span class="o">=</span> <span class="p">(</span>
@@ -687,8 +499,14 @@ distributed: 2021.7.2
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">argo_fine_profiles</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span>
     <span class="s2">&quot;../datasets/argomix_natre.zarr&quot;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;zarr&quot;</span>
@@ -722,11 +540,12 @@ distributed: 2021.7.2
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 </section>
 <section id="finescale-vs-microscale">
 <h2>Finescale vs microscale<a class="headerlink" href="#finescale-vs-microscale" title="Permalink to this headline">#</a></h2>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>The finescale <span class="math notranslate nohighlight">\(⟨ε^{200}⟩\)</span> estimates agree well with microscale <span class="math notranslate nohighlight">\(⟨ε^{0.5}⟩\)</span></p></li>
 <li><p>NATRE finescale <span class="math notranslate nohighlight">\(⟨K_ρ^{200}⟩\)</span> agrees with Argo finescale <span class="math notranslate nohighlight">\(⟨K_ρ^{200}⟩\)</span> <strong>which agrees with <span class="math notranslate nohighlight">\(K_ρ^m\)</span></strong> <span class="math notranslate nohighlight">\(= Γ⟨ε^{0.5}⟩/N_m^2\)</span> i.e. a diapycnal diffusivity for the stirring of the large scale vertical gradient by the microscale. Somehow calculating a 200-m diffusivity using the finestructure <span class="math notranslate nohighlight">\(ε^{200}\)</span> and 200-m scale <span class="math notranslate nohighlight">\(N²\)</span> seems to average us out to the “large scale”</p></li>
 <li><p>Argo finescale <span class="math notranslate nohighlight">\(⟨χ^{200}⟩ = ⟨Γε^{200}/N\_{200}^2 ; ∂_zT\_{200}^2⟩\)</span> seems to miss the whole eddy contribution to variance production! This is robust to averaging in γ or P, so it is not a question of the bins being too fine for the 200m mean χ estimate in each profile. I think the issue is scaling the 200-m <span class="math notranslate nohighlight">\(ε^{200}\)</span> with 200-m scale gradients to get <span class="math notranslate nohighlight">\(χ^{200}\)</span></p></li>
@@ -734,12 +553,17 @@ distributed: 2021.7.2
 <li><p>The large-scale mean <span class="math notranslate nohighlight">\(K_T^m\)</span> is the (meaningless) diffusivity required to explain <span class="math notranslate nohighlight">\(⟨χ⟩\)</span> by microscale stirring on the mean vertical gradient. that’s why there’s a peak where variance is actually being generated by mesoscale stirring of the lateral gradient.</p></li>
 </ol>
 <p>TODO:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>The disagreement between microscale <span class="math notranslate nohighlight">\(⟨K_ρ⟩\)</span> and the <span class="math notranslate nohighlight">\(K_ρ^m\)</span> or finescale <span class="math notranslate nohighlight">\(K_ρ\)</span> is the key I think. I think the 200-m averaging inherent in the finescale estimate is filtering out the mesoscale. BUT then the 200m averaged microscale <span class="math notranslate nohighlight">\(⟨K_ρ⟩\)</span> should also reflect this? But maybe I should calculate the 200m scale diffusivity instead of averaging the 0.5m scale diffusivity in 200m bins.</p></li>
 <li><p>Is there any way I can estimate the <strong>microscale</strong> <span class="math notranslate nohighlight">\(K_ρ\)</span> that gets me back to the “large-scale” <span class="math notranslate nohighlight">\(K_ρ^m\)</span></p></li>
 <li><p>Look at individual profiles of <span class="math notranslate nohighlight">\(χ, ε, χ^{200}, ε^{200}\)</span>; is the 200-m average taking out the eddy stirring contribution to <span class="math notranslate nohighlight">\(T_z\)</span>? Since they are compensated it makes sense that <span class="math notranslate nohighlight">\(N² ≪ gαT_z^2\)</span> at scales smaller than horizontal stirring vertical scale</p></li>
 </ol>
 <div class="cell tag_hide-input tag_full-width docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="n">axx</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="s2">&quot;χ&quot;</span><span class="p">,</span> <span class="s2">&quot;ε&quot;</span><span class="p">,</span> <span class="s2">&quot;Kt&quot;</span><span class="p">,</span> <span class="s2">&quot;Kρ&quot;</span><span class="p">],</span> <span class="n">axx</span><span class="p">))</span>
@@ -803,8 +627,9 @@ distributed: 2021.7.2
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="_images/natre-finescale_8_0.png" src="_images/natre-finescale_8_0.png" />
+<img alt="_images/b3f6c6d4a9dab31ea7265765c719e7b084950cfa0c084897029737d63f6920c7.png" src="_images/b3f6c6d4a9dab31ea7265765c719e7b084950cfa0c084897029737d63f6920c7.png" />
 </div>
 </div>
 </section>
@@ -815,6 +640,11 @@ distributed: 2021.7.2
 <p>Another interesting thing is that <span class="math notranslate nohighlight">\(⟨K_ρ^μ⟩ = K_ρ^m\)</span> i.e. “large-scale” average <span class="math notranslate nohighlight">\(K_ρ\)</span> <em>is</em> the diffusivity for the “large-scale” because there is no stirring of density!</p>
 <p>The other way to think of it is that <span class="math notranslate nohighlight">\(K_T ≠ K_ρ\)</span> at scales of spiciness i.e. compensated T-S variability.</p>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre</span><span class="p">[</span><span class="s2">&quot;NT2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">9.81</span> <span class="o">*</span> <span class="n">dcpy</span><span class="o">.</span><span class="n">eos</span><span class="o">.</span><span class="n">alpha</span><span class="p">(</span><span class="n">natre</span><span class="o">.</span><span class="n">salt</span><span class="p">,</span> <span class="n">natre</span><span class="o">.</span><span class="n">temp</span><span class="p">,</span> <span class="n">natre</span><span class="o">.</span><span class="n">pres</span><span class="p">)</span> <span class="o">*</span> <span class="n">natre</span><span class="o">.</span><span class="n">Tz</span>
 <span class="n">natre</span><span class="p">[</span><span class="s2">&quot;NS2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
@@ -825,6 +655,7 @@ distributed: 2021.7.2
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -836,9 +667,7 @@ distributed: 2021.7.2
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "51ada2b609ad403aa032b7e19c646bdd", "version_major": 2, "version_minor": 0}
-</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4000000000000341
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "51ada2b609ad403aa032b7e19c646bdd", "version_major": 2, "version_minor": 0}</script><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4000000000000341
 0.4000000000000341
 0.4000000000000341
 </pre></div>
@@ -900,7 +729,7 @@ distributed: 2021.7.2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre-finescale_12_0.png" src="_images/natre-finescale_12_0.png" />
+<img alt="_images/78da85eeaecbfd567cef3e0d23d58ea6105c8f7bc8b217db86d49ee619e85fa6.png" src="_images/78da85eeaecbfd567cef3e0d23d58ea6105c8f7bc8b217db86d49ee619e85fa6.png" />
 </div>
 </div>
 </section>
@@ -920,7 +749,7 @@ distributed: 2021.7.2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre-finescale_14_0.png" src="_images/natre-finescale_14_0.png" />
+<img alt="_images/5ba2701e1eae3b444f87694c3413977e6c3eba05c2957a32a6d3c448e6158d2f.png" src="_images/5ba2701e1eae3b444f87694c3413977e6c3eba05c2957a32a6d3c448e6158d2f.png" />
 </div>
 </div>
 </section>
@@ -957,7 +786,7 @@ distributed: 2021.7.2
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7ff00197a6a0&gt;]
 </pre></div>
 </div>
-<img alt="_images/natre-finescale_17_1.png" src="_images/natre-finescale_17_1.png" />
+<img alt="_images/adcda13d528b368f79d5d5226e43b099f2a05ef30b53a1805d01df063ff37d3e.png" src="_images/adcda13d528b368f79d5d5226e43b099f2a05ef30b53a1805d01df063ff37d3e.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -997,7 +826,7 @@ distributed: 2021.7.2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre-finescale_18_0.png" src="_images/natre-finescale_18_0.png" />
+<img alt="_images/10d289cca05a927e81be506045c50af9bbc30ee4103a9e859d6c3bab2c4d8612.png" src="_images/10d289cca05a927e81be506045c50af9bbc30ee4103a9e859d6c3bab2c4d8612.png" />
 </div>
 </div>
 <section id="t-s">
@@ -1031,7 +860,7 @@ distributed: 2021.7.2
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre-finescale_21_0.png" src="_images/natre-finescale_21_0.png" />
+<img alt="_images/3a29e23fd7827c81aefe9d77739b02aa7451699e21bf3b8389b25446d78c3db0.png" src="_images/3a29e23fd7827c81aefe9d77739b02aa7451699e21bf3b8389b25446d78c3db0.png" />
 </div>
 </div>
 </section>
@@ -2144,9 +1973,7 @@ Data variables: (12/14)
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "43abaa6ea9574be48cd5ca7e8562145a", "version_major": 2, "version_minor": 0}
-</script><div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "43abaa6ea9574be48cd5ca7e8562145a", "version_major": 2, "version_minor": 0}</script><div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
 <defs>
 <symbol id="icon-database" viewBox="0 0 32 32">
 <path d="M16 0c-8.837 0-16 2.239-16 5v4c0 2.761 7.163 5 16 5s16-2.239 16-5v-4c0-2.761-7.163-5-16-5z"></path>
@@ -2622,7 +2449,7 @@ Attributes:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre-finescale_32_0.png" src="_images/natre-finescale_32_0.png" />
+<img alt="_images/34505b5cee4caba0edabd22731bf9ff304f3c5bd7f80b1a95a8e601b3e62e62f.png" src="_images/34505b5cee4caba0edabd22731bf9ff304f3c5bd7f80b1a95a8e601b3e62e62f.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2636,441 +2463,441 @@ Attributes:
 </div>
 <div class="cell_output docutils container">
 <div class="output text_html">
-    <div>
-        <div style="
-            width: 24px;
-            height: 24px;
-            background-color: #e1e1e1;
-            border: 3px solid #9D9D9D;
-            border-radius: 5px;
-            position: absolute;"> </div>
-        <div style="margin-left: 48px;">
-            <h3 style="margin-bottom: 0px;">Client</h3>
-            <p style="color: #9D9D9D; margin-bottom: 0px;">Client-a53a850d-e9a0-11eb-8526-0028f8270ea7</p>
-            <table style="width: 100%; text-align: left;">
-
-        <tr>
-            <td style="text-align: left;"><strong>Connection method:</strong> Direct</td>
-            <td style="text-align: left;"></td>
-        </tr>
-
-        <tr>
-            <td style="text-align: left;">
-                <strong>Dashboard: </strong>
-                <a href="http://127.0.0.1:8787/status">http://127.0.0.1:8787/status</a>
-            </td>
-            <td style="text-align: left;"></td>
-        </tr>
-
-            </table>
-
-        <details>
-        <summary style="margin-bottom: 20px;"><h3 style="display: inline;">Scheduler Info</h3></summary>
-
-<div style="">
-
-    <div>
-        <div style="
-            width: 24px;
-            height: 24px;
-            background-color: #FFF7E5;
-            border: 3px solid #FF6132;
-            border-radius: 5px;
-            position: absolute;"> </div>
-        <div style="margin-left: 48px;">
-            <h3 style="margin-bottom: 0px;">Scheduler</h3>
-            <p style="color: #9D9D9D; margin-bottom: 0px;">Scheduler-d6f7fb0f-8f7b-4ee3-8176-31ebb7885697</p>
-            <table style="width: 100%; text-align: left;">
-                <tr>
-                    <td style="text-align: left;"><strong>Comm:</strong> tcp://127.0.0.1:41667</td>
-                    <td style="text-align: left;"><strong>Workers:</strong> 4</td>
-                </tr>
-                <tr>
-                    <td style="text-align: left;">
-                        <strong>Dashboard:</strong> <a href="http://127.0.0.1:8787/status">http://127.0.0.1:8787/status</a>
-                    </td>
-                    <td style="text-align: left;">
-                        <strong>Total threads:</strong>
-                        8
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-align: left;">
-                        <strong>Started:</strong>
-                        1 minute ago
-                    </td>
-                    <td style="text-align: left;">
-                        <strong>Total memory:</strong>
-                        31.10 GiB
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <details style="margin-left: 48px;">
-    <summary style="margin-bottom: 20px;"><h3 style="display: inline;">Workers</h3></summary>
-
-    <div style="margin-bottom: 20px;">
-        <div style="width: 24px;
+            <div>
+                <div style="
+                    width: 24px;
                     height: 24px;
-                    background-color: #DBF5FF;
-                    border: 3px solid #4CC9FF;
+                    background-color: #e1e1e1;
+                    border: 3px solid #9D9D9D;
                     border-radius: 5px;
                     position: absolute;"> </div>
-        <div style="margin-left: 48px;">
-        <details>
-            <summary>
-                <h4 style="margin-bottom: 0px; display: inline;">Worker: 0</h4>
-            </summary>
-            <table style="width: 100%; text-align: left;">
+                <div style="margin-left: 48px;">
+                    <h3 style="margin-bottom: 0px;">Client</h3>
+                    <p style="color: #9D9D9D; margin-bottom: 0px;">Client-a53a850d-e9a0-11eb-8526-0028f8270ea7</p>
+                    <table style="width: 100%; text-align: left;">
+                    
                 <tr>
-                    <td style="text-align: left;"><strong>Comm: </strong> tcp://127.0.0.1:38589</td>
-                    <td style="text-align: left;"><strong>Total threads: </strong> 2</td>
+                    <td style="text-align: left;"><strong>Connection method:</strong> Direct</td>
+                    <td style="text-align: left;"></td>
                 </tr>
+                
                 <tr>
                     <td style="text-align: left;">
                         <strong>Dashboard: </strong>
-                        <a href="http://127.0.0.1:38143/status">http://127.0.0.1:38143/status</a>
+                        <a href="http://127.0.0.1:8787/status">http://127.0.0.1:8787/status</a>
                     </td>
-                    <td style="text-align: left;">
-                        <strong>Memory: </strong>
-                        7.77 GiB
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-align: left;"><strong>Nanny: </strong> tcp://127.0.0.1:45089</td>
                     <td style="text-align: left;"></td>
                 </tr>
-                <tr>
-                    <td colspan="2" style="text-align: left;">
-                        <strong>Local directory: </strong>
-                        /tmp/dask-worker-space/worker-j3tr7azt
-                    </td>
-                </tr>
-
-
-        <tr>
-            <td style="text-align: left;">
-                <strong>Tasks executing: </strong> 0
-            </td>
-            <td style="text-align: left;">
-                <strong>Tasks in memory: </strong> 0
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align: left;">
-                <strong>Tasks ready: </strong> 0
-            </td>
-            <td style="text-align: left;">
-                <strong>Tasks in flight: </strong>0
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align: left;"><strong>CPU usage:</strong> 2.0%</td>
-            <td style="text-align: left;">
-                <strong>Last seen: </strong>
-                Just now
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align: left;">
-                <strong>Memory usage: </strong>
-                307.97 MiB
-            </td>
-            <td style="text-align: left;">
-                <strong>Spilled bytes: </strong>
-                0 B
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align: left;">
-                <strong>Read bytes: </strong>
-                84.62 kiB
-            </td>
-            <td style="text-align: left;">
-                <strong>Write bytes: </strong>
-                5.47 MiB
-            </td>
-        </tr>
-
-            </table>
-        </details>
-        </div>
-    </div>
-
-    <div style="margin-bottom: 20px;">
-        <div style="width: 24px;
+                
+                    </table>
+                    
+                <details>
+                <summary style="margin-bottom: 20px;"><h3 style="display: inline;">Scheduler Info</h3></summary>
+                
+        <div style="">
+            
+            <div>
+                <div style="
+                    width: 24px;
                     height: 24px;
-                    background-color: #DBF5FF;
-                    border: 3px solid #4CC9FF;
+                    background-color: #FFF7E5;
+                    border: 3px solid #FF6132;
                     border-radius: 5px;
                     position: absolute;"> </div>
-        <div style="margin-left: 48px;">
-        <details>
-            <summary>
-                <h4 style="margin-bottom: 0px; display: inline;">Worker: 1</h4>
-            </summary>
-            <table style="width: 100%; text-align: left;">
+                <div style="margin-left: 48px;">
+                    <h3 style="margin-bottom: 0px;">Scheduler</h3>
+                    <p style="color: #9D9D9D; margin-bottom: 0px;">Scheduler-d6f7fb0f-8f7b-4ee3-8176-31ebb7885697</p>
+                    <table style="width: 100%; text-align: left;">
+                        <tr>
+                            <td style="text-align: left;"><strong>Comm:</strong> tcp://127.0.0.1:41667</td>
+                            <td style="text-align: left;"><strong>Workers:</strong> 4</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">
+                                <strong>Dashboard:</strong> <a href="http://127.0.0.1:8787/status">http://127.0.0.1:8787/status</a>
+                            </td>
+                            <td style="text-align: left;">
+                                <strong>Total threads:</strong>
+                                8
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">
+                                <strong>Started:</strong>
+                                1 minute ago
+                            </td>
+                            <td style="text-align: left;">
+                                <strong>Total memory:</strong>
+                                31.10 GiB
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        
+            <details style="margin-left: 48px;">
+            <summary style="margin-bottom: 20px;"><h3 style="display: inline;">Workers</h3></summary>
+            
+            <div style="margin-bottom: 20px;">
+                <div style="width: 24px;
+                            height: 24px;
+                            background-color: #DBF5FF;
+                            border: 3px solid #4CC9FF;
+                            border-radius: 5px;
+                            position: absolute;"> </div>
+                <div style="margin-left: 48px;">
+                <details>
+                    <summary>
+                        <h4 style="margin-bottom: 0px; display: inline;">Worker: 0</h4>
+                    </summary>
+                    <table style="width: 100%; text-align: left;">
+                        <tr>
+                            <td style="text-align: left;"><strong>Comm: </strong> tcp://127.0.0.1:38589</td>
+                            <td style="text-align: left;"><strong>Total threads: </strong> 2</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">
+                                <strong>Dashboard: </strong>
+                                <a href="http://127.0.0.1:38143/status">http://127.0.0.1:38143/status</a>
+                            </td>
+                            <td style="text-align: left;">
+                                <strong>Memory: </strong>
+                                7.77 GiB
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;"><strong>Nanny: </strong> tcp://127.0.0.1:45089</td>
+                            <td style="text-align: left;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left;">
+                                <strong>Local directory: </strong>
+                                /tmp/dask-worker-space/worker-j3tr7azt
+                            </td>
+                        </tr>
+                        
+                        
                 <tr>
-                    <td style="text-align: left;"><strong>Comm: </strong> tcp://127.0.0.1:34279</td>
-                    <td style="text-align: left;"><strong>Total threads: </strong> 2</td>
+                    <td style="text-align: left;">
+                        <strong>Tasks executing: </strong> 0
+                    </td>
+                    <td style="text-align: left;">
+                        <strong>Tasks in memory: </strong> 0
+                    </td>
                 </tr>
                 <tr>
                     <td style="text-align: left;">
-                        <strong>Dashboard: </strong>
-                        <a href="http://127.0.0.1:36725/status">http://127.0.0.1:36725/status</a>
+                        <strong>Tasks ready: </strong> 0
                     </td>
                     <td style="text-align: left;">
-                        <strong>Memory: </strong>
-                        7.77 GiB
+                        <strong>Tasks in flight: </strong>0
                     </td>
                 </tr>
                 <tr>
-                    <td style="text-align: left;"><strong>Nanny: </strong> tcp://127.0.0.1:45517</td>
-                    <td style="text-align: left;"></td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: left;">
-                        <strong>Local directory: </strong>
-                        /tmp/dask-worker-space/worker-3ble6b2n
+                    <td style="text-align: left;"><strong>CPU usage:</strong> 2.0%</td>
+                    <td style="text-align: left;">
+                        <strong>Last seen: </strong>
+                        Just now
                     </td>
                 </tr>
-
-
-        <tr>
-            <td style="text-align: left;">
-                <strong>Tasks executing: </strong> 0
-            </td>
-            <td style="text-align: left;">
-                <strong>Tasks in memory: </strong> 0
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align: left;">
-                <strong>Tasks ready: </strong> 0
-            </td>
-            <td style="text-align: left;">
-                <strong>Tasks in flight: </strong>0
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align: left;"><strong>CPU usage:</strong> 2.0%</td>
-            <td style="text-align: left;">
-                <strong>Last seen: </strong>
-                Just now
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align: left;">
-                <strong>Memory usage: </strong>
-                305.44 MiB
-            </td>
-            <td style="text-align: left;">
-                <strong>Spilled bytes: </strong>
-                0 B
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align: left;">
-                <strong>Read bytes: </strong>
-                102.43 kiB
-            </td>
-            <td style="text-align: left;">
-                <strong>Write bytes: </strong>
-                12.61 MiB
-            </td>
-        </tr>
-
-            </table>
-        </details>
+                <tr>
+                    <td style="text-align: left;">
+                        <strong>Memory usage: </strong>
+                        307.97 MiB
+                    </td>
+                    <td style="text-align: left;">
+                        <strong>Spilled bytes: </strong>
+                        0 B
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;">
+                        <strong>Read bytes: </strong>
+                        84.62 kiB
+                    </td>
+                    <td style="text-align: left;">
+                        <strong>Write bytes: </strong>
+                        5.47 MiB
+                    </td>
+                </tr>
+                
+                    </table>
+                </details>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <div style="width: 24px;
+                            height: 24px;
+                            background-color: #DBF5FF;
+                            border: 3px solid #4CC9FF;
+                            border-radius: 5px;
+                            position: absolute;"> </div>
+                <div style="margin-left: 48px;">
+                <details>
+                    <summary>
+                        <h4 style="margin-bottom: 0px; display: inline;">Worker: 1</h4>
+                    </summary>
+                    <table style="width: 100%; text-align: left;">
+                        <tr>
+                            <td style="text-align: left;"><strong>Comm: </strong> tcp://127.0.0.1:34279</td>
+                            <td style="text-align: left;"><strong>Total threads: </strong> 2</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">
+                                <strong>Dashboard: </strong>
+                                <a href="http://127.0.0.1:36725/status">http://127.0.0.1:36725/status</a>
+                            </td>
+                            <td style="text-align: left;">
+                                <strong>Memory: </strong>
+                                7.77 GiB
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;"><strong>Nanny: </strong> tcp://127.0.0.1:45517</td>
+                            <td style="text-align: left;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left;">
+                                <strong>Local directory: </strong>
+                                /tmp/dask-worker-space/worker-3ble6b2n
+                            </td>
+                        </tr>
+                        
+                        
+                <tr>
+                    <td style="text-align: left;">
+                        <strong>Tasks executing: </strong> 0
+                    </td>
+                    <td style="text-align: left;">
+                        <strong>Tasks in memory: </strong> 0
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;">
+                        <strong>Tasks ready: </strong> 0
+                    </td>
+                    <td style="text-align: left;">
+                        <strong>Tasks in flight: </strong>0
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;"><strong>CPU usage:</strong> 2.0%</td>
+                    <td style="text-align: left;">
+                        <strong>Last seen: </strong>
+                        Just now
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;">
+                        <strong>Memory usage: </strong>
+                        305.44 MiB
+                    </td>
+                    <td style="text-align: left;">
+                        <strong>Spilled bytes: </strong>
+                        0 B
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;">
+                        <strong>Read bytes: </strong>
+                        102.43 kiB
+                    </td>
+                    <td style="text-align: left;">
+                        <strong>Write bytes: </strong>
+                        12.61 MiB
+                    </td>
+                </tr>
+                
+                    </table>
+                </details>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <div style="width: 24px;
+                            height: 24px;
+                            background-color: #DBF5FF;
+                            border: 3px solid #4CC9FF;
+                            border-radius: 5px;
+                            position: absolute;"> </div>
+                <div style="margin-left: 48px;">
+                <details>
+                    <summary>
+                        <h4 style="margin-bottom: 0px; display: inline;">Worker: 2</h4>
+                    </summary>
+                    <table style="width: 100%; text-align: left;">
+                        <tr>
+                            <td style="text-align: left;"><strong>Comm: </strong> tcp://127.0.0.1:36211</td>
+                            <td style="text-align: left;"><strong>Total threads: </strong> 2</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">
+                                <strong>Dashboard: </strong>
+                                <a href="http://127.0.0.1:45765/status">http://127.0.0.1:45765/status</a>
+                            </td>
+                            <td style="text-align: left;">
+                                <strong>Memory: </strong>
+                                7.77 GiB
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;"><strong>Nanny: </strong> tcp://127.0.0.1:33209</td>
+                            <td style="text-align: left;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left;">
+                                <strong>Local directory: </strong>
+                                /tmp/dask-worker-space/worker-oa6g1apu
+                            </td>
+                        </tr>
+                        
+                        
+                <tr>
+                    <td style="text-align: left;">
+                        <strong>Tasks executing: </strong> 0
+                    </td>
+                    <td style="text-align: left;">
+                        <strong>Tasks in memory: </strong> 0
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;">
+                        <strong>Tasks ready: </strong> 0
+                    </td>
+                    <td style="text-align: left;">
+                        <strong>Tasks in flight: </strong>0
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;"><strong>CPU usage:</strong> 2.0%</td>
+                    <td style="text-align: left;">
+                        <strong>Last seen: </strong>
+                        Just now
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;">
+                        <strong>Memory usage: </strong>
+                        304.01 MiB
+                    </td>
+                    <td style="text-align: left;">
+                        <strong>Spilled bytes: </strong>
+                        0 B
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;">
+                        <strong>Read bytes: </strong>
+                        86.19 kiB
+                    </td>
+                    <td style="text-align: left;">
+                        <strong>Write bytes: </strong>
+                        5.47 MiB
+                    </td>
+                </tr>
+                
+                    </table>
+                </details>
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <div style="width: 24px;
+                            height: 24px;
+                            background-color: #DBF5FF;
+                            border: 3px solid #4CC9FF;
+                            border-radius: 5px;
+                            position: absolute;"> </div>
+                <div style="margin-left: 48px;">
+                <details>
+                    <summary>
+                        <h4 style="margin-bottom: 0px; display: inline;">Worker: 3</h4>
+                    </summary>
+                    <table style="width: 100%; text-align: left;">
+                        <tr>
+                            <td style="text-align: left;"><strong>Comm: </strong> tcp://127.0.0.1:43585</td>
+                            <td style="text-align: left;"><strong>Total threads: </strong> 2</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">
+                                <strong>Dashboard: </strong>
+                                <a href="http://127.0.0.1:45443/status">http://127.0.0.1:45443/status</a>
+                            </td>
+                            <td style="text-align: left;">
+                                <strong>Memory: </strong>
+                                7.77 GiB
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;"><strong>Nanny: </strong> tcp://127.0.0.1:37171</td>
+                            <td style="text-align: left;"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="text-align: left;">
+                                <strong>Local directory: </strong>
+                                /tmp/dask-worker-space/worker-hnwyf6y6
+                            </td>
+                        </tr>
+                        
+                        
+                <tr>
+                    <td style="text-align: left;">
+                        <strong>Tasks executing: </strong> 0
+                    </td>
+                    <td style="text-align: left;">
+                        <strong>Tasks in memory: </strong> 0
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;">
+                        <strong>Tasks ready: </strong> 0
+                    </td>
+                    <td style="text-align: left;">
+                        <strong>Tasks in flight: </strong>0
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;"><strong>CPU usage:</strong> 4.0%</td>
+                    <td style="text-align: left;">
+                        <strong>Last seen: </strong>
+                        Just now
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;">
+                        <strong>Memory usage: </strong>
+                        306.35 MiB
+                    </td>
+                    <td style="text-align: left;">
+                        <strong>Spilled bytes: </strong>
+                        0 B
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: left;">
+                        <strong>Read bytes: </strong>
+                        62.84 kiB
+                    </td>
+                    <td style="text-align: left;">
+                        <strong>Write bytes: </strong>
+                        8.10 MiB
+                    </td>
+                </tr>
+                
+                    </table>
+                </details>
+                </div>
+            </div>
+            
+            </details>
         </div>
-    </div>
-
-    <div style="margin-bottom: 20px;">
-        <div style="width: 24px;
-                    height: 24px;
-                    background-color: #DBF5FF;
-                    border: 3px solid #4CC9FF;
-                    border-radius: 5px;
-                    position: absolute;"> </div>
-        <div style="margin-left: 48px;">
-        <details>
-            <summary>
-                <h4 style="margin-bottom: 0px; display: inline;">Worker: 2</h4>
-            </summary>
-            <table style="width: 100%; text-align: left;">
-                <tr>
-                    <td style="text-align: left;"><strong>Comm: </strong> tcp://127.0.0.1:36211</td>
-                    <td style="text-align: left;"><strong>Total threads: </strong> 2</td>
-                </tr>
-                <tr>
-                    <td style="text-align: left;">
-                        <strong>Dashboard: </strong>
-                        <a href="http://127.0.0.1:45765/status">http://127.0.0.1:45765/status</a>
-                    </td>
-                    <td style="text-align: left;">
-                        <strong>Memory: </strong>
-                        7.77 GiB
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-align: left;"><strong>Nanny: </strong> tcp://127.0.0.1:33209</td>
-                    <td style="text-align: left;"></td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: left;">
-                        <strong>Local directory: </strong>
-                        /tmp/dask-worker-space/worker-oa6g1apu
-                    </td>
-                </tr>
-
-
-        <tr>
-            <td style="text-align: left;">
-                <strong>Tasks executing: </strong> 0
-            </td>
-            <td style="text-align: left;">
-                <strong>Tasks in memory: </strong> 0
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align: left;">
-                <strong>Tasks ready: </strong> 0
-            </td>
-            <td style="text-align: left;">
-                <strong>Tasks in flight: </strong>0
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align: left;"><strong>CPU usage:</strong> 2.0%</td>
-            <td style="text-align: left;">
-                <strong>Last seen: </strong>
-                Just now
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align: left;">
-                <strong>Memory usage: </strong>
-                304.01 MiB
-            </td>
-            <td style="text-align: left;">
-                <strong>Spilled bytes: </strong>
-                0 B
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align: left;">
-                <strong>Read bytes: </strong>
-                86.19 kiB
-            </td>
-            <td style="text-align: left;">
-                <strong>Write bytes: </strong>
-                5.47 MiB
-            </td>
-        </tr>
-
-            </table>
-        </details>
-        </div>
-    </div>
-
-    <div style="margin-bottom: 20px;">
-        <div style="width: 24px;
-                    height: 24px;
-                    background-color: #DBF5FF;
-                    border: 3px solid #4CC9FF;
-                    border-radius: 5px;
-                    position: absolute;"> </div>
-        <div style="margin-left: 48px;">
-        <details>
-            <summary>
-                <h4 style="margin-bottom: 0px; display: inline;">Worker: 3</h4>
-            </summary>
-            <table style="width: 100%; text-align: left;">
-                <tr>
-                    <td style="text-align: left;"><strong>Comm: </strong> tcp://127.0.0.1:43585</td>
-                    <td style="text-align: left;"><strong>Total threads: </strong> 2</td>
-                </tr>
-                <tr>
-                    <td style="text-align: left;">
-                        <strong>Dashboard: </strong>
-                        <a href="http://127.0.0.1:45443/status">http://127.0.0.1:45443/status</a>
-                    </td>
-                    <td style="text-align: left;">
-                        <strong>Memory: </strong>
-                        7.77 GiB
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-align: left;"><strong>Nanny: </strong> tcp://127.0.0.1:37171</td>
-                    <td style="text-align: left;"></td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: left;">
-                        <strong>Local directory: </strong>
-                        /tmp/dask-worker-space/worker-hnwyf6y6
-                    </td>
-                </tr>
-
-
-        <tr>
-            <td style="text-align: left;">
-                <strong>Tasks executing: </strong> 0
-            </td>
-            <td style="text-align: left;">
-                <strong>Tasks in memory: </strong> 0
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align: left;">
-                <strong>Tasks ready: </strong> 0
-            </td>
-            <td style="text-align: left;">
-                <strong>Tasks in flight: </strong>0
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align: left;"><strong>CPU usage:</strong> 4.0%</td>
-            <td style="text-align: left;">
-                <strong>Last seen: </strong>
-                Just now
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align: left;">
-                <strong>Memory usage: </strong>
-                306.35 MiB
-            </td>
-            <td style="text-align: left;">
-                <strong>Spilled bytes: </strong>
-                0 B
-            </td>
-        </tr>
-        <tr>
-            <td style="text-align: left;">
-                <strong>Read bytes: </strong>
-                62.84 kiB
-            </td>
-            <td style="text-align: left;">
-                <strong>Write bytes: </strong>
-                8.10 MiB
-            </td>
-        </tr>
-
-            </table>
-        </details>
-        </div>
-    </div>
-
-    </details>
-</div>
-
-        </details>
-
-        </div>
-    </div>
-</div></div>
+        
+                </details>
+                
+                </div>
+            </div>
+        </div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -3131,7 +2958,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fefa3e34760&gt;]
 </pre></div>
 </div>
-<img alt="_images/natre-finescale_38_1.png" src="_images/natre-finescale_38_1.png" />
+<img alt="_images/2cf65900c13d0246b2eb27bae8c487cdbb092de043acc53ef3f1be66f252dfc8.png" src="_images/2cf65900c13d0246b2eb27bae8c487cdbb092de043acc53ef3f1be66f252dfc8.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -3146,7 +2973,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7feff10f9400&gt;]
 </pre></div>
 </div>
-<img alt="_images/natre-finescale_39_1.png" src="_images/natre-finescale_39_1.png" />
+<img alt="_images/ff5ce46217218d5e4e8d19a565eaf8d7c4085f0ec8c153906bf6407c7ede9bba.png" src="_images/ff5ce46217218d5e4e8d19a565eaf8d7c4085f0ec8c153906bf6407c7ede9bba.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -3162,7 +2989,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fefdd4f9eb0&gt;]
 </pre></div>
 </div>
-<img alt="_images/natre-finescale_40_1.png" src="_images/natre-finescale_40_1.png" />
+<img alt="_images/ae13c3604e4a92b9005fe7feea88edd4d8d20d04f22c8a3499dbadc49f138278.png" src="_images/ae13c3604e4a92b9005fe7feea88edd4d8d20d04f22c8a3499dbadc49f138278.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -3178,7 +3005,7 @@ Attributes:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre-finescale_41_0.png" src="_images/natre-finescale_41_0.png" />
+<img alt="_images/0f6efce69e9d28ea0eb1a9cd425236077e0919b6177b31ba3b138cc9680763b2.png" src="_images/0f6efce69e9d28ea0eb1a9cd425236077e0919b6177b31ba3b138cc9680763b2.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -3194,7 +3021,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fefe462fc10&gt;]
 </pre></div>
 </div>
-<img alt="_images/natre-finescale_42_1.png" src="_images/natre-finescale_42_1.png" />
+<img alt="_images/cb4e7efdf4d2a9d01792ae1ef197b19f951f75e9fb6747dc118b90bdbe95ddf8.png" src="_images/cb4e7efdf4d2a9d01792ae1ef197b19f951f75e9fb6747dc118b90bdbe95ddf8.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -3208,7 +3035,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fefdc273d30&gt;]
 </pre></div>
 </div>
-<img alt="_images/natre-finescale_43_1.png" src="_images/natre-finescale_43_1.png" />
+<img alt="_images/0a28e43d98befc2ed1a78a358f45b1c58231a5e17c5cc901bb4cbeb0b29b2a72.png" src="_images/0a28e43d98befc2ed1a78a358f45b1c58231a5e17c5cc901bb4cbeb0b29b2a72.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -3224,7 +3051,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fefddf66670&gt;]
 </pre></div>
 </div>
-<img alt="_images/natre-finescale_44_1.png" src="_images/natre-finescale_44_1.png" />
+<img alt="_images/b36df46760fa01e459374633ccc29ab55d492f6904e2b5de98eef9822ddc1b79.png" src="_images/b36df46760fa01e459374633ccc29ab55d492f6904e2b5de98eef9822ddc1b79.png" />
 </div>
 </div>
 </section>
@@ -3242,7 +3069,7 @@ Attributes:
             mode: "conda-env-dcpy-py"
         },
         kernelOptions: {
-            kernelName: "conda-env-dcpy-py",
+            name: "conda-env-dcpy-py",
             path: "./."
         },
         predefinedOutput: true
@@ -3250,57 +3077,121 @@ Attributes:
     </script>
     <script>kernelName = 'conda-env-dcpy-py'</script>
 
-              </div>
+                </article>
               
-            </main>
-            <footer class="footer-article noprint">
-                
-    <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="natre-examine.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">NATRE microstructure dataset</p>
-        </div>
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="natre-examine.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">NATRE microstructure dataset</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="natre-vs-ctd-%CF%87pod.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="natre-vs-ctd-%CF%87pod.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">NATRE vs CTD-χpod</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
+</div></div>
+  
 </div>
-            </footer>
-        </div>
-    </div>
-    <div class="footer-content row">
-        <footer class="col footer"><p>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-datasets">Get datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finescale-vs-microscale">Finescale vs microscale</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#studying-n2-vs-t-z-s-z">Studying N² vs <span class="math notranslate nohighlight">\(T_z, S_z\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#studying-k-t-vs-k">Studying <span class="math notranslate nohighlight">\(K_T\)</span> vs <span class="math notranslate nohighlight">\(K_ρ\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#old-stuff">Old stuff</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#t-s">T-S</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-argo-profiles-used-for-finescale-estimates">Extract Argo profiles used for finescale estimates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finescale-estimate-with-natre-data">Finescale estimate with NATRE data</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
   
-    By Deepak Cherian<br/>
+  <div class="footer-item">
+    
+<p class="component-author">
+By Deepak Cherian
+</p>
+
+  </div>
   
-      &copy; Copyright 2022.<br/>
-    <div class="extra_footer">
-      <div>
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
 <script data-goatcounter="https://count.cherian.net/count"
         async src="count.js"></script>
 </div>
 
-    </div>
-</p>
-        </footer>
-    </div>
-    
 </div>
+  </div>
+  
+</div>
+          </footer>
+        
 
-
-      </div>
+      </main>
     </div>
+  </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
 
-
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

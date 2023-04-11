@@ -1,35 +1,45 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html >
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>χ-ε relations &#8212; Eddy Diffusivity</title>
-    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
-    
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -37,12 +47,12 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -50,548 +60,327 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chi-eps';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Compare different \(K_e\) estimates" href="compare-Ke-estimates.html" />
     <link rel="prev" title="Finescale Mixing Parametrizations: Development" href="iw-fine-devel.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay overlay-navbar" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<!-- Checkboxes to toggle the in-page toc -->
-<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
-<label class="overlay overlay-pagetoc" for="__page-toc">
-    <div class="visually-hidden">Toggle in-page Table of Contents</div>
-</label>
-<!-- Headers at the top -->
-<div class="announcement header-item noprint"></div>
-<div class="header header-item noprint"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-    <div class="container-fluid" id="banner"></div>
-
-    
-
-    <div class="container-xl">
-      <div class="row">
-          
-<!-- Sidebar -->
-<div class="bd-sidebar noprint" id="site-navigation">
-    <div class="bd-sidebar__content">
-        <div class="bd-sidebar__top"><div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="index.html">
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="_static/logo.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Eddy Diffusivity</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Moored χpod analysis
- </span>
-</p>
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Moored χpod analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="tao.html">
-   TAO (0, 140) χpod
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="equix.html">
-   EQUIX
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="tao.html">TAO (0, 140) χpod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="equix.html">EQUIX</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  CTD χpod analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">CTD χpod analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="BoB-ctd-chipod.html">
-   BoB ASIRI 2013 CTD χpod
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="P06.html">
-   P06 CTD χpod analysis
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="sections-variance-estimate.html">
-   Eddy variance generation along GO-SHIP lines
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ctd-%CF%87-bob.html">
-   ASIRI13 CTD χpod
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ctd-%CF%87-A05.html">
-   CTD χpod A05 section
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="bootstrap-ctd-chipod-estimates.html">
-   Bootstrapped outlier detection for CTD-χpod
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="BoB-ctd-chipod.html">BoB ASIRI 2013 CTD χpod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="P06.html">P06 CTD χpod analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sections-variance-estimate.html">Eddy variance generation along GO-SHIP lines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ctd-%CF%87-bob.html">ASIRI13 CTD χpod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ctd-%CF%87-A05.html">CTD χpod A05 section</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bootstrap-ctd-chipod-estimates.html">Bootstrapped outlier detection for CTD-χpod</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Model Processing
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Model Processing</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pop-1-deg.html">
-   POP 1°: Redi term
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pop-var-budget.html">
-   Yiming’s POP variance budget
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="pop-1-deg.html">POP 1°: Redi term</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pop-var-budget.html">Yiming’s POP variance budget</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Variance budgets
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Variance budgets</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="natre.html">
-   NATRE region variance budget
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="natre.html">NATRE region variance budget</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  NATRE region analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NATRE region analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="natre-examine.html">
-   NATRE microstructure dataset
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="natre-finescale.html">
-   NATRE micro vs finescale
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="natre-vs-ctd-%CF%87pod.html">
-   NATRE vs CTD-χpod
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="natre-examine.html">NATRE microstructure dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natre-finescale.html">NATRE micro vs finescale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natre-vs-ctd-%CF%87pod.html">NATRE vs CTD-χpod</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Finestructure analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Finestructure analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="iw-fine-argo.html">
-   Argo finescale estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="iw-fine-estimates.html">
-   Existing finestructure estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="iw-fine-devel.html">
-   Finescale Mixing Parametrizations: Development
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="iw-fine-argo.html">Argo finescale estimates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iw-fine-estimates.html">Existing finestructure estimates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iw-fine-devel.html">Finescale Mixing Parametrizations: Development</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Ancillary analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Ancillary analysis</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   χ-ε relations
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="compare-Ke-estimates.html">
-   Compare different
-   <span class="math notranslate nohighlight">
-    \(K_e\)
-   </span>
-   estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="equix-vs-tao.html">
-   χpods: EQUIX vs TAO
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="eqpac-ts-diagrams.html">
-   T-S diagrams from TAO &amp; Argo at (0, 145W→135W)
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="dataset-processing.html">
-   Dataset processing
-  </a>
- </li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">χ-ε relations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compare-Ke-estimates.html">Compare different <span class="math notranslate nohighlight">\(K_e\)</span> estimates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="equix-vs-tao.html">χpods: EQUIX vs TAO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eqpac-ts-diagrams.html">T-S diagrams from TAO &amp; Argo at (0, 145W→135W)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset-processing.html">Dataset processing</a></li>
 </ul>
 
     </div>
 </nav></div>
-        <div class="bd-sidebar__bottom">
-             <!-- To handle the deprecated key -->
-            
-            <div class="navbar_extra_footer">
-            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-            </div>
-            
-        </div>
     </div>
-    <div id="rtd-footer-container"></div>
-</div>
-
-
-          
-
-
-          
-<!-- A tiny helper pixel to detect if we've scrolled -->
-<div class="sbt-scroll-pixel-helper"></div>
-<!-- Main content -->
-<div class="col py-0 content-container">
-    
-    <div class="header-article row sticky-top noprint">
-        
-
-
-
-<div class="col py-1 d-flex header-article-main">
-    <div class="header-article__left">
-        
-        <label for="__navigation"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="right"
-title="Toggle navigation"
->
   
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-bars"></i>
-  </span>
-
-</label>
-
-        
-    </div>
-    <div class="header-article__right">
-<div class="menu-dropdown menu-dropdown-launch-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Launch interactive content">
-      <i class="fas fa-rocket"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://mybinder.org/v2/gh/dcherian/eddydiff/main?urlpath=tree/notebooks/chi-eps.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Binder"
->
   
-
-<span class="headerbtn__icon-container">
-  
-    <img src="_static/images/logo_binder.svg">
-  </span>
-<span class="headerbtn__text-container">Binder</span>
-</a>
-
-      </li>
-      
-    </ul>
+  <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
-</div>
+  
+  <div id="rtd-footer-container"></div>
 
-<button onclick="toggleFullScreen()"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="bottom"
-title="Fullscreen mode"
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/dcherian/eddydiff" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
-  <i class="fas fa-expand"></i>
-  </span>
-
-</button>
-<a href="https://github.com/dcherian/eddydiff"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="bottom"
-title="Source repository"
->
-  
-
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fab fa-github"></i>
   </span>
 
 </a>
 
-<div class="menu-dropdown menu-dropdown-download-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Download this page">
-      <i class="fas fa-download"></i>
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="_sources/chi-eps.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Download source file"
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/chi-eps.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="headerbtn__text-container">.ipynb</span>
+<span class="btn__text-container">.ipynb</span>
 </a>
-
-      </li>
+</li>
+      
+      
+      
       
       <li>
-        
-<button onclick="printPdf(this)"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="left"
-title="Print to PDF"
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-file-pdf"></i>
   </span>
-<span class="headerbtn__text-container">.pdf</span>
+<span class="btn__text-container">.pdf</span>
 </button>
-
-      </li>
+</li>
       
-    </ul>
-  </div>
+  </ul>
 </div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
   </span>
 
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
 </label>
-
+</div></div>
+      
     </div>
+  
 </div>
-
-<!-- Table of contents -->
-<div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#motivation">
-   Motivation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#from-buoyancy-flux">
-   From buoyancy flux
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#to">
-     To
-     <span class="math notranslate nohighlight">
-      \(χ_ρ\)
-     </span>
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#gregg-1987-energetics">
-   Gregg (1987) &amp; energetics
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#what-is">
-     What is
-     <span class="math notranslate nohighlight">
-      \(χ_ρ\)
-     </span>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#approach-of-gregg-1987">
-     Approach of Gregg (1987)
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#deriving">
-     Deriving
-     <span class="math notranslate nohighlight">
-      \(χ_ρ\)
-     </span>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#what-is-the-spectra-of-z">
-     What is the spectra of
-     <span class="math notranslate nohighlight">
-      \(ρ'_z\)
-     </span>
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
-
-    </nav>
 </div>
-    </div>
-    <div class="article row">
-        <div class="col pl-md-3 pl-lg-5 content-container">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>χ-ε relations</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#motivation">
-   Motivation
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#from-buoyancy-flux">
-   From buoyancy flux
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#to">
-     To
-     <span class="math notranslate nohighlight">
-      \(χ_ρ\)
-     </span>
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#gregg-1987-energetics">
-   Gregg (1987) &amp; energetics
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#what-is">
-     What is
-     <span class="math notranslate nohighlight">
-      \(χ_ρ\)
-     </span>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#approach-of-gregg-1987">
-     Approach of Gregg (1987)
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#deriving">
-     Deriving
-     <span class="math notranslate nohighlight">
-      \(χ_ρ\)
-     </span>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#what-is-the-spectra-of-z">
-     What is the spectra of
-     <span class="math notranslate nohighlight">
-      \(ρ'_z\)
-     </span>
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
+              
+              
 
-                        </nav>
-                    </div>
-                </div>
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>χ-ε relations</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
             </div>
-            <main id="main-content" role="main">
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-buoyancy-flux">From buoyancy flux</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#to">To <span class="math notranslate nohighlight">\(χ_ρ\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gregg-1987-energetics">Gregg (1987) &amp; energetics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is">What is <span class="math notranslate nohighlight">\(χ_ρ\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-of-gregg-1987">Approach of Gregg (1987)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deriving">Deriving <span class="math notranslate nohighlight">\(χ_ρ\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-spectra-of-z">What is the spectra of <span class="math notranslate nohighlight">\(ρ'_z\)</span></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
                 
-              <div>
-                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <section class="tex2jax_ignore mathjax_ignore" id="relations">
 <h1>χ-ε relations<a class="headerlink" href="#relations" title="Permalink to this headline">#</a></h1>
 <section id="motivation">
 <h2>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">#</a></h2>
 <p>Is <span class="math notranslate nohighlight">\(K_T = K_ρ\)</span> at 5-m scale a good assumption in spicy regions? We make this assumption to relate <span class="math notranslate nohighlight">\(χ_T\)</span> (<span class="math notranslate nohighlight">\(K_T\)</span>) to <span class="math notranslate nohighlight">\(ε\)</span> (<span class="math notranslate nohighlight">\(K_ρ\)</span>)</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>We have some observations of <span class="math notranslate nohighlight">\(K_T \sim O(1)  K_S\)</span> (Nash &amp; Moum, 2002)</p></li>
 <li><p><span class="math notranslate nohighlight">\(ρ = f(T, S)\)</span> and T, S anomalies can compensate each other, i.e. you can have <span class="math notranslate nohighlight">\(T\)</span> anomalies that are passive and not connected to the energy budget, so one might suspect that it’s possible to get a larger <span class="math notranslate nohighlight">\(χ_T\)</span> for the same <span class="math notranslate nohighlight">\(ε\)</span> when T-S compensation is present vs absent</p></li>
 </ol>
@@ -600,8 +389,8 @@ title="Print to PDF"
 <h2>From buoyancy flux<a class="headerlink" href="#from-buoyancy-flux" title="Permalink to this headline">#</a></h2>
 <p>Define <span class="math notranslate nohighlight">\(K =χ/2/x_z^2\)</span>    <span class="math notranslate nohighlight">\(J=-\overline{w'x'} = - K x_z\)</span></p>
 <p>Start with buoyancy flux <span class="math notranslate nohighlight">\(J_b\)</span> which we assume to be <span class="math notranslate nohighlight">\(Γε\)</span> later</p>
-<div class="amsmath math notranslate nohighlight" id="equation-64cdc756-89e7-4b8b-82ab-34d26fe28d55">
-<span class="eqno">(11)<a class="headerlink" href="#equation-64cdc756-89e7-4b8b-82ab-34d26fe28d55" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-c1e64a82-f556-43e1-9f37-2f6c9408212e">
+<span class="eqno">(11)<a class="headerlink" href="#equation-c1e64a82-f556-43e1-9f37-2f6c9408212e" title="Permalink to this equation">#</a></span>\[\begin{align}
 J_ρ &amp;= -\overline{w'ρ'} \\
     &amp;= -\overline{-w'ρ_0αT' + w'ρ_0βS'} \\
     &amp;= -ρ_0 (-α \overline{w'T'} + β \overline{w'S'}) \\
@@ -613,8 +402,8 @@ J_ρ &amp;= -\overline{w'ρ'} \\
 <li><p>downward heat flux <span class="math notranslate nohighlight">\(J_T &lt; 0\)</span> is upward density flux <span class="math notranslate nohighlight">\(J_ρ &gt; 0\)</span> and upward <span class="math notranslate nohighlight">\(J_s &gt; 0\)</span> is upward density flux <span class="math notranslate nohighlight">\(J_ρ &gt; 0\)</span></p></li>
 </ul>
 <p>If <span class="math notranslate nohighlight">\(K_T = K_S\)</span> (e.g. Nash &amp; Moum)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-322434b2-5754-4651-b12c-eae03cd40e51">
-<span class="eqno">(12)<a class="headerlink" href="#equation-322434b2-5754-4651-b12c-eae03cd40e51" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-595dedfa-f47b-42f2-9f0a-14ef995e871d">
+<span class="eqno">(12)<a class="headerlink" href="#equation-595dedfa-f47b-42f2-9f0a-14ef995e871d" title="Permalink to this equation">#</a></span>\[\begin{align}
 J_ρ &amp;= ρ_0 (α K_T T_z - βK_S S_z) \\
     &amp;= -K_T ρ_0(-αT_z + βS_z) \\
     &amp;= -K_T ρ_z
@@ -623,14 +412,14 @@ J_ρ &amp;= ρ_0 (α K_T T_z - βK_S S_z) \\
 <section id="to">
 <h3>To <span class="math notranslate nohighlight">\(χ_ρ\)</span><a class="headerlink" href="#to" title="Permalink to this headline">#</a></h3>
 <p>Gregg (1987)’s starting point is an expression for <span class="math notranslate nohighlight">\(χ_{pe}\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-6133fcdb-2558-49e1-92e0-f51ca03515cd">
-<span class="eqno">(13)<a class="headerlink" href="#equation-6133fcdb-2558-49e1-92e0-f51ca03515cd" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3190cce7-945f-4cb0-813a-0043a9c0f87b">
+<span class="eqno">(13)<a class="headerlink" href="#equation-3190cce7-945f-4cb0-813a-0043a9c0f87b" title="Permalink to this equation">#</a></span>\[\begin{align}
 χ_{pe} &amp;= \left(\frac{g}{ρN}\right)^2 χ_ρ \\
        &amp;= \left(\frac{gα}{N}\right)^2 χ_T + \left(\frac{gβ}{N}\right)^2 χ_S \qquad\qquad \text{assumption!}
 \end{align}\]</div>
 <p>You can’t write <span class="math notranslate nohighlight">\(χ_ρ\)</span> using molecular gradients and diffusivity but we can make progress if we assume that <span class="math notranslate nohighlight">\(χ_ρ = 2 K_ρ ρ_z^2\)</span>, analogous to <span class="math notranslate nohighlight">\(χ_T\)</span> Let’s try to derive this starting from <span class="math notranslate nohighlight">\(J_ρ\)</span>.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-96520d06-58d0-49ea-afdf-c17bc438c609">
-<span class="eqno">(14)<a class="headerlink" href="#equation-96520d06-58d0-49ea-afdf-c17bc438c609" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-74d7e301-6ed7-4a55-9fd9-ce458daa1340">
+<span class="eqno">(14)<a class="headerlink" href="#equation-74d7e301-6ed7-4a55-9fd9-ce458daa1340" title="Permalink to this equation">#</a></span>\[\begin{align}
 χ_ρ &amp;= -2J_ρ ρ_z \\
     &amp;= 2ρ_0 (-α K_T T_z + βK_S S_z) ρ_z \\
     &amp;= 2ρ_0 (-α K_T T_z + βK_S S_z) ρ_0 (-α T_z + β S_z) \\
@@ -640,16 +429,16 @@ J_ρ &amp;= ρ_0 (α K_T T_z - βK_S S_z) \\
     &amp;= ρ_0^2 \left[α^2 χ_T + β^2 χ_S - \frac{2α^2}{R_ρ} χ_T \right]
 \end{align}\]</div>
 <p>So <span class="math notranslate nohighlight">\(χ_{pe}\)</span> is</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8b7bab17-b6a5-4ab0-9dbf-372194061736">
-<span class="eqno">(15)<a class="headerlink" href="#equation-8b7bab17-b6a5-4ab0-9dbf-372194061736" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-2b08b171-362e-4f2c-8f36-634b5bb341a2">
+<span class="eqno">(15)<a class="headerlink" href="#equation-2b08b171-362e-4f2c-8f36-634b5bb341a2" title="Permalink to this equation">#</a></span>\[\begin{align}
 χ_{pe} &amp;= \left(\frac{g}{ρ_0N}\right)^2 χ_ρ \\
        &amp;= \left(\frac{gα}{N}\right)^2 χ_T + \left(\frac{gβ}{N}\right)^2 χ_S  - \frac{2}{R_ρ}\left(\frac{gα}{N}\right)^2 χ_T \\
        &amp;= \left(\frac{gα}{N}\right)^2 χ_T \left( 1 -\frac{2}{R_ρ} + \frac{1}{R_ρ^2} \right) \\
        &amp;= \left(\frac{gα}{N}\right)^2 χ_T \left( \frac{R_ρ-1}{R_ρ}\right)^2
 \end{align}\]</div>
 <p>Then,</p>
-<div class="amsmath math notranslate nohighlight" id="equation-b666eed5-886c-4631-b100-e68b239161a0">
-<span class="eqno">(16)<a class="headerlink" href="#equation-b666eed5-886c-4631-b100-e68b239161a0" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f8ebdbcc-01c4-4999-85f5-40926f33c433">
+<span class="eqno">(16)<a class="headerlink" href="#equation-f8ebdbcc-01c4-4999-85f5-40926f33c433" title="Permalink to this equation">#</a></span>\[\begin{align}
     2Γε &amp;= \left(\frac{gα}{N}\right)^2 \left( \frac{R_ρ-1}{R_ρ}\right)^2 χ_T \\
     \frac{Γε}{N^2} &amp;= \left(\frac{gα}{N}\right)^2 \left( \frac{R_ρ-1}{R_ρ}\right)^2 \frac{χ_T/2}{T_z^2} \frac{T_z^2}{N^2}\\
     K_ρ &amp;= \left(\frac{gαT_z}{N^2}\right)^2 \left( \frac{R_ρ-1}{R_ρ}\right)^2 K_T \\
@@ -663,26 +452,26 @@ J_ρ &amp;= ρ_0 (α K_T T_z - βK_S S_z) \\
 <section id="gregg-1987-energetics">
 <h2>Gregg (1987) &amp; energetics<a class="headerlink" href="#gregg-1987-energetics" title="Permalink to this headline">#</a></h2>
 <p>An alternative way to formulate the <span class="math notranslate nohighlight">\(χ\)</span>-<span class="math notranslate nohighlight">\(ε\)</span> relation is to use energetics (connected to point 2) as in Gregg (1987); Seim &amp; Gregg (1994); Alford &amp; Pinkel (2000). Gergg (1987)’ equation (56) is the evolution equation for <span class="math notranslate nohighlight">\(ρ'\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-3a4bcb94-bef8-4e32-b963-ad43b15dea30">
-<span class="eqno">(17)<a class="headerlink" href="#equation-3a4bcb94-bef8-4e32-b963-ad43b15dea30" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-3b8903e8-2f09-41f8-a065-0c4a946ccc51">
+<span class="eqno">(17)<a class="headerlink" href="#equation-3b8903e8-2f09-41f8-a065-0c4a946ccc51" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \frac{d\overline{ρ'^2}}{dt} + 2 \overline{ρ'u'} \frac{∂\overline{ρ}}{∂z} = - χ_ρ
 \end{equation}\]</div>
 <p>Then form an equation for perturbation potential energy <span class="math notranslate nohighlight">\(η\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-7029e607-219c-4430-b540-69c7e7644870">
-<span class="eqno">(18)<a class="headerlink" href="#equation-7029e607-219c-4430-b540-69c7e7644870" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-28b380fb-3747-4d2d-a036-a4e3d4651f60">
+<span class="eqno">(18)<a class="headerlink" href="#equation-28b380fb-3747-4d2d-a036-a4e3d4651f60" title="Permalink to this equation">#</a></span>\[\begin{align}
 η &amp;≡ \frac 12 \left( \frac{g}{ρN} \right)^2 \overline{ρ'^2} \\
 \frac{dη}{dt} &amp;= -J_b - \frac 12 χ_{pe}
 \end{align}\]</div>
 <p>This shows the connection between <span class="math notranslate nohighlight">\(ε\)</span> (<span class="math notranslate nohighlight">\(J_b\)</span>) and <span class="math notranslate nohighlight">\(χ_{pe}\)</span> (tied to <span class="math notranslate nohighlight">\(χ_ρ\)</span> which should be related to <span class="math notranslate nohighlight">\(χ_T\)</span> and <span class="math notranslate nohighlight">\(χ_S\)</span>).</p>
-<div class="amsmath math notranslate nohighlight" id="equation-edb889c1-3a6c-4813-9ab1-87b9cc9e75bc">
-<span class="eqno">(19)<a class="headerlink" href="#equation-edb889c1-3a6c-4813-9ab1-87b9cc9e75bc" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-26ea223f-a9bf-40d8-996b-5e41ca2e2a44">
+<span class="eqno">(19)<a class="headerlink" href="#equation-26ea223f-a9bf-40d8-996b-5e41ca2e2a44" title="Permalink to this equation">#</a></span>\[\begin{align}
 χ_{pe} &amp;= \left(\frac{g}{ρN}\right)^2 χ_ρ
 \end{align}\]</div>
 <section id="what-is">
 <h3>What is <span class="math notranslate nohighlight">\(χ_ρ\)</span><a class="headerlink" href="#what-is" title="Permalink to this headline">#</a></h3>
 <p>Now <span class="math notranslate nohighlight">\(χ_T\)</span> and <span class="math notranslate nohighlight">\(χ_S\)</span> are “easy” to define (assuming isotropy):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6648d638-5e31-4736-9f41-8c3f9fcd89a0">
-<span class="eqno">(20)<a class="headerlink" href="#equation-6648d638-5e31-4736-9f41-8c3f9fcd89a0" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-80c78e4a-4def-4499-81f4-34cfc99b5ffa">
+<span class="eqno">(20)<a class="headerlink" href="#equation-80c78e4a-4def-4499-81f4-34cfc99b5ffa" title="Permalink to this equation">#</a></span>\[\begin{equation}
 χ_T = 6 D_T \overline{\left(\frac{∂T'}{∂z}\right)^2} \qquad χ_S = 6 D_S \overline{\left(\frac{∂S'}{∂z}\right)^2}
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(D_S, D_T\)</span> are molecular diffusivities for <span class="math notranslate nohighlight">\(S\)</span>, <span class="math notranslate nohighlight">\(T\)</span>.</p>
@@ -691,16 +480,16 @@ J_ρ &amp;= ρ_0 (α K_T T_z - βK_S S_z) \\
 <section id="approach-of-gregg-1987">
 <h3>Approach of Gregg (1987)<a class="headerlink" href="#approach-of-gregg-1987" title="Permalink to this headline">#</a></h3>
 <p>Gregg (1987) writes</p>
-<div class="amsmath math notranslate nohighlight" id="equation-bf06aa20-a2f2-45b0-97f6-a0006705ef58">
-<span class="eqno">(21)<a class="headerlink" href="#equation-bf06aa20-a2f2-45b0-97f6-a0006705ef58" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-a371dfbe-6bf9-4796-a120-0c2932827ff3">
+<span class="eqno">(21)<a class="headerlink" href="#equation-a371dfbe-6bf9-4796-a120-0c2932827ff3" title="Permalink to this equation">#</a></span>\[\begin{align}
 χ_{pe} &amp;= \left(\frac{g}{ρN}\right)^2 χ_ρ \\
        &amp;= \left(\frac{gα}{N}\right)^2 χ_T + \left(\frac{gβ}{N}\right)^2 χ_S \qquad\qquad \text{assumption!} \\
        &amp;= \left(\frac{gα}{N}\right)^2 \left( 1 + \frac{1}{R_ρ^2} \right) χ_T; \qquad R_ρ = \frac{αT_z}{βS_z}  \; \text{ and } χ_S \approx \left( \frac{dS}{dT}\right)^2χ_T
 \end{align}\]</div>
 <p>This must assume that <span class="math notranslate nohighlight">\(T'\)</span> and <span class="math notranslate nohighlight">\(S'\)</span> are uncorrelated. As Nash &amp; Moum (1999) show, microconductivity observations (which is a different function of <span class="math notranslate nohighlight">\(T, S\)</span>) can have a very different spectral shape depending on the coherence between <span class="math notranslate nohighlight">\(T'\)</span>, <span class="math notranslate nohighlight">\(S'\)</span> (see below)</p>
 <p>Assuming equililbrium energetics <span class="math notranslate nohighlight">\(χ_{pe} = 2Γε\)</span> (Alford &amp; Pinkel, 2000) yields a <span class="math notranslate nohighlight">\(ε-χ_T\)</span> relationship, that we can then write as a <span class="math notranslate nohighlight">\(K_T -K_ρ\)</span> relationship</p>
-<div class="amsmath math notranslate nohighlight" id="equation-359f538e-1297-4e5d-aa52-352729e2b7a8">
-<span class="eqno">(22)<a class="headerlink" href="#equation-359f538e-1297-4e5d-aa52-352729e2b7a8" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-5c1e0bda-599a-455b-86f5-8df956ae8c6b">
+<span class="eqno">(22)<a class="headerlink" href="#equation-5c1e0bda-599a-455b-86f5-8df956ae8c6b" title="Permalink to this equation">#</a></span>\[\begin{align}
     2Γε &amp;= \left(\frac{gα}{N}\right)^2 \left( 1 + \frac{1}{R_ρ^2} \right) χ_T \\
     \frac{Γε}{N^2} &amp;= \left(\frac{gα}{N}\right)^2 \left( 1 + \frac{1}{R_ρ^2} \right) \frac{χ_T/2}{T_z^2} \frac{T_z^2}{N^2}\\
     K_ρ &amp;= \left(\frac{gαT_z}{N^2}\right)^2 \left( 1 + \frac{1}{R_ρ^2} \right) K_T \\
@@ -708,25 +497,30 @@ J_ρ &amp;= ρ_0 (α K_T T_z - βK_S S_z) \\
     K_ρ &amp;= \frac{1 + R_ρ^2}{(1 - R_ρ)^2} K_T \qquad\text{ or } K_ρ = \frac{(βS_z)^2 + (αT_z)^2}{(βS_z - αT_z)^2} K_T
 \end{align}\]</div>
 <p>after using</p>
-<div class="amsmath math notranslate nohighlight" id="equation-63ad8247-c958-4e31-ace4-af2396998a6d">
-<span class="eqno">(23)<a class="headerlink" href="#equation-63ad8247-c958-4e31-ace4-af2396998a6d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-09011cf9-e0ae-4407-85c8-464ff15c53cc">
+<span class="eqno">(23)<a class="headerlink" href="#equation-09011cf9-e0ae-4407-85c8-464ff15c53cc" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \frac{N^2}{T_z} = gα \left(1 - \frac{βS_z}{αT_z} \right) = gα\left( 1 - \frac{1}{R_ρ} \right)
 \end{equation}\]</div>
 <p>For <span class="math notranslate nohighlight">\(ε\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-f97d3ed9-de65-403d-9dcd-261d6a0c4adf">
-<span class="eqno">(24)<a class="headerlink" href="#equation-f97d3ed9-de65-403d-9dcd-261d6a0c4adf" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-e7824e66-7fc8-4a5a-b03e-e8df5b2997b1">
+<span class="eqno">(24)<a class="headerlink" href="#equation-e7824e66-7fc8-4a5a-b03e-e8df5b2997b1" title="Permalink to this equation">#</a></span>\[\begin{align}
 ε &amp;= \frac{1 + R_ρ^2}{(1 - R_ρ)^2} \frac{N^2χ_T}{2ΓT_z^2} \\
   &amp;= \frac{1 + R_ρ^2}{(1 - R_ρ)^2} \left(1 - \frac{1}{R_ρ} \right) \frac{gαχ_T}{2ΓT_z} \\
   &amp;= \frac{1 + R_ρ^2}{(R_ρ - 1) R_ρ} \frac{gαχ_T}{2ΓT_z} 
 \end{align}\]</div>
 <p>Some properties:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>This blows up at <span class="math notranslate nohighlight">\(R_ρ=1 ⇒ αT_z = βS_z\)</span> because then <span class="math notranslate nohighlight">\(N^2 = gαT_z - gβS_z = 0\)</span>, so the gradients perfectly cancel each other. The <span class="math notranslate nohighlight">\(ε\)</span> equation is undefined (0/0) but I think it’s saying <span class="math notranslate nohighlight">\(χ_T\)</span> does not tell us anything about <span class="math notranslate nohighlight">\(ε\)</span> since <span class="math notranslate nohighlight">\(T\)</span> is totally disconnected from the energetics. <strong>This is the inverse of what I expected</strong>. But we do filter out small N2 anyway</p></li>
 <li><p>When <span class="math notranslate nohighlight">\(0 &lt; R_ρ &lt; 1\)</span> , <span class="math notranslate nohighlight">\(ε &lt; 0\)</span> but <span class="math notranslate nohighlight">\(N^2 &lt; 0\)</span> so it gets filtered out.</p></li>
 <li><p>If <span class="math notranslate nohighlight">\(S_z = 0\)</span>, then <span class="math notranslate nohighlight">\(K_T=K_ρ\)</span></p></li>
 </ol>
 <p><strong>What is <span class="math notranslate nohighlight">\(R_ρ\)</span> for NATRE?</strong> [right] Here’s the average of <span class="math notranslate nohighlight">\(R_ρ\)</span> along P surfaces across all profiles.</p>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">holoviews</span> <span class="k">as</span> <span class="nn">h</span>
 
@@ -734,6 +528,7 @@ J_ρ &amp;= ρ_0 (α K_T T_z - βK_S S_z) \\
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <script type="application/javascript">
 (function(root) {
@@ -2688,7 +2483,7 @@ roTBs2RqAAAAAElFTkSuQmCC'
 
   <img src='data:image/png;base64,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'
        style='height:15px; border-radius:12px; display: inline-block; float: left'></img>
-
+  
 
 
 
@@ -2697,6 +2492,11 @@ roTBs2RqAAAAAElFTkSuQmCC'
 </div></div>
 </div>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">hvplot.xarray</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -2712,6 +2512,7 @@ roTBs2RqAAAAAElFTkSuQmCC'
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>13 40
 0  values == 0
@@ -2729,6 +2530,11 @@ roTBs2RqAAAAAElFTkSuQmCC'
 </ul>
 <p>It seems like this will reduce the magnitude of the ε bump by boosting vaues above/below the bump, and reducing the bump</p>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Rρ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
 
@@ -2764,6 +2570,7 @@ roTBs2RqAAAAAElFTkSuQmCC'
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <div class="output text_html"><div id='2302'>
 
@@ -2853,15 +2660,15 @@ roTBs2RqAAAAAElFTkSuQmCC'
 <section id="what-is-the-spectra-of-z">
 <h3>What is the spectra of <span class="math notranslate nohighlight">\(ρ'_z\)</span><a class="headerlink" href="#what-is-the-spectra-of-z" title="Permalink to this headline">#</a></h3>
 <p>Following Nash &amp; Moum (1999)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-f27d05d1-880c-4e6e-9d1d-8fe2993ab2a5">
-<span class="eqno">(25)<a class="headerlink" href="#equation-f27d05d1-880c-4e6e-9d1d-8fe2993ab2a5" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-beb6dcd0-8a03-47f1-8889-4da46849d2de">
+<span class="eqno">(25)<a class="headerlink" href="#equation-beb6dcd0-8a03-47f1-8889-4da46849d2de" title="Permalink to this equation">#</a></span>\[\begin{align}
 ρ_z &amp;= - ρ_0 α T_z+ ρ_0 β S_z \\
 ψ_{ρz} &amp;= (ρ_0 α)^2 ψ_{Tz} - 2 ρ_0^2 αβψ_{TzSz} + (ρ_0 β)^2 ψ_{Sz}
 \end{align}\]</div>
 <p>and
 cospectrum can be expressed using coherence <span class="math notranslate nohighlight">\(γ_{TzSz}(k)\)</span> and phase <span class="math notranslate nohighlight">\(φ(k)\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-0657c92f-71fa-4005-b86e-3ddcf556fd7d">
-<span class="eqno">(26)<a class="headerlink" href="#equation-0657c92f-71fa-4005-b86e-3ddcf556fd7d" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-21a8a94e-b56a-4211-bc2b-cd54798ca673">
+<span class="eqno">(26)<a class="headerlink" href="#equation-21a8a94e-b56a-4211-bc2b-cd54798ca673" title="Permalink to this equation">#</a></span>\[\begin{equation}
 ψ_{TzSz} = γ_{TzSz}(k) e^{iφ(k)} [ψ_{Tz}ψ_{Sz}]^{1/2}
 \end{equation}\]</div>
 <p>In general if <span class="math notranslate nohighlight">\(T_z\)</span> and <span class="math notranslate nohighlight">\(S_z\)</span> are correlated then the cross-term is not negligible. Here we test this idea assuming perfect coherence amplitude, and either in-phase or 180° out-of-phase.</p>
@@ -2885,6 +2692,11 @@ cospectrum can be expressed using coherence <span class="math notranslate nohigh
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calculate_quantities</span><span class="p">(</span><span class="n">χT</span><span class="p">,</span> <span class="n">χS</span><span class="p">,</span> <span class="n">ε</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">dcpy.oceans</span> <span class="kn">import</span> <span class="n">kraichnan</span>
@@ -2951,6 +2763,7 @@ cospectrum can be expressed using coherence <span class="math notranslate nohigh
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2969,7 +2782,7 @@ cospectrum can be expressed using coherence <span class="math notranslate nohigh
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/chi-eps_10_0.png" src="_images/chi-eps_10_0.png" />
+<img alt="_images/3b88192add137d7cf4b7a7770f6c1476d22a3cc32d1c486e2b7c45b02733c2c0.png" src="_images/3b88192add137d7cf4b7a7770f6c1476d22a3cc32d1c486e2b7c45b02733c2c0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2983,7 +2796,7 @@ cospectrum can be expressed using coherence <span class="math notranslate nohigh
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/chi-eps_11_0.png" src="_images/chi-eps_11_0.png" />
+<img alt="_images/65a76bbe2403f5791101c5427fc5dcf80853b5764061b34acee71de41731658f.png" src="_images/65a76bbe2403f5791101c5427fc5dcf80853b5764061b34acee71de41731658f.png" />
 </div>
 </div>
 <p>We recover <span class="math notranslate nohighlight">\(χ_T, χ_S\)</span>. Interestingly, <code class="docutils literal notranslate"><span class="pre">χpe</span></code> and <code class="docutils literal notranslate"><span class="pre">χpe_neg</span></code> are not that different (20%) so perhaps this isn’t too bad an assumption?</p>
@@ -3884,7 +3697,7 @@ Data variables:
             mode: "conda-env-eddydiff-py"
         },
         kernelOptions: {
-            kernelName: "conda-env-eddydiff-py",
+            name: "conda-env-eddydiff-py",
             path: "./."
         },
         predefinedOutput: true
@@ -3892,57 +3705,123 @@ Data variables:
     </script>
     <script>kernelName = 'conda-env-eddydiff-py'</script>
 
-              </div>
+                </article>
               
-            </main>
-            <footer class="footer-article noprint">
-                
-    <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="iw-fine-devel.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Finescale Mixing Parametrizations: Development</p>
-        </div>
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="iw-fine-devel.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Finescale Mixing Parametrizations: Development</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="compare-Ke-estimates.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="compare-Ke-estimates.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">Compare different <span class="math notranslate nohighlight">\(K_e\)</span> estimates</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
+</div></div>
+  
 </div>
-            </footer>
-        </div>
-    </div>
-    <div class="footer-content row">
-        <footer class="col footer"><p>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">Motivation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-buoyancy-flux">From buoyancy flux</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#to">To <span class="math notranslate nohighlight">\(χ_ρ\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gregg-1987-energetics">Gregg (1987) &amp; energetics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is">What is <span class="math notranslate nohighlight">\(χ_ρ\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#approach-of-gregg-1987">Approach of Gregg (1987)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deriving">Deriving <span class="math notranslate nohighlight">\(χ_ρ\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-spectra-of-z">What is the spectra of <span class="math notranslate nohighlight">\(ρ'_z\)</span></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
   
-    By Deepak Cherian<br/>
+  <div class="footer-item">
+    
+<p class="component-author">
+By Deepak Cherian
+</p>
+
+  </div>
   
-      &copy; Copyright 2022.<br/>
-    <div class="extra_footer">
-      <div>
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
 <script data-goatcounter="https://count.cherian.net/count"
         async src="count.js"></script>
 </div>
 
-    </div>
-</p>
-        </footer>
-    </div>
-    
 </div>
+  </div>
+  
+</div>
+          </footer>
+        
 
-
-      </div>
+      </main>
     </div>
+  </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
 
-
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

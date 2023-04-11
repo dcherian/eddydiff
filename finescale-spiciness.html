@@ -1,35 +1,45 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html >
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>Finescale structure and spiciness &#8212; Eddy Diffusivity</title>
-    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
-    
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -37,12 +47,12 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -50,500 +60,323 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'finescale-spiciness';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay overlay-navbar" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<!-- Checkboxes to toggle the in-page toc -->
-<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
-<label class="overlay overlay-pagetoc" for="__page-toc">
-    <div class="visually-hidden">Toggle in-page Table of Contents</div>
-</label>
-<!-- Headers at the top -->
-<div class="announcement header-item noprint"></div>
-<div class="header header-item noprint"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-    <div class="container-fluid" id="banner"></div>
-
-    
-
-    <div class="container-xl">
-      <div class="row">
-          
-<!-- Sidebar -->
-<div class="bd-sidebar noprint" id="site-navigation">
-    <div class="bd-sidebar__content">
-        <div class="bd-sidebar__top"><div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="index.html">
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="_static/logo.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Eddy Diffusivity</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Moored χpod analysis
- </span>
-</p>
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Moored χpod analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="tao.html">
-   TAO (0, 140) χpod
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="equix.html">
-   EQUIX
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="tao.html">TAO (0, 140) χpod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="equix.html">EQUIX</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  CTD χpod analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">CTD χpod analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="BoB-ctd-chipod.html">
-   BoB ASIRI 2013 CTD χpod
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="P06.html">
-   P06 CTD χpod analysis
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="sections-variance-estimate.html">
-   Eddy variance generation along GO-SHIP lines
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ctd-%CF%87-bob.html">
-   ASIRI13 CTD χpod
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ctd-%CF%87-A05.html">
-   CTD χpod A05 section
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="bootstrap-ctd-chipod-estimates.html">
-   Bootstrapped outlier detection for CTD-χpod
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="BoB-ctd-chipod.html">BoB ASIRI 2013 CTD χpod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="P06.html">P06 CTD χpod analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sections-variance-estimate.html">Eddy variance generation along GO-SHIP lines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ctd-%CF%87-bob.html">ASIRI13 CTD χpod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ctd-%CF%87-A05.html">CTD χpod A05 section</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bootstrap-ctd-chipod-estimates.html">Bootstrapped outlier detection for CTD-χpod</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Model Processing
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Model Processing</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pop-1-deg.html">
-   POP 1°: Redi term
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pop-var-budget.html">
-   Yiming’s POP variance budget
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="pop-1-deg.html">POP 1°: Redi term</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pop-var-budget.html">Yiming’s POP variance budget</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Variance budgets
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Variance budgets</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="natre.html">
-   NATRE region variance budget
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="natre.html">NATRE region variance budget</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  NATRE region analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NATRE region analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="natre-examine.html">
-   NATRE microstructure dataset
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="natre-finescale.html">
-   NATRE micro vs finescale
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="natre-vs-ctd-%CF%87pod.html">
-   NATRE vs CTD-χpod
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="natre-examine.html">NATRE microstructure dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natre-finescale.html">NATRE micro vs finescale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natre-vs-ctd-%CF%87pod.html">NATRE vs CTD-χpod</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Finestructure analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Finestructure analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="iw-fine-argo.html">
-   Argo finescale estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="iw-fine-estimates.html">
-   Existing finestructure estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="iw-fine-devel.html">
-   Finescale Mixing Parametrizations: Development
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="iw-fine-argo.html">Argo finescale estimates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iw-fine-estimates.html">Existing finestructure estimates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iw-fine-devel.html">Finescale Mixing Parametrizations: Development</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Ancillary analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Ancillary analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="chi-eps.html">
-   χ-ε relations
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="compare-Ke-estimates.html">
-   Compare different
-   <span class="math notranslate nohighlight">
-    \(K_e\)
-   </span>
-   estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="equix-vs-tao.html">
-   χpods: EQUIX vs TAO
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="eqpac-ts-diagrams.html">
-   T-S diagrams from TAO &amp; Argo at (0, 145W→135W)
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="dataset-processing.html">
-   Dataset processing
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="chi-eps.html">χ-ε relations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compare-Ke-estimates.html">Compare different <span class="math notranslate nohighlight">\(K_e\)</span> estimates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="equix-vs-tao.html">χpods: EQUIX vs TAO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eqpac-ts-diagrams.html">T-S diagrams from TAO &amp; Argo at (0, 145W→135W)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset-processing.html">Dataset processing</a></li>
 </ul>
 
     </div>
 </nav></div>
-        <div class="bd-sidebar__bottom">
-             <!-- To handle the deprecated key -->
-            
-            <div class="navbar_extra_footer">
-            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-            </div>
-            
-        </div>
     </div>
-    <div id="rtd-footer-container"></div>
-</div>
-
-
-          
-
-
-          
-<!-- A tiny helper pixel to detect if we've scrolled -->
-<div class="sbt-scroll-pixel-helper"></div>
-<!-- Main content -->
-<div class="col py-0 content-container">
-    
-    <div class="header-article row sticky-top noprint">
-        
-
-
-
-<div class="col py-1 d-flex header-article-main">
-    <div class="header-article__left">
-        
-        <label for="__navigation"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="right"
-title="Toggle navigation"
->
   
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-bars"></i>
-  </span>
-
-</label>
-
-        
-    </div>
-    <div class="header-article__right">
-<div class="menu-dropdown menu-dropdown-launch-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Launch interactive content">
-      <i class="fas fa-rocket"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://mybinder.org/v2/gh/dcherian/eddydiff/main?urlpath=tree/notebooks/finescale-spiciness.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Binder"
->
   
-
-<span class="headerbtn__icon-container">
-  
-    <img src="_static/images/logo_binder.svg">
-  </span>
-<span class="headerbtn__text-container">Binder</span>
-</a>
-
-      </li>
-      
-    </ul>
+  <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
-</div>
+  
+  <div id="rtd-footer-container"></div>
 
-<button onclick="toggleFullScreen()"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="bottom"
-title="Fullscreen mode"
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/dcherian/eddydiff" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
-  <i class="fas fa-expand"></i>
-  </span>
-
-</button>
-<a href="https://github.com/dcherian/eddydiff"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="bottom"
-title="Source repository"
->
-  
-
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fab fa-github"></i>
   </span>
 
 </a>
 
-<div class="menu-dropdown menu-dropdown-download-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Download this page">
-      <i class="fas fa-download"></i>
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="_sources/finescale-spiciness.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Download source file"
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/finescale-spiciness.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="headerbtn__text-container">.ipynb</span>
+<span class="btn__text-container">.ipynb</span>
 </a>
-
-      </li>
+</li>
+      
+      
+      
       
       <li>
-        
-<button onclick="printPdf(this)"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="left"
-title="Print to PDF"
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-file-pdf"></i>
   </span>
-<span class="headerbtn__text-container">.pdf</span>
+<span class="btn__text-container">.pdf</span>
 </button>
-
-      </li>
+</li>
       
-    </ul>
-  </div>
+  </ul>
 </div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
   </span>
 
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
 </label>
-
+</div></div>
+      
     </div>
+  
 </div>
-
-<!-- Table of contents -->
-<div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#read-data">
-   Read data
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#t-s-diagrams">
-   T-S diagrams
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#spiciness">
-   Spiciness
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#simple-standard-deviation">
-     Simple standard deviation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#referenced-to-median-t-s">
-     Referenced to median T-S
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#vertical-wavenumber-spectra">
-   Vertical wavenumber spectra
-  </a>
- </li>
-</ul>
-
-    </nav>
 </div>
-    </div>
-    <div class="article row">
-        <div class="col pl-md-3 pl-lg-5 content-container">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Finescale structure and spiciness</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#read-data">
-   Read data
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#t-s-diagrams">
-   T-S diagrams
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#spiciness">
-   Spiciness
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#simple-standard-deviation">
-     Simple standard deviation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#referenced-to-median-t-s">
-     Referenced to median T-S
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#vertical-wavenumber-spectra">
-   Vertical wavenumber spectra
-  </a>
- </li>
-</ul>
+              
+              
 
-                        </nav>
-                    </div>
-                </div>
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Finescale structure and spiciness</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
             </div>
-            <main id="main-content" role="main">
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-data">Read data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#t-s-diagrams">T-S diagrams</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spiciness">Spiciness</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-standard-deviation">Simple standard deviation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#referenced-to-median-t-s">Referenced to median T-S</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vertical-wavenumber-spectra">Vertical wavenumber spectra</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
                 
-              <div>
-                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <section class="tex2jax_ignore mathjax_ignore" id="finescale-structure-and-spiciness">
 <h1>Finescale structure and spiciness<a class="headerlink" href="#finescale-structure-and-spiciness" title="Permalink to this headline">#</a></h1>
 <p>This notebook is motivated by the lack of eddy stirring signal in the CTD-χpod A05 dataset. One possibility is that the error bounds on χ are too large. But if we assumed the χ data were perfect, is there a way to tell whether we expect to see a “scale-transformation term” in the microscale variance budget?</p>
 <p>Another motivation for this is that some latitude lines in the NATRE budget show a larger residual than others.</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>What is the difference?</p></li>
 <li><p>And is there some sign of that difference in the finescale structure?</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Greater along-isopycnal std(S) and std(T)?</p></li>
 <li><p>Greater variance of T_z, S_z at injection scales?</p></li>
 <li><p>^ these two should be connected…</p></li>
@@ -569,7 +402,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/finescale-spiciness_2_0.png" src="_images/finescale-spiciness_2_0.png" />
+<img alt="_images/61f2747caa9d8269271d43439d851718f0deacdba352e2459379f4f19cf73182.png" src="_images/61f2747caa9d8269271d43439d851718f0deacdba352e2459379f4f19cf73182.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -579,7 +412,7 @@ title="Print to PDF"
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/finescale-spiciness_3_0.png" src="_images/finescale-spiciness_3_0.png" />
+<img alt="_images/38e7d46019b234da014519f40021d7c39f045c72c82a08d5187149eb9a956417.png" src="_images/38e7d46019b234da014519f40021d7c39f045c72c82a08d5187149eb9a956417.png" />
 </div>
 </div>
 <section id="read-data">
@@ -2587,7 +2420,7 @@ roTBs2RqAAAAAElFTkSuQmCC'
 
   <img src='data:image/png;base64,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'
        style='height:15px; border-radius:12px; display: inline-block; float: left'></img>
-
+  
 
 
 
@@ -4120,9 +3953,7 @@ Attributes: (12/13)
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x18823d820&gt;
 </pre></div>
 </div>
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "66dfafb60a8c4bf5bb6574704429c4dd", "version_major": 2, "version_minor": 0}
-</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "66dfafb60a8c4bf5bb6574704429c4dd", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -6005,23 +5836,23 @@ Attributes: (12/14)
 <section id="simple-standard-deviation">
 <h3>Simple standard deviation<a class="headerlink" href="#simple-standard-deviation" title="Permalink to this headline">#</a></h3>
 <p>Here is std(SA) and std(CT) calculated in O(100)m wide isopycnal bins.</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>The bump between 1500-2000m is interesting.</p></li>
 <li><p>Some spatial gradient in the top 500m is showing up as high spiciness but it’s not the signal I want</p></li>
 </ol>
 <p>I think this ties in to the last bit of Ferrari &amp; Polzin (2005), their equation (6.7)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-60cf1812-1dd4-4ef9-8459-9c73cf6a4363">
-<span class="eqno">()<a class="headerlink" href="#equation-60cf1812-1dd4-4ef9-8459-9c73cf6a4363" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-0ca7b241-0b8f-41b4-bb46-723fa92bccbf">
+<span class="eqno">()<a class="headerlink" href="#equation-0ca7b241-0b8f-41b4-bb46-723fa92bccbf" title="Permalink to this equation">#</a></span>\[\begin{equation}
     K_ρ (∂_zθ_m)^2 +  K_e |∇_nθ_m|^2 = \frac12 ⟨χ⟩
 \end{equation}\]</div>
 <p>Taking the ratio of production terms</p>
-<div class="amsmath math notranslate nohighlight" id="equation-49b93fe0-fb7a-493d-9fc9-a4a1a89104fc">
-<span class="eqno">()<a class="headerlink" href="#equation-49b93fe0-fb7a-493d-9fc9-a4a1a89104fc" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-56ea6c71-6ef0-4832-9f19-04345b6461c8">
+<span class="eqno">()<a class="headerlink" href="#equation-56ea6c71-6ef0-4832-9f19-04345b6461c8" title="Permalink to this equation">#</a></span>\[\begin{equation}
     \frac{K_ρ (∂_z θ_m)^2}{K_e |∇_n θ_m|^2} = \frac{K_ρ/K_e}{|∇_n θ_m|^2 / (∂_z θ_m)^2}
 \end{equation}\]</div>
 <p>Where the denominator is large relative to numerator we expect mesoscale stirring to dominate.</p>
 <p>I’m thinking I might want to remove the estimate a vertical std of <span class="math notranslate nohighlight">\(T,S\)</span> in each bin and then average that across casts. But how do I justify this?</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>I guess this is like Cole calculating anomaly w.r.t mean S surface? that would take out the “large” scale lateral gradient.</p></li>
 <li><p>Taking smaller bins seems to help, then we are more likely to ignore mixing across closely spaced ρ surfaces.</p>
 <ul class="simple">
@@ -6119,7 +5950,7 @@ Attributes: (12/14)
 })(window);</script></div></div>
 </div>
 <p>There is some relationship between std(SA) (blue) and where we can see a residual. But the agreement isn’t as clear as I would thin k:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>24.7</p></li>
 <li><p>26.3</p></li>
 </ol>
@@ -6139,7 +5970,7 @@ Attributes: (12/14)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/finescale-spiciness_15_0.png" src="_images/finescale-spiciness_15_0.png" />
+<img alt="_images/09d7b304dbda3df81f8111afe8a59fa9923cf80fbd1cdba2ab224cfacb276d24.png" src="_images/09d7b304dbda3df81f8111afe8a59fa9923cf80fbd1cdba2ab224cfacb276d24.png" />
 </div>
 </div>
 </section>
@@ -6166,9 +5997,7 @@ Attributes: (12/14)
 </div>
 </div>
 <div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "342123aebfd14db8b203c89eaf4a31d2", "version_major": 2, "version_minor": 0}
-</script></div>
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "342123aebfd14db8b203c89eaf4a31d2", "version_major": 2, "version_minor": 0}</script></div>
 </div>
 </section>
 </section>
@@ -6192,7 +6021,7 @@ Attributes: (12/14)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/finescale-spiciness_21_0.png" src="_images/finescale-spiciness_21_0.png" />
+<img alt="_images/4087ab761897b9f49eb7d6398522f957a609d74bb363450357ffea297a8ec6cd.png" src="_images/4087ab761897b9f49eb7d6398522f957a609d74bb363450357ffea297a8ec6cd.png" />
 </div>
 </div>
 </section>
@@ -6210,7 +6039,7 @@ Attributes: (12/14)
             mode: "conda-env-eddydiff-py"
         },
         kernelOptions: {
-            kernelName: "conda-env-eddydiff-py",
+            name: "conda-env-eddydiff-py",
             path: "./."
         },
         predefinedOutput: true
@@ -6218,43 +6047,101 @@ Attributes: (12/14)
     </script>
     <script>kernelName = 'conda-env-eddydiff-py'</script>
 
-              </div>
+                </article>
               
-            </main>
-            <footer class="footer-article noprint">
-                
-    <!-- Previous / next buttons -->
-<div class='prev-next-area'>
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+</div></div>
+  
 </div>
-            </footer>
-        </div>
-    </div>
-    <div class="footer-content row">
-        <footer class="col footer"><p>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-data">Read data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#t-s-diagrams">T-S diagrams</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spiciness">Spiciness</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-standard-deviation">Simple standard deviation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#referenced-to-median-t-s">Referenced to median T-S</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vertical-wavenumber-spectra">Vertical wavenumber spectra</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
   
-    By Deepak Cherian<br/>
+  <div class="footer-item">
+    
+<p class="component-author">
+By Deepak Cherian
+</p>
+
+  </div>
   
-      &copy; Copyright 2022.<br/>
-    <div class="extra_footer">
-      <div>
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
 <script data-goatcounter="https://count.cherian.net/count"
         async src="count.js"></script>
 </div>
 
-    </div>
-</p>
-        </footer>
-    </div>
-    
 </div>
+  </div>
+  
+</div>
+          </footer>
+        
 
-
-      </div>
+      </main>
     </div>
+  </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
 
-
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

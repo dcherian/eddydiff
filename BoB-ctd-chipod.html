@@ -1,35 +1,45 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html >
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>BoB ASIRI 2013 CTD χpod &#8212; Eddy Diffusivity</title>
-    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
-    
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -37,12 +47,12 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -50,643 +60,338 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'BoB-ctd-chipod';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="P06 CTD χpod analysis" href="P06.html" />
     <link rel="prev" title="EQUIX" href="equix.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay overlay-navbar" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<!-- Checkboxes to toggle the in-page toc -->
-<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
-<label class="overlay overlay-pagetoc" for="__page-toc">
-    <div class="visually-hidden">Toggle in-page Table of Contents</div>
-</label>
-<!-- Headers at the top -->
-<div class="announcement header-item noprint"></div>
-<div class="header header-item noprint"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-    <div class="container-fluid" id="banner"></div>
-
-    
-
-    <div class="container-xl">
-      <div class="row">
-          
-<!-- Sidebar -->
-<div class="bd-sidebar noprint" id="site-navigation">
-    <div class="bd-sidebar__content">
-        <div class="bd-sidebar__top"><div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="index.html">
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="_static/logo.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Eddy Diffusivity</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Moored χpod analysis
- </span>
-</p>
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Moored χpod analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="tao.html">
-   TAO (0, 140) χpod
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="equix.html">
-   EQUIX
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="tao.html">TAO (0, 140) χpod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="equix.html">EQUIX</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  CTD χpod analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">CTD χpod analysis</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   BoB ASIRI 2013 CTD χpod
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="P06.html">
-   P06 CTD χpod analysis
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="sections-variance-estimate.html">
-   Eddy variance generation along GO-SHIP lines
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ctd-%CF%87-bob.html">
-   ASIRI13 CTD χpod
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ctd-%CF%87-A05.html">
-   CTD χpod A05 section
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="bootstrap-ctd-chipod-estimates.html">
-   Bootstrapped outlier detection for CTD-χpod
-  </a>
- </li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">BoB ASIRI 2013 CTD χpod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="P06.html">P06 CTD χpod analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sections-variance-estimate.html">Eddy variance generation along GO-SHIP lines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ctd-%CF%87-bob.html">ASIRI13 CTD χpod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ctd-%CF%87-A05.html">CTD χpod A05 section</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bootstrap-ctd-chipod-estimates.html">Bootstrapped outlier detection for CTD-χpod</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Model Processing
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Model Processing</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pop-1-deg.html">
-   POP 1°: Redi term
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pop-var-budget.html">
-   Yiming’s POP variance budget
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="pop-1-deg.html">POP 1°: Redi term</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pop-var-budget.html">Yiming’s POP variance budget</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Variance budgets
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Variance budgets</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="natre.html">
-   NATRE region variance budget
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="natre.html">NATRE region variance budget</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  NATRE region analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NATRE region analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="natre-examine.html">
-   NATRE microstructure dataset
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="natre-finescale.html">
-   NATRE micro vs finescale
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="natre-vs-ctd-%CF%87pod.html">
-   NATRE vs CTD-χpod
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="natre-examine.html">NATRE microstructure dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natre-finescale.html">NATRE micro vs finescale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natre-vs-ctd-%CF%87pod.html">NATRE vs CTD-χpod</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Finestructure analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Finestructure analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="iw-fine-argo.html">
-   Argo finescale estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="iw-fine-estimates.html">
-   Existing finestructure estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="iw-fine-devel.html">
-   Finescale Mixing Parametrizations: Development
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="iw-fine-argo.html">Argo finescale estimates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iw-fine-estimates.html">Existing finestructure estimates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iw-fine-devel.html">Finescale Mixing Parametrizations: Development</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Ancillary analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Ancillary analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="chi-eps.html">
-   χ-ε relations
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="compare-Ke-estimates.html">
-   Compare different
-   <span class="math notranslate nohighlight">
-    \(K_e\)
-   </span>
-   estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="equix-vs-tao.html">
-   χpods: EQUIX vs TAO
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="eqpac-ts-diagrams.html">
-   T-S diagrams from TAO &amp; Argo at (0, 145W→135W)
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="dataset-processing.html">
-   Dataset processing
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="chi-eps.html">χ-ε relations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compare-Ke-estimates.html">Compare different <span class="math notranslate nohighlight">\(K_e\)</span> estimates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="equix-vs-tao.html">χpods: EQUIX vs TAO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eqpac-ts-diagrams.html">T-S diagrams from TAO &amp; Argo at (0, 145W→135W)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset-processing.html">Dataset processing</a></li>
 </ul>
 
     </div>
 </nav></div>
-        <div class="bd-sidebar__bottom">
-             <!-- To handle the deprecated key -->
-            
-            <div class="navbar_extra_footer">
-            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-            </div>
-            
-        </div>
     </div>
-    <div id="rtd-footer-container"></div>
-</div>
-
-
-          
-
-
-          
-<!-- A tiny helper pixel to detect if we've scrolled -->
-<div class="sbt-scroll-pixel-helper"></div>
-<!-- Main content -->
-<div class="col py-0 content-container">
-    
-    <div class="header-article row sticky-top noprint">
-        
-
-
-
-<div class="col py-1 d-flex header-article-main">
-    <div class="header-article__left">
-        
-        <label for="__navigation"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="right"
-title="Toggle navigation"
->
   
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-bars"></i>
-  </span>
-
-</label>
-
-        
-    </div>
-    <div class="header-article__right">
-<div class="menu-dropdown menu-dropdown-launch-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Launch interactive content">
-      <i class="fas fa-rocket"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://mybinder.org/v2/gh/dcherian/eddydiff/main?urlpath=tree/notebooks/BoB-ctd-chipod.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Binder"
->
   
-
-<span class="headerbtn__icon-container">
-  
-    <img src="_static/images/logo_binder.svg">
-  </span>
-<span class="headerbtn__text-container">Binder</span>
-</a>
-
-      </li>
-      
-    </ul>
+  <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
-</div>
+  
+  <div id="rtd-footer-container"></div>
 
-<button onclick="toggleFullScreen()"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="bottom"
-title="Fullscreen mode"
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/dcherian/eddydiff" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
-  <i class="fas fa-expand"></i>
-  </span>
-
-</button>
-<a href="https://github.com/dcherian/eddydiff"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="bottom"
-title="Source repository"
->
-  
-
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fab fa-github"></i>
   </span>
 
 </a>
 
-<div class="menu-dropdown menu-dropdown-download-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Download this page">
-      <i class="fas fa-download"></i>
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="_sources/BoB-ctd-chipod.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Download source file"
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/BoB-ctd-chipod.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="headerbtn__text-container">.ipynb</span>
+<span class="btn__text-container">.ipynb</span>
 </a>
-
-      </li>
+</li>
+      
+      
+      
       
       <li>
-        
-<button onclick="printPdf(this)"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="left"
-title="Print to PDF"
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-file-pdf"></i>
   </span>
-<span class="headerbtn__text-container">.pdf</span>
+<span class="btn__text-container">.pdf</span>
 </button>
-
-      </li>
+</li>
       
-    </ul>
-  </div>
+  </ul>
 </div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
   </span>
 
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
 </label>
-
+</div></div>
+      
     </div>
+  
 </div>
-
-<!-- Table of contents -->
-<div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#transect-ts-plots">
-   Transect TS plots
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#read-and-plot-single-transect">
-   Read and plot single transect
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#process-transect-data">
-   Process transect data
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#read-in-other-datasets">
-   Read in other datasets
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#using-climatological-gradients">
-   Using climatological gradients
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#naveira-garabato-et-al-2016-approach">
-   Naveira Garabato et al. (2016) approach
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#calculation">
-     Calculation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#debugging-plots">
-     Debugging plots
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#distributions-dt-dz-and-dt-diapycnal">
-     Distributions: dT/dz and dT_diapycnal
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ferrari-polzin-2005-approach">
-   Ferrari &amp; Polzin (2005) approach
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#without-interpolating-to-convert-to-density-space">
-   Without interpolating to convert to density space
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#compare-various-mean-fields-gradients">
-   Compare various mean fields / gradients
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#argo-estimate-cole-et-al-2015">
-   Argo estimate (Cole et al, 2015)
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#all-data-combined">
-   All data combined
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#lessons-learned">
-   Lessons learned
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#don-t-interpolate-when-converting-to-density-space">
-     Don’t interpolate when converting to density space
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#spline-smooth-both-temperature-and-pressure">
-     Spline-smooth both temperature and pressure
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#groupby-on-dataframe-or-xarray-consistently">
-     Groupby on dataframe or xarray consistently
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#test-gradients-in-isopycnal-planes">
-     Test gradients in isopycnal planes
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#convert-transect-mat-to-netcdf-files">
-     Convert transect .mat to netcdf files
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
-
-    </nav>
 </div>
-    </div>
-    <div class="article row">
-        <div class="col pl-md-3 pl-lg-5 content-container">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>BoB ASIRI 2013 CTD χpod</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#transect-ts-plots">
-   Transect TS plots
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#read-and-plot-single-transect">
-   Read and plot single transect
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#process-transect-data">
-   Process transect data
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#read-in-other-datasets">
-   Read in other datasets
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#using-climatological-gradients">
-   Using climatological gradients
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#naveira-garabato-et-al-2016-approach">
-   Naveira Garabato et al. (2016) approach
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#calculation">
-     Calculation
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#debugging-plots">
-     Debugging plots
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#distributions-dt-dz-and-dt-diapycnal">
-     Distributions: dT/dz and dT_diapycnal
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#ferrari-polzin-2005-approach">
-   Ferrari &amp; Polzin (2005) approach
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#without-interpolating-to-convert-to-density-space">
-   Without interpolating to convert to density space
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#compare-various-mean-fields-gradients">
-   Compare various mean fields / gradients
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#argo-estimate-cole-et-al-2015">
-   Argo estimate (Cole et al, 2015)
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#all-data-combined">
-   All data combined
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#lessons-learned">
-   Lessons learned
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#don-t-interpolate-when-converting-to-density-space">
-     Don’t interpolate when converting to density space
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#spline-smooth-both-temperature-and-pressure">
-     Spline-smooth both temperature and pressure
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#groupby-on-dataframe-or-xarray-consistently">
-     Groupby on dataframe or xarray consistently
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#test-gradients-in-isopycnal-planes">
-     Test gradients in isopycnal planes
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#convert-transect-mat-to-netcdf-files">
-     Convert transect .mat to netcdf files
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
+              
+              
 
-                        </nav>
-                    </div>
-                </div>
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>BoB ASIRI 2013 CTD χpod</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
             </div>
-            <main id="main-content" role="main">
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transect-ts-plots">Transect TS plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-and-plot-single-transect">Read and plot single transect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#process-transect-data">Process transect data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-other-datasets">Read in other datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-climatological-gradients">Using climatological gradients</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#naveira-garabato-et-al-2016-approach">Naveira Garabato et al. (2016) approach</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculation">Calculation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#debugging-plots">Debugging plots</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distributions-dt-dz-and-dt-diapycnal">Distributions: dT/dz and dT_diapycnal</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ferrari-polzin-2005-approach">Ferrari &amp; Polzin (2005) approach</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#without-interpolating-to-convert-to-density-space">Without interpolating to convert to density space</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-various-mean-fields-gradients">Compare various mean fields / gradients</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argo-estimate-cole-et-al-2015">Argo estimate (Cole et al, 2015)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#all-data-combined">All data combined</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lessons-learned">Lessons learned</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#don-t-interpolate-when-converting-to-density-space">Don’t interpolate when converting to density space</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spline-smooth-both-temperature-and-pressure">Spline-smooth both temperature and pressure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#groupby-on-dataframe-or-xarray-consistently">Groupby on dataframe or xarray consistently</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-gradients-in-isopycnal-planes">Test gradients in isopycnal planes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-transect-mat-to-netcdf-files">Convert transect .mat to netcdf files</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
                 
-              <div>
-                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <section class="tex2jax_ignore mathjax_ignore" id="bob-asiri-2013-ctd-pod">
 <h1>BoB ASIRI 2013 CTD χpod<a class="headerlink" href="#bob-asiri-2013-ctd-pod" title="Permalink to this headline">#</a></h1>
 <p>This notebook will attempt to infer eddy diffusivity <span class="math notranslate nohighlight">\(K_e\)</span> from the basin-wide transect of <span class="math notranslate nohighlight">\(χ, K_T\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-7716e24c-98b6-4c02-b4b9-fe496fa82abc">
-<span class="eqno">(1)<a class="headerlink" href="#equation-7716e24c-98b6-4c02-b4b9-fe496fa82abc" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-dde19ad6-38b9-40c4-aa73-fa01f78a708d">
+<span class="eqno">(1)<a class="headerlink" href="#equation-dde19ad6-38b9-40c4-aa73-fa01f78a708d" title="Permalink to this equation">#</a></span>\[\begin{equation}
 K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z\widetilde{θ}⟩ \; ∂_zθ_m}{|∇θ_m|²}
 \end{equation}\]</div>
 <div class="cell docutils container">
@@ -725,9 +430,9 @@ K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z\widetilde{θ}⟩ \; ∂_zθ
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/BoB-ctd-chipod_3_0.png" src="_images/BoB-ctd-chipod_3_0.png" />
-<img alt="_images/BoB-ctd-chipod_3_1.png" src="_images/BoB-ctd-chipod_3_1.png" />
-<img alt="_images/BoB-ctd-chipod_3_2.png" src="_images/BoB-ctd-chipod_3_2.png" />
+<img alt="_images/791d0798fa98b9c0271467ee6f2b6da39238f45c788922e0e66675333f537153.png" src="_images/791d0798fa98b9c0271467ee6f2b6da39238f45c788922e0e66675333f537153.png" />
+<img alt="_images/527d5a557e4605371b450d968f1dce17916f865267892fa03f84ae9394b5a61e.png" src="_images/527d5a557e4605371b450d968f1dce17916f865267892fa03f84ae9394b5a61e.png" />
+<img alt="_images/218ec9d71567187754bd81e48c9dc4b1b26822a57c5fc2fed50f961ba317ee34.png" src="_images/218ec9d71567187754bd81e48c9dc4b1b26822a57c5fc2fed50f961ba317ee34.png" />
 </div>
 </div>
 </section>
@@ -776,10 +481,10 @@ K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z\widetilde{θ}⟩ \; ∂_zθ
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5,1,&#39;black=T, red=ρ&#39;)
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_5_2.png" src="_images/BoB-ctd-chipod_5_2.png" />
-<img alt="_images/BoB-ctd-chipod_5_3.png" src="_images/BoB-ctd-chipod_5_3.png" />
-<img alt="_images/BoB-ctd-chipod_5_4.png" src="_images/BoB-ctd-chipod_5_4.png" />
-<img alt="_images/BoB-ctd-chipod_5_5.png" src="_images/BoB-ctd-chipod_5_5.png" />
+<img alt="_images/3d5362712c0a555a397777c0efac6fa9632b8445c1a8ff277deda4912dc9971e.png" src="_images/3d5362712c0a555a397777c0efac6fa9632b8445c1a8ff277deda4912dc9971e.png" />
+<img alt="_images/1ca9204d8c45e2fc1b3c30556e1dedb578b5cab46d5b73a434acef77c8d3d33f.png" src="_images/1ca9204d8c45e2fc1b3c30556e1dedb578b5cab46d5b73a434acef77c8d3d33f.png" />
+<img alt="_images/0ce610e25bec61b5492daf2eead860e40979600d805031c06eeef1a9afac02ef.png" src="_images/0ce610e25bec61b5492daf2eead860e40979600d805031c06eeef1a9afac02ef.png" />
+<img alt="_images/9d8597dfa6864458f0bdcef0f45b1433934617579f16a54ec0d795b68b3c2eaf.png" src="_images/9d8597dfa6864458f0bdcef0f45b1433934617579f16a54ec0d795b68b3c2eaf.png" />
 </div>
 </div>
 <p>Make sure <span class="math notranslate nohighlight">\(J_q\)</span> isn’t crazy</p>
@@ -797,7 +502,7 @@ K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z\widetilde{θ}⟩ \; ∂_zθ
  &lt;a list of 10 Patch objects&gt;)
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_7_1.png" src="_images/BoB-ctd-chipod_7_1.png" />
+<img alt="_images/9fc0ba833ce5e8262498cec2c19b88232211929b4f5fc340939b029d74b720dc.png" src="_images/9fc0ba833ce5e8262498cec2c19b88232211929b4f5fc340939b029d74b720dc.png" />
 </div>
 </div>
 </section>
@@ -1023,7 +728,7 @@ K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z\widetilde{θ}⟩ \; ∂_zθ
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/BoB-ctd-chipod_14_0.png" src="_images/BoB-ctd-chipod_14_0.png" />
+<img alt="_images/116466a491697f37c968e6c35a573edb014e9d556e599d5a46bb371511b26780.png" src="_images/116466a491697f37c968e6c35a573edb014e9d556e599d5a46bb371511b26780.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1249,7 +954,7 @@ K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z\widetilde{θ}⟩ \; ∂_zθ
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.contour.QuadContourSet at 0x7f917a6fb048&gt;
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_21_1.png" src="_images/BoB-ctd-chipod_21_1.png" />
+<img alt="_images/a455fff012e71a8688fbecf5c4003e93f4ffd0a51ad8a7c5c555d1cb7d489f5e.png" src="_images/a455fff012e71a8688fbecf5c4003e93f4ffd0a51ad8a7c5c555d1cb7d489f5e.png" />
 </div>
 </div>
 </section>
@@ -1288,7 +993,7 @@ K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z\widetilde{θ}⟩ \; ∂_zθ
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/BoB-ctd-chipod_24_0.png" src="_images/BoB-ctd-chipod_24_0.png" />
+<img alt="_images/e808060b207e8082811e6bdf00c0b8fb472777abc4419c76f7f307a4c32d80d6.png" src="_images/e808060b207e8082811e6bdf00c0b8fb472777abc4419c76f7f307a4c32d80d6.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1311,7 +1016,7 @@ K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z\widetilde{θ}⟩ \; ∂_zθ
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.contour.QuadContourSet at 0x7f91c0646630&gt;
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_25_1.png" src="_images/BoB-ctd-chipod_25_1.png" />
+<img alt="_images/cf9549365aba57043b9d23cb3536b05ff1d73545f5997a8454f6c57b6fa1b389.png" src="_images/cf9549365aba57043b9d23cb3536b05ff1d73545f5997a8454f6c57b6fa1b389.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1329,7 +1034,7 @@ K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z\widetilde{θ}⟩ \; ∂_zθ
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.colorbar.Colorbar at 0x7f3310a6c828&gt;
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_26_1.png" src="_images/BoB-ctd-chipod_26_1.png" />
+<img alt="_images/1f2853208a15c1bafa642ac987a4366d5d4f4c7020875c7911be93f211c25134.png" src="_images/1f2853208a15c1bafa642ac987a4366d5d4f4c7020875c7911be93f211c25134.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1418,7 +1123,7 @@ K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z\widetilde{θ}⟩ \; ∂_zθ
 <span class="ne">TypeError</span>: &#39;numpy.ndarray&#39; object is not callable
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_27_1.png" src="_images/BoB-ctd-chipod_27_1.png" />
+<img alt="_images/b8663cb84ec0ff291146f98559ae9de4cf2bf98053c67233a96dc5945e6c6dbc.png" src="_images/b8663cb84ec0ff291146f98559ae9de4cf2bf98053c67233a96dc5945e6c6dbc.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1436,7 +1141,7 @@ K_e = \frac{⟨\widetilde{χ}⟩/2 - ⟨K_T \, ∂_z\widetilde{θ}⟩ \; ∂_zθ
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(100, 0)
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_28_1.png" src="_images/BoB-ctd-chipod_28_1.png" />
+<img alt="_images/dd3f73e06cd7e3d89753ac540c68b5dadf13eb72d2f159a49080a36e653523ae.png" src="_images/dd3f73e06cd7e3d89753ac540c68b5dadf13eb72d2f159a49080a36e653523ae.png" />
 </div>
 </div>
 </section>
@@ -1578,7 +1283,7 @@ Data variables:
         26.10676851, 26.07836197]))
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_33_1.png" src="_images/BoB-ctd-chipod_33_1.png" />
+<img alt="_images/a9b789acbd763cc6884b38569bc669c23d4474303f7e9e63629adc878905dd03.png" src="_images/a9b789acbd763cc6884b38569bc669c23d4474303f7e9e63629adc878905dd03.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1646,7 +1351,7 @@ Data variables:
   return umr_maximum(a, axis, None, out, keepdims)
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_34_1.png" src="_images/BoB-ctd-chipod_34_1.png" />
+<img alt="_images/100c2dc51a6702814f9d74aca4a6a344de7f3f4f7b62a7876be89cf4203205e4.png" src="_images/100c2dc51a6702814f9d74aca4a6a344de7f3f4f7b62a7876be89cf4203205e4.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1661,7 +1366,7 @@ Data variables:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/BoB-ctd-chipod_35_0.png" src="_images/BoB-ctd-chipod_35_0.png" />
+<img alt="_images/e4ff9be4bd17f24e749a8e101a5273fd12f1e21c4daac640f69ab498edeaa899.png" src="_images/e4ff9be4bd17f24e749a8e101a5273fd12f1e21c4daac640f69ab498edeaa899.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1715,7 +1420,7 @@ Data variables:
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/deepak/anaconda3/lib/python3.6/site-packages/ipykernel_launcher.py:28: RuntimeWarning: invalid value encountered in less
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_36_1.png" src="_images/BoB-ctd-chipod_36_1.png" />
+<img alt="_images/043fb2c34262b6890684a3fc357c04f519e392366dc19de0df173f59f3f68d17.png" src="_images/043fb2c34262b6890684a3fc357c04f519e392366dc19de0df173f59f3f68d17.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1747,8 +1452,8 @@ Data variables:
   warnings.warn(&quot;No contour levels were found&quot;
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_37_1.png" src="_images/BoB-ctd-chipod_37_1.png" />
-<img alt="_images/BoB-ctd-chipod_37_2.png" src="_images/BoB-ctd-chipod_37_2.png" />
+<img alt="_images/e6665114d38aa90446a37dfc65fbaaa2fd8100d1eb7e6217087b0a11a3224cb1.png" src="_images/e6665114d38aa90446a37dfc65fbaaa2fd8100d1eb7e6217087b0a11a3224cb1.png" />
+<img alt="_images/04d4effdeb3df90a4d77280e7cd6720a1ff50227da5260999d7386307095ef29.png" src="_images/04d4effdeb3df90a4d77280e7cd6720a1ff50227da5260999d7386307095ef29.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1772,7 +1477,7 @@ Data variables:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f91bf98f860&gt;]
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_38_1.png" src="_images/BoB-ctd-chipod_38_1.png" />
+<img alt="_images/d040a0aabfb4107262f697c824d23adf6782d43edd767d1318d4bfdd9b41555d.png" src="_images/d040a0aabfb4107262f697c824d23adf6782d43edd767d1318d4bfdd9b41555d.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1793,7 +1498,7 @@ Data variables:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f91bfb673c8&gt;
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_39_1.png" src="_images/BoB-ctd-chipod_39_1.png" />
+<img alt="_images/103d430040e296ff84913ec0309773341b60c68a2993f5a64d0ab9d5e4700dd7.png" src="_images/103d430040e296ff84913ec0309773341b60c68a2993f5a64d0ab9d5e4700dd7.png" />
 </div>
 </div>
 </section>
@@ -1827,9 +1532,9 @@ Data variables:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x7f1c7a70b9e8&gt;
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_42_1.png" src="_images/BoB-ctd-chipod_42_1.png" />
-<img alt="_images/BoB-ctd-chipod_42_2.png" src="_images/BoB-ctd-chipod_42_2.png" />
-<img alt="_images/BoB-ctd-chipod_42_3.png" src="_images/BoB-ctd-chipod_42_3.png" />
+<img alt="_images/63d313ed6cc6dd9734cf6ceaa13d8a5e27fb66d4cfb29e88637cecfbaf546690.png" src="_images/63d313ed6cc6dd9734cf6ceaa13d8a5e27fb66d4cfb29e88637cecfbaf546690.png" />
+<img alt="_images/c96a601eb1bc1a23acac8b632057d48f41dd2efd7ea3de3cacefab4ed27fd359.png" src="_images/c96a601eb1bc1a23acac8b632057d48f41dd2efd7ea3de3cacefab4ed27fd359.png" />
+<img alt="_images/787f0841a021a0902f4b462cbd433bf57ee714de4ae219e0abc5e5ba42e210b4.png" src="_images/787f0841a021a0902f4b462cbd433bf57ee714de4ae219e0abc5e5ba42e210b4.png" />
 </div>
 </div>
 </section>
@@ -1858,7 +1563,7 @@ Data variables:
   mask |= resdat &lt;= 0
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_44_2.png" src="_images/BoB-ctd-chipod_44_2.png" />
+<img alt="_images/0c032117bdb699245e4efd078ae5298caa2faae74189feac6747cdb26dc99380.png" src="_images/0c032117bdb699245e4efd078ae5298caa2faae74189feac6747cdb26dc99380.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1876,7 +1581,7 @@ Data variables:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/BoB-ctd-chipod_45_0.png" src="_images/BoB-ctd-chipod_45_0.png" />
+<img alt="_images/5186383d545f09eefe7308194d53a3abc32cd67774ed0b9a558c76576ee86bbf.png" src="_images/5186383d545f09eefe7308194d53a3abc32cd67774ed0b9a558c76576ee86bbf.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1895,7 +1600,7 @@ Data variables:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f91cf175dd8&gt;]
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_46_1.png" src="_images/BoB-ctd-chipod_46_1.png" />
+<img alt="_images/b8c8a2032606f147c58260b5931452b63e88bac160e65f5f30ecaeab07970392.png" src="_images/b8c8a2032606f147c58260b5931452b63e88bac160e65f5f30ecaeab07970392.png" />
 </div>
 </div>
 </section>
@@ -1921,7 +1626,7 @@ Data variables:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fb11cb45390&gt;
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_49_1.png" src="_images/BoB-ctd-chipod_49_1.png" />
+<img alt="_images/c65a6c4c682a4f41b416040598c6bb380c02682b1a3a4959385eaffe09243b4e.png" src="_images/c65a6c4c682a4f41b416040598c6bb380c02682b1a3a4959385eaffe09243b4e.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1971,8 +1676,8 @@ Data variables:
 Name: Ke, dtype: float64
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_50_2.png" src="_images/BoB-ctd-chipod_50_2.png" />
-<img alt="_images/BoB-ctd-chipod_50_3.png" src="_images/BoB-ctd-chipod_50_3.png" />
+<img alt="_images/9eeadf8436cb3f3018c0999ef5cb2d02f53531306bbb224df5d268a8007de1c0.png" src="_images/9eeadf8436cb3f3018c0999ef5cb2d02f53531306bbb224df5d268a8007de1c0.png" />
+<img alt="_images/2bb05595846e4f209b3c77d46ff8f491a1feaac73248676cbd794b597733559e.png" src="_images/2bb05595846e4f209b3c77d46ff8f491a1feaac73248676cbd794b597733559e.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1997,8 +1702,8 @@ Name: Ke, dtype: float64
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(200, 0)
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_51_1.png" src="_images/BoB-ctd-chipod_51_1.png" />
-<img alt="_images/BoB-ctd-chipod_51_2.png" src="_images/BoB-ctd-chipod_51_2.png" />
+<img alt="_images/aa669f7420d6fc6bd538d91bd3e650beeada5fe16b7b30588902183d243c3a01.png" src="_images/aa669f7420d6fc6bd538d91bd3e650beeada5fe16b7b30588902183d243c3a01.png" />
+<img alt="_images/0f0b0f350e7e8a201d4e7e40fbb3417cf8d3f9496ad8990ddb2497b6ff25634b.png" src="_images/0f0b0f350e7e8a201d4e7e40fbb3417cf8d3f9496ad8990ddb2497b6ff25634b.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -2295,15 +2000,15 @@ Name: Ke, dtype: float64
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.QuadMesh at 0x7fbee9919be0&gt;
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_56_1.png" src="_images/BoB-ctd-chipod_56_1.png" />
-<img alt="_images/BoB-ctd-chipod_56_2.png" src="_images/BoB-ctd-chipod_56_2.png" />
+<img alt="_images/39f06c179c4e9f9892016aea3ed5343b8853c72960de252f063a19946d471071.png" src="_images/39f06c179c4e9f9892016aea3ed5343b8853c72960de252f063a19946d471071.png" />
+<img alt="_images/ca84ab97301d4ab6b8e093dec2600a912536d932c6f1c80337150691900f8185.png" src="_images/ca84ab97301d4ab6b8e093dec2600a912536d932c6f1c80337150691900f8185.png" />
 </div>
 </div>
 </section>
 <section id="spline-smooth-both-temperature-and-pressure">
 <h3>Spline-smooth both temperature and pressure<a class="headerlink" href="#spline-smooth-both-temperature-and-pressure" title="Permalink to this headline">#</a></h3>
 <p>Below I calculate dT/dP in density space and compare that to dT/dP calculated by</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>transforming spline smoothed T to pressure space</p></li>
 <li><p>differentiate to get dT/dP</p></li>
 <li><p>convert back to density space and plot.</p></li>
@@ -2351,10 +2056,10 @@ Name: Ke, dtype: float64
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(120, 0)
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_58_1.png" src="_images/BoB-ctd-chipod_58_1.png" />
-<img alt="_images/BoB-ctd-chipod_58_2.png" src="_images/BoB-ctd-chipod_58_2.png" />
-<img alt="_images/BoB-ctd-chipod_58_3.png" src="_images/BoB-ctd-chipod_58_3.png" />
-<img alt="_images/BoB-ctd-chipod_58_4.png" src="_images/BoB-ctd-chipod_58_4.png" />
+<img alt="_images/0af728e3887f6fa9e6b04d6f0dfa32ba10134b7be26ac9f6ce3b46c217ce1faa.png" src="_images/0af728e3887f6fa9e6b04d6f0dfa32ba10134b7be26ac9f6ce3b46c217ce1faa.png" />
+<img alt="_images/c7ed410425d6623a2a1245f0ea72910b32edb7ffef1d1c26447468ac41e4636b.png" src="_images/c7ed410425d6623a2a1245f0ea72910b32edb7ffef1d1c26447468ac41e4636b.png" />
+<img alt="_images/308bca41183ad14f1d6c74e18ddf74bd45cb796702d2c97c3d2db05565e436c3.png" src="_images/308bca41183ad14f1d6c74e18ddf74bd45cb796702d2c97c3d2db05565e436c3.png" />
+<img alt="_images/b2a4e6d429f0d59f39903d98043ea7068e3e5e374b585c3e370e28e5bf5f0aec.png" src="_images/b2a4e6d429f0d59f39903d98043ea7068e3e5e374b585c3e370e28e5bf5f0aec.png" />
 </div>
 </div>
 </section>
@@ -2411,7 +2116,7 @@ Attributes:
     name:     dT
 </pre></div>
 </div>
-<img alt="_images/BoB-ctd-chipod_61_1.png" src="_images/BoB-ctd-chipod_61_1.png" />
+<img alt="_images/df72893015485f7ce1608c86afc212a7a486c8d1d8ee2af3cdbf64bf5abd7797.png" src="_images/df72893015485f7ce1608c86afc212a7a486c8d1d8ee2af3cdbf64bf5abd7797.png" />
 </div>
 </div>
 </section>
@@ -2462,7 +2167,7 @@ Attributes:
             mode: "conda-env-eddydiff-py"
         },
         kernelOptions: {
-            kernelName: "conda-env-eddydiff-py",
+            name: "conda-env-eddydiff-py",
             path: "./."
         },
         predefinedOutput: true
@@ -2470,57 +2175,135 @@ Attributes:
     </script>
     <script>kernelName = 'conda-env-eddydiff-py'</script>
 
-              </div>
+                </article>
               
-            </main>
-            <footer class="footer-article noprint">
-                
-    <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="equix.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">EQUIX</p>
-        </div>
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="equix.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">EQUIX</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="P06.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="P06.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">P06 CTD χpod analysis</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
+</div></div>
+  
 </div>
-            </footer>
-        </div>
-    </div>
-    <div class="footer-content row">
-        <footer class="col footer"><p>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transect-ts-plots">Transect TS plots</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-and-plot-single-transect">Read and plot single transect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#process-transect-data">Process transect data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-other-datasets">Read in other datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-climatological-gradients">Using climatological gradients</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#naveira-garabato-et-al-2016-approach">Naveira Garabato et al. (2016) approach</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculation">Calculation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#debugging-plots">Debugging plots</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distributions-dt-dz-and-dt-diapycnal">Distributions: dT/dz and dT_diapycnal</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ferrari-polzin-2005-approach">Ferrari &amp; Polzin (2005) approach</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#without-interpolating-to-convert-to-density-space">Without interpolating to convert to density space</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-various-mean-fields-gradients">Compare various mean fields / gradients</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argo-estimate-cole-et-al-2015">Argo estimate (Cole et al, 2015)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#all-data-combined">All data combined</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lessons-learned">Lessons learned</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#don-t-interpolate-when-converting-to-density-space">Don’t interpolate when converting to density space</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spline-smooth-both-temperature-and-pressure">Spline-smooth both temperature and pressure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#groupby-on-dataframe-or-xarray-consistently">Groupby on dataframe or xarray consistently</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#test-gradients-in-isopycnal-planes">Test gradients in isopycnal planes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-transect-mat-to-netcdf-files">Convert transect .mat to netcdf files</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
   
-    By Deepak Cherian<br/>
+  <div class="footer-item">
+    
+<p class="component-author">
+By Deepak Cherian
+</p>
+
+  </div>
   
-      &copy; Copyright 2022.<br/>
-    <div class="extra_footer">
-      <div>
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
 <script data-goatcounter="https://count.cherian.net/count"
         async src="count.js"></script>
 </div>
 
-    </div>
-</p>
-        </footer>
-    </div>
-    
 </div>
+  </div>
+  
+</div>
+          </footer>
+        
 
-
-      </div>
+      </main>
     </div>
+  </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
 
-
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

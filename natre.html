@@ -1,35 +1,45 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html >
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>NATRE region variance budget &#8212; Eddy Diffusivity</title>
-    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
-    
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -37,12 +47,12 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -50,684 +60,349 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'natre';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="NATRE microstructure dataset" href="natre-examine.html" />
     <link rel="prev" title="Yiming’s POP variance budget" href="pop-var-budget.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay overlay-navbar" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<!-- Checkboxes to toggle the in-page toc -->
-<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
-<label class="overlay overlay-pagetoc" for="__page-toc">
-    <div class="visually-hidden">Toggle in-page Table of Contents</div>
-</label>
-<!-- Headers at the top -->
-<div class="announcement header-item noprint"></div>
-<div class="header header-item noprint"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-    <div class="container-fluid" id="banner"></div>
-
-    
-
-    <div class="container-xl">
-      <div class="row">
-          
-<!-- Sidebar -->
-<div class="bd-sidebar noprint" id="site-navigation">
-    <div class="bd-sidebar__content">
-        <div class="bd-sidebar__top"><div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="index.html">
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="_static/logo.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Eddy Diffusivity</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Moored χpod analysis
- </span>
-</p>
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Moored χpod analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="tao.html">
-   TAO (0, 140) χpod
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="equix.html">
-   EQUIX
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="tao.html">TAO (0, 140) χpod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="equix.html">EQUIX</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  CTD χpod analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">CTD χpod analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="BoB-ctd-chipod.html">
-   BoB ASIRI 2013 CTD χpod
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="P06.html">
-   P06 CTD χpod analysis
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="sections-variance-estimate.html">
-   Eddy variance generation along GO-SHIP lines
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ctd-%CF%87-bob.html">
-   ASIRI13 CTD χpod
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ctd-%CF%87-A05.html">
-   CTD χpod A05 section
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="bootstrap-ctd-chipod-estimates.html">
-   Bootstrapped outlier detection for CTD-χpod
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="BoB-ctd-chipod.html">BoB ASIRI 2013 CTD χpod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="P06.html">P06 CTD χpod analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sections-variance-estimate.html">Eddy variance generation along GO-SHIP lines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ctd-%CF%87-bob.html">ASIRI13 CTD χpod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ctd-%CF%87-A05.html">CTD χpod A05 section</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bootstrap-ctd-chipod-estimates.html">Bootstrapped outlier detection for CTD-χpod</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Model Processing
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Model Processing</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pop-1-deg.html">
-   POP 1°: Redi term
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pop-var-budget.html">
-   Yiming’s POP variance budget
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="pop-1-deg.html">POP 1°: Redi term</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pop-var-budget.html">Yiming’s POP variance budget</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Variance budgets
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Variance budgets</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   NATRE region variance budget
-  </a>
- </li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">NATRE region variance budget</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  NATRE region analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NATRE region analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="natre-examine.html">
-   NATRE microstructure dataset
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="natre-finescale.html">
-   NATRE micro vs finescale
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="natre-vs-ctd-%CF%87pod.html">
-   NATRE vs CTD-χpod
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="natre-examine.html">NATRE microstructure dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natre-finescale.html">NATRE micro vs finescale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natre-vs-ctd-%CF%87pod.html">NATRE vs CTD-χpod</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Finestructure analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Finestructure analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="iw-fine-argo.html">
-   Argo finescale estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="iw-fine-estimates.html">
-   Existing finestructure estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="iw-fine-devel.html">
-   Finescale Mixing Parametrizations: Development
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="iw-fine-argo.html">Argo finescale estimates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iw-fine-estimates.html">Existing finestructure estimates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iw-fine-devel.html">Finescale Mixing Parametrizations: Development</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Ancillary analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Ancillary analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="chi-eps.html">
-   χ-ε relations
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="compare-Ke-estimates.html">
-   Compare different
-   <span class="math notranslate nohighlight">
-    \(K_e\)
-   </span>
-   estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="equix-vs-tao.html">
-   χpods: EQUIX vs TAO
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="eqpac-ts-diagrams.html">
-   T-S diagrams from TAO &amp; Argo at (0, 145W→135W)
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="dataset-processing.html">
-   Dataset processing
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="chi-eps.html">χ-ε relations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compare-Ke-estimates.html">Compare different <span class="math notranslate nohighlight">\(K_e\)</span> estimates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="equix-vs-tao.html">χpods: EQUIX vs TAO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eqpac-ts-diagrams.html">T-S diagrams from TAO &amp; Argo at (0, 145W→135W)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset-processing.html">Dataset processing</a></li>
 </ul>
 
     </div>
 </nav></div>
-        <div class="bd-sidebar__bottom">
-             <!-- To handle the deprecated key -->
-            
-            <div class="navbar_extra_footer">
-            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-            </div>
-            
-        </div>
     </div>
-    <div id="rtd-footer-container"></div>
-</div>
-
-
-          
-
-
-          
-<!-- A tiny helper pixel to detect if we've scrolled -->
-<div class="sbt-scroll-pixel-helper"></div>
-<!-- Main content -->
-<div class="col py-0 content-container">
-    
-    <div class="header-article row sticky-top noprint">
-        
-
-
-
-<div class="col py-1 d-flex header-article-main">
-    <div class="header-article__left">
-        
-        <label for="__navigation"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="right"
-title="Toggle navigation"
->
   
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-bars"></i>
-  </span>
-
-</label>
-
-        
-    </div>
-    <div class="header-article__right">
-<div class="menu-dropdown menu-dropdown-launch-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Launch interactive content">
-      <i class="fas fa-rocket"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://mybinder.org/v2/gh/dcherian/eddydiff/main?urlpath=tree/notebooks/natre.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Binder"
->
   
-
-<span class="headerbtn__icon-container">
-  
-    <img src="_static/images/logo_binder.svg">
-  </span>
-<span class="headerbtn__text-container">Binder</span>
-</a>
-
-      </li>
-      
-    </ul>
+  <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
-</div>
+  
+  <div id="rtd-footer-container"></div>
 
-<button onclick="toggleFullScreen()"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="bottom"
-title="Fullscreen mode"
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/dcherian/eddydiff" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
-  <i class="fas fa-expand"></i>
-  </span>
-
-</button>
-<a href="https://github.com/dcherian/eddydiff"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="bottom"
-title="Source repository"
->
-  
-
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fab fa-github"></i>
   </span>
 
 </a>
 
-<div class="menu-dropdown menu-dropdown-download-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Download this page">
-      <i class="fas fa-download"></i>
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="_sources/natre.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Download source file"
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/natre.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="headerbtn__text-container">.ipynb</span>
+<span class="btn__text-container">.ipynb</span>
 </a>
-
-      </li>
+</li>
+      
+      
+      
       
       <li>
-        
-<button onclick="printPdf(this)"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="left"
-title="Print to PDF"
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-file-pdf"></i>
   </span>
-<span class="headerbtn__text-container">.pdf</span>
+<span class="btn__text-container">.pdf</span>
 </button>
-
-      </li>
+</li>
       
-    </ul>
-  </div>
+  </ul>
 </div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
   </span>
 
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
 </label>
-
+</div></div>
+      
     </div>
+  
 </div>
-
-<!-- Table of contents -->
-<div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#todo">
-   TODO
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#setup">
-   Setup
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#prepare-various-production-and-dissipation-terms">
-   Prepare various production and dissipation terms
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#mimoc">
-   MIMOC
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#variance-production-vs-dissipation">
-   Variance production vs dissipation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#interpretation">
-     Interpretation
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#spicy-region">
-       Spicy region
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#weak-spice">
-       Weak spice
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#all-microscale-budget-terms">
-   All microscale budget terms
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pop2-1-10-mesoscale-variance-budget">
-   POP2 1/10° mesoscale variance budget
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pop-1-10-vs-pop-1">
-   POP 1/10 vs POP 1
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#error-bounds">
-   Error bounds
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#microstructure">
-     Microstructure
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#studying-cole-estimate">
-   Studying Cole estimate
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#compare-cole-groeskamp-diffusivities">
-     Compare Cole &amp; Groeskamp diffusivities
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#depth-vs-density-space-estimation-of-k-e-t-2">
-     Depth-vs-density space estimation of
-     <span class="math notranslate nohighlight">
-      \(K_e |∇T|²\)
-     </span>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#depth-space-calculation">
-     Depth space calculation
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#t-s-diagrams-argo-vs-natre">
-   T-S diagrams: Argo vs. NATRE
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#all-argo-vs-natre">
-     All argo vs NATRE
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#finestructure-argo-vs-natre">
-     Finestructure Argo vs NATRE
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#conclusions">
-     Conclusions
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#is-there-spatial-uncertainty-cole-estimate-are-we-looking-in-the-wrong-place-no">
-     Is there spatial uncertainty? Cole estimate: Are we looking in the wrong place? No
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
-
-    </nav>
 </div>
-    </div>
-    <div class="article row">
-        <div class="col pl-md-3 pl-lg-5 content-container">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>NATRE region variance budget</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#todo">
-   TODO
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#setup">
-   Setup
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#prepare-various-production-and-dissipation-terms">
-   Prepare various production and dissipation terms
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#mimoc">
-   MIMOC
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#variance-production-vs-dissipation">
-   Variance production vs dissipation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#interpretation">
-     Interpretation
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#spicy-region">
-       Spicy region
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#weak-spice">
-       Weak spice
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#all-microscale-budget-terms">
-   All microscale budget terms
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pop2-1-10-mesoscale-variance-budget">
-   POP2 1/10° mesoscale variance budget
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#pop-1-10-vs-pop-1">
-   POP 1/10 vs POP 1
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#error-bounds">
-   Error bounds
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#microstructure">
-     Microstructure
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#studying-cole-estimate">
-   Studying Cole estimate
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#compare-cole-groeskamp-diffusivities">
-     Compare Cole &amp; Groeskamp diffusivities
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#depth-vs-density-space-estimation-of-k-e-t-2">
-     Depth-vs-density space estimation of
-     <span class="math notranslate nohighlight">
-      \(K_e |∇T|²\)
-     </span>
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#depth-space-calculation">
-     Depth space calculation
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#t-s-diagrams-argo-vs-natre">
-   T-S diagrams: Argo vs. NATRE
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#all-argo-vs-natre">
-     All argo vs NATRE
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#finestructure-argo-vs-natre">
-     Finestructure Argo vs NATRE
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#conclusions">
-     Conclusions
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#is-there-spatial-uncertainty-cole-estimate-are-we-looking-in-the-wrong-place-no">
-     Is there spatial uncertainty? Cole estimate: Are we looking in the wrong place? No
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
+              
+              
 
-                        </nav>
-                    </div>
-                </div>
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>NATRE region variance budget</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
             </div>
-            <main id="main-content" role="main">
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#todo">TODO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-various-production-and-dissipation-terms">Prepare various production and dissipation terms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mimoc">MIMOC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variance-production-vs-dissipation">Variance production vs dissipation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">Interpretation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spicy-region">Spicy region</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#weak-spice">Weak spice</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#all-microscale-budget-terms">All microscale budget terms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pop2-1-10-mesoscale-variance-budget">POP2 1/10° mesoscale variance budget</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pop-1-10-vs-pop-1">POP 1/10 vs POP 1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-bounds">Error bounds</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#microstructure">Microstructure</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#studying-cole-estimate">Studying Cole estimate</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-cole-groeskamp-diffusivities">Compare Cole &amp; Groeskamp diffusivities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#depth-vs-density-space-estimation-of-k-e-t-2">Depth-vs-density space estimation of <span class="math notranslate nohighlight">\(K_e |∇T|²\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#depth-space-calculation">Depth space calculation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#t-s-diagrams-argo-vs-natre">T-S diagrams: Argo vs. NATRE</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#all-argo-vs-natre">All argo vs NATRE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finestructure-argo-vs-natre">Finestructure Argo vs NATRE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusions">Conclusions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#is-there-spatial-uncertainty-cole-estimate-are-we-looking-in-the-wrong-place-no">Is there spatial uncertainty? Cole estimate: Are we looking in the wrong place? No</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
                 
-              <div>
-                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <section class="tex2jax_ignore mathjax_ignore" id="natre-region-variance-budget">
 <h1>NATRE region variance budget<a class="headerlink" href="#natre-region-variance-budget" title="Permalink to this headline">#</a></h1>
 <p>Reproducing the Ferrari &amp; Polzin (2005) estimate using NATRE data, and comparing differences with our version</p>
 <section id="todo">
 <h2>TODO<a class="headerlink" href="#todo" title="Permalink to this headline">#</a></h2>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>[ ] Microscale variance budget</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Could estimate <span class="math notranslate nohighlight">\(⟨u_t T_t⟩ ⋅ ∇T_m = -⟨K_t  T_z⟩ T_z^m\)</span> term (monthly mean heat flux X monthly mean vertical gradient) using the model; just like I do with  the microstructure data.</p></li>
 <li><p>Then add the mesoscale dissipation term to get total <span class="math notranslate nohighlight">\(⟨χ⟩\)</span></p></li>
 </ol>
@@ -738,6 +413,11 @@ title="Print to PDF"
 <section id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">#</a></h2>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> watermark
 <span class="o">%</span><span class="k">matplotlib</span> inline
@@ -777,6 +457,7 @@ title="Print to PDF"
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The watermark extension is already loaded. To reload it, use:
   %reload_ext watermark
@@ -1151,6 +832,11 @@ array([1.])
 Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:none'><div class='xr-header'><div class='xr-obj-type'>xarray.DataArray</div><div class='xr-array-name'></div><ul class='xr-dim-list'><li><span>dim_0</span>: 1</li></ul></div><ul class='xr-sections'><li class='xr-section-item'><div class='xr-array-wrap'><input id='section-02e9ce59-c930-4bac-b21f-17aed52706ed' class='xr-array-in' type='checkbox' checked><label for='section-02e9ce59-c930-4bac-b21f-17aed52706ed' title='Show/hide data repr'><svg class='icon xr-icon-database'><use xlink:href='#icon-database'></use></svg></label><div class='xr-array-preview xr-preview'><span>1.0</span></div><div class='xr-array-data'><pre>array([1.])</pre></div></div></li><li class='xr-section-item'><input id='section-4cd6f3ec-99a0-439d-ab33-d99f52989f7c' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-4cd6f3ec-99a0-439d-ab33-d99f52989f7c' class='xr-section-summary'  title='Expand/collapse section'>Coordinates: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><ul class='xr-var-list'></ul></div></li><li class='xr-section-item'><input id='section-0e58dbdb-9b52-4b04-a0a9-4fd712f14758' class='xr-section-summary-in' type='checkbox' disabled ><label for='section-0e58dbdb-9b52-4b04-a0a9-4fd712f14758' class='xr-section-summary'  title='Expand/collapse section'>Attributes: <span>(0)</span></label><div class='xr-section-inline-details'></div><div class='xr-section-details'><dl class='xr-attrs'></dl></div></li></ul></div></div></div></div>
 </div>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="s2">&quot;client&quot;</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">():</span>
     <span class="n">client</span><span class="o">.</span><span class="n">cluster</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -1160,6 +846,7 @@ Dimensions without coordinates: dim_0</pre><div class='xr-wrap' style='display:n
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/dcherian/mambaforge/envs/eddydiff/lib/python3.9/site-packages/distributed/node.py:177: UserWarning: Port 8787 is already in use.
 Perhaps you already have a cluster running?
@@ -1175,24 +862,24 @@ Hosting the HTTP server on port 52779 instead
         <table style="width: 100%; text-align: left;">
 
         <tr>
-
+        
             <td style="text-align: left;"><strong>Connection method:</strong> Cluster object</td>
             <td style="text-align: left;"><strong>Cluster type:</strong> distributed.LocalCluster</td>
-
+        
         </tr>
 
-
+        
             <tr>
                 <td style="text-align: left;">
                     <strong>Dashboard: </strong> <a href="http://127.0.0.1:52779/status" target="_blank">http://127.0.0.1:52779/status</a>
                 </td>
                 <td style="text-align: left;"></td>
             </tr>
-
+        
 
         </table>
 
-
+        
             <details>
             <summary style="margin-bottom: 20px;"><h3 style="display: inline;">Cluster Info</h3></summary>
             <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-mod-trusted jp-OutputArea-output">
@@ -1218,13 +905,13 @@ Hosting the HTTP server on port 52779 instead
                     <strong>Total memory:</strong> 16.00 GiB
                 </td>
             </tr>
-
+            
             <tr>
     <td style="text-align: left;"><strong>Status:</strong> running</td>
     <td style="text-align: left;"><strong>Using processes:</strong> True</td>
 </tr>
 
-
+            
         </table>
 
         <details>
@@ -1272,7 +959,7 @@ Hosting the HTTP server on port 52779 instead
             <h3 style="display: inline;">Workers</h3>
         </summary>
 
-
+        
         <div style="margin-bottom: 20px;">
             <div style="width: 24px; height: 24px; background-color: #DBF5FF; border: 3px solid #4CC9FF; border-radius: 5px; position: absolute;"> </div>
             <div style="margin-left: 48px;">
@@ -1309,15 +996,15 @@ Hosting the HTTP server on port 52779 instead
                         </td>
                     </tr>
 
+                    
 
-
-
+                    
 
                 </table>
             </details>
             </div>
         </div>
-
+        
         <div style="margin-bottom: 20px;">
             <div style="width: 24px; height: 24px; background-color: #DBF5FF; border: 3px solid #4CC9FF; border-radius: 5px; position: absolute;"> </div>
             <div style="margin-left: 48px;">
@@ -1354,15 +1041,15 @@ Hosting the HTTP server on port 52779 instead
                         </td>
                     </tr>
 
+                    
 
-
-
+                    
 
                 </table>
             </details>
             </div>
         </div>
-
+        
         <div style="margin-bottom: 20px;">
             <div style="width: 24px; height: 24px; background-color: #DBF5FF; border: 3px solid #4CC9FF; border-radius: 5px; position: absolute;"> </div>
             <div style="margin-left: 48px;">
@@ -1399,15 +1086,15 @@ Hosting the HTTP server on port 52779 instead
                         </td>
                     </tr>
 
+                    
 
-
-
+                    
 
                 </table>
             </details>
             </div>
         </div>
-
+        
         <div style="margin-bottom: 20px;">
             <div style="width: 24px; height: 24px; background-color: #DBF5FF; border: 3px solid #4CC9FF; border-radius: 5px; position: absolute;"> </div>
             <div style="margin-left: 48px;">
@@ -1444,15 +1131,15 @@ Hosting the HTTP server on port 52779 instead
                         </td>
                     </tr>
 
+                    
 
-
-
+                    
 
                 </table>
             </details>
             </div>
         </div>
-
+        
         <div style="margin-bottom: 20px;">
             <div style="width: 24px; height: 24px; background-color: #DBF5FF; border: 3px solid #4CC9FF; border-radius: 5px; position: absolute;"> </div>
             <div style="margin-left: 48px;">
@@ -1489,15 +1176,15 @@ Hosting the HTTP server on port 52779 instead
                         </td>
                     </tr>
 
+                    
 
-
-
+                    
 
                 </table>
             </details>
             </div>
         </div>
-
+        
         <div style="margin-bottom: 20px;">
             <div style="width: 24px; height: 24px; background-color: #DBF5FF; border: 3px solid #4CC9FF; border-radius: 5px; position: absolute;"> </div>
             <div style="margin-left: 48px;">
@@ -1534,15 +1221,15 @@ Hosting the HTTP server on port 52779 instead
                         </td>
                     </tr>
 
+                    
 
-
-
+                    
 
                 </table>
             </details>
             </div>
         </div>
-
+        
 
     </details>
 </div>
@@ -1551,7 +1238,7 @@ Hosting the HTTP server on port 52779 instead
     </div>
 </div>
             </details>
-
+        
 
     </div>
 </div></div></div>
@@ -1563,7 +1250,7 @@ Hosting the HTTP server on port 52779 instead
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_5_0.png" src="_images/natre_5_0.png" />
+<img alt="_images/3404b5a3dd2cc1c8ee8b8c190f8e0940977ec605476088f48503cef1bc59deba.png" src="_images/3404b5a3dd2cc1c8ee8b8c190f8e0940977ec605476088f48503cef1bc59deba.png" />
 </div>
 </div>
 </section>
@@ -1584,6 +1271,11 @@ Hosting the HTTP server on port 52779 instead
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">natre_fine</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/natre-finescale.nc&quot;</span><span class="p">)</span>
 <span class="n">natre_fine_avg</span> <span class="o">=</span> <span class="p">(</span>
@@ -1598,8 +1290,14 @@ Hosting the HTTP server on port 52779 instead
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">argo_fine_profiles</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span>
     <span class="s2">&quot;../datasets/argomix_natre.zarr&quot;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;zarr&quot;</span>
@@ -1633,13 +1331,20 @@ Hosting the HTTP server on port 52779 instead
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pop_natre</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/natre-pop-variance.nc&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1650,6 +1355,11 @@ Hosting the HTTP server on port 52779 instead
 </div>
 <p>This uses a crappier gradient.</p>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cole</span> <span class="o">=</span> <span class="n">ed</span><span class="o">.</span><span class="n">read_cole</span><span class="p">()</span>
 
@@ -1694,6 +1404,7 @@ Hosting the HTTP server on port 52779 instead
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/dcherian/work/python/xarray/xarray/core/indexing.py:643: RuntimeWarning: deallocating CachingFileManager(&lt;class &#39;netCDF4._netCDF4.Dataset&#39;&gt;, &#39;/Users/dcherian/datasets/groeskamp2020/groeskamp2020.nc&#39;, mode=&#39;r&#39;, kwargs={&#39;clobber&#39;: True, &#39;diskless&#39;: False, &#39;persist&#39;: False, &#39;format&#39;: &#39;NETCDF4&#39;}), but file is not already closed. This may indicate a bug.
   self.array = NumpyIndexingAdapter(np.asarray(self.array))
@@ -3087,13 +2798,13 @@ Data variables:
                     </tr>
                 </thead>
                 <tbody>
-
+                    
                     <tr>
                         <th> Bytes </th>
                         <td> 210.11 MiB </td>
                         <td> 17.51 MiB </td>
                     </tr>
-
+                    
                     <tr>
                         <th> Shape </th>
                         <td> (12, 360, 170, 75) </td>
@@ -3194,13 +2905,13 @@ Data variables:
                     </tr>
                 </thead>
                 <tbody>
-
+                    
                     <tr>
                         <th> Bytes </th>
                         <td> 210.11 MiB </td>
                         <td> 17.51 MiB </td>
                     </tr>
-
+                    
                     <tr>
                         <th> Shape </th>
                         <td> (12, 360, 170, 75) </td>
@@ -3301,13 +3012,13 @@ Data variables:
                     </tr>
                 </thead>
                 <tbody>
-
+                    
                     <tr>
                         <th> Bytes </th>
                         <td> 210.11 MiB </td>
                         <td> 17.51 MiB </td>
                     </tr>
-
+                    
                     <tr>
                         <th> Shape </th>
                         <td> (12, 360, 170, 75) </td>
@@ -3408,13 +3119,13 @@ Data variables:
                     </tr>
                 </thead>
                 <tbody>
-
+                    
                     <tr>
                         <th> Bytes </th>
                         <td> 210.11 MiB </td>
                         <td> 17.51 MiB </td>
                     </tr>
-
+                    
                     <tr>
                         <th> Shape </th>
                         <td> (12, 360, 170, 75) </td>
@@ -3515,13 +3226,13 @@ Data variables:
                     </tr>
                 </thead>
                 <tbody>
-
+                    
                     <tr>
                         <th> Bytes </th>
                         <td> 210.11 MiB </td>
                         <td> 17.51 MiB </td>
                     </tr>
-
+                    
                     <tr>
                         <th> Shape </th>
                         <td> (12, 360, 170, 75) </td>
@@ -3622,13 +3333,13 @@ Data variables:
                     </tr>
                 </thead>
                 <tbody>
-
+                    
                     <tr>
                         <th> Bytes </th>
                         <td> 420.23 MiB </td>
                         <td> 34.41 MiB </td>
                     </tr>
-
+                    
                     <tr>
                         <th> Shape </th>
                         <td> (12, 360, 170, 75) </td>
@@ -3761,6 +3472,11 @@ Data variables:
 </div>
 </div>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pop_natre</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/natre-pop-variance.nc&quot;</span><span class="p">)</span>
@@ -3771,6 +3487,7 @@ Data variables:
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <div class="output text_html"><div><svg style="position: absolute; width: 0; height: 0; overflow: hidden">
 <defs>
@@ -5790,17 +5507,17 @@ none
 </section>
 <section id="variance-production-vs-dissipation">
 <h2>Variance production vs dissipation<a class="headerlink" href="#variance-production-vs-dissipation" title="Permalink to this headline">#</a></h2>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Agreement between POP “mesoscale variance dissipation” and microstructure estimate of “variance received from mesoscale” is great! (Purple dashed steps agree well with purple solid line)</p></li>
 <li><p>POP’s grid-scale temp variance dissipation is really dominated by the horizontal biharmonic diffusion, but fundamentally the amount of mesoscale variance destroyed by grid-scale diffusion matches that in the microstructure measurements.</p></li>
 <li><p>One place of disagreement is between 400m and 700m where the POP estimate is really small compared to my difference. <strong>FP2005 also see this using the mooring based Ke estimate</strong>. At these levels their two terms also match a lot closer than mine, so there’s an error somewhere. It seems like my <span class="math notranslate nohighlight">\(⟨χ⟩/2\)</span> is a little bit too high which happened after I switched to the bootstrapping based estimates. I’ve made some improvements</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Sorting the dataset, changes the mean density field used to pick the bins.</p></li>
 <li><p>Calculating <span class="math notranslate nohighlight">\((∂T/∂z)\_m\)</span> is a little wonky. I now use a different procedure. In each O(100m) <span class="math notranslate nohighlight">\(γ_n\)</span> bin, I groupby finer-resolution <span class="math notranslate nohighlight">\(γ_n\)</span> bins (21 of them), calculate the mean profile, then fit a straight line.</p></li>
 </ol>
 </li>
 <li><p>Cole/Groeskamp <span class="math notranslate nohighlight">\(K_e\)</span> estimate based variance dissipation compares much better now.</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>~Comparing to variance dissipated by parameterizations for <span class="math notranslate nohighlight">\(K_e\)</span> (<span class="math notranslate nohighlight">\(K_e |∇_hT|²\)</span>) doesn’t work well. I wonder if I’m doing something wrong with my <span class="math notranslate nohighlight">\(∇_hT\)</span> estimate~</p></li>
 <li><p>I updated my |∇T| estimation code; now estimate along-isopycnal gradients in σ space instead of just a lateral gradient</p></li>
 <li><p>While the current algo still doesn’t match Silvia’s ∇S (but much better than earlier), it seems to improve agreement (panel c)</p></li>
@@ -5809,6 +5526,11 @@ none
 </li>
 </ol>
 <div class="cell tag_hide-input tag_full-width docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">micro</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;bounds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pres_err&quot;</span>
 
@@ -5993,11 +5715,17 @@ none
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="_images/natre_29_0.png" src="_images/natre_29_0.png" />
+<img alt="_images/a67db1f1f507352b60f86fbac861e39b41040497893f65ab114af24fbb48232b.png" src="_images/a67db1f1f507352b60f86fbac861e39b41040497893f65ab114af24fbb48232b.png" />
 </div>
 </div>
 <div class="cell tag_hide-input tag_full-width docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">micro</span><span class="o">.</span><span class="n">pres</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;bounds&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;pres_err&quot;</span>
 
@@ -6182,38 +5910,39 @@ none
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="_images/natre_30_0.png" src="_images/natre_30_0.png" />
+<img alt="_images/3f8fe055b4029ed9c7b97ac5c7f490b173a9ff68cc8e0744d4788e575caba945.png" src="_images/3f8fe055b4029ed9c7b97ac5c7f490b173a9ff68cc8e0744d4788e575caba945.png" />
 </div>
 </div>
 <section id="interpretation">
 <h3>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">#</a></h3>
 <p>Define</p>
-<div class="amsmath math notranslate nohighlight" id="equation-007ba1a5-7ce8-41f4-a10f-398207bea731">
-<span class="eqno">(2)<a class="headerlink" href="#equation-007ba1a5-7ce8-41f4-a10f-398207bea731" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-878b0305-7fcb-47d7-84d2-9afab0f2e5ad">
+<span class="eqno">(2)<a class="headerlink" href="#equation-878b0305-7fcb-47d7-84d2-9afab0f2e5ad" title="Permalink to this equation">#</a></span>\[\begin{equation}
     ⟨T⟩ = T_m; \; \widetilde{T} = T_m + T_e
 \end{equation}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-b7958be1-d326-458b-b2b3-a4e728ea89a8">
-<span class="eqno">(3)<a class="headerlink" href="#equation-b7958be1-d326-458b-b2b3-a4e728ea89a8" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-8aa7f7b8-f87b-4c6a-9786-55520c39d907">
+<span class="eqno">(3)<a class="headerlink" href="#equation-8aa7f7b8-f87b-4c6a-9786-55520c39d907" title="Permalink to this equation">#</a></span>\[\begin{align}
 ⟨u^h_eT_e⟩ ⋅ ∇^hT_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;\approx 0 \\
 \widetilde{u_tT_t} ⋅ ∇ (T_m  + T_e) &amp;\approx - \frac 12 \widetilde{χ} \\
 ⟨\widetilde{u_tT_t}⟩ ⋅ ∇ T_m  + ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;\approx - \frac 12 ⟨χ⟩ \\
 ⟨\widetilde{u_tT_t}⟩ ⋅ ∇ T_m  + ⟨u^h_eT_e⟩ ⋅ ∇^hT_m  &amp;\approx - \frac 12 ⟨χ⟩
 \end{align}\]</div>
-<div class="amsmath math notranslate nohighlight" id="equation-d4ec9d96-48ff-4ecf-b58c-23fdede5efff">
-<span class="eqno">(4)<a class="headerlink" href="#equation-d4ec9d96-48ff-4ecf-b58c-23fdede5efff" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-625f2187-f878-4adf-9b2f-868c3225af7c">
+<span class="eqno">(4)<a class="headerlink" href="#equation-625f2187-f878-4adf-9b2f-868c3225af7c" title="Permalink to this equation">#</a></span>\[\begin{align}
 ⟨\widetilde{u_tT_t}⟩ &amp;\approx ⟨w_t T_t⟩ \approx ⟨w_tb_t⟩ = \frac {Γ ⟨ε⟩}{N_m^2} \\
 ⟨\widetilde{u_tT_t}⟩ &amp;\approx ⟨\widetilde{w_t T_t}⟩ \approx -\frac 12 \left\langle\frac{χ}{∂_z\widetilde T}\right\rangle
 \end{align}\]</div>
 <section id="spicy-region">
 <h4>Spicy region<a class="headerlink" href="#spicy-region" title="Permalink to this headline">#</a></h4>
 <p>We can interpret the red mesoscale dissipation term in (b) as the amount of variance transferred to the microscale for eventual dissipation. This peaks in regions of high mean spice between 1000m and 1500m. The balance in spicy regions is that horizontal mesoscale stirring converts MPE → EPE (compensated filaments or T-S variance) that is dissipated by the microscale. The approximate budget is (note vertical stirring gets ignored, and <span class="math notranslate nohighlight">\(u^h\)</span> represents horizontal velocity vector)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7832083b-3446-48da-8b67-4759dbdf0f6e">
-<span class="eqno">(5)<a class="headerlink" href="#equation-7832083b-3446-48da-8b67-4759dbdf0f6e" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-5427d3c7-8ca8-4cc2-9d84-c049f11ed2b5">
+<span class="eqno">(5)<a class="headerlink" href="#equation-5427d3c7-8ca8-4cc2-9d84-c049f11ed2b5" title="Permalink to this equation">#</a></span>\[\begin{align}
 ⟨u^h_eT_e⟩ ⋅ ∇_hT_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;\approx 0 \\
 ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;\approx - \frac 12 ⟨χ⟩
 \end{align}\]</div>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Yiming sees the first equation as “lateral stirring” balances “mesoscale dissipation”, and</p></li>
 <li><p>FP2005 combine the two equations to conclude that “mesoscale stirring of mean variance” balances “total microscale dissipation”</p></li>
 </ol>
@@ -6221,12 +5950,12 @@ none
 <section id="weak-spice">
 <h4>Weak spice<a class="headerlink" href="#weak-spice" title="Permalink to this headline">#</a></h4>
 <p>In the upper water column that is not spicy, we instead see horizontal stirring MPE→ EPE which is then routed to EKE by “vertical stirring”. Here the scale transformation term is 0 so the budget is</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7bec048b-0812-4252-a599-559a9003ff5e">
-<span class="eqno">(6)<a class="headerlink" href="#equation-7bec048b-0812-4252-a599-559a9003ff5e" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-20eb5f4f-c544-44b9-b436-9800b63d6405">
+<span class="eqno">(6)<a class="headerlink" href="#equation-20eb5f4f-c544-44b9-b436-9800b63d6405" title="Permalink to this equation">#</a></span>\[\begin{align}
 ⟨u_eT_e⟩ ⋅ ∇T_m &amp;\approx 0 \\
 ⟨u_tT_t⟩ ⋅ ∇ T_m &amp;\approx - \frac 12 ⟨χ⟩
 \end{align}\]</div>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Yiming sees the first equation as “low dissipation” or “lateral stirring balances vertical stirring”;</p></li>
 <li><p>FP2005 sees the second equation as “microscale stirring of the mean” balances “total microscale dissipation”</p></li>
 </ol>
@@ -6239,7 +5968,7 @@ none
 <ul class="simple">
 <li><p>Ferrari &amp; Polzin use <span class="math notranslate nohighlight">\(⟨u_t θ_t⟩.∇θ_m = -Γ ⟨ε⟩/N_m^2  ∂_zθ_m^2\)</span>, we are instead doing <span class="math notranslate nohighlight">\(-⟨K_T θ_z⟩ ∂_zθ_m\)</span>.</p></li>
 <li><p>Our estimate mostly agrees with theirs (crosses versus solid-line-steps).</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Filling in NaNs in the temperature profiles was important. This means more estimates are used in the averages</p></li>
 <li><p>Masked where both <span class="math notranslate nohighlight">\(χ\)</span> and <span class="math notranslate nohighlight">\(ε\)</span> are both available.</p></li>
 <li><p>Masked so that <span class="math notranslate nohighlight">\(|θ_z|\)</span> &gt; 1e-3 (really important, otherwise our estimate is too high)</p></li>
@@ -6317,54 +6046,60 @@ none
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_33_0.png" src="_images/natre_33_0.png" />
+<img alt="_images/74582e3db4b6fcd676a9668315f037ec862be953c40c2dda4f759e62b21f9d7b.png" src="_images/74582e3db4b6fcd676a9668315f037ec862be953c40c2dda4f759e62b21f9d7b.png" />
 </div>
 </div>
 </section>
 <section id="pop2-1-10-mesoscale-variance-budget">
 <h2>POP2 1/10° mesoscale variance budget<a class="headerlink" href="#pop2-1-10-mesoscale-variance-budget" title="Permalink to this headline">#</a></h2>
 <p>Yiming is working with the following variance budget equation for the mesoscale after decomposing <span class="math notranslate nohighlight">\(T = \bar{T} + T' + T'' ≡ T_m + T_e + T_t\)</span> (the latter is Ferrari &amp; Polzin notation). The <span class="math notranslate nohighlight">\(T = \tilde{T} + T''\)</span> decomposition is inherent when using cell-averaged equations.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-6a3e2f24-4f3e-44bc-8f72-2a07ddcf2940">
-<span class="eqno">(7)<a class="headerlink" href="#equation-6a3e2f24-4f3e-44bc-8f72-2a07ddcf2940" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-2c6847fa-d84a-45b2-9020-7c0962c29a4d">
+<span class="eqno">(7)<a class="headerlink" href="#equation-2c6847fa-d84a-45b2-9020-7c0962c29a4d" title="Permalink to this equation">#</a></span>\[\begin{equation}
 ∂_t \overline{T'^2} =  -\overline{u'T'} ⋅ ∇_h\overline{T} - \overline{w'T'}∂_z\overline{T} - \overline{\vec{v} ⋅ ∇ T'^2/2} + \overline{T'∂_z \left[K ∂_zT'\right]} + …
 \end{equation}\]</div>
 <p>Ferrari &amp; Polzin’s equations (4.6, 4.7) for the mesoscale and microscale are (<span class="math notranslate nohighlight">\(u\)</span> here is the full 3D <span class="math notranslate nohighlight">\(u\)</span>):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-58e45954-a896-4906-9c03-a20db4e9b35e">
-<span class="eqno">(8)<a class="headerlink" href="#equation-58e45954-a896-4906-9c03-a20db4e9b35e" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-7cf2a4c7-d0e2-4003-a716-a49c40aa3605">
+<span class="eqno">(8)<a class="headerlink" href="#equation-7cf2a4c7-d0e2-4003-a716-a49c40aa3605" title="Permalink to this equation">#</a></span>\[\begin{align}
 ⟨u_eT_e⟩ ⋅ ∇T_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &amp;= 0 \
 ⟨u_tT_t⟩ ⋅ ∇ T_m + ⟨\widetilde{u_t T_t} ⋅ ∇ T_e⟩ &amp;= - \frac 12 ⟨χ⟩
 \end{align}\]</div>
 <p>Note that these equations are specialized for the “interior”.</p>
 <p>For the model the averaging scales are:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>~: grid-scale in vertical; single time-step in time i.e. the “microscale” is the “grid-scale”</p></li>
 <li><p>⟨⟩: monthly in time; NATRE domain size in (x,y)</p></li>
 </ol>
 <p>In Yiming’s notation these equations are</p>
-<div class="amsmath math notranslate nohighlight" id="equation-7c4fe8c1-219f-423b-b81f-4dbb0a90e678">
-<span class="eqno">(9)<a class="headerlink" href="#equation-7c4fe8c1-219f-423b-b81f-4dbb0a90e678" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-8153689a-a73b-4103-b94e-3a33006ff679">
+<span class="eqno">(9)<a class="headerlink" href="#equation-8153689a-a73b-4103-b94e-3a33006ff679" title="Permalink to this equation">#</a></span>\[\begin{align}
 \overline{u'T'}⋅∇\overline{T} + \overline{w'T'}∂_z\overline{T}  - \overline{T'∂_z \left[K ∂_zT' \right]} - \overline{T'A_h ∇^4 T'} = 0 \
 K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 \end{align}\]</div>
 <p>Now we can identify Yiming’s dissipation term (“VMIX” + “HDIFF”, ignoring solar heating etc.) as the scale transformation term in FP2005 and then use the microscale budget from FP2005 to write</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2d40cc12-98c2-42f2-bb66-64f3de752838">
-<span class="eqno">(10)<a class="headerlink" href="#equation-2d40cc12-98c2-42f2-bb66-64f3de752838" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-186132e5-3ebb-4b54-a4d6-ec46ef8298a7">
+<span class="eqno">(10)<a class="headerlink" href="#equation-186132e5-3ebb-4b54-a4d6-ec46ef8298a7" title="Permalink to this equation">#</a></span>\[\begin{equation}
 ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ = - \frac 12 ⟨χ⟩ - ⟨u_tT_t⟩ ⋅ ∇ T_m
 \end{equation}\]</div>
 <p>i.e. Yiming’s “mesoscale dissipation” term is really the difference between</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>total microscale dissipation, and</p></li>
 <li><p>microscale production by stirring of the mean vertical gradient,</p></li>
 </ol>
 <p>both of which can be estimated from microstructure observations.</p>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="s2">&quot;../images/Tvariance_budget_NATREregion_with_EKE.png&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="_images/natre_35_0.png" src="_images/natre_35_0.png" />
+<img alt="_images/596540b48690d1bbacd2fd65208fae64de30850faeec14e9a02c67eddbc29a27.png" src="_images/596540b48690d1bbacd2fd65208fae64de30850faeec14e9a02c67eddbc29a27.png" />
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distributed.utils_perf - WARNING - full garbage collections took 13% CPU time recently (threshold: 10%)
 </pre></div>
 </div>
@@ -6378,7 +6113,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_37_0.png" src="_images/natre_37_0.png" />
+<img alt="_images/55429e08216b0b0404890cbdc07b41ea75e7c803841879823d3d138e6f899c38.png" src="_images/55429e08216b0b0404890cbdc07b41ea75e7c803841879823d3d138e6f899c38.png" />
 </div>
 </div>
 </section>
@@ -6419,7 +6154,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <li><p>For |∇T| I take 1° T field; and do plane fit in NATRE box; then estimate <span class="math notranslate nohighlight">\(|∇T|^2\)</span></p></li>
 </ul>
 <p>Conclusions:</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>POP 1/10° |∇T| agrees decently well with Argo |∇T| ; Argo and MIMOC agree quite  well</p></li>
 <li><p>POP 1° initial conditions don’t capture the mean spice  gradient in the NATRE region.</p>
 <ul class="simple">
@@ -6432,6 +6167,11 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <li><p>Purely diffusive view of the problem. What if the production - med outflow - is too weak?</p></li>
 </ol>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.dpi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">140</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;figure.facecolor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span>  <span class="c1"># (0.91, 0.91, 0.91)</span>
@@ -6523,8 +6263,9 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="_images/natre_41_0.png" src="_images/natre_41_0.png" />
+<img alt="_images/59ce48a45ae4c01ecc09fd90d479d5499c335e8d2f473f9f0295f017fcd23355.png" src="_images/59ce48a45ae4c01ecc09fd90d479d5499c335e8d2f473f9f0295f017fcd23355.png" />
 </div>
 </div>
 </section>
@@ -6595,7 +6336,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f6a3f8c57f0&gt;
 </pre></div>
 </div>
-<img alt="_images/natre_46_2.png" src="_images/natre_46_2.png" />
+<img alt="_images/38fe3a99bcbdd55646b62077ee1199a362c75f8d958ad71482461c6584d8499c.png" src="_images/38fe3a99bcbdd55646b62077ee1199a362c75f8d958ad71482461c6584d8499c.png" />
 </div>
 </div>
 </section>
@@ -6652,7 +6393,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fa53eb855b0&gt;
 </pre></div>
 </div>
-<img alt="_images/natre_50_1.png" src="_images/natre_50_1.png" />
+<img alt="_images/54737be689897ce406c7fccaf3c803f414d9b4e50177261d9370c6dda1d9946e.png" src="_images/54737be689897ce406c7fccaf3c803f414d9b4e50177261d9370c6dda1d9946e.png" />
 </div>
 </div>
 </section>
@@ -6676,7 +6417,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;$K_e^{cole} |∇T_{iso}^{argo}|²$ [°C²/s]&#39;)
 </pre></div>
 </div>
-<img alt="_images/natre_53_1.png" src="_images/natre_53_1.png" />
+<img alt="_images/5a2fafd95cb62c71c37708fa39821d062996780f3567e3621142857bb3640c99.png" src="_images/5a2fafd95cb62c71c37708fa39821d062996780f3567e3621142857bb3640c99.png" />
 </div>
 </div>
 <p>These are the various terms in the Cole analysis. Note minimum in ∇S between 200 and 800, and associated high mixing lengths ≳ 300km.</p>
@@ -6687,7 +6428,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/natre_55_0.png" src="_images/natre_55_0.png" />
+<img alt="_images/980f86cd5f2e76ed3639718b4fee30f3f699b82f6c8ab76fefbe335797ad8114.png" src="_images/980f86cd5f2e76ed3639718b4fee30f3f699b82f6c8ab76fefbe335797ad8114.png" />
 </div>
 </div>
 </section>
@@ -6695,7 +6436,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <section id="t-s-diagrams-argo-vs-natre">
 <h2>T-S diagrams: Argo vs. NATRE<a class="headerlink" href="#t-s-diagrams-argo-vs-natre" title="Permalink to this headline">#</a></h2>
 <p>Lets compare T-S to see if they are similar. I am exploring ways to</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>interpret the “high” variance production values between 400m and 800m for the Cole estimate. Maybe the NATRE T-S is not representative of the argo T-S?</p>
 <ul class="simple">
 <li><p>It is representative!</p></li>
@@ -6714,12 +6455,17 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <li><p>Though interestingly the Groeskamp estimate has the same issue then.</p></li>
 </ul>
 <p>Is the finestructure estimate undersampling eddy stirring periods? Compare T-S spread for</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>all argo profiles</p></li>
 <li><p>argo profiles where I can make a finestructure estimate.</p></li>
 <li><p>NATRE profiles</p></li>
 </ol>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">argo_natre</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;../datasets/argo/natre.nc&quot;</span><span class="p">)</span>
 <span class="n">argo_natre</span><span class="p">[</span><span class="s2">&quot;THETA&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dcpy</span><span class="o">.</span><span class="n">eos</span><span class="o">.</span><span class="n">ptmp</span><span class="p">(</span>
@@ -6729,6 +6475,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -6745,6 +6492,11 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <section id="all-argo-vs-natre">
 <h3>All argo vs NATRE<a class="headerlink" href="#all-argo-vs-natre" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="n">hexbin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -6783,14 +6535,20 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="_images/natre_60_0.png" src="_images/natre_60_0.png" />
+<img alt="_images/012e42d5095eff0798b5ec595097c6804096fb9559a22463c595e3f630af73c9.png" src="_images/012e42d5095eff0798b5ec595097c6804096fb9559a22463c595e3f630af73c9.png" />
 </div>
 </div>
 </section>
 <section id="finestructure-argo-vs-natre">
 <h3>Finestructure Argo vs NATRE<a class="headerlink" href="#finestructure-argo-vs-natre" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
     <span class="n">hexbin</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -6803,9 +6561,15 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </pre></div>
 </div>
 </div>
+</details>
 </div>
 <p>The distributions look similar and the argo data capture more extremes; but the NATRE data fill a lot of the space (though smaller S.D.). Maybe the average isn’t that great and it’s totally undersampling</p>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mask</span> <span class="o">=</span> <span class="n">argo_fine_full_profiles</span><span class="o">.</span><span class="n">fine_deepest_bin</span> <span class="o">&gt;</span> <span class="mi">1000</span>
 
@@ -6828,12 +6592,18 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="_images/natre_64_0.png" src="_images/natre_64_0.png" />
+<img alt="_images/2d6a61598d8d6e2394221c02655c3332b467f6f876d8e4add3f84e0a8db030ef.png" src="_images/2d6a61598d8d6e2394221c02655c3332b467f6f876d8e4add3f84e0a8db030ef.png" />
 </div>
 </div>
 <p>It’s definitely a big undersampling when compared to all Argo profiles in the area. <strong>How good is good enough?</strong></p>
 <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">dcpy</span><span class="o">.</span><span class="n">oceans</span><span class="o">.</span><span class="n">TSplot</span><span class="p">(</span>
     <span class="n">argo_natre</span><span class="o">.</span><span class="n">PSAL</span><span class="p">,</span>
@@ -6861,14 +6631,15 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
-<img alt="_images/natre_66_0.png" src="_images/natre_66_0.png" />
+<img alt="_images/2971b8da803d7294c3ba9b6320bf714bc81b4b2472a4047d661fc46180596916.png" src="_images/2971b8da803d7294c3ba9b6320bf714bc81b4b2472a4047d661fc46180596916.png" />
 </div>
 </div>
 </section>
 <section id="conclusions">
 <h3>Conclusions<a class="headerlink" href="#conclusions" title="Permalink to this headline">#</a></h3>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Can we define a metric using (T-S spread in all argo profiles) vs (TS spread in profiles where we can make a finestructure estimate) to decide where we might be able to make an estimate using Argo?</p></li>
 <li><p>Can we refine this?</p>
 <ul class="simple">
@@ -6906,7 +6677,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;xarray.plot.facetgrid.FacetGrid at 0x7fbb1793f2b0&gt;
 </pre></div>
 </div>
-<img alt="_images/natre_69_1.png" src="_images/natre_69_1.png" />
+<img alt="_images/d259c44da201fda2581f3d4dfeadb781a8c652e9c51232e52edb21fbc94c1d5d.png" src="_images/d259c44da201fda2581f3d4dfeadb781a8c652e9c51232e52edb21fbc94c1d5d.png" />
 </div>
 </div>
 </section>
@@ -6925,7 +6696,7 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
             mode: "conda-env-eddydiff-py"
         },
         kernelOptions: {
-            kernelName: "conda-env-eddydiff-py",
+            name: "conda-env-eddydiff-py",
             path: "./."
         },
         predefinedOutput: true
@@ -6933,57 +6704,143 @@ K \left(∂_z(\overline{T} + T')\right)^2  &amp;= - \frac 12 ⟨χ⟩
     </script>
     <script>kernelName = 'conda-env-eddydiff-py'</script>
 
-              </div>
+                </article>
               
-            </main>
-            <footer class="footer-article noprint">
-                
-    <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="pop-var-budget.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Yiming’s POP variance budget</p>
-        </div>
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pop-var-budget.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Yiming’s POP variance budget</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="natre-examine.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="natre-examine.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">NATRE microstructure dataset</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
+</div></div>
+  
 </div>
-            </footer>
-        </div>
-    </div>
-    <div class="footer-content row">
-        <footer class="col footer"><p>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#todo">TODO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prepare-various-production-and-dissipation-terms">Prepare various production and dissipation terms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mimoc">MIMOC</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variance-production-vs-dissipation">Variance production vs dissipation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretation">Interpretation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#spicy-region">Spicy region</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#weak-spice">Weak spice</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#all-microscale-budget-terms">All microscale budget terms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pop2-1-10-mesoscale-variance-budget">POP2 1/10° mesoscale variance budget</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pop-1-10-vs-pop-1">POP 1/10 vs POP 1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#error-bounds">Error bounds</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#microstructure">Microstructure</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#studying-cole-estimate">Studying Cole estimate</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-cole-groeskamp-diffusivities">Compare Cole &amp; Groeskamp diffusivities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#depth-vs-density-space-estimation-of-k-e-t-2">Depth-vs-density space estimation of <span class="math notranslate nohighlight">\(K_e |∇T|²\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#depth-space-calculation">Depth space calculation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#t-s-diagrams-argo-vs-natre">T-S diagrams: Argo vs. NATRE</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#all-argo-vs-natre">All argo vs NATRE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finestructure-argo-vs-natre">Finestructure Argo vs NATRE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusions">Conclusions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#is-there-spatial-uncertainty-cole-estimate-are-we-looking-in-the-wrong-place-no">Is there spatial uncertainty? Cole estimate: Are we looking in the wrong place? No</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
   
-    By Deepak Cherian<br/>
+  <div class="footer-item">
+    
+<p class="component-author">
+By Deepak Cherian
+</p>
+
+  </div>
   
-      &copy; Copyright 2022.<br/>
-    <div class="extra_footer">
-      <div>
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
 <script data-goatcounter="https://count.cherian.net/count"
         async src="count.js"></script>
 </div>
 
-    </div>
-</p>
-        </footer>
-    </div>
-    
 </div>
+  </div>
+  
+</div>
+          </footer>
+        
 
-
-      </div>
+      </main>
     </div>
+  </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
 
-
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>

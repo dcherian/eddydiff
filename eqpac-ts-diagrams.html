@@ -1,35 +1,45 @@
 
+
 <!DOCTYPE html>
 
-<html>
+
+<html >
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
     <title>T-S diagrams from TAO &amp; Argo at (0, 145W→135W) &#8212; Eddy Diffusivity</title>
-    
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
-<link href="_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+  <link href="_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
 
-    
-  <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
-    
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
@@ -37,12 +47,12 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
-    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
 const thebe_selector = ".thebe,.cell"
@@ -50,576 +60,334 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'eqpac-ts-diagrams';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Dataset processing" href="dataset-processing.html" />
     <link rel="prev" title="χpods: EQUIX vs TAO" href="equix-vs-tao.html" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="docsearch:language" content="None">
-    
-
-    <!-- Google Analytics -->
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
   </head>
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
-<!-- Checkboxes to toggle the left sidebar -->
-<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
-<label class="overlay overlay-navbar" for="__navigation">
-    <div class="visually-hidden">Toggle navigation sidebar</div>
-</label>
-<!-- Checkboxes to toggle the in-page toc -->
-<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
-<label class="overlay overlay-pagetoc" for="__page-toc">
-    <div class="visually-hidden">Toggle in-page Table of Contents</div>
-</label>
-<!-- Headers at the top -->
-<div class="announcement header-item noprint"></div>
-<div class="header header-item noprint"></div>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
-    
-    <div class="container-fluid" id="banner"></div>
-
-    
-
-    <div class="container-xl">
-      <div class="row">
-          
-<!-- Sidebar -->
-<div class="bd-sidebar noprint" id="site-navigation">
-    <div class="bd-sidebar__content">
-        <div class="bd-sidebar__top"><div class="navbar-brand-box">
-    <a class="navbar-brand text-wrap" href="index.html">
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
       
-        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+      <div class="bd-sidebar-primary bd-sidebar">
         
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+    
+    
       
-      
-      <img src="_static/logo.png" class="logo" alt="logo">
-      
-      
-      <h1 class="site-logo" id="site-title">Eddy Diffusivity</h1>
-      
-    </a>
-</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
-  <i class="icon fas fa-search"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
-</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
-    <div class="bd-toc-item active">
-        <p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Moored χpod analysis
- </span>
-</p>
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Moored χpod analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="tao.html">
-   TAO (0, 140) χpod
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="equix.html">
-   EQUIX
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="tao.html">TAO (0, 140) χpod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="equix.html">EQUIX</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  CTD χpod analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">CTD χpod analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="BoB-ctd-chipod.html">
-   BoB ASIRI 2013 CTD χpod
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="P06.html">
-   P06 CTD χpod analysis
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="sections-variance-estimate.html">
-   Eddy variance generation along GO-SHIP lines
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ctd-%CF%87-bob.html">
-   ASIRI13 CTD χpod
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="ctd-%CF%87-A05.html">
-   CTD χpod A05 section
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="bootstrap-ctd-chipod-estimates.html">
-   Bootstrapped outlier detection for CTD-χpod
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="BoB-ctd-chipod.html">BoB ASIRI 2013 CTD χpod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="P06.html">P06 CTD χpod analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sections-variance-estimate.html">Eddy variance generation along GO-SHIP lines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ctd-%CF%87-bob.html">ASIRI13 CTD χpod</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ctd-%CF%87-A05.html">CTD χpod A05 section</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bootstrap-ctd-chipod-estimates.html">Bootstrapped outlier detection for CTD-χpod</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Model Processing
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Model Processing</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="pop-1-deg.html">
-   POP 1°: Redi term
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="pop-var-budget.html">
-   Yiming’s POP variance budget
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="pop-1-deg.html">POP 1°: Redi term</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pop-var-budget.html">Yiming’s POP variance budget</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Variance budgets
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Variance budgets</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="natre.html">
-   NATRE region variance budget
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="natre.html">NATRE region variance budget</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  NATRE region analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">NATRE region analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="natre-examine.html">
-   NATRE microstructure dataset
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="natre-finescale.html">
-   NATRE micro vs finescale
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="natre-vs-ctd-%CF%87pod.html">
-   NATRE vs CTD-χpod
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="natre-examine.html">NATRE microstructure dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natre-finescale.html">NATRE micro vs finescale</a></li>
+<li class="toctree-l1"><a class="reference internal" href="natre-vs-ctd-%CF%87pod.html">NATRE vs CTD-χpod</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Finestructure analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Finestructure analysis</span></p>
 <ul class="nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="iw-fine-argo.html">
-   Argo finescale estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="iw-fine-estimates.html">
-   Existing finestructure estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="iw-fine-devel.html">
-   Finescale Mixing Parametrizations: Development
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="iw-fine-argo.html">Argo finescale estimates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iw-fine-estimates.html">Existing finestructure estimates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iw-fine-devel.html">Finescale Mixing Parametrizations: Development</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading">
- <span class="caption-text">
-  Ancillary analysis
- </span>
-</p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Ancillary analysis</span></p>
 <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="chi-eps.html">
-   χ-ε relations
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="compare-Ke-estimates.html">
-   Compare different
-   <span class="math notranslate nohighlight">
-    \(K_e\)
-   </span>
-   estimates
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="equix-vs-tao.html">
-   χpods: EQUIX vs TAO
-  </a>
- </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
-   T-S diagrams from TAO &amp; Argo at (0, 145W→135W)
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="dataset-processing.html">
-   Dataset processing
-  </a>
- </li>
+<li class="toctree-l1"><a class="reference internal" href="chi-eps.html">χ-ε relations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compare-Ke-estimates.html">Compare different <span class="math notranslate nohighlight">\(K_e\)</span> estimates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="equix-vs-tao.html">χpods: EQUIX vs TAO</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">T-S diagrams from TAO &amp; Argo at (0, 145W→135W)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset-processing.html">Dataset processing</a></li>
 </ul>
 
     </div>
 </nav></div>
-        <div class="bd-sidebar__bottom">
-             <!-- To handle the deprecated key -->
-            
-            <div class="navbar_extra_footer">
-            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
-            </div>
-            
-        </div>
     </div>
-    <div id="rtd-footer-container"></div>
-</div>
-
-
-          
-
-
-          
-<!-- A tiny helper pixel to detect if we've scrolled -->
-<div class="sbt-scroll-pixel-helper"></div>
-<!-- Main content -->
-<div class="col py-0 content-container">
-    
-    <div class="header-article row sticky-top noprint">
-        
-
-
-
-<div class="col py-1 d-flex header-article-main">
-    <div class="header-article__left">
-        
-        <label for="__navigation"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="right"
-title="Toggle navigation"
->
   
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-bars"></i>
-  </span>
-
-</label>
-
-        
-    </div>
-    <div class="header-article__right">
-<div class="menu-dropdown menu-dropdown-launch-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Launch interactive content">
-      <i class="fas fa-rocket"></i>
-  </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="https://mybinder.org/v2/gh/dcherian/eddydiff/main?urlpath=tree/notebooks/eqpac-ts-diagrams.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Launch on Binder"
->
   
-
-<span class="headerbtn__icon-container">
-  
-    <img src="_static/images/logo_binder.svg">
-  </span>
-<span class="headerbtn__text-container">Binder</span>
-</a>
-
-      </li>
-      
-    </ul>
+  <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
-</div>
+  
+  <div id="rtd-footer-container"></div>
 
-<button onclick="toggleFullScreen()"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="bottom"
-title="Fullscreen mode"
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/dcherian/eddydiff" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
-  <i class="fas fa-expand"></i>
-  </span>
-
-</button>
-<a href="https://github.com/dcherian/eddydiff"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="bottom"
-title="Source repository"
->
-  
-
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fab fa-github"></i>
   </span>
 
 </a>
 
-<div class="menu-dropdown menu-dropdown-download-buttons">
-  <button class="headerbtn menu-dropdown__trigger"
-      aria-label="Download this page">
-      <i class="fas fa-download"></i>
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
   </button>
-  <div class="menu-dropdown__content">
-    <ul>
-      <li>
-        <a href="_sources/eqpac-ts-diagrams.ipynb"
-   class="headerbtn"
-   data-toggle="tooltip"
-data-placement="left"
-title="Download source file"
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/eqpac-ts-diagrams.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="headerbtn__text-container">.ipynb</span>
+<span class="btn__text-container">.ipynb</span>
 </a>
-
-      </li>
+</li>
+      
+      
+      
       
       <li>
-        
-<button onclick="printPdf(this)"
-  class="headerbtn"
-  data-toggle="tooltip"
-data-placement="left"
-title="Print to PDF"
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
+<span class="btn__icon-container">
   <i class="fas fa-file-pdf"></i>
   </span>
-<span class="headerbtn__text-container">.pdf</span>
+<span class="btn__text-container">.pdf</span>
 </button>
-
-      </li>
+</li>
       
-    </ul>
-  </div>
+  </ul>
 </div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
   
 
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
   </span>
 
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
 </label>
-
+</div></div>
+      
     </div>
+  
 </div>
-
-<!-- Table of contents -->
-<div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#tiwke-from-tao">
-   TIWKE from TAO
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#argo">
-   Argo
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#read-data">
-     Read data
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#generate-enso-labels">
-     Generate ENSO labels
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#latitudinal-variation-at-140w">
-   Latitudinal variation at 140W
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#interannual-variation-at-2s2n-140">
-   Interannual variation at (2S→2N, -140)
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#t-s-diagram-variation-with-enso-phase">
-   T-S diagram variation with ENSO phase
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#variation-of-t-s-with-tiwke-at-0-140w">
-   Variation of T-S with TIWKE at (0, 140W)
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#older-t-s-attempt">
-   older T-S attempt
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#download-argo-data">
-   Download Argo data
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#natre">
-     NATRE
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#tao">
-     TAO
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#tao-mooring-t-s">
-   TAO mooring T-S
-  </a>
- </li>
-</ul>
-
-    </nav>
 </div>
-    </div>
-    <div class="article row">
-        <div class="col pl-md-3 pl-lg-5 content-container">
-            <!-- Table of contents that is only displayed when printing the page -->
-            <div id="jb-print-docs-body" class="onlyprint">
-                <h1>T-S diagrams from TAO & Argo at (0, 145W→135W)</h1>
-                <!-- Table of contents -->
-                <div id="print-main-content">
-                    <div id="jb-print-toc">
-                        
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#tiwke-from-tao">
-   TIWKE from TAO
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#argo">
-   Argo
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#read-data">
-     Read data
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#generate-enso-labels">
-     Generate ENSO labels
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#latitudinal-variation-at-140w">
-   Latitudinal variation at 140W
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#interannual-variation-at-2s2n-140">
-   Interannual variation at (2S→2N, -140)
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#t-s-diagram-variation-with-enso-phase">
-   T-S diagram variation with ENSO phase
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#variation-of-t-s-with-tiwke-at-0-140w">
-   Variation of T-S with TIWKE at (0, 140W)
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#older-t-s-attempt">
-   older T-S attempt
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#download-argo-data">
-   Download Argo data
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#natre">
-     NATRE
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#tao">
-     TAO
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#tao-mooring-t-s">
-   TAO mooring T-S
-  </a>
- </li>
-</ul>
+              
+              
 
-                        </nav>
-                    </div>
-                </div>
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>T-S diagrams from TAO & Argo at (0, 145W→135W)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
             </div>
-            <main id="main-content" role="main">
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tiwke-from-tao">TIWKE from TAO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argo">Argo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-data">Read data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-enso-labels">Generate ENSO labels</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latitudinal-variation-at-140w">Latitudinal variation at 140W</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interannual-variation-at-2s2n-140">Interannual variation at (2S→2N, -140)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#t-s-diagram-variation-with-enso-phase">T-S diagram variation with ENSO phase</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variation-of-t-s-with-tiwke-at-0-140w">Variation of T-S with TIWKE at (0, 140W)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#older-t-s-attempt">older T-S attempt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-argo-data">Download Argo data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#natre">NATRE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tao">TAO</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tao-mooring-t-s">TAO mooring T-S</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
                 
-              <div>
-                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
   <section class="tex2jax_ignore mathjax_ignore" id="t-s-diagrams-from-tao-argo-at-0-145w135w">
 <h1>T-S diagrams from TAO &amp; Argo at (0, 145W→135W)<a class="headerlink" href="#t-s-diagrams-from-tao-argo-at-0-145w135w" title="Permalink to this headline">#</a></h1>
 <p>In this notebook 140W really means (145W → 135W)</p>
 <p>looking at TS diagrams across latitudes.</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>During TIW activity do we see more stirring near the equator or off the equator?</p></li>
 <li><p>If salinity is a minor contributor to density, do we really expect to see T-S scatter as a signal of eddy stirring?</p></li>
 </ol>
 <p>(Surprising conclusions)</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>T-S spread is similar in all ENSO phases. There is some separation in temperature (as expected)</p></li>
 <li><p>Latitudinal variation in T-S spread is big; but again ENSO variation is minimal at all latitudes I’ve checked.</p></li>
 </ol>
@@ -1131,7 +899,7 @@ Attributes:
 <section id="generate-enso-labels">
 <h3>Generate ENSO labels<a class="headerlink" href="#generate-enso-labels" title="Permalink to this headline">#</a></h3>
 <p>From Anna; Some Trenberth metric</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>Use NINO34 SST annomaly (w.r.t mean from 18xx)</p></li>
 <li><p>At least 6 month long periods of SSTA &gt; 0.4 (El-nino) &amp; SSTA &lt; -0.4 (La-Nina). Neutral everywhere else</p></li>
 </ol>
@@ -1567,7 +1335,7 @@ Attributes:
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/eqpac-ts-diagrams_12_0.png" src="_images/eqpac-ts-diagrams_12_0.png" />
+<img alt="_images/e5271ecf50ce7f3e8314c21554440cddc8ee4e09b1588ef85404608a7b16a258.png" src="_images/e5271ecf50ce7f3e8314c21554440cddc8ee4e09b1588ef85404608a7b16a258.png" />
 </div>
 </div>
 <p>check ENSO phase calculation</p>
@@ -1585,7 +1353,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fd20a9eac70&gt;]
 </pre></div>
 </div>
-<img alt="_images/eqpac-ts-diagrams_14_1.png" src="_images/eqpac-ts-diagrams_14_1.png" />
+<img alt="_images/bbbf4a4135838c29fe8532c4f5954e886dd43703edf43a863d51351134c86652.png" src="_images/bbbf4a4135838c29fe8532c4f5954e886dd43703edf43a863d51351134c86652.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1599,7 +1367,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7fd4c8612d60&gt;]
 </pre></div>
 </div>
-<img alt="_images/eqpac-ts-diagrams_15_1.png" src="_images/eqpac-ts-diagrams_15_1.png" />
+<img alt="_images/8312442f51b27f5d239f00ad0ae382bf87ce2d6291a0fd1957f9b31c2d17f731.png" src="_images/8312442f51b27f5d239f00ad0ae382bf87ce2d6291a0fd1957f9b31c2d17f731.png" />
 </div>
 </div>
 </section>
@@ -1626,7 +1394,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 1.0, &#39;2005-2020&#39;)
 </pre></div>
 </div>
-<img alt="_images/eqpac-ts-diagrams_17_1.png" src="_images/eqpac-ts-diagrams_17_1.png" />
+<img alt="_images/78cc066346fd765241521baddefd2c049101b980487fdf696724a62834748ee2.png" src="_images/78cc066346fd765241521baddefd2c049101b980487fdf696724a62834748ee2.png" />
 </div>
 </div>
 </section>
@@ -1655,7 +1423,7 @@ Attributes:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fd1eab81970&gt;
 </pre></div>
 </div>
-<img alt="_images/eqpac-ts-diagrams_19_1.png" src="_images/eqpac-ts-diagrams_19_1.png" />
+<img alt="_images/ba6c3a5ffe52916b9d3e57cf2066ac8df871e40d8d51b160bd3ad13033a9d1b9.png" src="_images/ba6c3a5ffe52916b9d3e57cf2066ac8df871e40d8d51b160bd3ad13033a9d1b9.png" />
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>distributed.utils_perf - WARNING - full garbage collections took 10% CPU time recently (threshold: 10%)
 distributed.utils_perf - WARNING - full garbage collections took 10% CPU time recently (threshold: 10%)
 </pre></div>
@@ -1666,7 +1434,7 @@ distributed.utils_perf - WARNING - full garbage collections took 10% CPU time re
 <section id="t-s-diagram-variation-with-enso-phase">
 <h2>T-S diagram variation with ENSO phase<a class="headerlink" href="#t-s-diagram-variation-with-enso-phase" title="Permalink to this headline">#</a></h2>
 <p>This is a TS diagram of Argo profiles between 135W→145W, 2S→2N; grouped by ENSO phase.</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>El-Nino:</p>
 <ul class="simple">
 <li><p>isopycnal scatter at warmer isotherms during El-Ninos (top 100m). Where is that coming from.</p></li>
@@ -1701,13 +1469,13 @@ distributed.utils_perf - WARNING - full garbage collections took 10% CPU time re
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/eqpac-ts-diagrams_21_0.png" src="_images/eqpac-ts-diagrams_21_0.png" />
+<img alt="_images/20fbca38ea7c3d1ed19e9b6fdaca5046b07dd4b556f9bf8f66285e90568b6413.png" src="_images/20fbca38ea7c3d1ed19e9b6fdaca5046b07dd4b556f9bf8f66285e90568b6413.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_TS</span><span class="p">(</span><span class="n">latitude_string</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Plot a TS diagram per ENSO phase&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plot a TS diagram per ENSO phase&quot;&quot;&quot;</span>
     <span class="kn">from</span> <span class="nn">matplotlib.lines</span> <span class="kn">import</span> <span class="n">Line2D</span>
 
     <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
@@ -1749,7 +1517,7 @@ distributed.utils_perf - WARNING - full garbage collections took 10% CPU time re
 </div>
 </div>
 <p>It looks like there is latitudinal variation in T-S spread along isopycnals but not really an ENSO phase variation. The La-Nina and Neutral TS diagrams basically overlap but we can see that the La-Nina and El-Nino diagrams are really only different in that the El-Nino one is warmer. The spread looks the same.</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p>plot distributions along 24.5 isopycnal</p></li>
 </ol>
 <div class="cell docutils container">
@@ -1760,8 +1528,8 @@ distributed.utils_perf - WARNING - full garbage collections took 10% CPU time re
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/eqpac-ts-diagrams_25_0.png" src="_images/eqpac-ts-diagrams_25_0.png" />
-<img alt="_images/eqpac-ts-diagrams_25_1.png" src="_images/eqpac-ts-diagrams_25_1.png" />
+<img alt="_images/9452b84719f0ff2b05ddd84ff96a3379add8d7a8d7d710ab51a83728b4b0e9e8.png" src="_images/9452b84719f0ff2b05ddd84ff96a3379add8d7a8d7d710ab51a83728b4b0e9e8.png" />
+<img alt="_images/7c8d81c2266abeea5dd138148641c105477021c840079de526586027acfe96b5.png" src="_images/7c8d81c2266abeea5dd138148641c105477021c840079de526586027acfe96b5.png" />
 </div>
 </div>
 </section>
@@ -1798,7 +1566,7 @@ distributed.utils_perf - WARNING - full garbage collections took 10% CPU time re
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0, &#39;&#39;)
 </pre></div>
 </div>
-<img alt="_images/eqpac-ts-diagrams_29_1.png" src="_images/eqpac-ts-diagrams_29_1.png" />
+<img alt="_images/c39304202e60fe55e10dcb3083e9720503cbde07a238790771463e939cbbe6ff.png" src="_images/c39304202e60fe55e10dcb3083e9720503cbde07a238790771463e939cbbe6ff.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1833,7 +1601,7 @@ distributed.utils_perf - WARNING - full garbage collections took 10% CPU time re
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fd46c679490&gt;
 </pre></div>
 </div>
-<img alt="_images/eqpac-ts-diagrams_31_1.png" src="_images/eqpac-ts-diagrams_31_1.png" />
+<img alt="_images/13e7443b09876ddd004ec9705ffe4017af13f222e5253d0ace00eeef24ca43b9.png" src="_images/13e7443b09876ddd004ec9705ffe4017af13f222e5253d0ace00eeef24ca43b9.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1861,7 +1629,7 @@ distributed.utils_perf - WARNING - full garbage collections took 10% CPU time re
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7fd46c7bd6d0&gt;
 </pre></div>
 </div>
-<img alt="_images/eqpac-ts-diagrams_32_1.png" src="_images/eqpac-ts-diagrams_32_1.png" />
+<img alt="_images/4dafc1cc5c4a708f9e3e6da0546dd08ab00bb171a3e09d3bdf0a569e7b8c32ed.png" src="_images/4dafc1cc5c4a708f9e3e6da0546dd08ab00bb171a3e09d3bdf0a569e7b8c32ed.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1882,7 +1650,7 @@ distributed.utils_perf - WARNING - full garbage collections took 10% CPU time re
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(34.25, 36.0)
 </pre></div>
 </div>
-<img alt="_images/eqpac-ts-diagrams_34_1.png" src="_images/eqpac-ts-diagrams_34_1.png" />
+<img alt="_images/34f7a2599484e6a41539043bb7ca29b6a45fd7c3c5700a2a97038f5ecc2f6fa1.png" src="_images/34f7a2599484e6a41539043bb7ca29b6a45fd7c3c5700a2a97038f5ecc2f6fa1.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -3109,8 +2877,8 @@ Data variables:
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.contour.QuadContourSet at 0x7fd4a331e640&gt;
 </pre></div>
 </div>
-<img alt="_images/eqpac-ts-diagrams_36_1.png" src="_images/eqpac-ts-diagrams_36_1.png" />
-<img alt="_images/eqpac-ts-diagrams_36_2.png" src="_images/eqpac-ts-diagrams_36_2.png" />
+<img alt="_images/48d3157b95fc333063c27d106135d6de7a77d8a14f54146c52de923b04777156.png" src="_images/48d3157b95fc333063c27d106135d6de7a77d8a14f54146c52de923b04777156.png" />
+<img alt="_images/cc40c528993c407088c08561ada970c9d01c357c98fa021b3affee3a137547dc.png" src="_images/cc40c528993c407088c08561ada970c9d01c357c98fa021b3affee3a137547dc.png" />
 </div>
 </div>
 </section>
@@ -4496,9 +4264,9 @@ Dimensions without coordinates: N_POINTS</pre><div class='xr-wrap' hidden><div c
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/eqpac-ts-diagrams_41_0.png" src="_images/eqpac-ts-diagrams_41_0.png" />
-<img alt="_images/eqpac-ts-diagrams_41_1.png" src="_images/eqpac-ts-diagrams_41_1.png" />
-<img alt="_images/eqpac-ts-diagrams_41_2.png" src="_images/eqpac-ts-diagrams_41_2.png" />
+<img alt="_images/cfb7daa93999ac0f1056be99d6bc53bc65a4ca7551145d2e6001b342928a972e.png" src="_images/cfb7daa93999ac0f1056be99d6bc53bc65a4ca7551145d2e6001b342928a972e.png" />
+<img alt="_images/9c335b902530d08f5e621d4f4f3369e607d15ca1d5746f9bf21471ee8367b6b7.png" src="_images/9c335b902530d08f5e621d4f4f3369e607d15ca1d5746f9bf21471ee8367b6b7.png" />
+<img alt="_images/558f858108de3cbe444990d40309c6301175ee148212c836b8c61a99bdf8e802.png" src="_images/558f858108de3cbe444990d40309c6301175ee148212c836b8c61a99bdf8e802.png" />
 </div>
 </div>
 </section>
@@ -4680,8 +4448,8 @@ Dimensions without coordinates: N_POINTS</pre><div class='xr-wrap' hidden><div c
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;xarray.plot.facetgrid.FacetGrid at 0x7f78fe81bee0&gt;
 </pre></div>
 </div>
-<img alt="_images/eqpac-ts-diagrams_62_1.png" src="_images/eqpac-ts-diagrams_62_1.png" />
-<img alt="_images/eqpac-ts-diagrams_62_2.png" src="_images/eqpac-ts-diagrams_62_2.png" />
+<img alt="_images/df28cb7d8221ccd25b7b737b34a1be702b70c0561effe8c4e75bc583f9270f63.png" src="_images/df28cb7d8221ccd25b7b737b34a1be702b70c0561effe8c4e75bc583f9270f63.png" />
+<img alt="_images/d11628d4472809113fc7f014ab16bcbe19d33b89edcf925c3dd864a3043099bd.png" src="_images/d11628d4472809113fc7f014ab16bcbe19d33b89edcf925c3dd864a3043099bd.png" />
 </div>
 </div>
 </section>
@@ -4699,7 +4467,7 @@ Dimensions without coordinates: N_POINTS</pre><div class='xr-wrap' hidden><div c
             mode: "python"
         },
         kernelOptions: {
-            kernelName: "python3",
+            name: "python3",
             path: "./."
         },
         predefinedOutput: true
@@ -4707,57 +4475,128 @@ Dimensions without coordinates: N_POINTS</pre><div class='xr-wrap' hidden><div c
     </script>
     <script>kernelName = 'python3'</script>
 
-              </div>
+                </article>
               
-            </main>
-            <footer class="footer-article noprint">
-                
-    <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="equix-vs-tao.html" title="previous page">
-        <i class="fas fa-angle-left"></i>
-        <div class="prev-next-info">
-            <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">χpods: EQUIX vs TAO</p>
-        </div>
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="equix-vs-tao.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">χpods: EQUIX vs TAO</p>
+      </div>
     </a>
-    <a class='right-next' id="next-link" href="dataset-processing.html" title="next page">
-    <div class="prev-next-info">
+    <a class="right-next"
+       href="dataset-processing.html"
+       title="next page">
+      <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title">Dataset processing</p>
-    </div>
-    <i class="fas fa-angle-right"></i>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
+</div></div>
+  
 </div>
-            </footer>
-        </div>
-    </div>
-    <div class="footer-content row">
-        <footer class="col footer"><p>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tiwke-from-tao">TIWKE from TAO</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#argo">Argo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-data">Read data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-enso-labels">Generate ENSO labels</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#latitudinal-variation-at-140w">Latitudinal variation at 140W</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interannual-variation-at-2s2n-140">Interannual variation at (2S→2N, -140)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#t-s-diagram-variation-with-enso-phase">T-S diagram variation with ENSO phase</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variation-of-t-s-with-tiwke-at-0-140w">Variation of T-S with TIWKE at (0, 140W)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#older-t-s-attempt">older T-S attempt</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#download-argo-data">Download Argo data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#natre">NATRE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tao">TAO</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tao-mooring-t-s">TAO mooring T-S</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
   
-    By Deepak Cherian<br/>
+  <div class="footer-item">
+    
+<p class="component-author">
+By Deepak Cherian
+</p>
+
+  </div>
   
-      &copy; Copyright 2022.<br/>
-    <div class="extra_footer">
-      <div>
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <div>
 <script data-goatcounter="https://count.cherian.net/count"
         async src="count.js"></script>
 </div>
 
-    </div>
-</p>
-        </footer>
-    </div>
-    
 </div>
+  </div>
+  
+</div>
+          </footer>
+        
 
-
-      </div>
+      </main>
     </div>
+  </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+  <script src="_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
 
-
+  <footer class="bd-footer">
+  </footer>
   </body>
 </html>
