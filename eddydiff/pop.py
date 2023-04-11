@@ -5,6 +5,8 @@ from dcpy.util import to_base_units
 
 import xarray as xr
 
+from .eddydiff import plane_fit_gradient
+
 pop_metric_vars = ["UAREA", "TAREA", "DXU", "DXT", "DYU", "DYT"]
 
 metrics = {
@@ -51,7 +53,6 @@ def gridder(da, grid, target):
 
 
 def regrid_to_density(xds, grid, bins, varnames):
-
     import dask
 
     if dask.base.is_dask_collection(xds.TEMP.data):
@@ -122,3 +123,14 @@ def estimate_redi_terms(xds, grid, bins):
     regridded.coords.update(grid._ds[pop_metric_vars])
 
     return regridded
+
+
+def calc_mean_redivar_profile(ds):
+    profile = ds.cf.mean(["X", "Y"])
+    profile["delT2_plane"] = plane_fit_gradient(
+        ds.TEMP.pint.dequantify(), reduce_dims=["nlon_t", "nlat_t"], debug=True
+    )
+
+    profile.coords["z_σ"] = profile.z_σ.cf.ffill("Z")
+    profile = profile.cf.add_bounds("z_σ", dim="Z")
+    return profile
