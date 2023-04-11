@@ -20,7 +20,11 @@ metrics = {
 
 
 def read_1deg():
-    path = "/glade/campaign/collections/cmip/CMIP6/timeseries-cmip6/g.e21.GOMIPECOIAF_JRA.TL319_g17.CMIP6-omip2.001/ocn/proc/tseries/month_1"
+    path = (
+        "/glade/campaign/collections/cmip/CMIP6/timeseries-cmip6/"
+        "g.e21.GOMIPECOIAF_JRA.TL319_g17.CMIP6-omip2.001/"
+        "ocn/proc/tseries/month_1"
+    )
     paths = []
     for substring in [".TEMP.", "KAPPA_ISOP", ".SALT.", "SSH"]:
         paths += glob.glob(f"{path}/*{substring}*.nc")
