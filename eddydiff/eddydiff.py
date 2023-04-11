@@ -59,7 +59,6 @@ def read_ecco_clim():
 
 
 def exchange(input, kwargs):
-
     for kk in kwargs.keys():
         d1 = input[kk]
         d2 = input[kwargs[kk]]
@@ -92,7 +91,6 @@ def format_ecco2(invar):
 
 
 def format_ecco(input):
-
     dims = input.dims
 
     if input.ndim == 4:
@@ -344,7 +342,6 @@ def to_density_space(da, rhonew=None):
 
 
 def to_depth_space(da, Pold=None, Pnew=None):
-
     if isinstance(da, xr.DataArray):
         da.name = "temp"
         da = da.to_dataset()
@@ -356,7 +353,6 @@ def to_depth_space(da, Pold=None, Pnew=None):
         Pnew = np.linspace(Pold.min(), Pold.max(), 100)
 
     def convert_variable(var):
-
         data = np.zeros((len(var.cast), len(Pnew))).T
         for cc, _ in enumerate(var.cast):
             data[:, cc] = np.interp(
@@ -386,7 +382,6 @@ def to_depth_space(da, Pold=None, Pnew=None):
 
 
 def xgradient(da, dim=None, **kwargs):
-
     if dim is None:
         axis = None
         coords_list = [da.coords[dd].values for dd in da.dims]
@@ -418,7 +413,6 @@ def xgradient(da, dim=None, **kwargs):
 
 
 def fit_spline(x, y, k=3, ext="const", debug=False, **kwargs):
-
     # http://www.nehalemlabs.net/prototype/blog/2014/04/12/how-to-fix-scipys-interpolating-spline-default-behavior/
     def moving_average(series):
         b = sp.signal.get_window(("gaussian", 4), 11, fftbins=False)
@@ -455,7 +449,6 @@ def fit_spline(x, y, k=3, ext="const", debug=False, **kwargs):
 
 
 def smooth_cubic_spline(invar, debug=False):
-
     # need to use distance co-ordinate because casts need not be evenly spaced
     distnew = invar.dist
 
@@ -499,7 +492,6 @@ def smooth_cubic_spline(invar, debug=False):
 
 
 def calc_iso_dia_gradients(field, pres, debug=False):
-
     cast_to_dist = False
 
     if "dist" not in field.dims and "cast" in field.dims:
@@ -599,7 +591,6 @@ def bin_avg_in_density_time(chisub: xr.Dataset, bins: dict, strftime="%Y-%m"):
 
 
 def plot_bar_Ke(Ke, dTdz_log=True, Ke_log=True, cole=None):
-
     # if cole is None:
     #     cole = read_cole()
 
@@ -746,7 +737,6 @@ def get_region_from_transect(transect):
 
 
 def convert_mat_to_netcdf():
-
     tr1 = sp.io.loadmat("../datasets/bob-ctd-chipod/transect_1.mat", squeeze_me=True)
     tr2 = sp.io.loadmat("../datasets/bob-ctd-chipod/transect_2.mat", squeeze_me=True)
     tr3 = sp.io.loadmat("../datasets/bob-ctd-chipod/transect_3.mat", squeeze_me=True)
@@ -755,7 +745,6 @@ def convert_mat_to_netcdf():
 
     # convert mat to xarray to netcdf
     for idx, tr in enumerate([tr1, tr2, tr3]):
-
         coords = {
             "cast": np.arange(tr["P"].shape[1]),
             "P": np.arange(tr["P"].shape[0]),
@@ -909,7 +898,6 @@ def process_transect_1d(transect, clim, name=None, nbins=10):
 
 
 def transect_to_density_space(transect, nbins=12):
-
     # 1. Bin average in density space.
     _, bins = pd.cut(transect.rho.values.ravel(), nbins, retbins=True)
 
@@ -1047,7 +1035,6 @@ def average_clim_1d(clim):
 
 
 def process_ecco_gradients():
-
     from dcpy.oceans import dataset_center_pacific
 
     ρfile = "../datasets/ecco/interp_climatology/RHOAnoma.0001.nc"
@@ -1097,7 +1084,6 @@ def process_ecco_gradients():
 def plot_transect_var(
     x, y, data, fill=None, contour=None, bar2=None, xlim=None, xticks=None
 ):
-
     f, ax = plt.subplots(1, len(data[x]), sharex=True, sharey=True)
 
     if ~isinstance(ax, list):
