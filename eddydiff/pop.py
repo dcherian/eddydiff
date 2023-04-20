@@ -139,13 +139,13 @@ def estimate_redi_terms(xds, grid, bins):
     regridded["delT2"] = (
         grid.interp(dTdx, axis="X") ** 2 + grid.interp(dTdy, axis="Y") ** 2
     ).cf.chunk({"X": -1, "Y": -1})
-    regridded["delT2"].attrs = {"long_name": "$|∇T|^2$"}
+    regridded["delT2"].attrs = {"long_name": "$|∇_ρT|^2$"}
 
     if "KAPPA_ISOP" in xds:
         regridded["RediVar"] = regridded.KAPPA_ISOP * regridded.delT2
         regridded.update(regridded[["KAPPA_ISOP"]].map(to_base_units))
         regridded["KAPPA_ISOP"].attrs = {"long_name": "$K_{redi}$"}
-        regridded["RediVar"].attrs = {"long_name": "$K_{redi} |∇T|^2$"}
+        regridded["RediVar"].attrs = {"long_name": "$K_{redi} |∇_ρT|^2$"}
 
     regridded.time.attrs.clear()
     regridded.coords.update(grid._ds[pop_metric_vars])
