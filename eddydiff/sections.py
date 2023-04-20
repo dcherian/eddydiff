@@ -1198,6 +1198,17 @@ def mode(obj, dim):
     return result
 
 
+def _polyfit(data, dim):
+    fit = data.where(data.count(dim) > 3).polyfit(dim=dim, deg=1, cov=True)
+    slope = fit.polyfit_coefficients.sel(degree=1, drop=True)
+    error = np.sqrt(fit.polyfit_covariance.isel(cov_i=0, cov_j=0))
+    mask = np.abs(slope) > 3 * error
+    print(
+        f"Deleting {(~mask).sum().data/mask.count().data * 100} % because slopes are uncertain"
+    )
+    return slope.where(mask)
+
+
 def estimate_microscale_stirring_depth_space(ds, filter_len, segment_len, debug=False):
     """
     Estimates $χ/2/T_z$ using sorting over segment_len long segments.
@@ -1226,8 +1237,7 @@ def estimate_microscale_stirring_depth_space(ds, filter_len, segment_len, debug=
     dp = ds[Zname].diff(Zname).median().item()
     nfilter = int(filter_len // dp)
     ncoarse = int(segment_len // dp) + 1
-    print(ncoarse, nfilter)
-    pcoarse = f"pres_{segment_len}"
+    print(ncoarse, nfilter, dp)
 
     CTinterp = ds.CT.interpolate_na(Zname)
     ds["Tfilt"] = xfilter.lowpass(CTinterp, coord=Zname, freq=1 / nfilter, order=1)
@@ -1258,25 +1268,29 @@ def estimate_microscale_stirring_depth_space(ds, filter_len, segment_len, debug=
     to_coarsen = ds[["gamma_n"]].interpolate_na(Zname)
     to_coarsen["CT"] = CTinterp
     to_coarsen["chi"] = ds.chi
+    if "eps" in ds:
+        to_coarsen["eps"] = ds.eps
     to_coarsen["Tzsign"] = Tzsign
     # to_coarsen["Tzfilt"] = ds.Tzfilt
 
     # return to_coarsen
 
-    coarse = (
-        to_coarsen.coarsen({Zname: ncoarse}, boundary="trim")
-        .construct({Zname: (pcoarse, "window")})
-        .reset_coords(Zname)
-    )
+    # pcoarse = f"pres_{segment_len}"
+    # coarse = (
+    #     to_coarsen.coarsen({Zname: ncoarse}, boundary="trim")
+    #     .construct({Zname: (pcoarse, "window")})
+    #     .reset_coords(Zname)
+    # )
+    coarse = to_coarsen.rolling({Zname: ncoarse}, center=True).construct("window")
+    # Assign "pressure" values for fitting
+    coarse["window"] = -1 * np.arange(0, ncoarse * dp, dp)
 
     # 1. Sort by CT, to get a stable gradient
     Tsort = dcpy.oceans.thorpesort(
         coarse.CT, by=coarse.CT, ascending=False, core_dim="window"
     )
-
-    # Assign "pressure" values for fitting
-    assert (Tsort.diff("window") > 0).sum().astype(int).item() == 0
-    Tsort["window"] = -1 * np.arange(0, ncoarse * dp, dp)
+    Tsort = coarse.CT
+    # assert (Tsort.diff("window") > 0).sum().astype(int).item() == 0
 
     if debug and not debug_profile:
         Tsort.count("window").plot.hist(
@@ -1284,12 +1298,8 @@ def estimate_microscale_stirring_depth_space(ds, filter_len, segment_len, debug=
         )
 
     clean = xr.Dataset()
-    clean["Tz~"] = (
-        # assert min number of points to get a "nice" gradient
-        Tsort.where(Tsort.count("window") > 3)
-        .polyfit(dim="window", deg=1)
-        .polyfit_coefficients.sel(degree=1, drop=True)
-    )
+    clean["count"] = Tsort.count("window")
+    clean["Tz~"] = _polyfit(coarse.CT, "window")
 
     # 2. Choose sign from Tztilde, i.e. CT filtered over filter_len
     # Tzsign = mode(np.sign(coarse.Tzfilt), "window")
@@ -1299,17 +1309,30 @@ def estimate_microscale_stirring_depth_space(ds, filter_len, segment_len, debug=
     Tzsign = coarse.Tzsign.isel(window=0, drop=True)
     # print((Tzsign > 0).sum().data, " values < 0")
     clean["Tz~"] *= Tzsign
-    clean["Tz~"] = clean["Tz~"].where(np.abs(clean["Tz~"]) > 1e-4)
+    clean["Tz~"] = clean["Tz~"].where(np.abs(clean["Tz~"]) > 1e-8)
     print((clean["Tz~"] == 0).sum().data, " values == 0")
 
+    # γsort = dcpy.oceans.thorpesort(
+    #    coarse.gamma_n, by=coarse.CT, ascending=False, core_dim="window"
+    # )
+    γsort = coarse.gamma_n
     clean["chi~"] = coarse.chi.where(coarse.chi.count("window") > 3).mean("window")
+    clean["N2~"] = -9.81 / 1025 * _polyfit(γsort, "window")
+    clean["N2~"] = clean["N2~"].where(clean["N2~"] > 0)
+
+    clean["eps_chi~"] = clean["chi~"] * clean["N2~"] / 2 / 0.2 / clean["Tz~"] ** 2
+    if "eps" in ds:
+        clean["eps~"] = coarse.eps.where(coarse.chi.count("window") > 3).mean("window")
     clean["Kt~"] = clean["chi~"] / 2 / clean["Tz~"] ** 2
+    clean["Kρ~"] = 0.2 * clean["eps~"] / clean["N2~"]
     clean["KtTz~"] = clean["chi~"] / 2 / clean["Tz~"]
     clean["KtTz~"] = clean["KtTz~"].where(np.abs(clean["KtTz~"]) < 2e-5)
 
     # mean of "pressure" along window might be aligned for the reindex step.
-    clean[pcoarse] = coarse[Zname].min("window")
-    clean = clean.reindex({pcoarse: ds[Zname].data}).rename({pcoarse: Zname})
+    # clean[pcoarse] = coarse[Zname].min("window")
+    # clean = clean.reindex({pcoarse: ds[Zname].data}).rename({pcoarse: Zname})
+
+    clean["Tzfilt"] = ds.Tzfilt
 
     # N = Tsort.sizes["window"] * Tsort.sizes[pcoarse]
     # Need to flip "window" based on Tz_sign
@@ -1324,17 +1347,20 @@ def estimate_microscale_stirring_depth_space(ds, filter_len, segment_len, debug=
     if debug_profile:
         filled = clean.cf.ffill("Z")
         f, ax = plt.subplots(4, 1, sharex=True, constrained_layout=True)
-        ds.CT.plot(ax=ax[0])
-        ds.Tfilt.plot(ax=ax[0])
+        ds.CT.plot(ax=ax[0], label="CT")
+        ds.Tfilt.plot(ax=ax[0], label="Tfilt")
+        ax[0].legend()
 
-        filled["Tz~"].plot(ax=ax[1])
-        (ds.Tzfilt).plot(ax=ax[1])
+        filled["Tz~"].plot(ax=ax[1], label="Tz~")
+        (ds.Tzfilt).plot(ax=ax[1], label="ddz(Tfilt)")
+        ax[1].legend()
 
-        (ds.chi).plot(yscale="log", ylim=(1e-12, None), ax=ax[2])
-        (filled["chi~"]).plot(yscale="log", ylim=(1e-12, None), ax=ax[2])
+        (ds.chi).plot(yscale="log", ylim=(1e-12, None), ax=ax[2], label="χ")
+        (filled["chi~"]).plot(yscale="log", ylim=(1e-12, None), ax=ax[2], label="χ~")
+        ax[2].legend()
 
         ax2 = ax[2].twinx()
-        filled["Tz~"].plot(ax=ax2, color="k")
+        filled["Tz~"].plot(ax=ax2, color="k", label="Tz~")
         # (dTdz.where(np.abs(dTdz) < 2e-4)).plot(color="b", marker="o", ls="none", ax=ax2)
         dcpy.plots.set_axes_color(ax2, "k")
 
