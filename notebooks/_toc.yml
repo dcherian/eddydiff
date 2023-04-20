@@ -38,6 +38,7 @@ parts:
   - file: equix-vs-tao
   - file: eqpac-ts-diagrams
   - file: dataset-processing
+  - file: ecco-chi-redi
 - caption: Presentation figures
   chapters:
   - file: figs-2022-02-omwg
