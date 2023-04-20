@@ -1,3 +1,4 @@
+from datatree import DataTree
 import glob
 import os
 from functools import partial
@@ -1441,3 +1442,58 @@ def get_gradient_sign(P, CT, Tzfilt, ΔP, window, out):
         signs = np.sign(np.repeat(CT[idx[:-1]], numel) - np.repeat(CT[idx[1:]], numel))
         # print(CT[idx])
         out[i0:i1] = signs
+
+
+def estimate_all_directions(chi):
+    chi = chi.copy()
+    mask = (chi.chi < 1e-7) & (chi.eps < 1e-6)
+    chi.update(chi[["eps", "chi"]].where(mask))
+    clean = estimate_microscale_stirring_depth_space(
+        chi.cf.sel(Z=slice(2500)), filter_len=20, segment_len=8, debug=False
+    )
+    chi = chi.update(clean)
+
+    stacked = chi.copy(deep=True).stack(
+        cast=(
+            "direction",
+            "station",
+        ),
+        create_index=False,
+    )
+    stacked["cast"] = (
+        "cast",
+        np.arange(stacked.sizes["cast"]),
+        {"cf_role": "profile_id"},
+    )
+    stacked["count"].attrs.clear()
+    stacked["Tfilt"].attrs.clear()
+
+    tree = DataTree()
+    for dir_ in [["up"], ["dn"], ["up", "dn"]]:
+        nodename = "".join(dir_)
+        subset = stacked.sel({"cast": stacked.direction.isin(dir_)})
+        γ = subset.gamma_n
+        bins = choose_bins(
+            dcpy.oceans.thorpesort(γ, by=γ, core_dim="pressure"),
+            depth_range=np.arange(150, 2201, 150),
+            decimals=3,
+        )
+        print(dir_, ": ", bins)
+        avg = bin_average_vertical(
+            subset.copy(), "neutral_density", bins=bins, blocksize=10
+        )
+        avg.attrs["title"] = "A05"
+        tree[nodename] = DataTree(avg)  # .load(scheduler=client)
+    return tree
+
+
+def preprocess_a05_ctd_chipod_file(ctdchifile, stations=slice(108, 130)):
+    ctdchi = xr.load_dataset(ctdchifile).pipe(dcpy.oceans.reformat_ctd_chipod_nc)
+    a05_ = ctdchi.sel(
+        cleaner="none",
+        # direction="dn",
+        station=stations,
+        pressure=slice(250, 2200),
+    )
+    add_ancillary_variables(a05_)
+    return a05_
