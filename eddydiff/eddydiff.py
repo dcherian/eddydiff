@@ -85,6 +85,11 @@ def format_ecco2(invar):
     lon[lon < 0] += 360
     output["lat"] = invar.lat[:, 0].values
     output["pres"] = invar.dep.values
+    output["pres"].attrs = {
+        "standard_name": "sea_water_pressure",
+        "units": "dbar",
+        "positive": "down",
+    }
 
     output["lon"] = lon
     return output.sortby("lon")
