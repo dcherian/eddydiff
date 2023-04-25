@@ -62,20 +62,26 @@ def preprocess_pop_dataset(ds):
 
 
 def gridder(da, grid, target):
-    interped = xr.concat(
-        [
-            grid.transform(
-                da.sel(cycle=cycle),
-                axis="Z",
-                target=target,
-                target_data=da.σ.sel(cycle=cycle),
-                method="linear",
-            )
-            for cycle in da.cycle
-        ],
-        dim="cycle",
-        join="exact",
-    )
+    if "cycle" in da.dims:
+        interped = xr.concat(
+            [
+                grid.transform(
+                    da.sel(cycle=cycle),
+                    axis="Z",
+                    target=target,
+                    target_data=da.σ.sel(cycle=cycle),
+                    method="linear",
+                )
+                for cycle in da.cycle
+            ],
+            dim="cycle",
+            join="exact",
+        )
+    else:
+        interped = grid.transform(
+            da, axis="Z", target=target, target_data=da.σ, method="linear"
+        )
+
     interped.attrs = da.attrs
     return interped
 
@@ -83,21 +89,22 @@ def gridder(da, grid, target):
 def regrid_to_density(xds, grid, bins, varnames):
     import dask
 
-    if dask.base.is_dask_collection(xds.TEMP.data):
-        zdata = dask.array.from_array(xds.z_t.data, chunks=xds.TEMP.chunks[1])
-        kwargs = {"chunks": xds.TEMP.data.chunks}
+    first_var = xds[varnames[0]]
+    zdata = xds.cf["Z"].data
+    if dask.base.is_dask_collection(xds):
+        zdata = dask.array.from_array(zdata, chunks=xds.cf.chunks["Z"])
+        kwargs = {"chunks": first_var.data.chunks}
         xp = dask.array
     else:
-        zdata = xds.z_t.data
         kwargs = {}
         xp = np
 
     xds["z_σ"] = xr.DataArray(
         xp.broadcast_to(
-            zdata[np.newaxis, :, np.newaxis, np.newaxis], xds.TEMP.shape, **kwargs
+            zdata[np.newaxis, :, np.newaxis, np.newaxis], first_var.shape, **kwargs
         ),
-        dims=xds.TEMP.dims,
-        coords=xds.TEMP.coords,
+        dims=first_var.dims,
+        coords=first_var.coords,
         attrs={"axis": "Z", "positive": "down", "units": "centimeters"},
     )
 
