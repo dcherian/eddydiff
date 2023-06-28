@@ -390,8 +390,8 @@ document.write(`
 <h2>From buoyancy flux<a class="headerlink" href="#from-buoyancy-flux" title="Permalink to this headline">#</a></h2>
 <p>Define <span class="math notranslate nohighlight">\(K =χ/2/x_z^2\)</span>    <span class="math notranslate nohighlight">\(J=-\overline{w'x'} = - K x_z\)</span></p>
 <p>Start with buoyancy flux <span class="math notranslate nohighlight">\(J_b\)</span> which we assume to be <span class="math notranslate nohighlight">\(Γε\)</span> later</p>
-<div class="amsmath math notranslate nohighlight" id="equation-d067934c-87f3-472d-bb67-8d2cfb7be359">
-<span class="eqno">(13)<a class="headerlink" href="#equation-d067934c-87f3-472d-bb67-8d2cfb7be359" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-a66a3ce2-0bac-4c5f-a9fc-8db3bf1a1143">
+<span class="eqno">(13)<a class="headerlink" href="#equation-a66a3ce2-0bac-4c5f-a9fc-8db3bf1a1143" title="Permalink to this equation">#</a></span>\[\begin{align}
 J_ρ &amp;= -\overline{w'ρ'} \\
     &amp;= -\overline{-w'ρ_0αT' + w'ρ_0βS'} \\
     &amp;= -ρ_0 (-α \overline{w'T'} + β \overline{w'S'}) \\
@@ -403,8 +403,8 @@ J_ρ &amp;= -\overline{w'ρ'} \\
 <li><p>downward heat flux <span class="math notranslate nohighlight">\(J_T &lt; 0\)</span> is upward density flux <span class="math notranslate nohighlight">\(J_ρ &gt; 0\)</span> and upward <span class="math notranslate nohighlight">\(J_s &gt; 0\)</span> is upward density flux <span class="math notranslate nohighlight">\(J_ρ &gt; 0\)</span></p></li>
 </ul>
 <p>If <span class="math notranslate nohighlight">\(K_T = K_S\)</span> (e.g. Nash &amp; Moum)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-a4a680d4-2b93-4e0a-a4ff-e1309ec205b9">
-<span class="eqno">(14)<a class="headerlink" href="#equation-a4a680d4-2b93-4e0a-a4ff-e1309ec205b9" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f34e984b-f4b4-4295-9d0d-5bd1040a48cb">
+<span class="eqno">(14)<a class="headerlink" href="#equation-f34e984b-f4b4-4295-9d0d-5bd1040a48cb" title="Permalink to this equation">#</a></span>\[\begin{align}
 J_ρ &amp;= ρ_0 (α K_T T_z - βK_S S_z) \\
     &amp;= -K_T ρ_0(-αT_z + βS_z) \\
     &amp;= -K_T ρ_z
@@ -413,14 +413,14 @@ J_ρ &amp;= ρ_0 (α K_T T_z - βK_S S_z) \\
 <section id="to">
 <h3>To <span class="math notranslate nohighlight">\(χ_ρ\)</span><a class="headerlink" href="#to" title="Permalink to this headline">#</a></h3>
 <p>Gregg (1987)’s starting point is an expression for <span class="math notranslate nohighlight">\(χ_{pe}\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-427790a4-a184-4592-8225-d16cb22757f0">
-<span class="eqno">(15)<a class="headerlink" href="#equation-427790a4-a184-4592-8225-d16cb22757f0" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-d8354792-0461-410d-aeb3-d0abeba002ef">
+<span class="eqno">(15)<a class="headerlink" href="#equation-d8354792-0461-410d-aeb3-d0abeba002ef" title="Permalink to this equation">#</a></span>\[\begin{align}
 χ_{pe} &amp;= \left(\frac{g}{ρN}\right)^2 χ_ρ \\
        &amp;= \left(\frac{gα}{N}\right)^2 χ_T + \left(\frac{gβ}{N}\right)^2 χ_S \qquad\qquad \text{assumption!}
 \end{align}\]</div>
 <p>You can’t write <span class="math notranslate nohighlight">\(χ_ρ\)</span> using molecular gradients and diffusivity but we can make progress if we assume that <span class="math notranslate nohighlight">\(χ_ρ = 2 K_ρ ρ_z^2\)</span>, analogous to <span class="math notranslate nohighlight">\(χ_T\)</span> Let’s try to derive this starting from <span class="math notranslate nohighlight">\(J_ρ\)</span>.</p>
-<div class="amsmath math notranslate nohighlight" id="equation-564865cb-3fce-4f9f-b28d-09f6d1f240aa">
-<span class="eqno">(16)<a class="headerlink" href="#equation-564865cb-3fce-4f9f-b28d-09f6d1f240aa" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-6ce22430-1fa9-45e5-bbb4-9ea0877a84f8">
+<span class="eqno">(16)<a class="headerlink" href="#equation-6ce22430-1fa9-45e5-bbb4-9ea0877a84f8" title="Permalink to this equation">#</a></span>\[\begin{align}
 χ_ρ &amp;= -2J_ρ ρ_z \\
     &amp;= 2ρ_0 (-α K_T T_z + βK_S S_z) ρ_z \\
     &amp;= 2ρ_0 (-α K_T T_z + βK_S S_z) ρ_0 (-α T_z + β S_z) \\
@@ -430,16 +430,16 @@ J_ρ &amp;= ρ_0 (α K_T T_z - βK_S S_z) \\
     &amp;= ρ_0^2 \left[α^2 χ_T + β^2 χ_S - \frac{2α^2}{R_ρ} χ_T \right]
 \end{align}\]</div>
 <p>So <span class="math notranslate nohighlight">\(χ_{pe}\)</span> is</p>
-<div class="amsmath math notranslate nohighlight" id="equation-8c156514-7448-4088-921d-268fa10e0b9a">
-<span class="eqno">(17)<a class="headerlink" href="#equation-8c156514-7448-4088-921d-268fa10e0b9a" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-42cf21f2-48a9-47fe-ae61-86f513b31050">
+<span class="eqno">(17)<a class="headerlink" href="#equation-42cf21f2-48a9-47fe-ae61-86f513b31050" title="Permalink to this equation">#</a></span>\[\begin{align}
 χ_{pe} &amp;= \left(\frac{g}{ρ_0N}\right)^2 χ_ρ \\
        &amp;= \left(\frac{gα}{N}\right)^2 χ_T + \left(\frac{gβ}{N}\right)^2 χ_S  - \frac{2}{R_ρ}\left(\frac{gα}{N}\right)^2 χ_T \\
        &amp;= \left(\frac{gα}{N}\right)^2 χ_T \left( 1 -\frac{2}{R_ρ} + \frac{1}{R_ρ^2} \right) \\
        &amp;= \left(\frac{gα}{N}\right)^2 χ_T \left( \frac{R_ρ-1}{R_ρ}\right)^2
 \end{align}\]</div>
 <p>Then,</p>
-<div class="amsmath math notranslate nohighlight" id="equation-85894f45-34ba-4455-b123-dc73e720d1c8">
-<span class="eqno">(18)<a class="headerlink" href="#equation-85894f45-34ba-4455-b123-dc73e720d1c8" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-672b00c5-b0be-4fba-a6f0-19474eeb0956">
+<span class="eqno">(18)<a class="headerlink" href="#equation-672b00c5-b0be-4fba-a6f0-19474eeb0956" title="Permalink to this equation">#</a></span>\[\begin{align}
     2Γε &amp;= \left(\frac{gα}{N}\right)^2 \left( \frac{R_ρ-1}{R_ρ}\right)^2 χ_T \\
     \frac{Γε}{N^2} &amp;= \left(\frac{gα}{N}\right)^2 \left( \frac{R_ρ-1}{R_ρ}\right)^2 \frac{χ_T/2}{T_z^2} \frac{T_z^2}{N^2}\\
     K_ρ &amp;= \left(\frac{gαT_z}{N^2}\right)^2 \left( \frac{R_ρ-1}{R_ρ}\right)^2 K_T \\
@@ -453,26 +453,26 @@ J_ρ &amp;= ρ_0 (α K_T T_z - βK_S S_z) \\
 <section id="gregg-1987-energetics">
 <h2>Gregg (1987) &amp; energetics<a class="headerlink" href="#gregg-1987-energetics" title="Permalink to this headline">#</a></h2>
 <p>An alternative way to formulate the <span class="math notranslate nohighlight">\(χ\)</span>-<span class="math notranslate nohighlight">\(ε\)</span> relation is to use energetics (connected to point 2) as in Gregg (1987); Seim &amp; Gregg (1994); Alford &amp; Pinkel (2000). Gergg (1987)’ equation (56) is the evolution equation for <span class="math notranslate nohighlight">\(ρ'\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-0094f04f-d2a7-45f1-ba74-1309485b734a">
-<span class="eqno">(19)<a class="headerlink" href="#equation-0094f04f-d2a7-45f1-ba74-1309485b734a" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-122024bf-fa0e-41f6-bea8-f5f1f8f37e23">
+<span class="eqno">(19)<a class="headerlink" href="#equation-122024bf-fa0e-41f6-bea8-f5f1f8f37e23" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \frac{d\overline{ρ'^2}}{dt} + 2 \overline{ρ'u'} \frac{∂\overline{ρ}}{∂z} = - χ_ρ
 \end{equation}\]</div>
 <p>Then form an equation for perturbation potential energy <span class="math notranslate nohighlight">\(η\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-a88dceb0-5ddc-4b13-9cda-89a47f69b877">
-<span class="eqno">(20)<a class="headerlink" href="#equation-a88dceb0-5ddc-4b13-9cda-89a47f69b877" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-0642259f-6bd7-4a42-ad5a-a41c098b5e10">
+<span class="eqno">(20)<a class="headerlink" href="#equation-0642259f-6bd7-4a42-ad5a-a41c098b5e10" title="Permalink to this equation">#</a></span>\[\begin{align}
 η &amp;≡ \frac 12 \left( \frac{g}{ρN} \right)^2 \overline{ρ'^2} \\
 \frac{dη}{dt} &amp;= -J_b - \frac 12 χ_{pe}
 \end{align}\]</div>
 <p>This shows the connection between <span class="math notranslate nohighlight">\(ε\)</span> (<span class="math notranslate nohighlight">\(J_b\)</span>) and <span class="math notranslate nohighlight">\(χ_{pe}\)</span> (tied to <span class="math notranslate nohighlight">\(χ_ρ\)</span> which should be related to <span class="math notranslate nohighlight">\(χ_T\)</span> and <span class="math notranslate nohighlight">\(χ_S\)</span>).</p>
-<div class="amsmath math notranslate nohighlight" id="equation-91a775da-b30f-437d-b881-881575842b6e">
-<span class="eqno">(21)<a class="headerlink" href="#equation-91a775da-b30f-437d-b881-881575842b6e" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-3333b0dd-b502-4dc0-9527-61aada58348b">
+<span class="eqno">(21)<a class="headerlink" href="#equation-3333b0dd-b502-4dc0-9527-61aada58348b" title="Permalink to this equation">#</a></span>\[\begin{align}
 χ_{pe} &amp;= \left(\frac{g}{ρN}\right)^2 χ_ρ
 \end{align}\]</div>
 <section id="what-is">
 <h3>What is <span class="math notranslate nohighlight">\(χ_ρ\)</span><a class="headerlink" href="#what-is" title="Permalink to this headline">#</a></h3>
 <p>Now <span class="math notranslate nohighlight">\(χ_T\)</span> and <span class="math notranslate nohighlight">\(χ_S\)</span> are “easy” to define (assuming isotropy):</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9743b545-f2d5-4449-8559-77cf9d215431">
-<span class="eqno">(22)<a class="headerlink" href="#equation-9743b545-f2d5-4449-8559-77cf9d215431" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-c20e4149-609c-418e-a82c-74a2e4165075">
+<span class="eqno">(22)<a class="headerlink" href="#equation-c20e4149-609c-418e-a82c-74a2e4165075" title="Permalink to this equation">#</a></span>\[\begin{equation}
 χ_T = 6 D_T \overline{\left(\frac{∂T'}{∂z}\right)^2} \qquad χ_S = 6 D_S \overline{\left(\frac{∂S'}{∂z}\right)^2}
 \end{equation}\]</div>
 <p>where <span class="math notranslate nohighlight">\(D_S, D_T\)</span> are molecular diffusivities for <span class="math notranslate nohighlight">\(S\)</span>, <span class="math notranslate nohighlight">\(T\)</span>.</p>
@@ -481,16 +481,16 @@ J_ρ &amp;= ρ_0 (α K_T T_z - βK_S S_z) \\
 <section id="approach-of-gregg-1987">
 <h3>Approach of Gregg (1987)<a class="headerlink" href="#approach-of-gregg-1987" title="Permalink to this headline">#</a></h3>
 <p>Gregg (1987) writes</p>
-<div class="amsmath math notranslate nohighlight" id="equation-13646cff-7af7-47b1-b3c2-99d043168ded">
-<span class="eqno">(23)<a class="headerlink" href="#equation-13646cff-7af7-47b1-b3c2-99d043168ded" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f107ba34-e53b-4155-a508-3f8ca1fa0e1c">
+<span class="eqno">(23)<a class="headerlink" href="#equation-f107ba34-e53b-4155-a508-3f8ca1fa0e1c" title="Permalink to this equation">#</a></span>\[\begin{align}
 χ_{pe} &amp;= \left(\frac{g}{ρN}\right)^2 χ_ρ \\
        &amp;= \left(\frac{gα}{N}\right)^2 χ_T + \left(\frac{gβ}{N}\right)^2 χ_S \qquad\qquad \text{assumption!} \\
        &amp;= \left(\frac{gα}{N}\right)^2 \left( 1 + \frac{1}{R_ρ^2} \right) χ_T; \qquad R_ρ = \frac{αT_z}{βS_z}  \; \text{ and } χ_S \approx \left( \frac{dS}{dT}\right)^2χ_T
 \end{align}\]</div>
 <p>This must assume that <span class="math notranslate nohighlight">\(T'\)</span> and <span class="math notranslate nohighlight">\(S'\)</span> are uncorrelated. As Nash &amp; Moum (1999) show, microconductivity observations (which is a different function of <span class="math notranslate nohighlight">\(T, S\)</span>) can have a very different spectral shape depending on the coherence between <span class="math notranslate nohighlight">\(T'\)</span>, <span class="math notranslate nohighlight">\(S'\)</span> (see below)</p>
 <p>Assuming equililbrium energetics <span class="math notranslate nohighlight">\(χ_{pe} = 2Γε\)</span> (Alford &amp; Pinkel, 2000) yields a <span class="math notranslate nohighlight">\(ε-χ_T\)</span> relationship, that we can then write as a <span class="math notranslate nohighlight">\(K_T -K_ρ\)</span> relationship</p>
-<div class="amsmath math notranslate nohighlight" id="equation-bd6cf723-5011-4adf-9ca5-551f13e7c3a3">
-<span class="eqno">(24)<a class="headerlink" href="#equation-bd6cf723-5011-4adf-9ca5-551f13e7c3a3" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-d4cbd724-92c7-4823-bb65-6a2c0c565e41">
+<span class="eqno">(24)<a class="headerlink" href="#equation-d4cbd724-92c7-4823-bb65-6a2c0c565e41" title="Permalink to this equation">#</a></span>\[\begin{align}
     2Γε &amp;= \left(\frac{gα}{N}\right)^2 \left( 1 + \frac{1}{R_ρ^2} \right) χ_T \\
     \frac{Γε}{N^2} &amp;= \left(\frac{gα}{N}\right)^2 \left( 1 + \frac{1}{R_ρ^2} \right) \frac{χ_T/2}{T_z^2} \frac{T_z^2}{N^2}\\
     K_ρ &amp;= \left(\frac{gαT_z}{N^2}\right)^2 \left( 1 + \frac{1}{R_ρ^2} \right) K_T \\
@@ -498,13 +498,13 @@ J_ρ &amp;= ρ_0 (α K_T T_z - βK_S S_z) \\
     K_ρ &amp;= \frac{1 + R_ρ^2}{(1 - R_ρ)^2} K_T \qquad\text{ or } K_ρ = \frac{(βS_z)^2 + (αT_z)^2}{(βS_z - αT_z)^2} K_T
 \end{align}\]</div>
 <p>after using</p>
-<div class="amsmath math notranslate nohighlight" id="equation-2ed4ad1d-dc10-4125-aed8-724f54270394">
-<span class="eqno">(25)<a class="headerlink" href="#equation-2ed4ad1d-dc10-4125-aed8-724f54270394" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-fb7be14e-e778-4362-9590-9370e625ab2d">
+<span class="eqno">(25)<a class="headerlink" href="#equation-fb7be14e-e778-4362-9590-9370e625ab2d" title="Permalink to this equation">#</a></span>\[\begin{equation}
 \frac{N^2}{T_z} = gα \left(1 - \frac{βS_z}{αT_z} \right) = gα\left( 1 - \frac{1}{R_ρ} \right)
 \end{equation}\]</div>
 <p>For <span class="math notranslate nohighlight">\(ε\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-fc1e0ff4-84c7-4dc0-9c45-6626bdd51b94">
-<span class="eqno">(26)<a class="headerlink" href="#equation-fc1e0ff4-84c7-4dc0-9c45-6626bdd51b94" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-eb0a2c37-51c7-4f1b-8670-5595edaa5c56">
+<span class="eqno">(26)<a class="headerlink" href="#equation-eb0a2c37-51c7-4f1b-8670-5595edaa5c56" title="Permalink to this equation">#</a></span>\[\begin{align}
 ε &amp;= \frac{1 + R_ρ^2}{(1 - R_ρ)^2} \frac{N^2χ_T}{2ΓT_z^2} \\
   &amp;= \frac{1 + R_ρ^2}{(1 - R_ρ)^2} \left(1 - \frac{1}{R_ρ} \right) \frac{gαχ_T}{2ΓT_z} \\
   &amp;= \frac{1 + R_ρ^2}{(R_ρ - 1) R_ρ} \frac{gαχ_T}{2ΓT_z} 
@@ -2661,15 +2661,15 @@ roTBs2RqAAAAAElFTkSuQmCC'
 <section id="what-is-the-spectra-of-z">
 <h3>What is the spectra of <span class="math notranslate nohighlight">\(ρ'_z\)</span><a class="headerlink" href="#what-is-the-spectra-of-z" title="Permalink to this headline">#</a></h3>
 <p>Following Nash &amp; Moum (1999)</p>
-<div class="amsmath math notranslate nohighlight" id="equation-9cd67284-d212-4e6f-9b93-d1ee8eec393c">
-<span class="eqno">(27)<a class="headerlink" href="#equation-9cd67284-d212-4e6f-9b93-d1ee8eec393c" title="Permalink to this equation">#</a></span>\[\begin{align}
+<div class="amsmath math notranslate nohighlight" id="equation-f33dde9e-af6d-499f-ad6b-8e2b18b9f85c">
+<span class="eqno">(27)<a class="headerlink" href="#equation-f33dde9e-af6d-499f-ad6b-8e2b18b9f85c" title="Permalink to this equation">#</a></span>\[\begin{align}
 ρ_z &amp;= - ρ_0 α T_z+ ρ_0 β S_z \\
 ψ_{ρz} &amp;= (ρ_0 α)^2 ψ_{Tz} - 2 ρ_0^2 αβψ_{TzSz} + (ρ_0 β)^2 ψ_{Sz}
 \end{align}\]</div>
 <p>and
 cospectrum can be expressed using coherence <span class="math notranslate nohighlight">\(γ_{TzSz}(k)\)</span> and phase <span class="math notranslate nohighlight">\(φ(k)\)</span></p>
-<div class="amsmath math notranslate nohighlight" id="equation-56ce3963-b64c-4d42-b19c-5d7f58265501">
-<span class="eqno">(28)<a class="headerlink" href="#equation-56ce3963-b64c-4d42-b19c-5d7f58265501" title="Permalink to this equation">#</a></span>\[\begin{equation}
+<div class="amsmath math notranslate nohighlight" id="equation-43272418-3676-4dda-9843-7f90b03566e6">
+<span class="eqno">(28)<a class="headerlink" href="#equation-43272418-3676-4dda-9843-7f90b03566e6" title="Permalink to this equation">#</a></span>\[\begin{equation}
 ψ_{TzSz} = γ_{TzSz}(k) e^{iφ(k)} [ψ_{Tz}ψ_{Sz}]^{1/2}
 \end{equation}\]</div>
 <p>In general if <span class="math notranslate nohighlight">\(T_z\)</span> and <span class="math notranslate nohighlight">\(S_z\)</span> are correlated then the cross-term is not negligible. Here we test this idea assuming perfect coherence amplitude, and either in-phase or 180° out-of-phase.</p>
