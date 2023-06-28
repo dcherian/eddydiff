@@ -1,7 +1,6 @@
 from typing import Iterable
 
 import cf_xarray as cfxr
-import dcpy
 import gsw
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -49,7 +48,7 @@ def read_ecco_clim():
     ecco = ecco.cf.add_bounds("pres")
     ecco["pres"].attrs["standard_name"] = "sea_water_pressure"
     ecco["pden"] = jmd95.dens(ecco.Smean, ecco.Tmean, 0)
-    ecco["temp"] = dcpy.eos.temp(ecco.Smean, ecco.Tmean, ecco.pres, 0)
+    # ecco["temp"] = dcpy.eos.temp(ecco.Smean, ecco.Tmean, ecco.pres, 0)
 
     attrs = {"Smean": "sea_water_salinity", "Tmean": "sea_water_potential_temperature"}
     for k, v in attrs.items():
@@ -1334,6 +1333,8 @@ def plane(coords, dTdx, dTdy, c, d):
     lon, lat = coords
     x = (lon - lon.mean()) * np.cos(np.pi / 180 * lat.mean()) * 110e3
     y = (lat - lat.mean()) * 110e3
+    x = x.astype(np.float64)
+    y = y.astype(np.float64)
     # import IPython; IPython.core.debugger.set_trace()
     return dTdx * x + dTdy * y + c + d * x * y
 
@@ -1341,7 +1342,8 @@ def plane(coords, dTdx, dTdy, c, d):
 def plane_fit_gradient(da, coords=None, debug=False, **kwargs):
     counts = da.cf.count(["X", "Y"])
     coeffs = (
-        da.where(counts > 5)
+        da.astype(np.float64, copy=False)
+        .where(counts > 5)
         .cf.curvefit(
             ["longitude", "latitude"],
             plane,

@@ -93,15 +93,16 @@ def plot_cole_profile(**sel_kwargs):
     f.suptitle(sel_kwargs)
 
 
-def compare_section_estimates(averages, finescale=None, KρTz2=False):
-
+def compare_section_estimates(averages, finescale=None, KρTz2=False, colors=None):
+    if colors is None:
+        colors = [f"C{N}" for N in range(len(averages))]
     f, ax = plt.subplots(1, 4, sharey=True)
 
-    for avg in averages:
+    for avg, color in zip(averages, colors):
         project = avg.attrs.get("title", None)
         for var, axx in zip(["dTdz_m", "N2_m", "chi", "eps"], ax):
             dcpy.plots.fill_between_bounds(
-                avg, var, y="pres", ax=axx, label=project, title=True
+                avg, var, y="pres", ax=axx, label=project, title=True, color=color
             )
 
     ax[2].set_xscale("log")
@@ -126,7 +127,6 @@ def compare_section_estimates(averages, finescale=None, KρTz2=False):
 
 
 def debug_section_estimate(avg, finescale=None, KρTz2=False):
-
     f, ax = plt.subplots(1, 5, sharey=True)
     dcpy.plots.fill_between_bounds(avg, "dTdz_m", y="pres", ax=ax[0])
     dcpy.plots.fill_between_bounds(avg, "N2_m", y="pres", ax=ax[0].twiny(), color="C1")
@@ -224,3 +224,26 @@ def plot_Tu_relationships(data, title=None):
     if title is not None:
         f.suptitle(title)
     f.set_size_inches((10, 5))
+
+
+def make_nice_natre_map(ax_):
+    import cartopy.crs as ccrs
+    import cartopy.feature as cfeature
+
+    ax_.add_patch(
+        mpl.patches.Rectangle(
+            [-31, 23.0],
+            5,
+            5,
+            lw=2,
+            transform=ccrs.PlateCarree(),
+            facecolor="none",
+            edgecolor="k",
+        )
+    )
+
+    ax_.set_facecolor("w")
+    ax_.set_extent([-35, -5, 15, 40])
+    ax_.coastlines(lw=1.1, zorder=10)
+    ax_.set_title("")
+    ax_.add_feature(cfeature.LAND)

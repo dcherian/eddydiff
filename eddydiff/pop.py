@@ -133,10 +133,11 @@ def regrid_to_density(xds, grid, bins, varnames):
     return regridded
 
 
-def estimate_redi_terms(xds, grid, bins):
-    regridded = regrid_to_density(
-        xds, grid, bins, [v for v in ["TEMP", "SALT", "KAPPA_ISOP"] if v in xds]
-    )
+def estimate_redi_terms(xds, grid, bins=None):
+    if bins is not None:
+        regridded = regrid_to_density(
+            xds, grid, bins, [v for v in ["TEMP", "SALT", "KAPPA_ISOP"] if v in xds]
+        )
 
     if "yearmonth" in xds:
         regridded["yearmonth"] = xds.yearmonth
@@ -162,10 +163,19 @@ def estimate_redi_terms(xds, grid, bins):
 
 def calc_mean_redivar_profile(ds):
     profile = ds.cf.mean(["X", "Y"])
+    T = ds.cf["sea_water_potential_temperature"]
+    reduce_dims = [T.cf.axes[ax][0] for ax in ["X", "Y"]]
     profile["delT2_plane"] = plane_fit_gradient(
-        ds.TEMP.pint.dequantify(), reduce_dims=["nlon_t", "nlat_t"], debug=True
+        T.pint.dequantify(), reduce_dims=reduce_dims, debug=True
     )
 
     profile.coords["z_σ"] = profile.z_σ.cf.ffill("Z")
     profile = profile.cf.add_bounds("z_σ", dim="Z")
     return profile
+
+
+def get_edges(pop):
+    ybounds = pop.z_σ_bounds
+    bdim = pop.cf.get_bounds_dim_name("z_σ")
+    yedges = np.append(ybounds.isel({bdim: 0}).data, ybounds.data[-1, -1])
+    return yedges
