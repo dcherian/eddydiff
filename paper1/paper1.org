@@ -4,10 +4,22 @@
 #+OPTIONS: toc:nil broken-links:mark
 #+latex_header_extra: \usepackage{svg}
 
+#+begin_abstract
+We assess the representation of mesoscale stirring in a suite of models against an estimate derived from microstructure data collected during the North Atlantic Tracer Release Experiment (NATRE).
+We draw heavily from an approximate temperature variance budget framework presented by Ferrari and Polzin (2005, Journal of Physical Oceanography).
+This framework assumes two major sources of temperature variance production away from the surface: first, the vertical stirring of the mean large-scale vertical gradient by small-scale turbulence; and second, the lateral stirring of mean large-scale along-isopycnal gradients by mesoscale eddies.
+Temperature variance so produced is transformed and transferred to smaller scales for ultimate dissipation at the microscale at a rate χ, estimated using microstructure observations.
+In ocean models, the two pathways are represented by the vertical mixing parameterization, and the along-isopycnal lateral mixing parameterization (if needed).
+We assess the second term as a residual from the NATRE microstructure dataset, and compare against the parameterized representations in a 1/10° global configuration of the Parallel Ocean Program version 2 (POP2) model, a global 1° configuration of the POP2 model, and the Estimating the Circulation and Climate of the Oceans (ECCO 4v4) state estimate which adjusts lateral diffusivities to minimize misfit to observations.
+In the NATRE region, we find great agreement between the microstructure estimate and the POP2 1/10° simulation, and significant biases in the POP2 1° simulation.
+Analysis of the ECCO 4v4 adjusted lateral diffusivities shows elevated values at the depth range where the microstructure suggests elevated χ sourced from mesoscale stirring.
+Such elevated values are not present in any other dataset indicating possible compensating errors and suggesting caution in interpreting the adjustments to lateral diffusivities in ECCO4v4.
+#+end_abstract
+
 * Introduction
 - could add a vertical profile of spiciness from Argo, T-S diagram; etc.
 
-#+caption: Time-mean salinity on the $σ_2=\SI{36.33}{\kg\per\m\cubed}$ surface averaged between years 2000 and 2017. (a) the Argo climatology (2005-2019) (b) POP 1/10° simulation, (c) POP 1° simulation, and (d) the ECCO state estimate. Black box marks the location of the North Atlantic Tracer Release Experiment (NATRE).
+#+caption: Time-mean salinity on the $σ_2=\SI{36.33}{\kg\per\m\cubed}$ surface averaged between years 2000 and 2017. The salinity gradient on an isopycnal must be compensated by an equivalent temperature gradient. (a) the Argo climatology (2005-2019) (b) POP 1/10° simulation, (c) POP 1° simulation, and (d) the ECCO state estimate. Black box marks the location of the North Atlantic Tracer Release Experiment (NATRE).
 #+name: fig:salt
 #+attr_latex: :width \textwidth
 [[file:../images/isopycnal-salt.png]]
@@ -18,20 +30,17 @@
 [[file:../images/schematics-edited.pdf]]
 
 Ocean tracers weakly diffuse across surfaces of neutral density, away from boundaries.
-Global estimates of an appropriate "dianeutral" diffusivity $K_d$ are approximately \SI{1e-5}{\meter\squared\per\second} [[citep:&Whalen2015;&Munk1966;&Kunze2017;&Waterhouse2014]], and the mixing is largely blamed on breaking internal waves [[citep:&Gregg1996;&MacKinnon2017]].
+Global estimates of an appropriate "dianeutral" diffusivity $K_d$ are approximately \SI{1e-5}{\meter\squared\per\second} [[citep:&Whalen2015;&Munk1966;&Kunze2017;&Waterhouse2014]], and the mixing is largely attributed to breaking internal waves [[citep:&Gregg1996;&MacKinnon2017]].
 Investigators have inferred significant geographic variations in $K_d$ that appear linked to bottom topography [[citep:&Kunze2006]] and wind patterns [[citep:&Whalen2018;&Alford2016]].
-Where large-scale tracer gradients exist /along/ neutral surfaces, they can be efficiently stirred by the ocean's mesoscale to form very sharp gradients, that are then destroyed by molecular diffusion (e.g. citealp:Smith2009).
+Where large-scale tracer gradients exist /along/ neutral surfaces ("spicy"), they can be efficiently stirred by the ocean's mesoscale to form very sharp gradients, visible as along-isopycnal scatter on a $T-S$ diagram, that are then destroyed by molecular diffusion (e.g. citealp:Smith2009).
+For example, isopcynal maps of salinity $S$ show the salty Mediterranean outflow spreading westward and southward through the northwest Atlantic at depths between approximately 800m and 1500m (Figure [[fig:salt]]a).
+This along-isopycnal salinity gradient is /compensated/ by an equivalent along-isopycnal temperature $T$ gradient such that $α∇_ρ T = β ∇_ρ S$; where $α$ is the thermal expansion coefficient, $β$ is the haline contraction coefficient and $∇_ρ$ is the gradient evaluated on neutral surfaces.
 # - alignment of mesoscale velocity along-isopycnals?
-Such lateral stirring and eventual mixing are one explanation for observations of compensated $T-S$ fronts in the thermocline (e.g. citealp:&Ferrari2000), the other being double diffusion.
+Lateral stirring and eventual mixing are one explanation for observations of compensated $T-S$ fronts in the thermocline (e.g. citealp:&Ferrari2000), the other being double diffusion.
 Along-neutral surface or "epineutral" diffusivities $K_e$ are quite large, relative to $K_d$, with values in the range \SIrange{500}{3000}{\meter\squared\per\second} [[citep:&Abernathey2022]].
 Accurate representation of along-neutral stirring is necessary for accurate simulation of ocean tracers, including temperature and salinity, for climate simulations [[citep:&Griffies1998a]].
 Uncertainties in the value of $K_e$ are consequential for the simulation of anthropogenic heat uptake,  El-Nino, and the oxygen field in a coupled model [[citep:&Gnanadesikan2015a;&Gnanadesikan2015;&Gnanadesikan2013]].
 
-Large-scale compensated gradients of temperature and salinity do exist along neutral surfaces, and are called "spice" citep:&Munk1981.
-For example, isopcynal maps of salinity $S$ show the salty Mediterranean outflow spreading westward and southward through the northwest Atlantic at depths between approximately 800m and 1500m (Figure [[fig:salt]]a).
-This along-isopycnal salinity gradient is /compensated/ by an equivalent along-isopycnal temperature $T$ gradient such that $α∇_ρ T = β ∇_ρ S$.
-Here $α$ is the thermal expansion coefficient, $β$ is the haline contraction coefficient and $∇_ρ$ is the gradient evaluated on neutral surfaces.
-In spicy regions, mesoscale eddy stirring produces sharp compensated $T-S$ gradients or filaments, visible as along-isopycnal scatter on a $T-S$ diagram, that are eventually dissipated at the molecular scale [[citep:&Ferrari2005;&Smith2009]].
 
 One way to frame the relationship between stirring and dissipation is through a budget for the tracer variance e.g. $T^2$.
 Such a budget expresses a relationship between the rate of variance production, through surface fluxes and stirring of larger-scale gradients by smaller-scale eddies (both mesoscale and microscale turbulence), and the rate of variance dissipation by molecular diffusion ($χ$, Section ref:sec:pathways).
@@ -58,7 +67,7 @@ Begin with a triple decomposition of the temperature fields
 where the subscripts $m$, $e$ and $t$ are loosely identified with the "mean", "mesoscale eddy", and "turbulence" scales.
 Here the "mean" represents basin scale gradients over 1000s of km similar to the isopycnal salt gradient in Figure [[fig:salt]]a.
 "Turbulence" represents scales of 10m and smaller, including breaking internal waves and small-scale turbulent eddies.
-The "mesoscale" is an intermediate-scale containing everything in between, and understood to be dominated by mesoscale fluctuations.
+The intermediate-scale containing everything in between "mean" and "turbulence" is assumed to be dominated by mesoscale fluctuations and termed "mesoscale".
 
 Define a "large-scale averaging operator" $⟨⟩$ that filters out the "eddy" and "turbulence" so that $⟨T⟩ = T_m$ and an intermediate scale averaging operator $\widetilde{\phantom{...}}$ that filters out the "turbulence" so that $\widetilde{T} = T_m + T_e$.
 [[cite:&Ferrari2005]]  derive the complete variance budget equations for $⟨T_e^2⟩$ and $⟨T_t^2⟩$.
@@ -82,8 +91,9 @@ Adding the two equations yields the approximate balance,
 ⟨\widetilde{u_tT_t}⟩ ⋅ ∇ T_m  + ⟨\widetilde{u_e T_e}⟩ ⋅ ∇ T_m \approx - \frac 12 ⟨χ⟩
 \end{equation}
 that is the variance dissipated at the molecular scale is approximately generated by the stirring of the mean field $T_m$ by the mesoscale and microscale turbulence.
+While $⟨\widetilde{a}⟩ = ⟨a⟩$, we preserve the $\widetilde{\phantom{a}}$ in eqref:eq:theory for clarity.
 A large number of approximations are required to get to this point, but this framework has value in qualitatively describing the nature of variance cascades in the ocean [[citep:&Garrett2001a;&Ferrari2005;&Spingys2021;&NaveiraGarabato2016]].
- - Can we mention an approximate 3-term balance in Guo et al?
+# - Can we mention an approximate 3-term balance in Guo et al?
 
 ** Variance pathways as a model diagnostic
 We can further simplify eqref:eq:theory assuming (a) that $u_t$ is isotropic and $∂_zT_m \gg ∇^hT_m$ so $⟨\widetilde{u_tT_t}⟩ ⋅ ∇T_m \approx ⟨\widetilde{w_tT_t}⟩ ⋅ ∂_z T_m$; and (b) that mesoscale motions stir the along-isopycnal horizontal gradient $∇_ρ^h T_m$ so that $χ_e \approx  ⟨\widetilde{u^h_e T_e}⟩ ⋅ ∇_ρ^h T_m$ (superscript $h$ represents horizontal components) yielding
@@ -92,7 +102,7 @@ We can further simplify eqref:eq:theory assuming (a) that $u_t$ is isotropic and
 ⟨\widetilde{w_tT_t}⟩ ⋅ ∂_z T_m  + \underbrace{⟨\widetilde{u^h_e T_e}⟩ ⋅ ∇_ρ^h T_m}_{χ_e} \approx - \frac 12 ⟨χ⟩.
 \end{equation}
 
-Ina a mesoscale resolving model, the second term is resolved and we can qualitatively identify the "turbulence" as representing subgrid scale motions whose effect on the mean scales is parameterized using both a vertical mixing scheme, and a lateral diffusion scheme (Section ref:sec:cesmh).
+In a mesoscale resolving model, the second term is resolved and we can qualitatively identify the "turbulence" as representing subgrid scale motions whose effect on the mean scales is parameterized using both a vertical mixing scheme, and a lateral diffusion scheme (Section ref:sec:cesmh).
 For coarser models where even the mesoscale is parameterized, $χ_e$ is commonly modelled by an along-isopycnal cite:&Redi1982 diffusivity (Section ref:sec:coarse).
 The assignment of scales here is qualitative and only influences the interpretation in what follows.
 For example, [[cite:&Alford2005]] derives eqref:eq:final as a framework for interpreting observations of a \SI{1}{\km} scale lateral thermohaline intrusion.
@@ -103,7 +113,7 @@ Later [[cite:&Smith2009]] used  a 1km quasigeostrophic model initialized with cl
 Here we go a step further, and use that interpretation as a starting hypothesis so that this framework may be used to evaluate a numerical model simulation.
 In doing so, we join [[cite:&NaveiraGarabato2016]] and [[cite:&Spingys2021a]] who used the same framework to evaluate overturning across the Antarctic Circumpolar Current and estimate the flux of nitrate by mesoscale eddy stirring along the Mid-Atlantic Ridge respectively.
 
-** Summary
+** Objectives
 The central question of this paper is whether the estimated mesoscale stirring term in a mesoscale-resolving model, and the parameterized variance dissipated by parameterize cite:&Redi1982 diffusion in coarser models compare well against the estimated magnitude of the scale transformation term using the NATRE observations and the cite:&Ferrari2005 methodology.
 We compare resolved and parameterized mesoscale eddy stirring to an observational estimate using the variance production rate $χ_e$ as a metric.
 This rate is a direct output of the lateral diffusivity scheme, so the comparison is /direct/ in the sense of [[cite:&Large1999]].
@@ -151,14 +161,14 @@ These estimates are publicly available [[citep:&Groeskamp2020]].
 We interpret the fidelity of the mesoscale stirring representation in a suite of global model integrations described below, using the  NATRE observations.
 *** CESM-H POP 1/10°
 [[cite:&Guo2022]] present a closed temperature variance budget analysis for an interannually forced simulation using the Parallel Ocean Program Version 2 (POP2; citealp:&pop) component of the Community Earth System Model version 2 (CESM2; citealp:&CESM2 with a grid of nominal 1/10° horizontal spacing, and 62 vertical levels.
-In the NATRE region, the vertical grid spacing is 100-150m between 800db and 1200db.
+In the NATRE region, the vertical grid spacing is \SIrange{90}{155}{\meter} between depths of \SI{800}{\meter} and \SI{1500}{\meter}.
 The model configuration is similar to that of  [[cite:&Bryan2015]] but is instead forced using the Japanese 55-year Reanalysis dataset (JRA55; [[citealp:&jra55]]).
 This simulation uses the K-profile parameterization scheme (KPP; citealp:&Large1994) to parameterize vertical mixing, and biharmonic viscosity and diffusivity to represent horizontal stirring and eventual mixing.
 Biharmonic viscosity and diffusivity values vary with the cube of the grid spacing and have equatorial values of \SI{2.7e10}{\meter^4\per\second} and \SI{3e9}{\meter^4\per\second}, respectively.
 This simulation simulates the salinity field associated with the Mediterranean outflow with reasonable fidelity (Figure [[fig:salt]]b).
 
 *** CESM-L POP 1°
-We diagnose the spinup of a simulation using the CESM2 [[citep:&CESM2]] ocean component z-coordinate model POP2 [[citep:&pop]] at a nominal spacing of 1°, and 60 vertical levels with a spacing of \SIrange{90}{155}{\meter} between depths of \SI{800}{\meter} and \SI{1500}{\meter}
+We diagnose the spinup of a simulation using the CESM2 [[citep:&CESM2]] ocean component z-coordinate model POP2 [[citep:&pop]] at a nominal spacing of 1°, and 60 vertical levels with a spacing of \SIrange{90}{155}{\meter} between depths of \SI{800}{\meter} and \SI{1500}{\meter} (same as the CESM-H simulation).
 This simulation is initialized with the World Ocean Atlas 2018 citep:&woa18 temperature and salinity fields and zero velocities following the Ocean Model Intercomparison Project (OMIP) protocol citep:&Griffies2016.
 The simulation is integrated forwards for six cycles or repeats of the Japanese Reanalysis surface forcing (JRA55; citealp:&jra55).
 
@@ -185,7 +195,7 @@ These adjustments significantly improve the representation of the mean state, re
 #+name: fig:coarse
 [[file:~/work/eddydiff/images/coarse-models.pdf]]
 
-** Microstructure estimates
+** Microstructure estimate: NATRE
 <<sec:obs>>
 For the NATRE region, cite:&Ferrari2005  estimate the first term in [[eqref:eq:final]] $⟨\widetilde{w_tT_t}⟩ ⋅ ∂_z T_m$ using the NATRE microstructure data.
 They defining $⟨⟩$ as a horizontal average over the entire 400km x 400km box, a vertical average over approximately 100m, and a time average over approximately 18 days.
@@ -210,14 +220,14 @@ This depth range is the location of a large water mass contrast along isopycnals
 This inference is supported by the variance budget calculated for a mesoscale resolving simulation [[citep:&Guo2022]], as we describe next.
 For further discussion of the NATRE results, see  [[cite:&Ferrari2005]] and [[cite:&Smith2009]] .
 
-For the remainder of the paper, we will keep in mind that the microstructure estimates suggests that in the top 2000m of the NATRE region, mesoscale stirring of the mean is the dominant variance production term between approximately 800m and 1500m, and microscale stirring of the mean vertical gradient dominates the rest of the water column.
+For the remainder of the paper, we will keep in mind that the microstructure estimate suggests that in the top 2000m of the NATRE region, mesoscale stirring of the mean is the dominant variance production term between approximately 800m and 1500m, and microscale stirring of the mean vertical gradient dominates the rest of the water column.
 We now study whether numerical simulations reproduce this vertical dependence of the approximate variance budget balance.
 
 ** Diagnosing a mesoscale resolving simulation: CESM-H POP2 1/10°
 <<sec:cesmh>>
 [[cite:&Guo2022]] present a variance budget for the mesoscale eqref:eq:final in a 1/10° POP2 simulation.
 Their budget is constructed in depth space using a "double decomposition" of the /cell-averaged/ equations, which makes it a triple decomposition if we identify the "turbulence" as sub-gridscale motions.
-In addition they split the mesoscale scale stirring of the mean in to horizontal and vertical portions.
+In addition they split the mesoscale scale stirring of the mean into horizontal and vertical portions.
 Equation eqref:eq:both can be rewritten to
 \begin{align}
 ⟨u_eT_e⟩ ⋅ ∇T_m - ⟨\widetilde{u_t T_t} ⋅ ∇T_e⟩ &\approx 0; \\
@@ -231,7 +241,7 @@ We can then identify the scale transformation term $χ_e = ⟨\widetilde{u_t T_t
 The remaining terms in their budget are negligible in the NATRE region (not shown here).
 
 Figure [[ref:fig:pop-natre]]b presents the three term balance in eqref:eq:pop from their analysis, horizontally averaged over the NATRE region, and time averaged over the years 2000-2019.
-In the top 800m of the water column, spiciness is low.
+In the top 800m of the water column, spiciness or $|∇_ρT|$ is low (shown in Figure [[fig:coarse]]b).
 Here lateral eddy stirring of the $T_m$ generates density anomalies with associated potential energy anomalies ("eddy potential energy" EPE).
 The EPE is then converted to eddy kinetic energy (EKE), so $⟨u_e^hT_e⟩ ⋅ ∇^hT_m \approx -⟨w_e T_e⟩ ∂_zT_m$ and only a small amount of temperature variance is cascaded down to the grid scale for dissipation.
 Such energy transfers are parameterized in coarser models using the cite:&Gent1995 scheme.
@@ -282,7 +292,7 @@ As the model is integrated forward, $∇_ρT$ continues to decrease and the mid-
 
 One possible interpretation is that at least in this region, the model is not overly diffusive at 1000dbar but instead has a problem maintaining the water-mass contrast along isopycnals through the advection of the Mediterranean outflow.
 This interpretation is supported by the isopycnal salinity maps in Figure [[fig:salt]]c where we see that the along-isopycnal salinity gradient is significantly weaker than that in the observations much closer to the mouth of the Mediterranean (for example see 20°W, 30°N).
-In other words, errors in variance budget at 1000dbar arise from errors in the simulation of the mean state, than from errors in parameterizing the mesoscale in the NATRE region.
+In other words, errors in variance budget at 1000dbar appear to arise from errors in the simulation of the mean state, rather than from errors in parameterizing the mesoscale in the NATRE region.
 
 Between 1500dbar and 2000dbar, we might  blame the vertical profile of $K_e$ as being inaccurate at representing the inferred decay of $K_e$ with depth [[citep:&Groeskamp2020a;&Cole2015]].
 However remember that both the microstructure measurements and the 1/10° model suggest that microscale turbulence is the dominant stirring term at these depths for the temperature variance budget.
@@ -292,7 +302,7 @@ On a related note, cite:&CESM2 mention that enhanced $K_e$ values at depth are u
 *** Interpreting ECCO v4r4 $K_e$ adjustments
 <<sec:ecco>>
 
-The ECCO simulation is of particular interest because it adjusts $K_e$ to reduce misfit [[citep:&Forget2015a]].
+The ECCO simulation is of particular interest because it adjusts $K_e$ to reduce misfit to observations [[citep:&Forget2015a]].
 The ECCO configuration uses the advective form of the Gent-McWilliams parameterization, and consequently the isopycnal fluxes are calculated using the symmetric Redi tensor [[citep:&mitgcmweb]].
 
 \[
@@ -368,6 +378,7 @@ DAC was funded by NASA Physical Oceanography grant 80NSSC19K1234 P00006.
 We thank Keith Lindsay for sharing the CESM-L 1° simulation output.
 We thank  Kurt Polzin and Sjoerd Groeskamp for insightful discussions.
 The analysis presented here was facilitated by many scientific Python packages, particularly Xarray  citep:&Hoyer2017;&xarray, xgcm citep:&xgcm, matplotlib citep:&matplotlib;&Hunter2007 and cartopy citep:&cartopy;&Elson2022.
+We would like to acknowledge high-performance computing support from Cheyenne (doi:10.5065/D6RX99HX) provided by NCAR's Computational and Information Systems Laboratory, sponsored by the National Science Foundation citep:&cheyenne.
 
 * References
 #+latex: \renewcommand{\bibsection}{}
