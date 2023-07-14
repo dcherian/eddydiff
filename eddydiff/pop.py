@@ -166,7 +166,7 @@ def calc_mean_redivar_profile(ds):
     T = ds.cf["sea_water_potential_temperature"]
     reduce_dims = [T.cf.axes[ax][0] for ax in ["X", "Y"]]
     profile["delT2_plane"] = plane_fit_gradient(
-        T.pint.dequantify(), reduce_dims=reduce_dims, debug=True
+        T.pint.dequantify(), reduce_dims=reduce_dims, debug=False
     )
 
     profile.coords["z_σ"] = profile.z_σ.cf.ffill("Z")
